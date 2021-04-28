@@ -131,32 +131,32 @@
               <li class="menu-header">Dashboard</li>
               <li class="@yield('menuDashboard')"><a class="nav-link" href="{{route('home')}}"><i class="fas fa-fire"></i> <span>Dashboard</span></a></li>
               <li class="menu-header">Menu Proyek</li>
-              <li class="@yield('menuProyek')"><a class="nav-link" href="#"><i class="fas fa-fire"></i> <span>Proyek</span></a></li>
-              <li class="nav-item dropdown">
-                <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i class="fas fa-columns"></i> <span>Data Proyek</span></a>
+              <li class="@yield('menuProyek')"><a class="nav-link" href="{{route('proyek')}}"><i class="fas fa-archway"></i> <span>Proyek</span></a></li>
+              <li class="nav-item dropdown @yield('menuDataProyek')"">
+                <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i class="fas fa-home"></i> <span>Data Proyek</span></a>
                 <ul class="dropdown-menu">
-                  <li class="@yield('menuUnit')"><a class="nav-link" href="layout-default.html">Unit</a></li>
-                  <li class="@yield('menuRAB')"><a class="nav-link" href="layout-transparent.html">RAB</a></li>
-                  <li class="@yield('MenuPengeluaran')"><a class="nav-link" href="layout-top-navigation.html">Pengeluaran</a></li>
+                  <li class="@yield('menuUnit')"><a class="nav-link" href="{{route('unit')}}">Unit</a></li>
+                  <li class="@yield('menuRAB')"><a class="nav-link" href="{{route('RAB')}}">RAB</a></li>
+                  <li class="@yield('menuPengeluaran')"><a class="nav-link" href="{{route('pengeluaran')}}">Pengeluaran</a></li>
                 </ul>
               </li>
               <li class="menu-header">Menu Costumer</li>
-              <li class="@yield('menuCostumer')"><a class="nav-link" href="{{route('home')}}"><i class="fas fa-fire"></i> <span>Costumer</span></a></li>
-              <li class="nav-item dropdown">
-                <a href="#" class="nav-link has-dropdown"><i class="fas fa-th-large"></i> <span>Cicilan DP</span></a>
+              <li class="@yield('menuCostumer')"><a class="nav-link" href="{{route('costumerIndex')}}"><i class="fas fa-user-friends"></i> <span>Costumer</span></a></li>
+              <li class="nav-item dropdown @yield('menuCicilanDP')">
+                <a href="#" class="nav-link has-dropdown"><i class="fas fa-coins"></i> <span>Cicilan DP</span></a>
                 <ul class="dropdown-menu">
-                  <li><a class="nav-link" href="components-article.html">Rumah</a></li>
-                  <li><a class="nav-link" href="components-article.html">Kavling</a></li>
-                  <li><a class="nav-link" href="components-article.html">Kios</a></li>
+                  <li class=" @yield('menuCicilanDPRumah')"><a class="nav-link " href="{{route('DPRumah')}}">Rumah</a></li>
+                  <li class=" @yield('menuCicilanDPKavling')"><a class="nav-link" href="{{route('DPKavling')}}">Kavling</a></li>
+                  <li class=" @yield('menuCicilanDPKios')"><a class="nav-link " href="{{route('DPKios')}}">Kios</a></li>
                   
                 </ul>
               </li>
-              <li class="nav-item dropdown">
-                <a href="#" class="nav-link has-dropdown"><i class="fas fa-th-large"></i> <span>Cicilan Unit</span></a>
+              <li class="nav-item dropdown @yield('menuCicilanUnit')">
+                <a href="#" class="nav-link has-dropdown"><i class="fas fa-money-bill-wave"></i> <span>Cicilan Unit</span></a>
                 <ul class="dropdown-menu">
-                  <li><a class="nav-link" href="components-article.html">Rumah</a></li>
-                  <li><a class="nav-link" href="components-article.html">Kavling</a></li>
-                  <li><a class="nav-link" href="components-article.html">Kios</a></li>
+                  <li class=" @yield('menuCicilanUnitRumah')"><a class="nav-link" href="{{route('cicilanRumah')}}">Rumah</a></li>
+                  <li class=" @yield('menuCicilanUnitKavling')"><a class="nav-link" href="{{route('cicilanKavling')}}">Kavling</a></li>
+                  <li class=" @yield('menuCicilanUnitKios')"><a class="nav-link" href="{{route('cicilanKios')}}">Kios</a></li>
                   
                 </ul>
               </li>
@@ -164,21 +164,21 @@
             </li>
             <li class="menu-header">Menu Keuangan</li>
               <li class="nav-item dropdown">
-                <a href="#" class="nav-link has-dropdown"><i class="far fa-user"></i> <span>Transaksi</span></a>
+                <a href="#" class="nav-link has-dropdown"><i class="far fa-handshake"></i> <span>Transaksi</span></a>
                 <ul class="dropdown-menu">
                   <li><a href="auth-forgot-password.html">Masuk</a></li>
                   <li><a href="auth-login.html">Keluar</a></li>
                 </ul>
               </li>
               <li class="nav-item dropdown">
-                <a href="#" class="nav-link has-dropdown"><i class="fas fa-exclamation"></i> <span>KAS</span></a>
+                <a href="#" class="nav-link has-dropdown"><i class="fas fa-book"></i> <span>KAS</span></a>
                 <ul class="dropdown-menu">
                   <li><a class="nav-link" href="errors-503.html">Besar</a></li>
                   <li><a class="nav-link" href="errors-403.html">Kecil</a></li>
                 </ul>
               </li>
               <li class="nav-item dropdown">
-                <a href="#" class="nav-link has-dropdown"><i class="fas fa-bicycle"></i> <span>Laporan</span></a>
+                <a href="#" class="nav-link has-dropdown"><i class="fas fa-clipboard-check"></i> <span>Laporan</span></a>
                 <ul class="dropdown-menu">
                   <li><a class="nav-link" href="features-activities.html">Bulanan</a></li>
                   <li><a class="nav-link" href="features-post-create.html">Tahunan</a></li>
@@ -240,6 +240,7 @@
   <script src="{{asset('assets/js/custom.js')}}"></script>
 
   <!-- Page Specific JS File -->
-  <script src="{{asset('assets/js/page/index-0.js')}}"></script>
+  @yield('script')
+
 </body>
 </html>

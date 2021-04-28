@@ -155,3 +155,7 @@
     </div>
   </div>
 @endsection
+
+@section('script')
+<script src="{{asset('assets/js/page/index-0.js')}}"></script>
+@endsection

@@ -22,7 +22,16 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::group(['middleware'=>['auth','role:admin']],function(){
-    route::get('/test',function(){
-        return "Berhasil";
-    });
+    Route::get('/proyek', 'ProyekController@index')->name('proyek');
+    Route::get('/unit', 'ProyekController@unit')->name('unit');
+    Route::get('/RAB', 'ProyekController@RAB')->name('RAB');
+    Route::get('/pengeluaran', 'ProyekController@pengeluaran')->name('pengeluaran');
+    Route::get('/costumer', 'CostumerController@index')->name('costumerIndex');
+    Route::get('/DPRumah', 'DPController@DPRumah')->name('DPRumah');
+    Route::get('/DPKavling', 'DPController@DPKavling')->name('DPKavling');
+    Route::get('/DPKios', 'DPController@DPKios')->name('DPKios');
+    Route::get('/cicilanRumah', 'CicilanController@cicilanRumah')->name('cicilanRumah');
+    Route::get('/cicilanKavling', 'CicilanController@cicilanKavling')->name('cicilanKavling');
+    Route::get('/cicilanKios', 'CicilanController@cicilanKios')->name('cicilanKios');
+    
 });
