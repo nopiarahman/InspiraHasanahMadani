@@ -40,6 +40,7 @@
                     <ul class="navbar-nav ml-auto">
                         <!-- Authentication Links -->
                         @guest
+                            
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
                             </li>
@@ -56,8 +57,8 @@
 
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                                     <a class="dropdown-item" href="{{ route('logout') }}"
-                                       onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
+                                      onclick="event.preventDefault();
+                                      document.getElementById('logout-form').submit();">
                                         {{ __('Logout') }}
                                     </a>
 
@@ -74,6 +75,9 @@
 
         <main class="py-4">
             @yield('content')
+            <li class="nav-item">
+              <a class="nav-link" href="/test">Menu Test</a>
+          </li>
         </main>
     </div>
 </body>
