@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\proyek;
+use App\kavling;
 use Illuminate\Http\Request;
 
 class ProyekController extends Controller
@@ -14,7 +15,9 @@ class ProyekController extends Controller
      */
     public function index()
     {
-        return view ('proyek/index');
+        $proyek=proyek::all()->sortDesc();
+        // dd($proyek);
+        return view ('proyek/index',compact('proyek'));
     }
 
     /**
@@ -24,7 +27,7 @@ class ProyekController extends Controller
      */
     public function create()
     {
-        //
+        return view ('proyek/tambah');
     }
 
     /**
@@ -35,7 +38,20 @@ class ProyekController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $rules=[
+            'nama'=>'required',
+            'lokasi'=>'required',
+            'proyekStart'=>'required'
+        ];
+        $costumMessages = [
+            'required'=>':attribute tidak boleh kosong'
+        ];
+
+        $requestData = $request->all();
+        $this->validate($request,$rules,$costumMessages);
+        proyek::create($requestData);
+
+        return redirect()->route('proyek')->with('status','Data Proyek Berhasil ditambahkan');
     }
 
     /**
@@ -55,9 +71,10 @@ class ProyekController extends Controller
      * @param  \App\proyek  $proyek
      * @return \Illuminate\Http\Response
      */
-    public function edit(proyek $proyek)
+    public function edit(Proyek $id)
     {
-        //
+        $proyek=$id;
+        return view ('proyek/edit',compact('proyek'));
     }
 
     /**
@@ -67,11 +84,21 @@ class ProyekController extends Controller
      * @param  \App\proyek  $proyek
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, proyek $proyek)
+    public function update(Request $request, proyek $id)
     {
-        //
+        $rules=[
+            'nama'=>'required',
+            'lokasi'=>'required',
+            'proyekStart'=>'required'
+        ];
+        $costumMessages = [
+            'required'=>':attribute tidak boleh kosong'
+        ];
+        $requestData = $request->all();
+        $this->validate($request,$rules,$costumMessages);
+        $id->update($requestData);
+        return redirect()->route('proyek')->with('status','Data Proyek Berhasil dirubah');
     }
-
     /**
      * Remove the specified resource from storage.
      *
@@ -83,9 +110,7 @@ class ProyekController extends Controller
         //
     }
 
-    public function unit (){
-        return view ('proyek/DataProyek/unit');
-    }
+    
 
     public function RAB (){
         return view ('proyek/DataProyek/RAB');

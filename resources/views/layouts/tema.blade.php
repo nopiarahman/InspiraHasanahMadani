@@ -135,7 +135,7 @@
               <li class="nav-item dropdown @yield('menuDataProyek')"">
                 <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i class="fas fa-home"></i> <span>Data Proyek</span></a>
                 <ul class="dropdown-menu">
-                  <li class="@yield('menuUnit')"><a class="nav-link" href="{{route('unit')}}">Unit</a></li>
+                  <li class="@yield('menuKavling')"><a class="nav-link" href="{{route('kavling')}}">Kavling</a></li>
                   <li class="@yield('menuRAB')"><a class="nav-link" href="{{route('RAB')}}">RAB</a></li>
                   <li class="@yield('menuPengeluaran')"><a class="nav-link" href="{{route('pengeluaran')}}">Pengeluaran</a></li>
                 </ul>
@@ -163,25 +163,26 @@
               
             </li>
             <li class="menu-header">Menu Keuangan</li>
-              <li class="nav-item dropdown">
+              <li class="nav-item dropdown @yield('menuTransaksi')">
                 <a href="#" class="nav-link has-dropdown"><i class="far fa-handshake"></i> <span>Transaksi</span></a>
                 <ul class="dropdown-menu">
-                  <li><a href="auth-forgot-password.html">Masuk</a></li>
-                  <li><a href="auth-login.html">Keluar</a></li>
+                  <li class=" @yield('menuAkun')"><a href="{{route('akun')}}">Akun</a></li>
+                  <li class=" @yield('menuTransaksiMasuk')"><a href="{{route('transaksiMasuk')}}">Masuk</a></li>
+                  <li class=" @yield('menuTransaksiKeluar')"><a href="{{route('transaksiKeluar')}}">Keluar</a></li>
                 </ul>
               </li>
-              <li class="nav-item dropdown">
+              <li class="nav-item dropdown @yield('menuKas')">
                 <a href="#" class="nav-link has-dropdown"><i class="fas fa-book"></i> <span>KAS</span></a>
                 <ul class="dropdown-menu">
-                  <li><a class="nav-link" href="errors-503.html">Besar</a></li>
-                  <li><a class="nav-link" href="errors-403.html">Kecil</a></li>
+                  <li class=" @yield('menuKasBesar')"><a class="nav-link" href="{{route('kasBesar')}}">Besar</a></li>
+                  <li class=" @yield('menuKasKecil')"><a class="nav-link" href="{{route('kasKecil')}}">Kecil</a></li>
                 </ul>
               </li>
-              <li class="nav-item dropdown">
+              <li class="nav-item dropdown @yield('menuLaporan')">
                 <a href="#" class="nav-link has-dropdown"><i class="fas fa-clipboard-check"></i> <span>Laporan</span></a>
                 <ul class="dropdown-menu">
-                  <li><a class="nav-link" href="features-activities.html">Bulanan</a></li>
-                  <li><a class="nav-link" href="features-post-create.html">Tahunan</a></li>
+                  <li class=" @yield('menuLaporanBulanan')"><a class="nav-link" href="{{route('laporanBulanan')}}">Bulanan</a></li>
+                  <li class=" @yield('menuLaporanTahunan')"><a class="nav-link" href="{{route('laporanTahunan')}}">Tahunan</a></li>
                 </ul>
               </li>
               {{-- <li class="nav-item dropdown">

@@ -1,8 +1,8 @@
 @extends('layouts.tema')
-@section ('menuUnit','active')
-@section ('menuDataProyek','active')
+@section ('menuKas','active')
+@section ('menuKasBesar','active')
 @section('content')
 <div class="section-header">
-    <h1>Unit</h1>
+    <h1>Kas Besar</h1>
 </div>
 @endsection

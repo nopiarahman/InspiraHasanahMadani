@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\transaksi;
+use App\akun;
 use Illuminate\Http\Request;
 
-class TransaksiController extends Controller
+class AkunController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,15 +14,7 @@ class TransaksiController extends Controller
      */
     public function index()
     {
-        //
-    }
-
-    public function masuk(){
-        return view ('transaksi/masukIndex');
-    }
-
-    public function keluar(){
-        return view ('transaksi/keluarIndex');
+        return view ('akun/index');
     }
 
     /**
@@ -49,10 +41,10 @@ class TransaksiController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\transaksi  $transaksi
+     * @param  \App\akun  $akun
      * @return \Illuminate\Http\Response
      */
-    public function show(transaksi $transaksi)
+    public function show(akun $akun)
     {
         //
     }
@@ -60,10 +52,10 @@ class TransaksiController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\transaksi  $transaksi
+     * @param  \App\akun  $akun
      * @return \Illuminate\Http\Response
      */
-    public function edit(transaksi $transaksi)
+    public function edit(akun $akun)
     {
         //
     }
@@ -72,10 +64,10 @@ class TransaksiController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\transaksi  $transaksi
+     * @param  \App\akun  $akun
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, transaksi $transaksi)
+    public function update(Request $request, akun $akun)
     {
         //
     }
@@ -83,10 +75,10 @@ class TransaksiController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\transaksi  $transaksi
+     * @param  \App\akun  $akun
      * @return \Illuminate\Http\Response
      */
-    public function destroy(transaksi $transaksi)
+    public function destroy(akun $akun)
     {
         //
     }
