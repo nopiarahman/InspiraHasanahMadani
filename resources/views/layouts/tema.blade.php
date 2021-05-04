@@ -6,6 +6,9 @@
   <title>PT Inspira Hasanah Madani</title>
 
   <!-- General CSS Files -->
+  {{-- <link rel="stylesheet" href="{{ mix("css/bootstrap.css") }}"> --}}
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet" />
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
 
@@ -13,6 +16,9 @@
   <link rel="stylesheet" href="{{asset('assets/css/style.css')}}">
   <link rel="stylesheet" href="{{asset('assets/css/chocolat.css')}}" type="text/css" media="screen" >
   <link rel="stylesheet" href="{{asset('assets/css/components.css')}}">
+  <link rel="stylesheet" href="{{asset('assets/css/custom.css')}}">
+
+  @yield('head')
 </head>
 
 <body>
@@ -133,29 +139,29 @@
               <li class="menu-header">Menu Proyek</li>
               <li class="@yield('menuProyek')"><a class="nav-link" href="{{route('proyek')}}"><i class="fas fa-archway"></i> <span>Proyek</span></a></li>
               <li class="nav-item dropdown @yield('menuDataProyek')"">
-                <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i class="fas fa-home"></i> <span>Data Proyek</span></a>
+                <a href="" class="nav-link has-dropdown" data-toggle="dropdown"><i class="fas fa-home"></i> <span>Data Proyek</span></a>
                 <ul class="dropdown-menu">
                   <li class="@yield('menuKavling')"><a class="nav-link" href="{{route('kavling')}}">Kavling</a></li>
                   <li class="@yield('menuRAB')"><a class="nav-link" href="{{route('RAB')}}">RAB</a></li>
                   <li class="@yield('menuPengeluaran')"><a class="nav-link" href="{{route('pengeluaran')}}">Pengeluaran</a></li>
                 </ul>
               </li>
-              <li class="menu-header">Menu Costumer</li>
-              <li class="@yield('menuCostumer')"><a class="nav-link" href="{{route('costumerIndex')}}"><i class="fas fa-user-friends"></i> <span>Costumer</span></a></li>
+              <li class="menu-header">Menu Pelanggan</li>
+              <li class="@yield('menuPelanggan')"><a class="nav-link" href="{{route('pelangganIndex')}}"><i class="fas fa-user-friends"></i> <span>Pelanggan</span></a></li>
               <li class="nav-item dropdown @yield('menuCicilanDP')">
-                <a href="#" class="nav-link has-dropdown"><i class="fas fa-coins"></i> <span>Cicilan DP</span></a>
+                <a href="" class="nav-link has-dropdown"><i class="fas fa-coins"></i> <span>Cicilan DP</span></a>
                 <ul class="dropdown-menu">
-                  <li class=" @yield('menuCicilanDPRumah')"><a class="nav-link " href="{{route('DPRumah')}}">Rumah</a></li>
                   <li class=" @yield('menuCicilanDPKavling')"><a class="nav-link" href="{{route('DPKavling')}}">Kavling</a></li>
+                  <li class=" @yield('menuCicilanDPRumah')"><a class="nav-link " href="{{route('DPRumah')}}">Rumah</a></li>
                   <li class=" @yield('menuCicilanDPKios')"><a class="nav-link " href="{{route('DPKios')}}">Kios</a></li>
                   
                 </ul>
               </li>
               <li class="nav-item dropdown @yield('menuCicilanUnit')">
-                <a href="#" class="nav-link has-dropdown"><i class="fas fa-money-bill-wave"></i> <span>Cicilan Unit</span></a>
+                <a href="" class="nav-link has-dropdown"><i class="fas fa-money-bill-wave"></i> <span>Cicilan Unit</span></a>
                 <ul class="dropdown-menu">
-                  <li class=" @yield('menuCicilanUnitRumah')"><a class="nav-link" href="{{route('cicilanRumah')}}">Rumah</a></li>
                   <li class=" @yield('menuCicilanUnitKavling')"><a class="nav-link" href="{{route('cicilanKavling')}}">Kavling</a></li>
+                  <li class=" @yield('menuCicilanUnitRumah')"><a class="nav-link" href="{{route('cicilanRumah')}}">Rumah</a></li>
                   <li class=" @yield('menuCicilanUnitKios')"><a class="nav-link" href="{{route('cicilanKios')}}">Kios</a></li>
                   
                 </ul>
@@ -164,7 +170,7 @@
             </li>
             <li class="menu-header">Menu Keuangan</li>
               <li class="nav-item dropdown @yield('menuTransaksi')">
-                <a href="#" class="nav-link has-dropdown"><i class="far fa-handshake"></i> <span>Transaksi</span></a>
+                <a href="" class="nav-link has-dropdown"><i class="far fa-handshake"></i> <span>Transaksi</span></a>
                 <ul class="dropdown-menu">
                   <li class=" @yield('menuAkun')"><a href="{{route('akun')}}">Akun</a></li>
                   <li class=" @yield('menuTransaksiMasuk')"><a href="{{route('transaksiMasuk')}}">Masuk</a></li>
@@ -172,35 +178,19 @@
                 </ul>
               </li>
               <li class="nav-item dropdown @yield('menuKas')">
-                <a href="#" class="nav-link has-dropdown"><i class="fas fa-book"></i> <span>KAS</span></a>
+                <a href="" class="nav-link has-dropdown"><i class="fas fa-book"></i> <span>KAS</span></a>
                 <ul class="dropdown-menu">
                   <li class=" @yield('menuKasBesar')"><a class="nav-link" href="{{route('kasBesar')}}">Besar</a></li>
                   <li class=" @yield('menuKasKecil')"><a class="nav-link" href="{{route('kasKecil')}}">Kecil</a></li>
                 </ul>
               </li>
               <li class="nav-item dropdown @yield('menuLaporan')">
-                <a href="#" class="nav-link has-dropdown"><i class="fas fa-clipboard-check"></i> <span>Laporan</span></a>
+                <a href="" class="nav-link has-dropdown"><i class="fas fa-clipboard-check"></i> <span>Laporan</span></a>
                 <ul class="dropdown-menu">
                   <li class=" @yield('menuLaporanBulanan')"><a class="nav-link" href="{{route('laporanBulanan')}}">Bulanan</a></li>
                   <li class=" @yield('menuLaporanTahunan')"><a class="nav-link" href="{{route('laporanTahunan')}}">Tahunan</a></li>
                 </ul>
               </li>
-              {{-- <li class="nav-item dropdown">
-                <a href="#" class="nav-link has-dropdown"><i class="fas fa-ellipsis-h"></i> <span>Utilities</span></a>
-                <ul class="dropdown-menu">
-                  <li><a href="utilities-contact.html">Contact</a></li>
-                  <li><a class="nav-link" href="utilities-invoice.html">Invoice</a></li>
-                  <li><a href="utilities-subscribe.html">Subscribe</a></li>
-                </ul>
-              </li>
-              <li><a class="nav-link" href="credits.html"><i class="fas fa-pencil-ruler"></i> <span>Credits</span></a></li>
-            </ul>
-
-            <div class="mt-4 mb-4 p-3 hide-sidebar-mini">
-              <a href="https://getstisla.com/docs" class="btn btn-primary btn-lg btn-block btn-icon-split">
-                <i class="fas fa-rocket"></i> Documentation
-              </a>
-            </div> --}}
         </aside>
       </div>
 
@@ -217,23 +207,29 @@
           Copyright &copy; 2021 <div class="bullet"></div>Build And Design By Nopi Arahman</a>
         </div>
         <div class="footer-right">
-          2.3.0
+          1.0.1
         </div>
       </footer>
     </div>
   </div>
-
+  
+  @yield('script')
   <!-- General JS Scripts -->
-  <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+  {{-- <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script> --}}
+  {{-- <script src="{{ mix("js/jquery.min.js") }}"></script> --}}
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>
+  <script src="{{ mix("js/popper.js") }}"></script>
+  <script src="{{ mix("js/bootstrap.js") }}"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@2/dist/Chart.min.js"></script>
+  {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script> --}}
+  {{-- <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script> --}}
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.nicescroll/3.7.6/jquery.nicescroll.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
   <script src="{{asset('assets/js/stisla.js')}}"></script>
 
   <!-- JS Libraies -->
   {{-- <script src="../node_modules/chart.js/dist/Chart.min.js"></script> --}}
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@2/dist/Chart.min.js"></script>
+  {{-- <script src="{{ mix("js/chart.js") }}"></script> --}}
   <script src="{{asset('assets/js/chocolat.js')}}"></script>
 
   <!-- Template JS File -->
@@ -241,7 +237,6 @@
   <script src="{{asset('assets/js/custom.js')}}"></script>
 
   <!-- Page Specific JS File -->
-  @yield('script')
 
 </body>
 </html>

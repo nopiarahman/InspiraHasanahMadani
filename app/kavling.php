@@ -19,4 +19,13 @@ class kavling extends Model
     {
         return $this->belongsTo(proyek::class);
     }
+    /**
+     * Get the pembelian associated with the kavling
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function pembelian()
+    {
+        return $this->hasOne(pembelian::class);
+    }
 }

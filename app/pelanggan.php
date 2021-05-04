@@ -5,19 +5,18 @@ namespace App;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class proyek extends Model
+class pelanggan extends Model
 {
-    protected $table = 'proyek';
+    protected $table = 'pelanggan';
     protected $guarded = ['id','created_at','updated_at']; /* melindungi field yang tidak boleh diisi manual, lihat mass assignment */
 
     /**
-     * Get all of the kavling for the proyek
+     * Get all of the pembelian for the pelanggan
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function kavling()
+    public function pembelian()
     {
-        return $this->hasMany(kavling::class);
+        return $this->hasMany(pembelian::class);
     }
-    
 }

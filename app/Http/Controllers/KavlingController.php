@@ -8,14 +8,15 @@ use Illuminate\Http\Request;
 class KavlingController extends Controller
 {
     public function index (){
-        $semuaKavling = kavling::where('proyek_id',proyekId())->paginate(2);
+        $semuaKavling = kavling::where('proyek_id',proyekId())->paginate(20);
+        // dd($semuaKavling);
         return view ('proyek/DataProyek/kavlingIndex',compact('semuaKavling'));
     }
 
     public function kavlingSimpan(Request $request){
 
         /* Pilih semua kavling */
-        $semuaKavling = kavling::where('proyek_id',proyekId())->paginate(1);
+        $semuaKavling = kavling::where('proyek_id',proyekId())->paginate(20);
         $rules=[
             'blok'=>'required',
             'luas'=>'numeric',
@@ -26,7 +27,7 @@ class KavlingController extends Controller
         ];
 
         $requestData = $request->all();
-        $requestData['proyek_id']=$cekProyekId;
+        $requestData['proyek_id']=proyekId();
         $this->validate($request,$rules,$costumMessages);
         // dd($requestData);
         kavling::create($requestData);

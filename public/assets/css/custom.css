@@ -1,8 +1,15 @@
-/**
- *
- * You can write your CSS code here, DO NOT touch the default JavaScript file
- * because it will make it harder for you to update.
- * 
- */
+.remove{
+  display:none;
+  transition: 0.5 ms
+  ;
+}
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
 
-/*# sourceMappingURL=custom.css.map */
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}

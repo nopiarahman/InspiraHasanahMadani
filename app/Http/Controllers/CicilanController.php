@@ -24,6 +24,7 @@ class CicilanController extends Controller
     
     public function cicilanKavling()
     {
+        
         return view ('cicilanUnit/kavling');
     }
     

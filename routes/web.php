@@ -32,10 +32,15 @@ Route::group(['middleware'=>['auth','role:admin']],function(){
     Route::get('/RAB', 'ProyekController@RAB')->name('RAB');
     Route::get('/pengeluaran', 'ProyekController@pengeluaran')->name('pengeluaran');
 
-    Route::get('/costumer', 'CostumerController@index')->name('costumerIndex');
+    Route::get('/pelanggan', 'PelangganController@index')->name('pelangganIndex');
+    Route::get('/pelangganTambah', 'PelangganController@create')->name('pelangganTambah');
+    Route::post('/pelangganSimpan', 'PelangganController@store')->name('pelangganSimpan');
+    Route::get('/cariKavling', 'PelangganController@cariKavling');
     
     Route::get('/DPRumah', 'DPController@DPRumah')->name('DPRumah');
     Route::get('/DPKavling', 'DPController@DPKavling')->name('DPKavling');
+    Route::get('/DPKavlingTambah/{id}', 'DPController@DPKavlingTambah')->name('DPKavlingTambah');
+    Route::post('/DPKavlingSimpan', 'DPController@DPKavlingSimpan')->name('DPKavlingSimpan');
     Route::get('/DPKios', 'DPController@DPKios')->name('DPKios');
 
     Route::get('/cicilanRumah', 'CicilanController@cicilanRumah')->name('cicilanRumah');

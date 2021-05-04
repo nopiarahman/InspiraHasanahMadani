@@ -75,7 +75,7 @@
       <h4>Daftar Kavling</h4>
     </div>
     <div class="card-body">
-      <table class="table table-hover">
+      <table class="table table-sm table-hover">
         <thead>
           <tr>
             <th scope="col">No</th>
@@ -91,7 +91,11 @@
             <th scope="row">{{$loop->iteration}}</th>
             <td>{{$kavling->blok}}</td>
             <td>{{$kavling->luas}}m</td>
-            <td></td>
+            @if($kavling->pembelian == !null)
+            <td>{{$kavling->pembelian->pelanggan->nama}}</td>
+            @else
+            <td>--</td>
+            @endif
             <td><a href="{{route('proyekEdit',['id'=>$kavling->id])}}" class="badge badge-info">Edit</a></td>
           </tr>
           @endforeach

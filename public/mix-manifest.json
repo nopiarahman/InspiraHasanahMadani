@@ -1,4 +1,12 @@
 {
     "/js/app.js": "/js/app.js",
-    "/css/app.css": "/css/app.css"
+    "/css/app.css": "/css/app.css",
+    "/js/cleave.min.js": "/js/cleave.min.js",
+    "/js/addons/cleave-phone.id.js": "/js/addons/cleave-phone.id.js",
+    "/js/jquery.min.js": "/js/jquery.min.js",
+    "/js/popper.js": "/js/popper.js",
+    "/js/popper.js.map": "/js/popper.js.map",
+    "/js/bootstrap.js": "/js/bootstrap.js",
+    "/js/bootstrap.js.map": "/js/bootstrap.js.map",
+    "/css/bootstrap.css": "/css/bootstrap.css"
 }
