@@ -19,3 +19,14 @@ function pembelianPelanggan($id){
     $pembelian = pembelian::where('pelanggan_id',$id)->first();
     return($pembelian);
 }
+
+function jenisKepemilikan($id){
+    $pembelian = pembelian::where('pelanggan_id',$id)->first();
+    if($pembelian->rumah_id !=null){
+        return 'Kavling dan Rumah';
+    }elseif($pembelian->kios_id !=null){
+        return 'Kavling dan Kios';
+    }elseif($pembelian->kavling_id !=null){
+        return 'Kavling';
+    }
+}

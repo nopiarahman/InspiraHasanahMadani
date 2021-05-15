@@ -130,4 +130,29 @@ class PelangganController extends Controller
     		return response()->json($data);
     	}
     }
+    public function detail(Pelanggan $id){
+        // dd($id);
+        $dataKavling=kavling::where('pelanggan_id',$id->id)->first();
+        $dataPembelian=pembelian::where('pelanggan_id',$id->id)->first();
+        // dd($dataPembelian->pelanggan->nama);
+        $persenDiskon = ($dataPembelian->diskon/$dataPembelian->harga)*100;
+        // dd($persenDiskon);
+        return view ('pelanggan/pelangganDetail',compact('id','dataKavling','dataPembelian','persenDiskon'));
+    }
+    public function simpanNomorAkad(Pembelian $id ,Request $request){
+        
+        $id->nomorAkad=$request->nomorAkad;
+        $id->save();
+        $pelangganId=$id->pelanggan_id;
+    
+        return redirect()->route('pelangganDetail',['id'=>$pelangganId])->with('status','Nomor Akad Tersimpan');
+    }
+    public function simpanTanggalAkad(Pembelian $id ,Request $request){
+        
+        $id->tanggalAkad=$request->tanggalAkad;
+        $id->save();
+        $pelangganId=$id->pelanggan_id;
+    
+        return redirect()->route('pelangganDetail',['id'=>$pelangganId])->with('status','Tanggal Akad Tersimpan');
+    }
 }

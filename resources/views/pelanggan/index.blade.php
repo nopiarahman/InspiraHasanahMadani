@@ -59,7 +59,7 @@
               <td>{{$pelanggan->nama}}</td>
               <td>{{unitPelanggan(pembelianPelanggan($pelanggan->id)->kavling_id)->blok}}</td>
               <td>{{$pelanggan->nomorTelepon}}</td>
-              {{-- <td><a href="{{route('proyekEdit',['id'=>$pelanggan->id])}}" class="badge badge-info">Edit</a></td> --}}
+              <td><a href="{{route('pelangganDetail',['id'=>$pelanggan->id])}}" class="badge badge-primary">Detail</a></td>
             </tr>
             @endforeach
           </tbody>
