@@ -55,7 +55,7 @@
               <td>{{$cicilanDp->pelanggan->nama}}</td>
               <td>{{unitPelanggan($cicilanDp->kavling_id)->blok}}</td>
               <td>Rp.{{number_format($cicilanDp->sisaDp)}}</td>
-              <td><a href="{{route('DPKavlingTambah',['id'=>$cicilanDp->id])}}" class="badge badge-primary">Detail</a>
+              <td><a href="{{route('DPKavlingTambah',['id'=>$cicilanDp->id])}}" class="badge badge-primary">Pembayaran</a>
                 @if($cicilanDp->sisaDp==0)
                 <span class="badge badge-info"><i class="fas fa-check"></i> Lunas</span>
                 @endif

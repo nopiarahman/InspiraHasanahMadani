@@ -37,6 +37,7 @@ class DPController extends Controller
     public function DPKavlingSimpan(Request $request){
         $rules=[
             'jumlah'=>'required',
+            'tanggal'=>'required',
         ];
         $costumMessages = [
             'required'=>':attribute tidak boleh kosong'

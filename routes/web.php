@@ -32,6 +32,9 @@ Route::group(['middleware'=>['auth','role:admin']],function(){
     Route::get('/RAB', 'ProyekController@RAB')->name('RAB');
     Route::get('/pengeluaran', 'ProyekController@pengeluaran')->name('pengeluaran');
 
+    Route::post('/cariPelangganHome', 'HomeController@cariPelangganHome')->name('cariPelangganHome');
+    Route::get('/cariPelangganDaftar', 'HomeController@cariPelangganDaftar');
+
     Route::get('/pelanggan', 'PelangganController@index')->name('pelangganIndex');
     Route::get('/pelangganTambah', 'PelangganController@create')->name('pelangganTambah');
     Route::get('/pelangganDetail/{id}', 'PelangganController@detail')->name('pelangganDetail');
@@ -45,9 +48,11 @@ Route::group(['middleware'=>['auth','role:admin']],function(){
     Route::get('/DPKavlingTambah/{id}', 'DPController@DPKavlingTambah')->name('DPKavlingTambah');
     Route::post('/DPKavlingSimpan', 'DPController@DPKavlingSimpan')->name('DPKavlingSimpan');
     Route::get('/DPKios', 'DPController@DPKios')->name('DPKios');
-
+    
     Route::get('/cicilanRumah', 'CicilanController@cicilanRumah')->name('cicilanRumah');
     Route::get('/cicilanKavling', 'CicilanController@cicilanKavling')->name('cicilanKavling');
+    Route::get('/unitKavlingDetail/{id}', 'CicilanController@unitKavlingDetail')->name('unitKavlingDetail');
+    Route::post('/cicilanKavlingSimpan', 'CicilanController@cicilanKavlingSimpan')->name('cicilanKavlingSimpan');
     Route::get('/cicilanKios', 'CicilanController@cicilanKios')->name('cicilanKios');
     
     Route::get('/akun', 'AkunController@index')->name('akun');

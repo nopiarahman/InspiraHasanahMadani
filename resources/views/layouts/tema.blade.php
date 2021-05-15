@@ -24,39 +24,50 @@
 <body>
   <div id="app">
     <div class="main-wrapper">
-      <div class="navbar-bg"></div>
-      <nav class="navbar navbar-expand-lg main-navbar">
-        <form class="form-inline mr-auto">
-          
-          <ul class="navbar-nav mr-3">
-            <li><a href="#" data-toggle="sidebar" class="nav-link nav-link-lg"><i class="fas fa-bars"></i></a></li>
-            <li><a href="#" data-toggle="search" class="nav-link nav-link-lg d-sm-none"><i class="fas fa-search"></i></a></li>
-          </ul>
-
-          <div class="form-group">
-            <div class="input-group">
-              <select class="custom-select" id="inputGroupSelect04">
-                <option selected="">Choose...</option>
-                <option value="1">One</option>
-                <option value="2">Two</option>
-                <option value="3">Three</option>
-              </select>
-              <div class="input-group-append">
-                <button class="btn btn-primary" type="button">Button</button>
-              </div>
+      <div class="navbar-bg sticky-top"></div>
+      <nav class="navbar navbar-expand-lg main-navbar sticky-top" >
+        <ul class="navbar-nav mr-3">
+          <li><a href="#" data-toggle="sidebar" class="nav-link nav-link-lg"><i class="fas fa-bars"></i></a></li>
+          {{-- <li><a href="#" data-toggle="search" class="nav-link nav-link-lg d-sm-none"><i class="fas fa-search"></i></a></li> --}}
+        </ul>
+        <form action="{{route('cariPelangganHome')}}" method="post" enctype="multipart/form-data" class="form-inline mr-auto">
+        @csrf
+          <div class="row ">
+          <div class="input-group col-9">
+            <select class="cariPelanggan js-example-responsive" name="id"></select>
+              <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>
+              <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
+              <script type="text/javascript">
+                $('.cariPelanggan').select2({
+                                    placeholder: 'Cari Pelanggan...',
+                                    ajax: {
+                                    url: '/cariPelangganDaftar',
+                                    dataType: 'json',
+                                    delay: 250,
+                                    processResults: function (data) {
+                                        return {
+                                        results:  $.map(data, function (item) {
+                                            return {
+                                            text: item.nama, /* memasukkan text di option => <option>namaSurah</option> */
+                                            id: item.id /* memasukkan value di option => <option value=id> */
+                                            }
+                                        })
+                                        };
+                                    },
+                                    cache: true
+                                    }
+                                });
+                </script>
+          </div>
+          <div class="input-group-prepend col-2">
+            <div class="input-group-text">
+              <i class="fas fa-search"></i><input type="submit" class="submitCari" value="Cari">
             </div>
           </div>
-
-          {{-- <div class="search-element ">
-
-            <select class="cariPelanggan form-control fullSize" name="id" style=""></select>
-            <div class="search-backdrop"></div>
-            <div class="search-result">
-            </div>
-          </div> --}}
+        </div>
         </form>
         <ul class="navbar-nav navbar-right">
-          
+
           <li class="dropdown"><a href="#" data-toggle="dropdown" class="nav-link dropdown-toggle nav-link-lg nav-link-user">
             <img alt="image" src="{{asset('assets/img/avatar/avatar-1.png')}}" class="rounded-circle mr-1">
             <div class="d-sm-none d-lg-inline-block">Hi, {{cekNamaUser()}}</div></a>

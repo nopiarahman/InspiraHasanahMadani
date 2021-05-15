@@ -139,14 +139,14 @@
                 <td></td>
               </tr>
               <tr>
-                <th>Sisa Kewajiban</th>
-                <td>Rp {{number_format($dataPembelian->sisaKewajiban)}}
-                  @if($dataPembelian->sisaKewajiban==0)
+                <th>Sisa Hutang</th>
+                <td>Rp {{number_format($dataPembelian->sisaCicilan)}}
+                  @if($dataPembelian->sisaCicilan==0)
                   /
                   <span class="badge badge-info"><i class="fas fa-check"></i> Lunas</span>
                   @endif </td>
                 <td>
-                  <a href="#" class="badge badge-primary">Lihat Pembayaran</a>
+                  <a href="{{route('unitKavlingDetail',['id'=>$dataPembelian->id])}}" class="badge badge-primary">Lihat Pembayaran</a>
                 </td>
               </tr>
             </tbody>

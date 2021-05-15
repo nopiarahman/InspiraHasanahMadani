@@ -6,7 +6,7 @@
 @endsection
 
 @section('content')
-<div class="section-header">
+<div class="section-header sticky-top">
   <div class="container">
     <div class="row">
       <div class="col">

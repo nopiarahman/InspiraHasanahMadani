@@ -17,3 +17,10 @@ input[type=number] {
 .fullSize{
   width: 100%;
 }
+.submitCari{
+  border: none;
+  background: none;
+}
+.section .section-header{
+  position: sticky;
+}
