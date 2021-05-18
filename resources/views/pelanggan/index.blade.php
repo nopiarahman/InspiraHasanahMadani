@@ -47,7 +47,8 @@
             <tr>
               <th scope="col">No</th>
               <th scope="col">Nama</th>
-              <th scope="col">Unit</th>
+              <th scope="col">Blok</th>
+              <th scope="col">Jenis</th>
               <th scope="col">No Telp</th>
               <th scope="col">Aksi</th>
             </tr>
@@ -58,6 +59,7 @@
               <th scope="row">{{$loop->iteration}}</th>
               <td>{{$pelanggan->nama}}</td>
               <td>{{unitPelanggan(pembelianPelanggan($pelanggan->id)->kavling_id)->blok}}</td>
+              <td>{{jenisKepemilikan($pelanggan->id)}}</td>
               <td>{{$pelanggan->nomorTelepon}}</td>
               <td><a href="{{route('pelangganDetail',['id'=>$pelanggan->id])}}" class="badge badge-primary">Detail</a></td>
             </tr>

@@ -1,18 +1,17 @@
 @extends('layouts.tema')
-@section ('menuCicilanUnitKavling','active')
 @section ('menuCicilanUnit','active')
 @section('content')
 <div class="section-header">
   <div class="container">
     <div class="row">
       <div class="col">
-        <h1>Cicilan Unit Kavling</h1>
+        <h1>Cicilan Unit </h1>
       </div>
     </div>
     <div class="row">
       <nav aria-label="breadcrumb">
         <ol class="breadcrumb  bg-white mb-n2">
-          <li class="breadcrumb-item" aria-current="page"> Cicilan Unit Kavling </li>
+          <li class="breadcrumb-item" aria-current="page"> Cicilan Unit  </li>
         </ol>
       </nav>
     </div>
@@ -35,7 +34,7 @@
 
   <div class="card">
     <div class="card-header">
-      <h4>Daftar Cicilan Unit Kavling</h4>
+      <h4>Daftar Cicilan Unit</h4>
     </div>
     <div class="card-body">
       <table class="table table-hover">
@@ -43,7 +42,8 @@
           <tr>
             <th scope="col">No</th>
             <th scope="col">Nama</th>
-            <th scope="col">Unit</th>
+            <th scope="col">Blok</th>
+            <th scope="col">Jenis</th>
             <th scope="col">Sisa Kewajiban</th>
             <th scope="col">Aksi</th>
           </tr>
@@ -54,6 +54,7 @@
             <th scope="row">{{$loop->iteration}}</th>
             <td>{{$cicilanUnit->pelanggan->nama}}</td>
             <td>{{unitPelanggan($cicilanUnit->kavling_id)->blok}}</td>
+            <td>{{jenisKepemilikan($cicilanUnit->pelanggan_id)}}</td>
             <td>
               @if($cicilanUnit->sisaCicilan != null)
               Rp.{{number_format($cicilanUnit->sisaCicilan)}}

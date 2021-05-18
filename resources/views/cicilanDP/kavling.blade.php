@@ -1,18 +1,17 @@
 @extends('layouts.tema')
-@section ('menuCicilanDPKavling','active')
 @section ('menuCicilanDP','active')
 @section('content')
 <div class="section-header">
     <div class="container">
       <div class="row">
         <div class="col">
-          <h1>Cicilan Dp Kavling</h1>
+          <h1>Cicilan Dp</h1>
         </div>
       </div>
       <div class="row">
         <nav aria-label="breadcrumb">
           <ol class="breadcrumb  bg-white mb-n2">
-            <li class="breadcrumb-item" aria-current="page"> Cicilan Dp Kavling </li>
+            <li class="breadcrumb-item" aria-current="page"> Cicilan Dp </li>
           </ol>
         </nav>
       </div>
@@ -43,7 +42,8 @@
             <tr>
               <th scope="col">No</th>
               <th scope="col">Nama</th>
-              <th scope="col">Unit</th>
+              <th scope="col">Blok</th>
+              <th scope="col">Jenis</th>
               <th scope="col">Sisa DP</th>
               <th scope="col">Aksi</th>
             </tr>
@@ -54,6 +54,7 @@
               <th scope="row">{{$loop->iteration}}</th>
               <td>{{$cicilanDp->pelanggan->nama}}</td>
               <td>{{unitPelanggan($cicilanDp->kavling_id)->blok}}</td>
+              <td>{{jenisKepemilikan($cicilanDp->pelanggan_id)}}</td>
               <td>Rp.{{number_format($cicilanDp->sisaDp)}}</td>
               <td><a href="{{route('DPKavlingTambah',['id'=>$cicilanDp->id])}}" class="badge badge-primary">Pembayaran</a>
                 @if($cicilanDp->sisaDp==0)

@@ -62,7 +62,7 @@
             <tbody>
               <tr>
                 <th>Objek</th>
-                <td>{{jenisKepemilikan($id->id)}} {{ $dataKavling->blok}}</td>
+                <td>{{jenisKepemilikan($id->id)}} ( {{ $dataKavling->blok}} )</td>
                 <td></td>
               </tr>
               <tr>

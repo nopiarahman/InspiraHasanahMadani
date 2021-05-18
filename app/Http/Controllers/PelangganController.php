@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\pelanggan;
 use App\kavling;
+use App\rumah;
+use App\kios;
 use App\pembelian;
 use Illuminate\Http\Request;
 
@@ -38,11 +40,22 @@ class PelangganController extends Controller
      */
     public function store(Request $request)
     {
+
         // dd($request);
         // if(preg_match("/^[0-9,]+$/", $a)) 
         // $a = str_replace(',', '', $request->harga);
         // $co=parseInt($request->harga);
         // dd($a);
+        if($request->statusDp=='Credit'){
+            $sisaDp=str_replace(',', '', $request->dp);
+        }else{
+            $sisaDp=0;
+        }
+        if($request->statusCicilan=='Credit'){
+            $sisaCicilan=str_replace(',', '', $request->sisaKewajiban);
+        }else{
+            $sisaCicilan=0;
+        }
         $requestpelanggan = pelanggan::create([
             'nama'=>$request->nama,
             'email'=>$request->email,
@@ -55,7 +68,7 @@ class PelangganController extends Controller
             'nomorTelepon'=>$request->nomorTelepon,
             'proyek_id'=>proyekId(),
         ]);$requestpelanggan->save();
-        $cariPelanggan=pelanggan::where('email',$request->email)->first();
+        $cariPelanggan=pelanggan::where('email',$request->email)->first(); 
         $requestPembelian = pembelian::create([
             'kavling_id'=>$request->kavling_id,
             'nomorAkad'=>$request->nomorAkad,
@@ -64,14 +77,34 @@ class PelangganController extends Controller
             'diskon'=>str_replace(',', '', $request->totalDiskon),
             'dp'=>str_replace(',', '', $request->dp),
             'sisaKewajiban'=>str_replace(',', '', $request->sisaKewajiban),
+            'sisaDp'=>$sisaDp,
+            'sisaCicilan'=>$sisaCicilan,
             'tenor'=>$request->tenor,
             'statusDp'=>$request->statusDp,
             'statusCicilan'=>$request->statusCicilan,
             'proyek_id'=>proyekId(),
             'pelanggan_id'=>$cariPelanggan->id,
+            'luasBangunan'=>$request->luasBangunan,
         ]);$requestPembelian->save();
-        $updateKavling=kavling::find($request->kavling_id)->update(['pelanggan_id',$cariPelanggan->id]);
-
+        /* simpan data Rumah dan Kios*/
+        if($request->includePembelian =='Rumah'){
+            $data ['kavling_id']=$request->kavling_id;
+            $data ['pelanggan_id']=$cariPelanggan->id;
+            $data ['luasBangunan']=$request->luasBangunan;
+            rumah::create($data);
+            $cariRumah=rumah::where('kavling_id',$request->kavling_id)->first();
+            $updatePembelian=pembelian::where('kavling_id',$request->kavling_id)->update(['rumah_id'=>$cariRumah->id]);
+        }elseif($request->includePembelian =='Kios'){
+            $data ['kavling_id']=$request->kavling_id;
+            $data ['pelanggan_id']=$cariPelanggan->id;
+            $data ['luasBangunan']=$request->luasBangunan;
+            kios::create($data);
+            $cariKios=kios::where('kavling_id',$request->kavling_id)->first();
+            $updatePembelian=pembelian::where('kavling_id',$request->kavling_id)->update(['kios_id'=>$cariKios->id]);
+        }
+        
+        /* update data kavling*/
+        $updateKavling=kavling::find($request->kavling_id)->update(['pelanggan_id'=>$cariPelanggan->id]);
         return redirect()->route('pelangganIndex')->with('status','Data Pelanggan Berhasil ditambahkan');
     }
 
@@ -125,7 +158,8 @@ class PelangganController extends Controller
         if ($request->has('q')) {
     	    $cari = $request->q;
     		$data = kavling::select('id', 'blok')->where('blok', 'LIKE', '%'.$cari.'%')
-                                                ->where('pelanggan_id',0)->get();
+                                                ->where('pelanggan_id',0)
+                                                ->where('proyek_id',proyekId())->get();
 
     		return response()->json($data);
     	}

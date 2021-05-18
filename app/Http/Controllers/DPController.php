@@ -23,9 +23,9 @@ class DPController extends Controller
         return view ('cicilanDP/rumah');
     }
     public function DPKavling(){
-        $semuaCicilanDp = pembelian::where('statusDp','Credit')->paginate(20);
+        $semuaCicilanDp = pembelian::where('statusDp','Credit')->orderBy('kavling_id')->paginate(20);
         
-        // dd(unitPelanggan($semuaCicilanDp->id));
+
         return view ('cicilanDP/kavling',compact('semuaCicilanDp'));
     }
     public function DPKavlingTambah(Pembelian $id){
@@ -54,17 +54,21 @@ class DPController extends Controller
         foreach($terbayar as $tb){
             $totalTerbayar = $totalTerbayar+$tb->jumlah;
         }
-        // dd($totalTerbayar);
+        // dd($cekDp->kavling->blok);
         $requestDp=[
             'pembelian_id'=>$request->pembelian_id,
             'tanggal'=>$request->tanggal,
             'jumlah'=>str_replace(',', '', $request->jumlah),
             'sisaDp'=>$akadDp-$totalTerbayar-$terbayarSekarang,
+            'sumber'=>'Cash',
+            'uraian'=>'Penerimaan Cicilan DP '.jenisKepemilikan($cekDp->pelanggan_id).' '.$cekDp->kavling->blok.' a/n '.$cekDp->pelanggan->nama,
         ];
         $this->validate($request,$rules,$costumMessages);
+
+        /* parameter kasBesarMasuk ['tanggal','jumlah','sumber','uraian',]*/
+        kasBesarMasuk($requestDp);
         dp::create($requestDp);
         $update=pembelian::find($id)->update(['sisaDp'=>$akadDp-$totalTerbayar-$terbayarSekarang]);
-        // dd($id);
 
         return redirect()->route('DPKavlingTambah',['id'=>$id])->with('status','Cicilan DP Berhasil ditambahkan');
 

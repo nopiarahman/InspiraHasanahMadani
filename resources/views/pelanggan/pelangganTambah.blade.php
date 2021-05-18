@@ -174,6 +174,37 @@
                 </div>
               </div>
               <div class="form-group row mb-4">
+                <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Termasuk Pembelian</label>
+                <div class="col-sm-12 col-md-7">
+                  <label class="selectgroup-item">
+                    <input type="radio" name="includePembelian" value="" class="selectgroup-input" checked id="notInclude">
+                    <span class="selectgroup-button">Tidak Ada</span>
+                  </label>
+                  <label class="selectgroup-item">
+                    <input type="radio" name="includePembelian" value="Rumah" class="selectgroup-input" id="rumah">
+                    <span class="selectgroup-button">Rumah</span>
+                  </label>
+                  <label class="selectgroup-item">
+                    <input type="radio" name="includePembelian" value="Kios" class="selectgroup-input" id="kios">
+                    <span class="selectgroup-button">Kios</span>
+                  </label>
+                  @error('includePembelian')
+                  <div class="invalid-feedback">{{$message}}</div>
+                  @enderror
+                </div>
+              </div>
+              <div id="luasBangunan" style="display: none">
+                <div class="form-group row mb-4" >
+                  <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Luas Bangunan</label>
+                  <div class="col-sm-12 col-md-7">
+                    <input type="text" class="form-control @error('luasBangunan') is-invalid @enderror" name="luasBangunan" value="{{old('luasBangunan')}}" placeholder="kosongkan jika data belum ada">
+                    @error('luasBangunan')
+                    <div class="invalid-feedback">{{$message}}</div>
+                    @enderror
+                  </div>
+                </div>
+              </div>
+              <div class="form-group row mb-4">
                 <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Nomor Akad</label>
                 <div class="col-sm-12 col-md-7">
                   <input type="text" class="form-control @error('nomorAkad') is-invalid @enderror" name="nomorAkad" value="{{old('nomorAkad')}}" placeholder="kosongkan jika data belum ada">
@@ -363,6 +394,12 @@
       document.getElementById('tenor').style.display = 'block';
     }else{
       document.getElementById('tenor').style.display = 'none';
+    }
+    
+    if(document.getElementById('rumah').checked || document.getElementById('kios').checked){
+      document.getElementById('luasBangunan').style.display = 'block';
+    }else{
+      document.getElementById('luasBangunan').style.display = 'none';
     }
 
     

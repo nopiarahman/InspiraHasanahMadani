@@ -14,7 +14,11 @@ class AkunController extends Controller
      */
     public function index()
     {
-        return view ('akun/index');
+        $semuaAkun=akun::where('proyek_id',proyekId())->get();
+        $kategoriAkun=akun::all()->groupBy('kategori');
+        $perKategori = $kategoriAkun;
+        /* menampilkan hasil groupBy ke view cek https://stackoverflow.com/questions/38029591/laravel-how-can-i-use-group-by-within-my-view */
+        return view ('akun/index',compact('semuaAkun','perKategori','kategoriAkun'));
     }
 
     /**
@@ -35,7 +39,36 @@ class AkunController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        if($request->kategoriLama != null){
+            $kategori = $request->kategoriLama;
+        }else{
+            $kategori = $request->kategori;
+        }
+        // dd($request);
+        $rules=[
+            'kodeAkun'=>'required',
+            'namaAkun'=>'required',
+        ];
+        $costumMessages = [
+            'required'=>':attribute tidak boleh kosong'
+        ];
+        $requestData = $request->all();
+        $requestData['proyek_id']= proyekId();
+        $requestData['kategori']= $kategori;
+        // dd($requestData);
+        $this->validate($request,$rules,$costumMessages);
+        akun::create($requestData);
+        $semuaAkun=akun::where('proyek_id',proyekId())->get();
+        return redirect()->route('akun',['semuaAkun'=>$semuaAkun])->with('status','Akun berhasil ditambahkan');
+    }
+    public function cariAkun(Request $request){
+        if($request->has('q')){
+            $cari = $request->q;
+            $data = akun::select('kategori')->where('kategori','LIKE','%'.$cari.'%')
+                                            ->where('proyek_id',proyekId())->distinct()->get();
+
+            return response()->json($data);
+        }
     }
 
     /**

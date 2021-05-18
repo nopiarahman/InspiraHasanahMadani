@@ -56,9 +56,12 @@ Route::group(['middleware'=>['auth','role:admin']],function(){
     Route::get('/cicilanKios', 'CicilanController@cicilanKios')->name('cicilanKios');
     
     Route::get('/akun', 'AkunController@index')->name('akun');
+    Route::post('/akunSimpan', 'AkunController@store')->name('akunSimpan');
+    Route::get('/cariAkun', 'AkunController@cariAkun')->name('cariAKun');
     
     Route::get('/transaksiMasuk', 'TransaksiController@masuk')->name('transaksiMasuk');
     Route::get('/transaksiKeluar', 'TransaksiController@keluar')->name('transaksiKeluar');
+    Route::get('/cashFlow', 'TransaksiController@cashFlow')->name('cashFlow');
     
     Route::get('/kasBesar', 'KasController@kasBesar')->name('kasBesar');
     Route::get('/kasKecil', 'KasController@kasKecil')->name('kasKecil');

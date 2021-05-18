@@ -28,4 +28,22 @@ class kavling extends Model
     {
         return $this->hasOne(pembelian::class);
     }
+    /**
+     * Get the rumah associated with the kavling
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function rumah()
+    {
+        return $this->hasOne(rumah::class);
+    }
+    /**
+     * Get the kios associated with the kavling
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function kios()
+    {
+        return $this->hasOne(kios::class);
+    }
 }

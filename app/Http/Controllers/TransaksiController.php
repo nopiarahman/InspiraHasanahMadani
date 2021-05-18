@@ -18,11 +18,16 @@ class TransaksiController extends Controller
     }
 
     public function masuk(){
-        return view ('transaksi/masukIndex');
+        $transaksiMasuk=transaksi::whereNotNull('kredit')->paginate(20);
+        return view ('transaksi/masukIndex',compact('transaksiMasuk'));
     }
 
     public function keluar(){
         return view ('transaksi/keluarIndex');
+    }
+    public function cashFlow(){
+        $cashFlow=transaksi::orderBy('created_at','asc')->paginate(20);
+        return view ('transaksi/cashFlowIndex',compact('cashFlow'));
     }
 
     /**

@@ -113,31 +113,31 @@
               <li class="nav-item dropdown @yield('menuDataProyek')">
                 <a href="" class="nav-link has-dropdown" data-toggle="dropdown"><i class="fas fa-home"></i> <span>Data Proyek</span></a>
                 <ul class="dropdown-menu">
-                  <li class="@yield('menuKavling')"><a class="nav-link" href="{{route('kavling')}}">Kavling</a></li>
+                  <li class="@yield('menuKavling')"><a class="nav-link" href="{{route('kavling')}}">Unit</a></li>
                   <li class="@yield('menuRAB')"><a class="nav-link" href="{{route('RAB')}}">RAB</a></li>
                   <li class="@yield('menuPengeluaran')"><a class="nav-link" href="{{route('pengeluaran')}}">Pengeluaran</a></li>
                 </ul>
               </li>
               <li class="menu-header">Menu Pelanggan</li>
               <li class="@yield('menuPelanggan')"><a class="nav-link" href="{{route('pelangganIndex')}}"><i class="fas fa-user-friends"></i> <span>Pelanggan</span></a></li>
-              <li class="nav-item dropdown @yield('menuCicilanDP')">
+              <li class=" @yield('menuCicilanDP')"><a class="nav-link" href="{{route('DPKavling')}}"><i class="fas fa-coins"></i> <span> Cicilan DP</span></a></li>
+              {{-- <li class="nav-item dropdown @yield('menuCicilanDP')">
                 <a href="" class="nav-link has-dropdown"><i class="fas fa-coins"></i> <span>Cicilan DP</span></a>
                 <ul class="dropdown-menu">
-                  <li class=" @yield('menuCicilanDPKavling')"><a class="nav-link" href="{{route('DPKavling')}}">Kavling</a></li>
                   <li class=" @yield('menuCicilanDPRumah')"><a class="nav-link " href="{{route('DPRumah')}}">Rumah</a></li>
                   <li class=" @yield('menuCicilanDPKios')"><a class="nav-link " href="{{route('DPKios')}}">Kios</a></li>
                   
-                </ul>
+                </ul> --}}
               </li>
-              <li class="nav-item dropdown @yield('menuCicilanUnit')">
+              <li class=" @yield('menuCicilanUnit')"><a class="nav-link" href="{{route('cicilanKavling')}}"><i class="fas fa-money-bill-wave"></i> <span> Cicilan Unit</span></a></li>
+              {{-- <li class="nav-item dropdown @yield('menuCicilanUnit')">
                 <a href="" class="nav-link has-dropdown"><i class="fas fa-money-bill-wave"></i> <span>Cicilan Unit</span></a>
                 <ul class="dropdown-menu">
-                  <li class=" @yield('menuCicilanUnitKavling')"><a class="nav-link" href="{{route('cicilanKavling')}}">Kavling</a></li>
                   <li class=" @yield('menuCicilanUnitRumah')"><a class="nav-link" href="{{route('cicilanRumah')}}">Rumah</a></li>
                   <li class=" @yield('menuCicilanUnitKios')"><a class="nav-link" href="{{route('cicilanKios')}}">Kios</a></li>
                   
                 </ul>
-              </li>
+              </li> --}}
               
             </li>
             <li class="menu-header">Menu Keuangan</li>
@@ -147,6 +147,7 @@
                   <li class=" @yield('menuAkun')"><a href="{{route('akun')}}">Akun</a></li>
                   <li class=" @yield('menuTransaksiMasuk')"><a href="{{route('transaksiMasuk')}}">Masuk</a></li>
                   <li class=" @yield('menuTransaksiKeluar')"><a href="{{route('transaksiKeluar')}}">Keluar</a></li>
+                  <li class=" @yield('cashFlow')"><a href="{{route('cashFlow')}}">Cash Flow</a></li>
                 </ul>
               </li>
               <li class="nav-item dropdown @yield('menuKas')">

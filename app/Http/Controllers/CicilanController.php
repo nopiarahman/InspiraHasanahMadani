@@ -65,9 +65,15 @@ class CicilanController extends Controller
             'tanggal'=>$request->tanggal,
             'jumlah'=>str_replace(',', '', $request->jumlah),
             'sisaKewajiban'=>$cicilan-$totalTerbayar-$terbayarSekarang,
+            'sumber'=>'Cash',
+            'uraian'=>'Penerimaan Cicilan Unit '.jenisKepemilikan($cekCicilan->pelanggan_id).' '.$cekCicilan->kavling->blok.' a/n '.$cekCicilan->pelanggan->nama,
         ];
-        // dd($id);
+        // dd($id); 
         $this->validate($request,$rules,$costumMessages);
+
+        /* parameter kasBesarMasuk ['tanggal','jumlah','sumber','uraian',]*/
+        kasBesarMasuk($requestCicilan);
+
         cicilan::create($requestCicilan);
         $update=pembelian::find($id)->update(['sisaCicilan'=>$cicilan-$totalTerbayar-$terbayarSekarang]);
 

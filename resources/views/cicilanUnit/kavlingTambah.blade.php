@@ -1,18 +1,17 @@
 @extends('layouts.tema')
-@section ('menuCicilanUnitKavling','active')
 @section ('menuCicilanUnit','active')
 @section('content')
 <div class="section-header sticky-top">
     <div class="container">
       <div class="row">
         <div class="col">
-          <h1>Cicilan Unit Kavling</h1>
+          <h1>Cicilan Unit</h1>
         </div>
       </div>
       <div class="row">
         <nav aria-label="breadcrumb">
           <ol class="breadcrumb  bg-white mb-n2">
-            <li class="breadcrumb-item"> <a href="{{route('cicilanKavling')}}"> Cicilan Unit Kavling </a></li>
+            <li class="breadcrumb-item"> <a href="{{route('cicilanKavling')}}"> Cicilan Unit </a></li>
             <li class="breadcrumb-item" aria-current="page"> Tambah </li>
           </ol>
         </nav>
@@ -37,7 +36,7 @@
   <div class="col-12">
     <div class="card">
       <div class="card-header">
-        <h4>Pembayaran Unit Kavling</h4>
+        <h4>Pembayaran Unit</h4>
       </div>
       <div class="card-body">
       <form action="{{route('cicilanKavlingSimpan')}}" method="POST" enctype="multipart/form-data">
@@ -59,9 +58,15 @@
           </div>
         </div>
         <div class="form-group row mb-4">
-          <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Kavling</label>
+          <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Blok</label>
           <div class="col-sm-12 col-md-7">
             <input type="text" readonly class="form-control " value="{{$id->kavling->blok}}">
+          </div>
+        </div>
+        <div class="form-group row mb-4">
+          <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Jenis</label>
+          <div class="col-sm-12 col-md-7">
+            <input type="text" readonly class="form-control " value="{{jenisKepemilikan($id->pelanggan_id)}}">
           </div>
         </div>
         <div class="form-group row mb-4">
@@ -113,7 +118,7 @@
           </div>
         </div>
         <div class="form-group row mb-4">
-          <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Pembayaran Unit Kavling</label>
+          <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Pembayaran Unit</label>
           <div class="input-group col-sm-12 col-md-7">
             <div class="input-group-prepend">
               <div class="input-group-text">
@@ -157,7 +162,7 @@
         @foreach($daftarCicilanUnit as $cicilanUnit)
         <tr>
           <th scope="row">{{$loop->iteration}}</th>
-          <td>{{$cicilanUnit->tanggal}}</td>
+          <td>{{formatTanggal($cicilanUnit->tanggal)}}</td>
           <td>Rp.{{number_format($cicilanUnit->jumlah)}}</td>
           <td>Rp.{{number_format($cicilanUnit->sisaKewajiban)}}</td>
           <td><a href="{{route('DPKavlingTambah',['id'=>$cicilanUnit->id])}}" class="badge badge-primary">Pembayaran</a></td>
