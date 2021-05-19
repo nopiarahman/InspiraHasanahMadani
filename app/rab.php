@@ -1,0 +1,12 @@
+<?php
+
+namespace App;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class rab extends Model
+{
+    protected $table = 'rab';
+    protected $guarded = ['id','created_at','updated_at'];
+}
