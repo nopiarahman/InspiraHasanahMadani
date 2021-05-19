@@ -4,8 +4,9 @@ namespace App\Http\Controllers;
 
 use App\proyek;
 use App\kavling;
+use App\rab;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Arr;
 class ProyekController extends Controller
 {
     /**
@@ -109,13 +110,64 @@ class ProyekController extends Controller
     {
         //
     }
-
-    
-
     public function RAB (){
-        return view ('proyek/DataProyek/RAB');
+        $semuaRAB = rab::all()->groupBy(['header',function($item){
+            return $item['judul'];
+        }],$preserveKeys=true);
+        $perHeader=$semuaRAB;
+        $perJudul=$semuaRAB;
+        return view ('proyek/DataProyek/RAB',compact('perHeader','semuaRAB','perJudul'));
     }
+    public function cariHeader(Request $request){
+        if($request->has('q')){
+            $cari = $request->q;
+            $data = rab::select('header')->where('header','LIKE','%'.$cari.'%')
+                                            ->where('proyek_id',proyekId())->distinct()->get();
+            return response()->json($data);
+        }
+    }
+    public function cariJudul(Request $request){
+        if($request->has('q')){
+            $cari = $request->q;
+            $data = rab::select('judul')->where('judul','LIKE','%'.$cari.'%')
+                                            ->where('proyek_id',proyekId())->distinct()->get();
+            return response()->json($data);
+        }
+    }
+    public function biayaRABSimpan(Request $request){
+        // dd($request);
+        if($request->headerLama != null){
+            $header = $request->headerLama;
+        }else{
+            $header = $request->header;
+        }
+        if($request->judulLama != null){
+            $judul = $request->judulLama;
+        }else{
+            $judul = $request->judul;
+        }
+        $total=str_replace(',',' ',$request->total);
+        $rules=[
+            'header'=>'required',
+            'judul'=>'required',
+            'isi'=>'required'
+        ];
+        $costumMessages = [
+            'required'=>':attribute tidak boleh kosong'
+        ];
+        $rab = rab::create([
+            'proyek_id'=>proyekId(),
+            'header'=>$header,
+            'judul'=>$judul,
+            'isi'=>$request->isi,
+            'volume'=>$request->volume,
+            'satuan'=>$request->satuan,
+            'hargaSatuan'=>$request->hargaSatuan,
+            'total'=>str_replace(',', '', $request->total)
+        ]);$rab->save();
 
+        return redirect()->route('RAB')->with('status','Jenis Biaya Berhasil Disimpan');
+    }
     public function pengeluaran (){
         return view ('proyek/DataProyek/pengeluaran');
     }

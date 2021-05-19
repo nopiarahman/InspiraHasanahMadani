@@ -30,6 +30,9 @@ Route::group(['middleware'=>['auth','role:admin']],function(){
     Route::get('/kavling', 'KavlingController@index')->name('kavling');
     Route::post('/kavlingSimpan', 'KavlingController@kavlingSimpan')->name('kavlingSimpan');
     Route::get('/RAB', 'ProyekController@RAB')->name('RAB');
+    Route::get('/cariHeader', 'ProyekController@cariHeader')->name('cariHeader');
+    Route::get('/cariJudul', 'ProyekController@cariJudul')->name('cariJudul');
+    Route::post('/biayaRABSimpan', 'ProyekController@biayaRABSimpan')->name('biayaRABSimpan');
     Route::get('/pengeluaran', 'ProyekController@pengeluaran')->name('pengeluaran');
 
     Route::post('/cariPelangganHome', 'HomeController@cariPelangganHome')->name('cariPelangganHome');
