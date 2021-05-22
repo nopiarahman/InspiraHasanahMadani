@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\proyek;
 use App\kavling;
 use App\rab;
+use App\rumah;
+use App\rabUnit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 class ProyekController extends Controller
@@ -168,7 +170,48 @@ class ProyekController extends Controller
 
         return redirect()->route('RAB')->with('status','Jenis Biaya Berhasil Disimpan');
     }
+    public function biayaUnit(Request $request){
+        $semuaRAB = rabUnit::all()->groupBy(['header',function($item){
+            return $item['judul'];
+        }],$preserveKeys=true);
+        // dd($semuaRAB);
+        $perHeader=$semuaRAB;
+        $perJudul=$semuaRAB;
+        $semuaRumah=rumah::where('proyek_id',proyekId())->get();
+        return view ('proyek/DataProyek/rabUnit',compact('perHeader','semuaRAB','perJudul','semuaRumah'));
+    }
+    public function rabUnitSimpan(Request $request){
+        if($request->headerLama != null){
+            $header = $request->headerLama;
+        }else{
+            $header = $request->header;
+        }
+        if($request->judulLama != null){
+            $judul = $request->judulLama;
+        }else{
+            $judul = $request->judul;
+        }
+        $total=str_replace(',',' ',$request->hargaSatuan);
+        $rules=[
+            'header'=>'required',
+            'judul'=>'required',
+            'isi'=>'required'
+        ];
+        $costumMessages = [
+            'required'=>':attribute tidak boleh kosong'
+        ];
+        $rabUnit = rabUnit::create([
+            'proyek_id'=>proyekId(),
+            'header'=>$header,
+            'judul'=>$judul,
+            'isi'=>$request->isi,
+            'jenisUnit'=>$request->jenisUnit,
+            'hargaSatuan'=>str_replace(',', '', $request->hargaSatuan)
+        ]);$rabUnit->save();
+        return redirect()->route('biayaUnit')->with('status','Biaya Unit Berhasil Disimpan');
+    }
     public function pengeluaran (){
         return view ('proyek/DataProyek/pengeluaran');
     }
+
 }

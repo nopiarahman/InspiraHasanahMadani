@@ -26,8 +26,8 @@
     <div class="main-wrapper">
       <div class="navbar-bg sticky-top"></div>
       <nav class="navbar navbar-expand-lg main-navbar sticky-top" >
-        <ul class="navbar-nav mr-3">
-          <li><a href="#" data-toggle="sidebar" class="nav-link nav-link-lg"><i class="fas fa-bars"></i></a></li>
+        <ul class=" mr-3 navbarMarker">
+          <li><a href="#" data-toggle="sidebar" class="nav-link nav-link-lg navbarMarker"><i class="fas fa-bars mt-3"></i></a></li>
           {{-- <li><a href="#" data-toggle="search" class="nav-link nav-link-lg d-sm-none"><i class="fas fa-search"></i></a></li> --}}
         </ul>
         <form action="{{route('cariPelangganHome')}}" method="post" enctype="multipart/form-data" class="form-inline mr-auto">

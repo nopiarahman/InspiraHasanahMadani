@@ -54,10 +54,58 @@ function kasBesarMasuk($dataArray){
     transaksi::create($requestData);
     // return $this; 
 }
+function kasBesarKeluar($dataArray)
+{
+    $data = collect($dataArray);
+    $jumlah= str_replace(',', '', $data->get('jumlah'));
+    $dataTransaksi['tanggal'] = $data->get('tanggal');
+    $dataTransaksi['rab_id'] = $data->get('rab_id');
+    $dataTransaksi['rabUnit_id'] = $data->get('rabUnit_id');
+    $dataTransaksi['akun_id'] = $data->get('akun_id');
+    $dataTransaksi['uraian'] = $data->get('uraian');
+    $dataTransaksi['sumber'] = $data->get('sumber');
+    $dataTransaksi['debet'] = $jumlah;
+    $dataTransaksi['saldo'] = saldoTerakhir()-$jumlah;
+    $dataTransaksi['proyek_id'] = proyekId();
+    transaksi::create($dataTransaksi);
+    // dd($dataTransaksi);
+}
 
 function formatTanggal($date){
     $date = date('Y-m-d H:i:s');
     $newDate = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $date)
                     ->format('d-m-Y');
     return $newDate;
+}
+function satuanUnit($judul){
+    // dd($judul);
+    if($judul=='Biaya Produksi Rumah'){
+        return 'm2';
+    }else{
+        return 'unit';
+    }
+}
+
+function hitungUnit($unit,$judul,$jenis){
+    $cekBlok=kavling::where('blok',$unit)->first();
+    if($cekBlok != null){
+        if($judul=='Biaya Produksi Rumah'){
+            $cariRumah=rumah::where('kavling_id',$cekBlok->id)->first();
+            return $cariRumah->luasBangunan;
+        }
+    }else{
+        if($jenis=='kavling'){
+            $kavling = kavling::all();
+            $hitung=$kavling->count();
+            return $hitung;
+        }if($jenis=='rumah'){
+            $rumah = rumah::count();
+            return $rumah;
+        }
+    }
+}
+
+function hargaSatuanRumah(){
+    $satuan=1400000;
+    return $satuan;
 }

@@ -6,6 +6,9 @@ use App\pelanggan;
 use App\kavling;
 use App\rumah;
 use App\kios;
+use App\akun;
+use App\rab;
+use App\rabUnit;
 use App\pembelian;
 use Illuminate\Http\Request;
 
@@ -40,8 +43,7 @@ class PelangganController extends Controller
      */
     public function store(Request $request)
     {
-
-        // dd($request);
+        // dd($request->kavling_id);
         // if(preg_match("/^[0-9,]+$/", $a)) 
         // $a = str_replace(',', '', $request->harga);
         // $co=parseInt($request->harga);
@@ -89,11 +91,35 @@ class PelangganController extends Controller
         /* simpan data Rumah dan Kios*/
         if($request->includePembelian =='Rumah'){
             $data ['kavling_id']=$request->kavling_id;
+            $data ['proyek_id']=proyekId();
             $data ['pelanggan_id']=$cariPelanggan->id;
             $data ['luasBangunan']=$request->luasBangunan;
             rumah::create($data);
             $cariRumah=rumah::where('kavling_id',$request->kavling_id)->first();
             $updatePembelian=pembelian::where('kavling_id',$request->kavling_id)->update(['rumah_id'=>$cariRumah->id]);
+            /* update RAB unit */
+            $cariKavling=kavling::find($request->kavling_id);
+            $rabUnit=rabUnit::create([
+                'proyek_id'=>proyekId(),
+                'header'=>'BIAYA PRODUKSI RUMAH',
+                'judul'=>'Biaya Produksi Rumah',
+                'isi'=>$cariKavling->blok,
+                'jenisUnit'=>'rumah',
+                'hargaSatuan'=>hargaSatuanRumah(),
+            ]);$rabUnit->save();
+            /* update Akun */
+            $akun=akun::create([
+                'proyek_id'=>proyekId(),
+                'kategori'=> 'Pembangunan Rumah',
+                'kodeAkun'=> 'IH-30-'.$cariKavling->blok,
+                'namaAkun'=> 'Biaya Pembangunan Rumah '.$cariKavling->blok,
+            ]);$akun->save();
+            $akunPembebanan=akun::create([
+                'proyek_id'=>proyekId(),
+                'kategori'=> 'Biaya Pembebanan Per-Unit',
+                'kodeAkun'=> 'IH-31-'.$cariKavling->blok,
+                'namaAkun'=> 'Biaya Pembebanan Per-Unit '.$cariKavling->blok,
+            ]);$akunPembebanan->save();
         }elseif($request->includePembelian =='Kios'){
             $data ['kavling_id']=$request->kavling_id;
             $data ['pelanggan_id']=$cariPelanggan->id;

@@ -18,10 +18,10 @@
     </div>
   </div>
 </div>
-
+{{-- 
 <div class="section-header">
 
-</div>
+</div> --}}
 
 <div class="card">
   <div class="card-header">
@@ -52,8 +52,8 @@
             @endif
           </td>
           <td>
-            @if($transaksi->debit != null)
-            Rp.{{number_format($transaksi->debit)}}
+            @if($transaksi->debet != null)
+            Rp.{{number_format($transaksi->debet)}}
             @endif
           </td>
           <td>Rp.{{number_format($transaksi->saldo)}}</td>
@@ -63,7 +63,6 @@
         @endforeach
       </tbody>
     </table>
-    {{$cashFlow->links()}}
   </div>
 </div>
 @endsection

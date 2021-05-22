@@ -12,15 +12,16 @@
       <div class="row">
         <nav aria-label="breadcrumb">
           <ol class="breadcrumb  bg-white mb-n2">
-            <li class="breadcrumb-item" aria-current="page"> RAB </li>
+            <li class="breadcrumb-item"> <a href="{{route('RAB')}}"> RAB </a></li>
+            <li class="breadcrumb-item" aria-current="page"> Biaya Unit </li>
           </ol>
         </nav>
       </div>
     </div>
   </div>
   <div class="section-header">
-    <a href="{{route('RAB')}}"  class="btn btn-primary disabled ">RAB</a>
-    <a href="{{route('biayaUnit')}}" class="btn btn-primary ml-2">Biaya Unit</a>
+    <a href="{{route('RAB')}}"  class="btn btn-primary  ">RAB</a>
+    <a href="{{route('biayaUnit')}}" class="btn btn-primary ml-2 disabled">Biaya Unit</a>
 </div>
     {{-- Alert --}}
     <div class="row">
@@ -39,10 +40,10 @@
       <div class="col-12">
         <div class="card">
           <div class="card-header">
-            <h4>Tambah Jenis Biaya Baru</h4>
+            <h4>Tambah Jenis Biaya Unit</h4>
           </div>
           <div class="card-body">
-          <form action="{{route('biayaRABSimpan')}}" method="POST" enctype="multipart/form-data" onchange="hitung()">
+          <form action="{{route('rabUnitSimpan')}}" method="POST" enctype="multipart/form-data">
             @csrf
             <div class="form-group row mb-4">
               <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Header</label>
@@ -205,20 +206,22 @@
               </div>
             </div>
             <div class="form-group row mb-4">
-              <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Volume</label>
+              <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Jenis</label>
               <div class="col-sm-12 col-md-7">
-                <input type="text" class="form-control @error('volume') is-invalid @enderror" name="volume" value="{{old('volume')}}" id="volume" placeholder="diisi dengan angka atau persen">
-                @error('volume')
-                  <div class="invalid-feedback">{{$message}}</div>
-                @enderror
-              </div>
-            </div>
-            <div class="form-group row mb-4">
-              <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Satuan</label>
-              <div class="col-sm-12 col-md-7">
-                <input type="text" class="form-control @error('satuan') is-invalid @enderror" name="satuan" value="{{old('satuan')}}">
-                @error('satuan')
-                  <div class="invalid-feedback">{{$message}}</div>
+                <label class="selectgroup-item">
+                  <input type="radio" name="jenisUnit" value="kavling" class="selectgroup-input" checked="">
+                  <span class="selectgroup-button">Kavling</span>
+                </label>
+                <label class="selectgroup-item">
+                  <input type="radio" name="jenisUnit" value="rumah" class="selectgroup-input">
+                  <span class="selectgroup-button">Rumah</span>
+                </label>
+                <label class="selectgroup-item">
+                  <input type="radio" name="jenisUnit" value="kios" class="selectgroup-input">
+                  <span class="selectgroup-button">Kios</span>
+                </label>
+                @error('jenisUnit')
+                <div class="invalid-feedback">{{$message}}</div>
                 @enderror
               </div>
             </div>
@@ -230,26 +233,19 @@
                     Rp
                   </div>
                 </div>
-                <input type="text" class="form-control @error('hargaSatuan') is-invalid @enderror" name="hargaSatuan" value="{{old('hargaSatuan')}}" id="hargaSatuan">
+                <input type="text" class="hargaSatuan form-control @error('hargaSatuan') is-invalid @enderror" name="hargaSatuan" value="{{old('hargaSatuan')}}" id="hargaSatuan">
                 @error('hargaSatuan')
                   <div class="invalid-feedback">{{$message}}</div>
                 @enderror
               </div>
             </div>
-            <div class="form-group row mb-4">
-              <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Total</label>
-              <div class=" input-group col-sm-12 col-md-7">
-                <div class="input-group-prepend">
-                  <div class="input-group-text">
-                    Rp
-                  </div>
-                </div>
-                <input readonly type="text" class="total form-control @error('total') is-invalid @enderror" name="total" value="{{old('total')}}" id="total">
-                @error('total')
-                  <div class="invalid-feedback">{{$message}}</div>
-                @enderror
-              </div>
-            </div>
+            <script src="{{ mix("js/cleave.min.js") }}"></script>
+            <script>
+                var cleave = new Cleave('.hargaSatuan', {
+                    numeral: true,
+                    numeralThousandsGroupStyle: 'thousand'
+                });
+            </script>
             <div class="form-group row mb-4">
               <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3"></label>
               <div class="col-sm-12 col-md-7">
@@ -261,10 +257,19 @@
         </div>
       </div>
     </div>
-
   <div class="card">
-    <div class="card-header">
-      <h4>RAB</h4>
+    <div class="row">
+      <div class="col-12 col-md-8 col-lg-8">
+        <div class="card-header">
+          <h4>Biaya Unit</h4>
+        </div>
+      </div>
+      <div class="col-12 col-md-3 col-lg-3 align-right">
+        {{-- <div class="card-header"> --}}
+          <p class="text-card text-primary">Jumlah Unit Kavling     : {{hitungUnit(null,null,'kavling')}}</p> 
+          <p class="text-card text-primary">Jumlah Unit Rumah       : {{hitungUnit(null,null,'rumah')}}</p> 
+        {{-- </div> --}}
+      </div>
     </div>
     <div class="card-body">
       <table class="table table-sm table-hover">
@@ -272,6 +277,7 @@
           <tr>
             <th scope="col">No</th>
             <th scope="col">Biaya</th>
+            <th scope="col">Jenis</th>
             <th scope="col">Volume</th>
             <th scope="col">Satuan</th>
             <th scope="col">Harga Satuan</th>
@@ -282,73 +288,64 @@
           @php
               $a=[];
               $b=[];
+              $c=[];
+              $totalIsi=[];
           @endphp
           @foreach($perHeader as $header=>$semuaRAB)
           <tr>
-            <th colspan="6" class="bg-primary text-light">{{$loop->iteration}}. {{$header}}</th>
+            <th colspan="7" class="bg-primary text-light">{{$loop->iteration}}. {{$header}}</th>
           </tr>
           @foreach($perJudul[$header] as $judul=>$semuaRAB)
+          @php
+              $a[$judul]=0;
+              $c[$judul]=0;
+              $totalIsi[$judul]=0;
+          @endphp
           <tr>
-            <th colspan="6" class="">{{$loop->iteration}}. {{$judul}}</th>
+            <th colspan="7" class="">{{$loop->iteration}}. {{$judul}}</th>
           </tr>
             @foreach($semuaRAB as $rab)
             <tr>
               <td>{{$loop->iteration}}</td>
               <td>{{$rab->isi}}</td>
-              <td>{{$rab->volume}}</td>
-              <td>{{$rab->satuan}}</td>
-              <td>Rp.{{number_format($rab->hargaSatuan)}}</td>
-              <th>Rp.{{number_format($rab->total)}}</th>
-            </tr>
-            @endforeach
-            <tr>
-              <th colspan="5" class="text-right bg-secondary" >Sub Total {{$judul}}</th>
-              <th class="bg-secondary" >Rp. {{number_format($semuaRAB->sum('total'))}}</th>
-            </tr>
-            @php
-                $a[]=$semuaRAB->sum('total'); /* menghitung per total judul */
-                @endphp
-            @endforeach
-            <tr>
-              <th colspan="5" class="text-white bg-warning text-right">TOTAL {{$header}}</th>
+              <td>{{$rab->jenisUnit}}</td>
+              <td>{{hitungUnit($rab->isi,$rab->judul,$rab->jenisUnit)}}</td>
+              <td>{{satuanUnit($rab->judul)}}</td>
+              <td>Rp.{{number_format((int)$rab->hargaSatuan)}}</td>
+              <th>Rp.{{number_format((hitungUnit($rab->isi,$rab->judul,$rab->jenisUnit))*(int)$rab->hargaSatuan)}}</th>
               @php
-                  $b[$header]=array_sum($a)-array_sum($b); /* menghitung total header */
-                  @endphp
+                  $totalIsi[$judul]=(hitungUnit($rab->isi,$rab->judul,$rab->jenisUnit))*(int)$rab->hargaSatuan+$totalIsi[$judul];
+              @endphp
+            </tr>
+            @endforeach
+            @php
+              $a[$judul]=$totalIsi[$judul]
+            @endphp
+            @php
+                $c[$judul]=$a[$judul]-$c[$judul];
+            @endphp
+            <tr>
+              <th colspan="6" class="text-right bg-secondary" >Sub Total {{$judul}}</th>
+              <th class="bg-secondary" >Rp. {{number_format($c[$judul])}}</th>
+            </tr>
+            @endforeach
+              @php
+                  $b[$header]=array_sum($c)-array_sum($b); /* menghitung total header */
+              @endphp
+            <tr>
+              <th colspan="6" class="text-white bg-warning text-right">TOTAL {{$header}}</th>
               <th class="bg-warning text-white" >Rp. {{number_format($b[$header])}}</th>
             </tr>
             @endforeach
           </tbody>
           <tfoot>
             <tr>
-              <th colspan="5" class="text-white bg-danger text-right">TOTAL RAB</th>
+              <th colspan="6" class="text-white bg-danger text-right">TOTAL BIAYA UNIT</th>
               <th class="bg-danger text-white" >Rp. {{number_format(array_sum($b))}}</th>
           </tr>
         </tfoot>
       </table>
     </div>
   </div>
-        {{-- {{$semuaKavling->links()}} --}}
-        <script src="{{ mix("js/cleave.min.js") }}"></script>
-        <script>
-          function hitung(){
-            
-            var volume = document.getElementById('volume').value;
-            var hargaSatuan = document.getElementById('hargaSatuan').value;
-            var check = volume.includes("%");
-            if(check == true){
-              var regex = /\d+/;
-              var trim = volume.match(regex);
-              var total = (trim*hargaSatuan)/100;
-              // var total = trim*hargaSatuan-persen;
 
-            }else{
-              var total = volume*hargaSatuan;
-            }
-            document.getElementById('total').value=total;
-            var cleave = new Cleave('.total', {
-              numeral: true,
-              numeralThousandsGroupStyle: 'thousand'
-            });
-          }
-        </script>
 @endsection
