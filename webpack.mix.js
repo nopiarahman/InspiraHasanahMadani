@@ -13,7 +13,6 @@ const mix = require('laravel-mix');
 
 mix.js('resources/js/app.js', 'public/js')
     .sass('resources/sass/app.scss', 'public/css');
-
 //import package from node_modules folder -- Cleave.js
 mix.copy('node_modules/cleave.js/dist/cleave.min.js', 'public/js');
 mix.copy('node_modules/cleave.js/dist/addons/cleave-phone.id.js', 'public/js/addons');

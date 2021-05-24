@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use App\proyek;
 use App\kavling;
 use App\rab;
+use App\transaksi;
 use App\rumah;
 use App\rabUnit;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 class ProyekController extends Controller
@@ -210,8 +212,43 @@ class ProyekController extends Controller
         ]);$rabUnit->save();
         return redirect()->route('biayaUnit')->with('status','Biaya Unit Berhasil Disimpan');
     }
-    public function pengeluaran (){
-        return view ('proyek/DataProyek/pengeluaran');
+    public function transaksiRABUnit(RabUnit $id, Request $request){
+        // dd($id);
+        $totalRAB=hitungUnit($id->isi,$id->judul,$id->jenisUnit)*(int)$id->hargaSatuan;
+        if($request->get('filter')){
+            // dd($request);
+            $mulai = Carbon::parse($request->start)->isoFormat('YYYY-MM-DD');
+            // dd($mulai);
+            $akhir = Carbon::parse($request->end)->isoFormat('YYYY-MM-DD');
+            // dd($mulai);
+            $transaksiKeluar=transaksi::whereBetween('tanggal',[$mulai,$akhir])
+                            ->where('rabUnit_id',$id->id)->paginate(20);
+            // dd($transaksiKeluar);
+            $total=transaksi::where('rabUnit_id',$id->id)->get();
+        }else{
+            $total=transaksi::where('rabUnit_id',$id->id)->get();
+            $transaksiKeluar=transaksi::where('rabUnit_id',$id->id)->paginate(20);
+        }
+        return view('proyek/DataProyek/pengeluaranUnit',compact('transaksiKeluar','id','totalRAB','total'));        
+    }
+    public function transaksiRAB(rab $id, Request $request){
+        // dd($id);
+        $totalRAB=$id->total;
+        if($request->get('filter')){
+            // dd($request);
+            $mulai = Carbon::parse($request->start)->isoFormat('YYYY-MM-DD');
+            // dd($mulai);
+            $akhir = Carbon::parse($request->end)->isoFormat('YYYY-MM-DD');
+            // dd($mulai);
+            $transaksiKeluar=transaksi::whereBetween('tanggal',[$mulai,$akhir])
+                            ->where('rab_id',$id->id)->paginate(20);
+            // dd($transaksiKeluar);
+            $total=transaksi::where('rab_id',$id->id)->get();
+        }else{
+            $total=transaksi::where('rab_id',$id->id)->get();
+            $transaksiKeluar=transaksi::where('rab_id',$id->id)->paginate(20);
+        }
+        return view('proyek/DataProyek/pengeluaranUnit',compact('transaksiKeluar','id','totalRAB','total'));  
     }
 
 }

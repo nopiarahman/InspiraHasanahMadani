@@ -5,6 +5,7 @@ use App\akun;
 use App\pembelian;
 use App\rumah;
 use App\transaksi;
+use App\kasPendaftaran;
 use Carbon\Carbon;
 
 function cekNamaUser(){
@@ -42,6 +43,14 @@ function saldoTerakhir(){
     }
     return $saldoTerakhir;
 }
+function saldoTerakhirKasPendaftaran(){
+    $saldo = kasPendaftaran::orderBy('created_at','desc')->first();
+    $saldoTerakhir=0;
+    if($saldo != null){
+        $saldoTerakhir=$saldo->saldo;
+    }
+    return $saldoTerakhir;
+}
 function kasBesarMasuk($dataArray){
     $data = collect($dataArray);
     $akunPendapatan=akun::where('namaAkun','Pendapatan')->first();
@@ -72,10 +81,8 @@ function kasBesarKeluar($dataArray)
 }
 
 function formatTanggal($date){
-    $date = date('Y-m-d H:i:s');
-    $newDate = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $date)
-                    ->format('d-m-Y');
-    return $newDate;
+    $newDate = \Carbon\Carbon::parse($date);
+    return $newDate->isoFormat('DD/MM/YYYY');
 }
 function satuanUnit($judul){
     // dd($judul);
@@ -108,4 +115,25 @@ function hitungUnit($unit,$judul,$jenis){
 function hargaSatuanRumah(){
     $satuan=1400000;
     return $satuan;
+}
+
+function hitungTransaksiRAB($idRAB){
+    $total = transaksi::where('rab_id',$idRAB)->get();
+    if($total != null){
+    $totalRAB = $total->sum('debet');
+        // dd($total);
+        return $totalRAB;
+    }else{
+        return 0;
+    }
+}
+function hitungTransaksiRABUnit($idRAB){
+    $total = transaksi::where('rabUnit_id',$idRAB)->get();
+    if($total != null){
+        $totalRAB = $total->sum('debet');
+        // dd($total);
+        return $totalRAB;
+    }else{
+        return 0;
+    }
 }

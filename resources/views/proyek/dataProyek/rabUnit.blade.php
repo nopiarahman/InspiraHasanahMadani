@@ -282,6 +282,7 @@
             <th scope="col">Satuan</th>
             <th scope="col">Harga Satuan</th>
             <th scope="col">Total</th>
+            <th scope="col">Pengeluaran</th>
           </tr>
         </thead>
         <tbody>
@@ -293,7 +294,7 @@
           @endphp
           @foreach($perHeader as $header=>$semuaRAB)
           <tr>
-            <th colspan="7" class="bg-primary text-light">{{$loop->iteration}}. {{$header}}</th>
+            <th colspan="8" class="bg-primary text-light">{{$loop->iteration}}. {{$header}}</th>
           </tr>
           @foreach($perJudul[$header] as $judul=>$semuaRAB)
           @php
@@ -302,7 +303,7 @@
               $totalIsi[$judul]=0;
           @endphp
           <tr>
-            <th colspan="7" class="">{{$loop->iteration}}. {{$judul}}</th>
+            <th colspan="8" class="">{{$loop->iteration}}. {{$judul}}</th>
           </tr>
             @foreach($semuaRAB as $rab)
             <tr>
@@ -316,6 +317,7 @@
               @php
                   $totalIsi[$judul]=(hitungUnit($rab->isi,$rab->judul,$rab->jenisUnit))*(int)$rab->hargaSatuan+$totalIsi[$judul];
               @endphp
+              <th > <a class="text-warning font-weight-bold" href="{{route('transaksiRABUnit',['id'=>$rab->id])}}"> Rp.{{number_format(hitungTransaksiRABUnit($rab->id))}}</a></th>
             </tr>
             @endforeach
             @php
@@ -326,7 +328,7 @@
             @endphp
             <tr>
               <th colspan="6" class="text-right bg-secondary" >Sub Total {{$judul}}</th>
-              <th class="bg-secondary" >Rp. {{number_format($c[$judul])}}</th>
+              <th colspan="2" class="bg-secondary" >Rp. {{number_format($c[$judul])}}</th>
             </tr>
             @endforeach
               @php
@@ -334,14 +336,14 @@
               @endphp
             <tr>
               <th colspan="6" class="text-white bg-warning text-right">TOTAL {{$header}}</th>
-              <th class="bg-warning text-white" >Rp. {{number_format($b[$header])}}</th>
+              <th colspan="2" class="bg-warning text-white" >Rp. {{number_format($b[$header])}}</th>
             </tr>
             @endforeach
           </tbody>
           <tfoot>
             <tr>
               <th colspan="6" class="text-white bg-danger text-right">TOTAL BIAYA UNIT</th>
-              <th class="bg-danger text-white" >Rp. {{number_format(array_sum($b))}}</th>
+              <th colspan="2" class="bg-danger text-white" >Rp. {{number_format(array_sum($b))}}</th>
           </tr>
         </tfoot>
       </table>

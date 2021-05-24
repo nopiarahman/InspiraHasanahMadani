@@ -6,16 +6,16 @@
   <title>PT Inspira Hasanah Madani</title>
 
   <!-- General CSS Files -->
-  <link rel="stylesheet" href="{{ mix("css/bootstrap.css") }}">
+  <link rel="stylesheet" href="{{ mix("css/app.css") }}">
   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet" />
-  {{-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous"> --}}
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
   <link rel="shortcut icon" href="{{asset('assets/img/favicon.png')}}">
   <!-- Template CSS -->
   <link rel="stylesheet" href="{{asset('assets/css/style.css')}}">
   <link rel="stylesheet" href="{{asset('assets/css/chocolat.css')}}" type="text/css" media="screen" >
   <link rel="stylesheet" href="{{asset('assets/css/components.css')}}">
+  <link rel="stylesheet" href="{{asset('assets/css/daterangepicker.css')}}">
   <link rel="stylesheet" href="{{asset('assets/css/custom.css')}}">
 
   @yield('head')
@@ -115,7 +115,7 @@
                 <ul class="dropdown-menu">
                   <li class="@yield('menuKavling')"><a class="nav-link" href="{{route('kavling')}}">Unit</a></li>
                   <li class="@yield('menuRAB')"><a class="nav-link" href="{{route('RAB')}}">RAB</a></li>
-                  <li class="@yield('menuPengeluaran')"><a class="nav-link" href="{{route('pengeluaran')}}">Pengeluaran</a></li>
+                  
                 </ul>
               </li>
               <li class="menu-header">Menu Pelanggan</li>
@@ -154,7 +154,8 @@
                 <a href="" class="nav-link has-dropdown"><i class="fas fa-book"></i> <span>KAS</span></a>
                 <ul class="dropdown-menu">
                   <li class=" @yield('menuKasBesar')"><a class="nav-link" href="{{route('kasBesar')}}">Besar</a></li>
-                  <li class=" @yield('menuKasKecil')"><a class="nav-link" href="{{route('kasKecil')}}">Kecil</a></li>
+                  <li class=" @yield('menuKasPendaftaran')"><a class="nav-link" href="{{route('kasPendaftaranMasuk')}}">Pendaftaran</a></li>
+                  <li class=" @yield('menuKasKecil')"><a class="nav-link" href="{{route('kasKecil')}}">Petty Cash</a></li>
                 </ul>
               </li>
               <li class="nav-item dropdown @yield('menuLaporan')">
@@ -187,27 +188,21 @@
   </div>
   
   @yield('script')
+  <script type="text/javascript" src="{{ mix('js/app.js') }}"></script>
   <!-- General JS Scripts -->
-  {{-- <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script> --}}
-  {{-- <script src="{{ mix("js/jquery.min.js") }}"></script> --}}
-  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>
+ <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>
   <script src="{{ mix("js/popper.js") }}"></script>
   <script src="{{ mix("js/bootstrap.js") }}"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@2/dist/Chart.min.js"></script>
-  {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script> --}}
-  {{-- <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script> --}}
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.nicescroll/3.7.6/jquery.nicescroll.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
   <script src="{{asset('assets/js/stisla.js')}}"></script>
-
   <!-- JS Libraies -->
-  {{-- <script src="../node_modules/chart.js/dist/Chart.min.js"></script> --}}
-  {{-- <script src="{{ mix("js/chart.js") }}"></script> --}}
   <script src="{{asset('assets/js/chocolat.js')}}"></script>
 
   <!-- Template JS File -->
   <script src="{{asset('assets/js/scripts.js')}}"></script>
   <script src="{{asset('assets/js/custom.js')}}"></script>
+  <script src="{{asset('assets/js/daterangepicker.js')}}"></script>
 
   <!-- Page Specific JS File -->
 

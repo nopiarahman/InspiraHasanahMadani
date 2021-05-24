@@ -6,6 +6,7 @@ use App\transaksi;
 use App\akun;
 use App\rabUnit;
 use App\rab;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class TransaksiController extends Controller
@@ -20,13 +21,19 @@ class TransaksiController extends Controller
         //
     }
 
-    public function masuk(){
-        $transaksiMasuk=transaksi::whereNotNull('kredit')
-                                    ->where('proyek_id',proyekId())->paginate(20);
+    public function masuk(Request $request){
+        if($request->get('filter')){
+            $mulai = Carbon::parse($request->start)->isoFormat('YYYY-MM-DD');
+            $akhir = Carbon::parse($request->end)->isoFormat('YYYY-MM-DD');
+            $transaksiMasuk=transaksi::whereBetween('tanggal',[$mulai,$akhir])
+                            ->whereNotNull('kredit')->paginate(20);
+        }else{
+            $transaksiMasuk=transaksi::whereNotNull('kredit')->where('proyek_id',proyekId())->paginate(20);
+        }
         return view ('transaksi/masukIndex',compact('transaksiMasuk'));
     }
 
-    public function keluar(){
+    public function keluar(Request $request){
         /* RAB */
         $semuaRAB = rab::all()->groupBy(['header',function($item){
             return $item['judul'];
@@ -46,9 +53,15 @@ class TransaksiController extends Controller
         $kategoriAkun=akun::all()->groupBy('kategori');
         $perKategori = $kategoriAkun;
         
-
-        $transaksiKeluar=transaksi::whereNotNull('debet')
-                                    ->where('proyek_id',proyekId())->paginate(20);
+        if($request->get('filter')){
+            $mulai = Carbon::parse($request->start)->isoFormat('YYYY-MM-DD');
+            $akhir = Carbon::parse($request->end)->isoFormat('YYYY-MM-DD');
+            $transaksiKeluar=transaksi::whereBetween('tanggal',[$mulai,$akhir])
+                            ->whereNotNull('debet')->paginate(20);
+        }else{
+            $transaksiKeluar=transaksi::whereNotNull('debet')
+                                        ->where('proyek_id',proyekId())->paginate(20);
+        }
         return view ('transaksi/keluarIndex',compact('semuaAkun','perKategori','kategoriAkun','transaksiKeluar','perHeader','semuaRAB','perJudul','perHeaderUnit','semuaRABUnit','perJudulUnit'));
     }
     public function cariAkunTransaksi(Request $request){
@@ -91,8 +104,15 @@ class TransaksiController extends Controller
         kasBesarKeluar($requestData);
         return redirect()->route('transaksiKeluar')->with('status','Transaksi Berhasil disimpan');
     }
-    public function cashFlow(){
-        $cashFlow=transaksi::orderBy('created_at','asc')->where('proyek_id',proyekId())->get();
+    public function cashFlow(Request $request){
+        if($request->get('filter')){
+            $mulai = Carbon::parse($request->start)->isoFormat('YYYY-MM-DD');
+            $akhir = Carbon::parse($request->end)->isoFormat('YYYY-MM-DD');
+            $cashFlow=transaksi::whereBetween('tanggal',[$mulai,$akhir])
+                                ->orderBy('tanggal','asc')->paginate(20);
+        }else{
+            $cashFlow=transaksi::orderBy('tanggal','asc')->where('proyek_id',proyekId())->paginate(20);
+        }
         return view ('transaksi/cashFlowIndex',compact('cashFlow'));
     }
 

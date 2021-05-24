@@ -27,6 +27,8 @@ Route::group(['middleware'=>['auth','role:admin']],function(){
     Route::post('/proyekSimpan', 'ProyekController@store')->name('proyekSimpan');
     Route::get('/proyek/edit/{id}', 'ProyekController@edit')->name('proyekEdit');
     Route::patch('/proyek/update/{id}', 'ProyekController@update')->name('proyekUpdate');
+    Route::get('/proyek/pengeluaran/{id}', 'ProyekController@transaksiRABUnit')->name('transaksiRABUnit');
+    Route::get('/proyek/pengeluaran/RAB/{id}', 'ProyekController@transaksiRAB')->name('transaksiRAB');
     Route::get('/kavling', 'KavlingController@index')->name('kavling');
     Route::post('/kavlingSimpan', 'KavlingController@kavlingSimpan')->name('kavlingSimpan');
     Route::get('/RAB', 'ProyekController@RAB')->name('RAB');
@@ -35,7 +37,6 @@ Route::group(['middleware'=>['auth','role:admin']],function(){
     Route::get('/cariHeader', 'ProyekController@cariHeader')->name('cariHeader');
     Route::get('/cariJudul', 'ProyekController@cariJudul')->name('cariJudul');
     Route::post('/biayaRABSimpan', 'ProyekController@biayaRABSimpan')->name('biayaRABSimpan');
-    Route::get('/pengeluaran', 'ProyekController@pengeluaran')->name('pengeluaran');
 
     Route::post('/cariPelangganHome', 'HomeController@cariPelangganHome')->name('cariPelangganHome');
     Route::get('/cariPelangganDaftar', 'HomeController@cariPelangganDaftar');
@@ -73,6 +74,10 @@ Route::group(['middleware'=>['auth','role:admin']],function(){
     Route::get('/cashFlow', 'TransaksiController@cashFlow')->name('cashFlow');
     
     Route::get('/kasBesar', 'KasController@kasBesar')->name('kasBesar');
+    Route::get('/kasPendaftaranMasuk', 'kasPendaftaranController@index')->name('kasPendaftaranMasuk');
+    Route::get('/kasPendaftaranKeluar', 'kasPendaftaranController@keluar')->name('kasPendaftaranKeluar');
+    Route::post('/kasPendaftaranMasukSimpan', 'kasPendaftaranController@store')->name('kasPendaftaranMasukSimpan');
+    Route::post('/kasPendaftaranKeluarSimpan', 'kasPendaftaranController@storeKeluar')->name('kasPendaftaranKeluarSimpan');
     Route::get('/kasKecil', 'KasController@kasKecil')->name('kasKecil');
     
     Route::get('/laporanBulanan', 'LaporanController@laporanBulanan')->name('laporanBulanan');
