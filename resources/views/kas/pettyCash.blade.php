@@ -1,18 +1,18 @@
 @extends('layouts.tema')
 @section ('menuKas','active')
-@section ('menuKasPendaftaran','active')
+@section ('menuKasKecil','active')
 @section('content')
 <div class="section-header sticky-top">
     <div class="container">
       <div class="row">
         <div class="col">
-          <h1>Kas Pendaftaran</h1>
+          <h1>Petty Cash</h1>
         </div>
       </div>
       <div class="row">
         <nav aria-label="breadcrumb">
           <ol class="breadcrumb  bg-white mb-n2">
-            <li class="breadcrumb-item" aria-current="page"> Kas Pendaftaran </li>
+            <li class="breadcrumb-item" aria-current="page"> Petty Cash </li>
           </ol>
         </nav>
       </div>
@@ -32,18 +32,14 @@
       @endif
     </div>
     </div>
-    <div class="section-header">
-      <a href="{{route('kasPendaftaranMasuk')}}"  class="btn btn-primary ">Masuk</a>
-      <a href="{{route('kasPendaftaranKeluar')}}" class="btn btn-primary ml-2 disabled">Keluar</a>
-  </div>
     <div class="row">
       <div class="col-12">
         <div class="card">
           <div class="card-header">
-            <h4>Tambah Transaksi Keluar Kas Pendaftaran</h4>
+            <h4>Tambah Transaksi Masuk Petty Cash</h4>
           </div>
           <div class="card-body">
-          <form action="{{route('kasPendaftaranKeluarSimpan')}}" method="POST" enctype="multipart/form-data">
+          <form action="{{route('pettyCashSimpan')}}" method="POST" enctype="multipart/form-data">
             @csrf
             <div class="form-group row mb-4">
               <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Tanggal</label>
@@ -77,7 +73,6 @@
                 @enderror
               </div>
             </div>
-
             <div class="form-group row mb-4">
               <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Sumber</label>
               <div class="col-sm-12 col-md-7">
@@ -104,8 +99,8 @@
         <h4>Daftar Transaksi</h4>
       </div>
       <div class="card-body">
-        {{-- filter --}}
-      <form action="{{route('kasPendaftaranKeluar')}}" method="get" enctype="multipart/form-data">
+         {{-- filter --}}
+      <form action="{{route('pettyCash')}}" method="get" enctype="multipart/form-data">
 
         <div class="form-group row mb-4">
           <label class="col-form-label text-md-right col-12 col-md-6 col-lg-6 mt-1 mr-n3" > <span style="font-size:small">Pilih Tanggal: </span> </label>
@@ -158,10 +153,11 @@
               <th scope="col">Debit</th>
               <th scope="col">Saldo</th>
               <th scope="col">Sumber</th>
+              <th scope="col">Keterangan</th>
             </tr>
           </thead>
           <tbody>
-              @foreach($kasPendaftaran as $kas)
+              @foreach($pettyCash as $kas)
               <tr>
                 <td>{{$loop->iteration}}</td>
                 <td>{{$kas->tanggal}}</td>
@@ -178,15 +174,16 @@
                 </td>
                 <td>Rp. {{number_format($kas->saldo)}}</td>
                 <td>{{$kas->sumber}}</td>
+                <td>{{$kas->keterangan}}</td>
               </tr>
               @endforeach
           </tbody>
           <tfoot>
             <tr class="bg-light">
               <th colspan="3" class="text-right text-primary">Total</th>
-              <th class="text-primary">Rp. {{number_format($kasPendaftaran->sum('kredit'))}}</th>
-              <th class="text-primary">Rp. {{number_format($kasPendaftaran->sum('debet'))}}</th>
-              <th colspan="2" class="text-primary">Rp. {{number_format(saldoTerakhirKasPendaftaran())}}</th>
+              <th class="text-primary">Rp. {{number_format($pettyCash->sum('kredit'))}}</th>
+              <th class="text-primary">Rp. {{number_format($pettyCash->sum('debet'))}}</th>
+              <th colspan="3" class="text-primary">Rp. {{number_format(saldoTerakhirPettyCash())}}</th>
             </tr>
           </tfoot>
         </table>

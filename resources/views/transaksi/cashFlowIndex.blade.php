@@ -1,18 +1,18 @@
 @extends('layouts.tema')
-@section ('cashFlow','active')
-@section ('menuTransaksi','active')
+@section ('menuKasBesar','active')
+@section ('menuKas','active')
 @section('content')
 <div class="section-header sticky-top">
   <div class="container">
     <div class="row">
       <div class="col">
-        <h1>Cash Flow</h1>
+        <h1>Kas Besar</h1>
       </div>
     </div>
     <div class="row">
       <nav aria-label="breadcrumb">
         <ol class="breadcrumb  bg-white mb-n2">
-          <li class="breadcrumb-item" aria-current="page"> Cash Flow </li>
+          <li class="breadcrumb-item" aria-current="page"> Kas Besar </li>
         </ol>
       </nav>
     </div>
@@ -25,7 +25,7 @@
 
 <div class="card">
   <div class="card-header">
-    <h4>Daftar Cash Flow</h4>
+    <h4>Daftar Kas Besar</h4>
   </div>
   <div class="card-body">
     {{-- filter --}}
@@ -117,6 +117,7 @@
         </tr>
       </tfoot>
     </table>
+    {{$cashFlow->links()}}
   </div>
 </div>
 @endsection

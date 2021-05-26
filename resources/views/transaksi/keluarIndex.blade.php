@@ -22,7 +22,7 @@
     <div class="col-12">
       <div class="card">
         <div class="card-header">
-          <h4>Tambah Jenis Biaya Baru</h4>
+          <h4>Tambah Transaksi Keluar</h4>
         </div>
         <div class="card-body">
         <form action="{{route('transaksiKeluarSimpan')}}" method="POST" enctype="multipart/form-data">
@@ -40,7 +40,7 @@
             <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Kode Akun</label>
             <div class="input-group col-sm-12 col-md-7">
               {{-- <div class="input-group-prepend"> --}}
-                <a class="btn btn-primary" data-toggle="modal" data-target="#pilihAkun">Pilih Akun</a>
+                <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#pilihAkun">Pilih Akun</a>
               {{-- </div> --}}
             </div>
           </div>
@@ -53,13 +53,13 @@
           <div class="form-group row mb-4">
             <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Kategori RAB</label>
             <div class="input-group col-sm-12 col-md-7">
-              <a class="btn btn-primary" data-toggle="modal" data-target="#pilihRAB">Pilih RAB</a>
+              <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#pilihRAB">Pilih RAB</a>
               <div class="input-group-prepend mx-3 mt-1">
                 {{-- <div class="input-group-text " style="border: none"> --}}
                   atau
                 {{-- </div> --}}
               </div>
-              <a class="btn btn-primary" data-toggle="modal" data-target="#pilihRABUnit">Pilih Biaya Unit</a>
+              <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#pilihRABUnit">Pilih Biaya Unit</a>
             </div>
           </div>
           <div class="form-group row mb-4">
@@ -96,6 +96,22 @@
           </div>
           <div class="form-group row mb-4">
             <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Sumber</label>
+            <div class="col-sm-12 col-md-7">
+              <label class="selectgroup-item">
+                <input type="radio" name="sumberKas" value="kasBesar" class="selectgroup-input" checked="">
+                <span class="selectgroup-button">Kas Besar</span>
+              </label>
+              <label class="selectgroup-item">
+                <input type="radio" name="sumberKas" value="pettyCash" class="selectgroup-input">
+                <span class="selectgroup-button">Petty Cash</span>
+              </label>
+              @error('jenisKelamin')
+              <div class="invalid-feedback">{{$message}}</div>
+              @enderror
+            </div>
+          </div>
+          <div class="form-group row mb-4">
+            <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Keterangan</label>
             <div class="col-sm-12 col-md-7">
               <input type="text" class="form-control @error('sumber') is-invalid @enderror" name="sumber" value="{{old('sumber')}}">
               @error('sumber')
@@ -198,7 +214,7 @@
     </div>
   </div>
   {{-- modal RAB--}}
-  <div class="modal fade modalBaru" id="pilihRAB" tabindex="-1" data-backdrop="false" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal fade" id="pilihRAB" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
       <div class="modal-content">
         <div class="modal-header">
@@ -249,7 +265,7 @@
     </div>
   </div>
   {{-- modal biaya Unit --}}
-  <div class="modal fade modalBaru" id="pilihRABUnit" tabindex="-1" data-backdrop="false" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal fade " id="pilihRABUnit" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
       <div class="modal-content">
         <div class="modal-header">
@@ -282,7 +298,7 @@
                     <td>{{$loop->iteration}}</td>
                     <td>{{$rab->isi}}</td>
                     <td>
-                      <a href="#" class="badge badge-info pilihRAB" data-id-unit={{$rab->id}} data-isi="{{$rab->isi}}" id="rab" >Pilih</a>
+                      <a href="#" class="badge badge-info pilihRAB" data-id-unit={{$rab->id}} data-isi="{{$rab->isi}}" id="rabUnit" >Pilih</a>
                     </td>
                   </tr>
                   @endforeach
@@ -300,7 +316,7 @@
     </div>
   </div>
   {{-- modal Akun--}}
-  <div class="modal fade modalBaru" id="pilihAkun" tabindex="-1" data-backdrop="false" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal fade " id="pilihAkun" tabindex="-1"  role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
       <div class="modal-content">
         <div class="modal-header">
@@ -357,21 +373,15 @@
         // console.log(idRab);
         $('#isiRAB').val(isi);
         $('.close').click(); 
-        $("#pilihRAB .close").click();
-      })
-    })
-    $(document).ready(function(){
-      $(document).on('click','#rab',function(){
+      });
+      $(document).on('click','#rabUnit',function(){
         var idUnit = $(this).data('idUnit');
         var isi =$(this).data('isi');
         $('#idRABUnit').val(idUnit);
         // console.log(idUnit);
         $('#isiRAB').val(isi);
         $('.close').click(); 
-        $("#pilihRABUnit .close").click();
-      })
-    })
-    $(document).ready(function(){
+      });
       $(document).on('click','#akun',function(){
         var idAkun = $(this).data('idAkun');
         var isi =$(this).data('isi');
@@ -379,9 +389,9 @@
         console.log(idAkun);
         $('#isiNamaAkun').val(isi);
         $('.close').click(); 
-        $("#pilihAkun .close").click();
-      })
-    })
+      });
+    });
+
 </script>
 <script src="{{ mix("js/cleave.min.js") }}"></script>
 <script>

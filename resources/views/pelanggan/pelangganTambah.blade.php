@@ -414,10 +414,6 @@
 <script src="{{ mix("js/cleave.min.js") }}"></script>
 <script src="{{ mix("js/addons/cleave-phone.id.js") }}"></script>
 <script>
-  var cleave = new Cleave('.input-phone', {
-    phone: true,
-    phoneRegionCode: 'ID'
-  });
   var cleave = new Cleave('.harga', {
       numeral: true,
       numeralThousandsGroupStyle: 'thousand'
@@ -425,6 +421,10 @@
   var cleave = new Cleave('.dp', {
       numeral: true,
       numeralThousandsGroupStyle: 'thousand'
+  });
+  var cleave = new Cleave('.input-phone', {
+    phone: true,
+    phoneRegionCode: 'ID'
   });
   
 

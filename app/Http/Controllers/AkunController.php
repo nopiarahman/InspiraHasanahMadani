@@ -15,7 +15,7 @@ class AkunController extends Controller
     public function index()
     {
         $semuaAkun=akun::where('proyek_id',proyekId())->get();
-        $kategoriAkun=akun::all()->groupBy('kategori');
+        $kategoriAkun=akun::where('proyek_id',proyekId())->get()->groupBy('kategori');
         $perKategori = $kategoriAkun;
         /* menampilkan hasil groupBy ke view cek https://stackoverflow.com/questions/38029591/laravel-how-can-i-use-group-by-within-my-view */
         return view ('akun/index',compact('semuaAkun','perKategori','kategoriAkun'));

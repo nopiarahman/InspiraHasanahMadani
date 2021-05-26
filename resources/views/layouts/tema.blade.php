@@ -7,6 +7,7 @@
 
   <!-- General CSS Files -->
   <link rel="stylesheet" href="{{ mix("css/app.css") }}">
+  {{-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"> --}}
   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet" />
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
@@ -147,15 +148,15 @@
                   <li class=" @yield('menuAkun')"><a href="{{route('akun')}}">Akun</a></li>
                   <li class=" @yield('menuTransaksiMasuk')"><a href="{{route('transaksiMasuk')}}">Masuk</a></li>
                   <li class=" @yield('menuTransaksiKeluar')"><a href="{{route('transaksiKeluar')}}">Keluar</a></li>
-                  <li class=" @yield('cashFlow')"><a href="{{route('cashFlow')}}">Cash Flow</a></li>
                 </ul>
               </li>
               <li class="nav-item dropdown @yield('menuKas')">
                 <a href="" class="nav-link has-dropdown"><i class="fas fa-book"></i> <span>KAS</span></a>
                 <ul class="dropdown-menu">
-                  <li class=" @yield('menuKasBesar')"><a class="nav-link" href="{{route('kasBesar')}}">Besar</a></li>
+                  <li class=" @yield('menuKasBesar')"><a href="{{route('cashFlow')}}">Kas Besar</a></li>
+                  {{-- <li class=" @yield('menuKasBesar')"><a class="nav-link" href="{{route('kasBesar')}}">Besar</a></li> --}}
                   <li class=" @yield('menuKasPendaftaran')"><a class="nav-link" href="{{route('kasPendaftaranMasuk')}}">Pendaftaran</a></li>
-                  <li class=" @yield('menuKasKecil')"><a class="nav-link" href="{{route('kasKecil')}}">Petty Cash</a></li>
+                  <li class=" @yield('menuKasKecil')"><a class="nav-link" href="{{route('pettyCash')}}">Petty Cash</a></li>
                 </ul>
               </li>
               <li class="nav-item dropdown @yield('menuLaporan')">

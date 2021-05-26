@@ -78,7 +78,8 @@ Route::group(['middleware'=>['auth','role:admin']],function(){
     Route::get('/kasPendaftaranKeluar', 'kasPendaftaranController@keluar')->name('kasPendaftaranKeluar');
     Route::post('/kasPendaftaranMasukSimpan', 'kasPendaftaranController@store')->name('kasPendaftaranMasukSimpan');
     Route::post('/kasPendaftaranKeluarSimpan', 'kasPendaftaranController@storeKeluar')->name('kasPendaftaranKeluarSimpan');
-    Route::get('/kasKecil', 'KasController@kasKecil')->name('kasKecil');
+    Route::get('/pettyCash', 'KasController@pettyCash')->name('pettyCash');
+    Route::post('/pettyCashSimpan', 'KasController@pettyCashSimpan')->name('pettyCashSimpan');
     
     Route::get('/laporanBulanan', 'LaporanController@laporanBulanan')->name('laporanBulanan');
     Route::get('/laporanTahunan', 'LaporanController@laporanTahunan')->name('laporanTahunan');

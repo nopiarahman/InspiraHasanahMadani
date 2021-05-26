@@ -5,6 +5,7 @@ use App\akun;
 use App\pembelian;
 use App\rumah;
 use App\transaksi;
+use App\pettyCash;
 use App\kasPendaftaran;
 use Carbon\Carbon;
 
@@ -51,6 +52,14 @@ function saldoTerakhirKasPendaftaran(){
     }
     return $saldoTerakhir;
 }
+function saldoTerakhirPettyCash(){
+    $saldo = pettyCash::orderBy('created_at','desc')->first();
+    $saldoTerakhir=0;
+    if($saldo != null){
+        $saldoTerakhir=$saldo->saldo;
+    }
+    return $saldoTerakhir;
+}
 function kasBesarMasuk($dataArray){
     $data = collect($dataArray);
     $akunPendapatan=akun::where('namaAkun','Pendapatan')->first();
@@ -77,6 +86,20 @@ function kasBesarKeluar($dataArray)
     $dataTransaksi['saldo'] = saldoTerakhir()-$jumlah;
     $dataTransaksi['proyek_id'] = proyekId();
     transaksi::create($dataTransaksi);
+    // dd($dataTransaksi);
+}
+function pettyCashKeluar($dataArray)
+{
+    $data = collect($dataArray);
+    $jumlah= str_replace(',', '', $data->get('jumlah'));
+    $dataTransaksi['tanggal'] = $data->get('tanggal');
+    $dataTransaksi['uraian'] = $data->get('uraian');
+    $dataTransaksi['sumber'] = $data->get('sumber');
+    $dataTransaksi['keterangan'] = $data->get('keterangan');
+    $dataTransaksi['debet'] = $jumlah;
+    $dataTransaksi['saldo'] = saldoTerakhirPettyCash()-$jumlah;
+    $dataTransaksi['proyek_id'] = proyekId();
+    pettyCash::create($dataTransaksi);
     // dd($dataTransaksi);
 }
 
@@ -137,3 +160,27 @@ function hitungTransaksiRABUnit($idRAB){
         return 0;
     }
 }
+function transaksiAkun($id,$start,$end){
+    $transaksi =transaksi::where('akun_id',$id)->whereBetween('tanggal',[$start,$end])->get();
+    if($transaksi != null){
+        return $transaksi->sum('debet');
+    }else{
+        return $transaksi = 0;
+    }
+
+}
+function pendapatanBulanSebelumnya($start,$end){
+    $mulai = \Carbon\carbon::parse($start)->subMonths(1)->isoFormat('YYYY-MM-DD');
+    $akhir = \Carbon\carbon::parse($end)->subMonths(1)->isoFormat('YYYY-MM-DD');
+    $akunId=akun::where('proyek_id',proyekId())->where('namaAkun','pendapatan')->first();
+    $pendapatan = transaksi::where('akun_id',$akunId->id)
+                            ->whereBetween('tanggal',[$mulai,$akhir])
+                            ->orderBy('created_at','desc')->first();
+    if($pendapatan != null){
+        return $pendapatan->saldo;
+    }else{
+        $pendapatan = 0;
+        return $pendapatan->saldo;
+    }
+}
+

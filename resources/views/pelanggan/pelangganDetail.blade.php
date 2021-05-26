@@ -72,7 +72,7 @@
                   {{$dataPembelian->nomorAkad}}
                 </td>
                   <td>
-                    <a href="#" class="badge badge-warning text-white"
+                    <a href="#" class="badge badge-warning text-dark"
                             data-toggle="modal" 
                             data-target="#nomorAkad">
                                 Ubah
@@ -98,7 +98,7 @@
                   {{$dataPembelian->tanggalAkad}}
                 </td>
                   <td>
-                    <a href="#" class="badge badge-warning text-white"
+                    <a href="#" class="badge badge-warning text-dark"
                             data-toggle="modal" 
                             data-target="#tanggalAkad">
                                 Ubah
@@ -126,7 +126,7 @@
                 <td>Rp.{{number_format($dataPembelian->sisaDp)}}  
                   @if($dataPembelian->sisaDp==0)
                   /
-                  <span class="badge badge-info"><i class="fas fa-check"></i> Lunas</span>
+                  <span class="badge badge-info text-white"><i class="fas fa-check"></i> Lunas</span>
                   @endif 
                 </td>
                 <td>
