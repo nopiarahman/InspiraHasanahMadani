@@ -41,3 +41,8 @@ input[type=number] {
 .navbarMarker{
   list-style: none;
 }
+
+.kanan{
+  display: flex;
+  margin-left: auto;
+}

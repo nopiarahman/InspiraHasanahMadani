@@ -245,4 +245,80 @@ function penjualanTahunan($start,$end){
         return $transaksi = 0;
     }
 }
+function penyebut($nilai) {
+    $nilai = abs($nilai);
+    $huruf = array("", "Satu", "Dua", "Tiga", "Empat", "Lima", "Enam", "Tujuh", "Delapan", "Sembilan", "Sepuluh", "Sebelas");
+    $temp = "";
+    if($nilai == 0){
+        $temp = $huruf[$nilai];
+    }
+    else if ($nilai < 12) {
+        $temp = " ". $huruf[$nilai];
+    } else if ($nilai <20) {
+        $temp = penyebut($nilai - 10). " Belas";
+    } else if ($nilai < 100) {
+        $temp = penyebut($nilai/10)." Puluh". penyebut($nilai % 10);
+    } else if ($nilai < 200) {
+        $temp = " Seratus" . penyebut($nilai - 100);
+    } else if ($nilai < 1000) {
+        $temp = penyebut($nilai/100) . " Ratus" . penyebut($nilai % 100);
+    } else if ($nilai < 2000) {
+        $temp = " Seribu" . penyebut($nilai - 1000);
+    } else if ($nilai < 1000000) {
+        $temp = penyebut($nilai/1000) . " Ribu" . penyebut($nilai % 1000);
+    } else if ($nilai < 1000000000) {
+        $temp = penyebut($nilai/1000000) . " Juta" . penyebut($nilai % 1000000);
+    } else if ($nilai < 1000000000000) {
+        $temp = penyebut($nilai/1000000000) . " Milyar" . penyebut(fmod($nilai,1000000000));
+    } else if ($nilai < 1000000000000000) {
+        $temp = penyebut($nilai/1000000000000) . " Trilyun" . penyebut(fmod($nilai,1000000000000));
+    }     
+    return $temp;
+}
+
+function tkoma($nilai)
+{
+    $nilai = stristr($nilai,'.');
+    $angka = array("nol", "satu", "dua", "tiga", "empat", "lima", "enam", "tujuh", "delapan","sembilan");
+    $temp="";
+    $pjg = strlen($nilai);
+    $pos = 1;
+
+    while($pos < $pjg){
+        $char = substr($nilai,$pos,1);
+        $pos++;
+        $temp = " ".$angka[$char];
+    }
+    return $temp;
+}
+
+function terbilang($nilai) {
+    if($nilai<0) {
+        $hasil = "minus ". trim(penyebut($nilai));
+    } else {
+        $poin = trim(tkoma($nilai));
+        $hasil = trim(penyebut($nilai));
+    }
+        if($poin){
+            $hasil = ucfirst ($hasil).' koma '.$poin;
+        }else{
+            $hasil = ucfirst($hasil);
+        }
+        return $hasil;  
+    
+}
+function romawi($number) {
+    $map = array('M' => 1000, 'CM' => 900, 'D' => 500, 'CD' => 400, 'C' => 100, 'XC' => 90, 'L' => 50, 'XL' => 40, 'X' => 10, 'IX' => 9, 'V' => 5, 'IV' => 4, 'I' => 1);
+    $returnValue = '';
+    while ($number > 0) {
+        foreach ($map as $roman => $int) {
+            if($number >= $int) {
+                $number -= $int;
+                $returnValue .= $roman;
+                break;
+            }
+        }
+    }
+    return $returnValue;
+}
 

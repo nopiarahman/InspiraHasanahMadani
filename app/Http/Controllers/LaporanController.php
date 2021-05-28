@@ -7,6 +7,8 @@ use Carbon\Carbon;
 use App\transaksi;
 use App\cicilan;
 use App\akun;
+use App\dp;
+use App\pembelian;
 use PDF;
 use SnappyImage;
 
@@ -117,13 +119,32 @@ class LaporanController extends Controller
         //
     }
     public function cetakKwitansi(Cicilan $id){
+        $pembelian= pembelian::where('id',$id->pembelian_id)->first();
+        $uraian = 'Pembayaran Cicilan Ke '.$id->urut.' '.jenisKepemilikan($pembelian->pelanggan_id).' '.$pembelian->kavling->blok;   
+        /* Jatuh Tempo */
+        $totalBulan = ($pembelian->sisaKewajiban-$pembelian->sisaCicilan)/($pembelian->sisaKewajiban/$pembelian->tenor);
+        $cicilanPertama = cicilan::where('pembelian_id',$pembelian->id)->first();
+        if($cicilanPertama != null){
+            $tenorBulan = (int)$totalBulan+1;
+            $tempo=Carbon::parse($cicilanPertama->tanggal)->addMonth($tenorBulan)->isoFormat('YYYY-MM-DD');
+        }else{
+            $tempo=Carbon::now();
+        }
+        return view('cetak/kwitansi',compact('id','pembelian','uraian','tempo'));
+    }
+    public function cetakKwitansiDp(Dp $id){
         // dd($id);
-        return view('cetak/kwitansi');
-        $pdf = PDF::loadview('cetak/kwitansi');
-        $pdf->setOptions([
-
-            'enable-local-file-access'=> true,
-        ]);
-        return $pdf->stream('kwitansi.pdf');
+        $pembelian= pembelian::where('id',$id->pembelian_id)->first();
+        $uraian = 'Pembayaran Dp Ke '.$id->urut.' '.jenisKepemilikan($pembelian->pelanggan_id).' '.$pembelian->kavling->blok;   
+        /* Jatuh Tempo */
+        $totalBulan = ($pembelian->sisaKewajiban-$pembelian->sisaDp)/($pembelian->sisaKewajiban/$pembelian->tenor);
+        $DpPertama = Dp::where('pembelian_id',$pembelian->id)->first();
+        if($DpPertama != null){
+            $tenorBulan = (int)$totalBulan+1;
+            $tempo=Carbon::parse($DpPertama->tanggal)->addMonth($tenorBulan)->isoFormat('YYYY-MM-DD');
+        }else{
+            $tempo=Carbon::now();
+        }
+        return view('cetak/kwitansiDp',compact('id','pembelian','uraian','tempo'));
     }
 }

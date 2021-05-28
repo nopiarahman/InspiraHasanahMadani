@@ -110,12 +110,14 @@ class PelangganController extends Controller
             /* update Akun */
             $akun=akun::create([
                 'proyek_id'=>proyekId(),
+                'jenis'=> 'Pembangunan',
                 'kategori'=> 'Pembangunan Rumah',
                 'kodeAkun'=> 'IH-30-'.$cariKavling->blok,
                 'namaAkun'=> 'Biaya Pembangunan Rumah '.$cariKavling->blok,
             ]);$akun->save();
             $akunPembebanan=akun::create([
                 'proyek_id'=>proyekId(),
+                'jenis'=> 'Pembebanan',
                 'kategori'=> 'Biaya Pembebanan Per-Unit',
                 'kodeAkun'=> 'IH-31-'.$cariKavling->blok,
                 'namaAkun'=> 'Biaya Pembebanan Per-Unit '.$cariKavling->blok,

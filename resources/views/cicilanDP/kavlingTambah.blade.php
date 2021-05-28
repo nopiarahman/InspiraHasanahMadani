@@ -108,7 +108,7 @@
 
 <div class="card">
   <div class="card-header">
-    <h4>History Pembayaran Cicilan DP {{$id->pelanggan->nama}}</h4>
+    <h4>History Pembayaran Cicilan DP {{jenisKepemilikan($id->pelanggan_id)}} {{$id->pelanggan->nama}}</h4>
   </div>
   <div class="card-body">
     <table class="table table-hover">
@@ -118,6 +118,7 @@
           <th scope="col">Tanggal</th>
           <th scope="col">Jumlah</th>
           <th scope="col">Sisa DP</th>
+          <th scope="col">Nomor Faktur</th>
           <th scope="col">Aksi</th>
         </tr>
       </thead>
@@ -128,10 +129,29 @@
           <td>{{formatTanggal($cicilanDp->tanggal)}}</td>
           <td>Rp.{{number_format($cicilanDp->jumlah)}}</td>
           <td>Rp.{{number_format($cicilanDp->sisaDp)}}</td>
-          <td><a href="{{route('DPKavlingTambah',['id'=>$cicilanDp->id])}}" class="badge badge-primary">Pembayaran</a></td>
+          <td>
+            @if(jenisKepemilikan($id->pelanggan_id)=='Kavling')
+            DK
+            @else
+            DB
+            @endif
+            {{romawi(Carbon\Carbon::parse($cicilanDp->tanggal)->isoFormat('MM'))}}/{{$cicilanDp->ke}}</td>
+            @if($loop->last == true)
+          <td><a href="{{route('cetakKwitansiDp',['id'=>$cicilanDp->id])}}" class="badge badge-primary">Kwitansi</a></td>
+            @endif
         </tr>
         @endforeach
       </tbody>
+      <tfoot class="bg-light">
+        <tr >
+          <th style="text-align: right" colspan="2">Total Terbayar</th>
+          <th>Rp.{{number_format($id->dp-$id->sisaDp)}}</th>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+
+      </tfoot>
     </table>
     
   </div>

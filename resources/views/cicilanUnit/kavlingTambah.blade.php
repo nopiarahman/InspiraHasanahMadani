@@ -145,33 +145,45 @@
 
 <div class="card">
   <div class="card-header">
-    <h4>History Pembayaran Cicilan Unit Kavling {{$id->pelanggan->nama}}</h4>
+    <h4>History Pembayaran Cicilan Unit {{jenisKepemilikan($id->pelanggan_id)}} {{$id->pelanggan->nama}}</h4>
   </div>
   <div class="card-body">
     <table class="table table-hover">
       <thead>
         <tr>
-          <th scope="col">No</th>
+          <th scope="col">Cicilan Ke</th>
           <th scope="col">Tanggal</th>
           <th scope="col">Jumlah</th>
           <th scope="col">Sisa Hutang</th>
+          <th scope="col">Nomor Faktur</th>
           <th scope="col">Aksi</th>
         </tr>
       </thead>
       <tbody>
         @foreach($daftarCicilanUnit as $cicilanUnit)
         <tr>
-          <th scope="row">{{$loop->iteration}}</th>
+          <th scope="row">{{$cicilanUnit->urut}}</th>
           <td>{{formatTanggal($cicilanUnit->tanggal)}}</td>
           <td>Rp.{{number_format($cicilanUnit->jumlah)}}</td>
           <td>Rp.{{number_format($cicilanUnit->sisaKewajiban)}}</td>
-          <td><a href="{{route('cetakKwitansi',['id'=>$cicilanUnit->id])}}" class="badge badge-primary">Cetak Kwitansi</a></td>
+          <td>
+            @if(jenisKepemilikan($id->pelanggan_id)=='Kavling')
+            CK
+            @else
+            CB
+            @endif
+            {{romawi(Carbon\Carbon::parse($cicilanUnit->tanggal)->isoFormat('MM'))}}/{{$cicilanUnit->ke}}</td>
+          <td>
+            @if($loop->last == true)
+            <a href="{{route('cetakKwitansi',['id'=>$cicilanUnit->id])}}" class="badge badge-primary">Kwitansi</a>
+            @endif
+          </td>
         </tr>
         @endforeach
       </tbody>
       <tfoot class="bg-light">
         <tr >
-          <th style="text-align: right" colspan="2">Total Terbayar</th>
+          <th style="text-align: right" colspan="3">Total Terbayar</th>
           <th>Rp.{{number_format($totalTerbayar)}}</th>
           <td></td>
           <td></td>

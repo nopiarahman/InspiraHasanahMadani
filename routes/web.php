@@ -86,5 +86,6 @@ Route::group(['middleware'=>['auth','role:admin']],function(){
     Route::get('/laporanTahunan', 'LaporanController@laporanTahunan')->name('laporanTahunan');
     
     Route::get('/cetakKwitansi/{id}', 'LaporanController@cetakKwitansi')->name('cetakKwitansi');
+    Route::get('/cetakKwitansiDp/{id}', 'LaporanController@cetakKwitansiDp')->name('cetakKwitansiDp');
     
 });

@@ -5,65 +5,71 @@
     <h1>Dashboard</h1>
   </div>
   <div class="row">
-    <div class="col-lg-3 col-md-6 col-sm-6 col-12">
-      <div class="card card-statistic-1">
-        <div class="card-icon bg-primary">
-          <i class="far fa-user"></i>
+    <div class="col-lg-4 col-md-4 col-sm-12">
+      <a href="{{route('cashFlow')}}">
+      <div class="card card-statistic-2">
+        <div class="card-chart"><div class="chartjs-size-monitor" style="position: absolute; inset: 0px; overflow: hidden; pointer-events: none; visibility: hidden; z-index: -1;"><div class="chartjs-size-monitor-expand" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:1000000px;height:1000000px;left:0;top:0"></div></div><div class="chartjs-size-monitor-shrink" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:200%;height:200%;left:0; top:0"></div></div></div>
+          <canvas id="sales-chart" height="63" width="269" style="display: block; height: 71px; width: 300px;" class="chartjs-render-monitor"></canvas>
+        </div>
+        <div class="card-icon shadow-primary bg-primary">
+          <i class="fas fa-money-bill-wave"></i>
         </div>
         <div class="card-wrap">
           <div class="card-header">
-            <h4>Total Admin</h4>
+            <h4>Kas Besar</h4>
           </div>
           <div class="card-body">
-            10
+            <h4>
+              Rp. {{number_format(saldoTerakhir())}}
+            </h4>
           </div>
         </div>
       </div>
+      </a>
     </div>
-    <div class="col-lg-3 col-md-6 col-sm-6 col-12">
-      <div class="card card-statistic-1">
-        <div class="card-icon bg-danger">
-          <i class="far fa-newspaper"></i>
+    <div class="col-lg-4 col-md-4 col-sm-12">
+      <a href="{{route('kasPendaftaranMasuk')}}">
+      <div class="card card-statistic-2">
+        <div class="card-chart"><div class="chartjs-size-monitor" style="position: absolute; inset: 0px; overflow: hidden; pointer-events: none; visibility: hidden; z-index: -1;"><div class="chartjs-size-monitor-expand" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:1000000px;height:1000000px;left:0;top:0"></div></div><div class="chartjs-size-monitor-shrink" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:200%;height:200%;left:0; top:0"></div></div></div>
+          <canvas id="balance-chart" height="63" width="269" style="display: block; height: 71px; width: 300px;" class="chartjs-render-monitor"></canvas>
+        </div>
+        <div class="card-icon shadow-primary bg-primary">
+          <i class="fas fa-coins"></i>
         </div>
         <div class="card-wrap">
           <div class="card-header">
-            <h4>News</h4>
+            <h4>Kas Pendaftaran</h4>
           </div>
           <div class="card-body">
-            42
+            <h4>
+              Rp. {{number_format(saldoTerakhirKasPendaftaran())}}
+            </h4>
           </div>
         </div>
       </div>
+      </a>
     </div>
-    <div class="col-lg-3 col-md-6 col-sm-6 col-12">
-      <div class="card card-statistic-1">
-        <div class="card-icon bg-warning">
-          <i class="far fa-file"></i>
+    <div class="col-lg-4 col-md-4 col-sm-12">
+      <a href="{{route('pettyCash')}}">
+      <div class="card card-statistic-2">
+        <div class="card-chart"><div class="chartjs-size-monitor" style="position: absolute; inset: 0px; overflow: hidden; pointer-events: none; visibility: hidden; z-index: -1;"><div class="chartjs-size-monitor-expand" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:1000000px;height:1000000px;left:0;top:0"></div></div><div class="chartjs-size-monitor-shrink" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:200%;height:200%;left:0; top:0"></div></div></div>
+          <canvas id="sales-chart" height="63" width="269" style="display: block; height: 71px; width: 300px;" class="chartjs-render-monitor"></canvas>
+        </div>
+        <div class="card-icon shadow-primary bg-primary">
+          <i class="fas fa-piggy-bank"></i>
         </div>
         <div class="card-wrap">
           <div class="card-header">
-            <h4>Reports</h4>
+            <h4>Petty Cash</h4>
           </div>
           <div class="card-body">
-            1,201
+            <h4>
+              Rp. {{number_format(saldoTerakhirPettyCash())}}
+            </h4>
           </div>
         </div>
       </div>
-    </div>
-    <div class="col-lg-3 col-md-6 col-sm-6 col-12">
-      <div class="card card-statistic-1">
-        <div class="card-icon bg-success">
-          <i class="fas fa-circle"></i>
-        </div>
-        <div class="card-wrap">
-          <div class="card-header">
-            <h4>Online Users</h4>
-          </div>
-          <div class="card-body">
-            47
-          </div>
-        </div>
-      </div>
+      </a>
     </div>
   </div>
   <div class="row">

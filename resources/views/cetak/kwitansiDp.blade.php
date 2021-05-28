@@ -1,7 +1,7 @@
 @extends('layouts.tema')
 @section('content')
 <div class="section-header">
-    <h1>Cetak Kwitansi Cicilan</h1> 
+    <h1>Cetak Kwitansi DP</h1> 
     <div class="kanan">
       <button onclick="cetak('wrapper')" class="btn btn-primary"> <i class="fas fa-print fa-L"></i> Cetak Kwitansi</button>
     </div>
@@ -28,9 +28,9 @@
             <div class="col-3 ">
                 <small style="font-size: medium">Nomor Faktur:            
                   @if(jenisKepemilikan($pembelian->pelanggan_id)=='Kavling')
-                  CK
+                  DK
                   @else
-                  CB
+                  DB
                   @endif {{romawi(Carbon\Carbon::parse($id->tanggal)->isoFormat('MM'))}}/{{$id->ke}}</small><br>
                 <small style="font-size: medium">Tanggal: {{formatTanggal($id->tanggal)}} </small> <br>
                 <small style="font-size: medium">Kode Pelanggan: C{{$pembelian->kavling->blok}}</small>
@@ -44,7 +44,7 @@
     <!-- info row -->
     <div class="row invoice-info mt-2 justify-content-md-center">
       <div class="align-center">
-        <h1 class="text-primary">KWITANSI</h1>
+        <h1 class="text-primary">KWITANSI DP</h1>
       </div>
       
     </div>
@@ -103,32 +103,32 @@
         <table class="" style="border-collapse: collapse">
           <tr class="px-n1">
             <th style="width: 70%">Total Hutang</th>
-            <td>: <span class="text-warning"> Rp {{number_format($pembelian->sisaKewajiban)}}</span></td>
+            <td>: <span class="text-warning"> Rp {{number_format($pembelian->sisaDp)}}</span></td>
           </tr>
           <tr>
-            <th>Angsuran Ke</th>
+            <th>Angsuran DP Ke</th>
             <td>: {{$id->urut}} ( {{terbilang($id->urut)}} )</td>
           </tr>
-          <tr>
+          {{-- <tr>
             <th>Nilai Angsuran</th>
             <td>: Rp. {{number_format($pembelian->sisaKewajiban/$pembelian->tenor)}}</td>
-          </tr>
+          </tr> --}}
           <tr>
             <th>Total Angsuran Dibayarkan</th>
-            <td>: Rp. {{number_format($pembelian->sisaKewajiban-$pembelian->sisaCicilan)}}</td>
+            <td>: Rp. {{number_format($pembelian->dp-$pembelian->sisaDp)}}</td>
           </tr>
-          <tr>
+          {{-- <tr>
             <th>Diskon</th>
             <td>: <span class="text-success"> Rp. {{number_format($pembelian->diskon)}}</span></td>
-          </tr>
+          </tr> --}}
           <tr>
             <th>Sisa Hutang</th>
-            <td>: <span class="text-warning">Rp. {{number_format($pembelian->sisaCicilan)}}</span> </td>
+            <td>: <span class="text-warning">Rp. {{number_format($pembelian->sisaDp)}}</span> </td>
           </tr>
           <tr>
             <th>Status</th>
             <td>: 
-              @if($pembelian->sisaCicilan <=0)
+              @if($pembelian->sisaDp <=0)
               <span class="text-primary"> Lunas </span>
               @else
               
@@ -139,7 +139,7 @@
           <tr>
             <th>Jatuh Tempo</th>
             <td>: 
-              @if($pembelian->sisaCicilan <=0)
+              @if($pembelian->sisaDp <=0)
               -
               @else
               1-10 {{Carbon\Carbon::parse($id->tempo)->isoFormat('MMMM YYYY')}}
@@ -192,9 +192,9 @@
             <div class="col-3 ">
                 <small style="font-size: medium">Nomor Faktur:            
                   @if(jenisKepemilikan($pembelian->pelanggan_id)=='Kavling')
-                  CK
+                  DK
                   @else
-                  CB
+                  DB
                   @endif {{romawi(Carbon\Carbon::parse($id->tanggal)->isoFormat('MM'))}}/{{$id->ke}}</small><br>
                 <small style="font-size: medium">Tanggal: {{formatTanggal($id->tanggal)}} </small> <br>
                 <small style="font-size: medium">Kode Pelanggan: C{{$pembelian->kavling->blok}}</small>
@@ -208,7 +208,7 @@
     <!-- info row -->
     <div class="row invoice-info mt-2 justify-content-md-center">
       <div class="align-center">
-        <h1 class="text-primary">KWITANSI</h1>
+        <h1 class="text-primary">KWITANSI DP</h1>
       </div>
       
     </div>
@@ -267,32 +267,32 @@
         <table class="" style="border-collapse: collapse">
           <tr class="px-n1">
             <th style="width: 70%">Total Hutang</th>
-            <td>: <span class="text-warning"> Rp {{number_format($pembelian->sisaKewajiban)}}</span></td>
+            <td>: <span class="text-warning"> Rp {{number_format($pembelian->sisaDp)}}</span></td>
           </tr>
           <tr>
-            <th>Angsuran Ke</th>
+            <th>Angsuran DP Ke</th>
             <td>: {{$id->urut}} ( {{terbilang($id->urut)}} )</td>
           </tr>
-          <tr>
+          {{-- <tr>
             <th>Nilai Angsuran</th>
             <td>: Rp. {{number_format($pembelian->sisaKewajiban/$pembelian->tenor)}}</td>
-          </tr>
+          </tr> --}}
           <tr>
             <th>Total Angsuran Dibayarkan</th>
-            <td>: Rp. {{number_format($pembelian->sisaKewajiban-$pembelian->sisaCicilan)}}</td>
+            <td>: Rp. {{number_format($pembelian->dp-$pembelian->sisaDp)}}</td>
           </tr>
-          <tr>
+          {{-- <tr>
             <th>Diskon</th>
             <td>: <span class="text-success"> Rp. {{number_format($pembelian->diskon)}}</span></td>
-          </tr>
+          </tr> --}}
           <tr>
             <th>Sisa Hutang</th>
-            <td>: <span class="text-warning">Rp. {{number_format($pembelian->sisaCicilan)}}</span> </td>
+            <td>: <span class="text-warning">Rp. {{number_format($pembelian->sisaDp)}}</span> </td>
           </tr>
           <tr>
             <th>Status</th>
             <td>: 
-              @if($pembelian->sisaCicilan <=0)
+              @if($pembelian->sisaDp <=0)
               <span class="text-primary"> Lunas </span>
               @else
               
@@ -302,7 +302,13 @@
           </tr>
           <tr>
             <th>Jatuh Tempo</th>
-            <td>: {{formatTanggal($id->tempo)}}</td>
+            <td>: 
+              @if($pembelian->sisaDp <=0)
+              -
+              @else
+              1-10 {{Carbon\Carbon::parse($id->tempo)->isoFormat('MMMM YYYY')}}
+              @endif
+            </td>
           </tr>
         </table>
       </div>
