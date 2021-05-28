@@ -165,7 +165,7 @@
           <td>{{formatTanggal($cicilanUnit->tanggal)}}</td>
           <td>Rp.{{number_format($cicilanUnit->jumlah)}}</td>
           <td>Rp.{{number_format($cicilanUnit->sisaKewajiban)}}</td>
-          <td><a href="{{route('DPKavlingTambah',['id'=>$cicilanUnit->id])}}" class="badge badge-primary">Pembayaran</a></td>
+          <td><a href="{{route('cetakKwitansi',['id'=>$cicilanUnit->id])}}" class="badge badge-primary">Cetak Kwitansi</a></td>
         </tr>
         @endforeach
       </tbody>

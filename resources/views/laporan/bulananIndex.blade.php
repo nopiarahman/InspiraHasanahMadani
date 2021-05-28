@@ -61,7 +61,7 @@
 </div>
 <div class="card">
   <div class="card-header">
-    <h4>Laporan Keuangan Bulan {{\Carbon\carbon::parse($end)->isoFormat('MMMM')}}</h4>
+    <h4>Laporan Keuangan Bulan {{\Carbon\carbon::now()->isoFormat('MMMM')}}</h4>
     
   </div>
   <div class="row">
@@ -70,7 +70,7 @@
         <table class="table table-sm table-hover table-striped">
           <thead>
             <tr>
-              <th scope="col" colspan="4" class="">Pendapatan</th>
+              <th scope="col" colspan="4" class="bg-primary text-white">Pendapatan</th>
             </tr>
           </thead>
           <tbody>
@@ -83,15 +83,18 @@
             @endforeach
           </tbody>
         
-            <tr>
-              <th colspan=3" class="text-right bg-warning text-white" >Pendapatan Bulan {{\Carbon\carbon::parse($end)->isoFormat('MMMM')}}</th>
-              <th class="bg-warning text-white">Rp.{{number_format($pendapatan->sum('kredit'))}}</th>
+            <tr class="border-top border-success">
+              <th colspan=3" class="text-right " >Pendapatan Bulan {{\Carbon\carbon::now()->isoFormat('MMMM')}}</th>
+              <th class="">Rp.{{number_format($pendapatan->sum('kredit'))}}</th>
             </tr>
             <tr>
-              <th colspan=3" class="text-right bg-warning text-white" >Sisa Saldo Bulan {{\Carbon\carbon::parse($start)->subMonths(1)->isoFormat('MMMM')}}</th>
-              <th class="bg-warning text-white">Rp.{{number_format(pendapatanBulanSebelumnya($start,$end))}}</th>
+              <th colspan=3" class="text-right " >Sisa Saldo Bulan {{\Carbon\carbon::now()->subMonths(1)->isoFormat('MMMM')}}</th>
+              <th class="">Rp.{{number_format(pendapatanBulanSebelumnya())}}</th>
             </tr>
-          
+            <tr>
+              <th colspan=3" class="text-right bg-secondary" >Total Pendapatan</th>
+              <th class="bg-secondary">Rp.{{number_format(pendapatanBulanSebelumnya()+$pendapatan->sum('kredit'))}}</th>
+            </tr>
             @php
             $a=[];
             $b=[];
@@ -124,21 +127,21 @@
               @php
                   $c[$judul]=$a[$judul]-$c[$judul];
               @endphp
-              <tr>
-                <th colspan="3" class="text-right bg-secondary" >Sub Total {{$judul}}</th>
-                <th class="bg-secondary" >Rp. {{number_format($a[$judul])}}</th>
+              <tr class="border-top border-success">
+                <th colspan="3" class="text-right " >Sub Total {{$judul}}</th>
+                <th class="" >Rp. {{number_format($a[$judul])}}</th>
               </tr>
             @endforeach
               {{-- {{dd($a)}} --}}
           </tbody>
           <tfoot>
             <tr>
-              <th colspan="3" class="text-right bg-warning text-white" >Total Biaya Operasional Bulanan</th>
-                <th class="bg-warning text-white" >Rp. {{number_format(array_sum($c))}}</th>
+              <th colspan="3" class="text-right bg-secondary" >Total Biaya Operasional Bulanan</th>
+                <th class="bg-secondary" >Rp. {{number_format(array_sum($c))}}</th>
             </tr>
             <tr>
               <th colspan="3" class="text-right bg-info text-white" >Total Laba/Rugi Berjalan</th>
-                <th class="bg-info text-white" >Rp. {{number_format($pendapatan->sum('kredit')-array_sum($c))}}</th>
+                <th class="bg-info text-white" >Rp. {{number_format($pendapatan->sum('kredit')+pendapatanBulanSebelumnya($start,$end)-array_sum($c))}}</th>
             </tr>
           </tfoot>
         </table>

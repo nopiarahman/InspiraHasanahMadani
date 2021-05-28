@@ -62,7 +62,13 @@ function saldoTerakhirPettyCash(){
 }
 function kasBesarMasuk($dataArray){
     $data = collect($dataArray);
-    $akunPendapatan=akun::where('namaAkun','Pendapatan')->first();
+    $akunPendapatan=akun::firstOrCreate([
+        'proyek_id'=>proyekId(),
+        'jenis'=>'Pendapatan',
+        'kategori'=>'Pendapatan',
+        'kodeAkun'=>'Pendapatan',
+        'namaAkun'=>'Pendapatan',
+    ]);
     $requestData = $data->all();
     $requestData['kredit']=$data->get('jumlah');
     $requestData['saldo']=saldoTerakhir()+$data->get('jumlah');
@@ -167,20 +173,76 @@ function transaksiAkun($id,$start,$end){
     }else{
         return $transaksi = 0;
     }
-
 }
-function pendapatanBulanSebelumnya($start,$end){
-    $mulai = \Carbon\carbon::parse($start)->subMonths(1)->isoFormat('YYYY-MM-DD');
-    $akhir = \Carbon\carbon::parse($end)->subMonths(1)->isoFormat('YYYY-MM-DD');
+function transaksiAkunTahunan($id,$start,$end){
+    $transaksi =transaksi::where('akun_id',$id)->whereBetween('tanggal',[$start,$end])->get();
+    if($transaksi != null){
+        return $transaksi->sum('debet');
+    }else{
+        return $transaksi = 0;
+    }
+}
+function pendapatanLainTahunan($id,$start,$end){
+    $transaksi =transaksi::where('akun_id',$id)->whereBetween('tanggal',[$start,$end])->get();
+    if($transaksi != null){
+        return $transaksi->sum('kredit');
+    }else{
+        return $transaksi = 0;
+    }
+}
+
+function pendapatanBulanSebelumnya(){
+    $mulai = \Carbon\carbon::now()->subMonths(1)->firstOfMonth()->isoFormat('YYYY-MM-DD');
+    $akhir = \Carbon\carbon::now()->subMonths(1)->endOfMonth()->isoFormat('YYYY-MM-DD');
     $akunId=akun::where('proyek_id',proyekId())->where('namaAkun','pendapatan')->first();
     $pendapatan = transaksi::where('akun_id',$akunId->id)
                             ->whereBetween('tanggal',[$mulai,$akhir])
                             ->orderBy('created_at','desc')->first();
+    // dd($akhir);
     if($pendapatan != null){
         return $pendapatan->saldo;
     }else{
-        $pendapatan = 0;
-        return $pendapatan->saldo;
+        return 0;
+        // return $pendapatan->saldo;
+    }
+}
+function biayaPembangunanRumahTahunan($start,$end){
+    $akun =akun::where('jenis','Pembangunan')->where('proyek_id',proyekId())->get();
+    // dd($akun);
+    if($akun != null){
+        $transaksiAkun=0;
+        foreach($akun as $a){
+            $transaksi = transaksi::where('akun_id',$a->id)->whereBetween('tanggal',[$start,$end])->get();
+            $transaksiAkun += $transaksi->sum('debet');
+        }
+        return $transaksiAkun;
+    }
+    else{
+        return 0;
+    }
+}
+function biayaPembebananTahunan($start,$end){
+    $akun =akun::where('jenis','Pembebanan')->where('proyek_id',proyekId())->get();
+    // dd($akun);
+    if($akun != null){
+        $transaksiAkun=0;
+        foreach($akun as $a){
+            $transaksi = transaksi::where('akun_id',$a->id)->whereBetween('tanggal',[$start,$end])->get();
+            $transaksiAkun += $transaksi->sum('debet');
+        }
+        return $transaksiAkun;
+    }
+    else{
+        return 0;
+    }
+}
+function penjualanTahunan($start,$end){
+    $akun =akun::where('namaAkun','Pendapatan')->where('proyek_id',proyekId())->first();
+    $transaksi =transaksi::where('akun_id',$akun->id)->whereBetween('tanggal',[$start,$end])->get();
+    if($transaksi != null){
+        return $transaksi->sum('kredit');
+    }else{
+        return $transaksi = 0;
     }
 }
 

@@ -78,9 +78,13 @@ Route::group(['middleware'=>['auth','role:admin']],function(){
     Route::get('/kasPendaftaranKeluar', 'kasPendaftaranController@keluar')->name('kasPendaftaranKeluar');
     Route::post('/kasPendaftaranMasukSimpan', 'kasPendaftaranController@store')->name('kasPendaftaranMasukSimpan');
     Route::post('/kasPendaftaranKeluarSimpan', 'kasPendaftaranController@storeKeluar')->name('kasPendaftaranKeluarSimpan');
+    Route::post('/kasBesarSimpan', 'KasController@kasBesarSimpan')->name('kasBesarSimpan');
     Route::get('/pettyCash', 'KasController@pettyCash')->name('pettyCash');
     Route::post('/pettyCashSimpan', 'KasController@pettyCashSimpan')->name('pettyCashSimpan');
     
     Route::get('/laporanBulanan', 'LaporanController@laporanBulanan')->name('laporanBulanan');
     Route::get('/laporanTahunan', 'LaporanController@laporanTahunan')->name('laporanTahunan');
+    
+    Route::get('/cetakKwitansi/{id}', 'LaporanController@cetakKwitansi')->name('cetakKwitansi');
+    
 });

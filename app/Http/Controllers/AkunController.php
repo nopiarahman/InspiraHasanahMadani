@@ -14,6 +14,7 @@ class AkunController extends Controller
      */
     public function index()
     {
+
         $semuaAkun=akun::where('proyek_id',proyekId())->get();
         $kategoriAkun=akun::where('proyek_id',proyekId())->get()->groupBy('kategori');
         $perKategori = $kategoriAkun;

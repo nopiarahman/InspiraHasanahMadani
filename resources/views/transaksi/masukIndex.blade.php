@@ -19,9 +19,6 @@
   </div>
 </div>
 
-<div class="section-header">
-
-</div>
 
 <div class="card">
   <div class="card-header">

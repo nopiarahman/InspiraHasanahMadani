@@ -142,10 +142,11 @@
               
             </li>
             <li class="menu-header">Menu Keuangan</li>
+            <li class=" @yield('menuAkun')"><a class="nav-link" href="{{route('akun')}}"><i class="fas fa-book-open"></i> <span> Akun</span></a></li>
               <li class="nav-item dropdown @yield('menuTransaksi')">
                 <a href="" class="nav-link has-dropdown"><i class="far fa-handshake"></i> <span>Transaksi</span></a>
                 <ul class="dropdown-menu">
-                  <li class=" @yield('menuAkun')"><a href="{{route('akun')}}">Akun</a></li>
+                  {{-- <li class=" @yield('menuAkun')"><a href="{{route('akun')}}">Akun</a></li> --}}
                   <li class=" @yield('menuTransaksiMasuk')"><a href="{{route('transaksiMasuk')}}">Masuk</a></li>
                   <li class=" @yield('menuTransaksiKeluar')"><a href="{{route('transaksiKeluar')}}">Keluar</a></li>
                 </ul>

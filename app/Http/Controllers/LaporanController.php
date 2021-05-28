@@ -5,7 +5,10 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use App\transaksi;
+use App\cicilan;
 use App\akun;
+use PDF;
+use SnappyImage;
 
 class LaporanController extends Controller
 {
@@ -37,7 +40,15 @@ class LaporanController extends Controller
     }
 
     public function laporanTahunan(){
-        return view ('laporan/tahunanIndex');
+        $start = Carbon::now()->firstOfYear()->isoFormat('YYYY-MM-DD');
+        $end = Carbon::now()->endOfYear()->isoFormat('YYYY-MM-DD');
+        // dd($start);
+        $operasional = akun::where('proyek_id',proyekId())->where('jenis','Operasional')->get();
+        $produksi = akun::where('proyek_id',proyekId())->where('jenis','Produksi')->get();
+        $nonOperasional = akun::where('proyek_id',proyekId())->where('jenis','Non-Operasional')->get();
+        // dd($Produksi);
+        $pendapatanLain = akun::where('proyek_id',proyekId())->where('jenis','Pendapatan Lain-lain')->get();
+        return view ('laporan/tahunanIndex',compact('produksi','operasional','nonOperasional','start','end','pendapatanLain'));
     }
 
     /**
@@ -104,5 +115,15 @@ class LaporanController extends Controller
     public function destroy($id)
     {
         //
+    }
+    public function cetakKwitansi(Cicilan $id){
+        // dd($id);
+        return view('cetak/kwitansi');
+        $pdf = PDF::loadview('cetak/kwitansi');
+        $pdf->setOptions([
+
+            'enable-local-file-access'=> true,
+        ]);
+        return $pdf->stream('kwitansi.pdf');
     }
 }

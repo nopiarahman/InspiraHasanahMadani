@@ -19,10 +19,96 @@
   </div>
 </div>
 {{-- 
-<div class="section-header">
+    {{-- Alert --}}
+    <div class="row">
+      <div class="col-12">
+        @if (session('status'))
+          <div class="alert alert-success alert-dismissible show fade">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+            {{session ('status')}}
+          </div>
+        @endif
+      </div>
+      </div>
 
-</div> --}}
-
+    <div class="row">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-header">
+            <h4>Tambah Transaksi Masuk Kas Besar</h4>
+          </div>
+          <div class="card-body">
+          <form action="{{route('kasBesarSimpan')}}" method="POST" enctype="multipart/form-data">
+            @csrf
+            <div class="form-group row mb-4">
+              <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Kode Akun</label>
+              <div class="input-group col-sm-12 col-md-7">
+                  <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#pilihAkun">Pilih Akun</a>
+                  <input type="text" hidden class="form-control" name="akun_id" id="idAkunCari" >
+              </div>
+            </div>
+            <div class="form-group row mb-4">
+              <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Nama Akun</label>
+              <div class="col-sm-12 col-md-7">
+                <input type="text" readonly class="form-control" name="" id="isiNamaAkun" value="{{old('isiNamaAkun')}}">
+              </div>
+            </div>
+            
+            <div class="form-group row mb-4">
+              <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Tanggal</label>
+              <div class="col-sm-12 col-md-7">
+                <input type="date" class="form-control @error('tanggal') is-invalid @enderror" name="tanggal" value="{{old('tanggal')}}" >
+                @error('tanggal')
+                <div class="invalid-feedback">{{$message}}</div>
+                @enderror
+              </div>
+            </div>
+            <div class="form-group row mb-4">
+              <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Uraian</label>
+              <div class="col-sm-12 col-md-7">
+                <input type="text" class="form-control @error('uraian') is-invalid @enderror" name="uraian" value="{{old('uraian')}}">
+                @error('uraian')
+                  <div class="invalid-feedback">{{$message}}</div>
+                @enderror
+              </div>
+            </div>
+            <div class="form-group row mb-4">
+              <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Jumlah</label>
+              <div class="input-group col-sm-12 col-md-7">
+                <div class="input-group-prepend">
+                  <div class="input-group-text">
+                    Rp
+                  </div>
+                </div>
+                <input type="text" class="form-control jumlah @error('jumlah') is-invalid @enderror" name="jumlah" value="{{old('jumlah')}}" id="jumlah">
+                @error('jumlah')
+                  <div class="invalid-feedback">{{$message}}</div>
+                @enderror
+              </div>
+            </div>
+            <div class="form-group row mb-4">
+              <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Sumber</label>
+              <div class="col-sm-12 col-md-7">
+                <input type="text" class="form-control @error('sumber') is-invalid @enderror" name="sumber" value="{{old('sumber')}}">
+                @error('sumber')
+                  <div class="invalid-feedback">{{$message}}</div>
+                @enderror
+              </div>
+            </div>
+            <div class="form-group row mb-4">
+              <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3"></label>
+              <div class="col-sm-12 col-md-7">
+                <button class="btn btn-primary" type="submit">Simpan</button>
+              </div>
+            </div>
+          </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    
 <div class="card">
   <div class="card-header">
     <h4>Daftar Kas Besar</h4>
@@ -117,7 +203,68 @@
         </tr>
       </tfoot>
     </table>
-    {{$cashFlow->links()}}
+    {{-- {{$cashFlow->links()}} --}}
   </div>
 </div>
+{{-- Modal --}}
+<div class="modal fade " id="pilihAkun" tabindex="-1"  role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Pilih Akun</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="body table-responsive-xl">
+          <table class="table table-sm table-hover">
+            <thead>
+              <tr>
+                <th scope="col">No</th>
+                <th scope="col">Kode Akun</th>
+                <th scope="col">Nama</th>
+                <th scope="col">Aksi</th>
+              </tr>
+            </thead>
+            <tbody>
+              @foreach($semuaAkun  as $akun)
+                <tr>
+                  <td>{{$loop->iteration}}</td>
+                  <td>{{$akun->kodeAkun}}</td>
+                  <td>{{$akun->namaAkun}}</td>
+                  <td>
+                    @if($akun->namaAkun == 'Pendapatan')
+                    {{-- <a href="#" disabled class="badge badge-info pilihRAB" id="akun" >Pilih</a> --}}
+                    @else
+                    <a href="#" class="badge badge-info pilihRAB" data-id-akun={{$akun->id}} data-isi="{{$akun->namaAkun}}" id="akun" >Pilih</a>
+                    @endif
+                  </td>
+                </tr>
+              @endforeach
+            </tbody>
+          </table>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        </form>  
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+  $(document).ready(function(){
+    $(document).on('click','#akun',function(){
+      var idAkun = $(this).data('idAkun');
+      var isi =$(this).data('isi');
+      $('#idAkunCari').val(idAkun);
+      console.log(idAkun);
+      $('#isiNamaAkun').val(isi);
+      $('.close').click(); 
+    });
+  });
+
+</script>
 @endsection

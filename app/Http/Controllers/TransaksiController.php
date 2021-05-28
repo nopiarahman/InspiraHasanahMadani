@@ -117,16 +117,18 @@ class TransaksiController extends Controller
         return redirect()->route('transaksiKeluar')->with('status','Transaksi Berhasil disimpan');
     }
     public function cashFlow(Request $request){
+        $semuaAkun = akun::where('proyek_id',proyekId())->where('kategori','Pendapatan')->orWhere('kategori','Modal')->get();
+        // dd($semuaAkun);
         if($request->get('filter')){
             $mulai = Carbon::parse($request->start)->isoFormat('YYYY-MM-DD');
             $akhir = Carbon::parse($request->end)->isoFormat('YYYY-MM-DD');
-            $cashFlow=transaksi::whereBetween('tanggal',[$mulai,$akhir])->paginate(20);
+            $cashFlow=transaksi::whereBetween('tanggal',[$mulai,$akhir])->get();
         }else{
             $start = Carbon::now()->subDays(29)->isoFormat('YYYY-MM-DD');
             $end = Carbon::now()->isoFormat('YYYY-MM-DD');
-            $cashFlow=transaksi::whereBetween('tanggal',[$start,$end])->paginate(20);
+            $cashFlow=transaksi::whereBetween('tanggal',[$start,$end])->get();
         }
-        return view ('transaksi/cashFlowIndex',compact('cashFlow'));
+        return view ('transaksi/cashFlowIndex',compact('cashFlow','semuaAkun'));
     }
 
     /**

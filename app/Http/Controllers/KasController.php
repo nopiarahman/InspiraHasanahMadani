@@ -52,6 +52,24 @@ class KasController extends Controller
         pettyCash::create($requestData);
         return redirect()->route('pettyCash')->with('status','Transaksi Berhasil Disimpan');
     }
+    public function kasBesarSimpan(Request $request){
+        $rules=[
+            'jumlah'=>'required',
+            'tanggal'=>'required',
+            'uraian'=>'required',
+        ];
+        $costumMessages = [
+            'required'=>':attribute tidak boleh kosong'
+        ];
+        $this->validate($request,$rules,$costumMessages);
+        $requestData=$request->all();
+        // dd($requestData);
+        $requestData['kredit']=str_replace(',', '', $request->jumlah);
+        $requestData['proyek_id']=proyekId();
+        $requestData['saldo']=saldoTerakhir()+str_replace(',', '', $request->jumlah);
+        transaksi::create($requestData);
+        return redirect()->route('cashFlow')->with('status','Transaksi Berhasil Disimpan');
+    }
 
     /**
      * Show the form for creating a new resource.

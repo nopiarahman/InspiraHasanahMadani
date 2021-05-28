@@ -1,5 +1,4 @@
 @extends('layouts.tema')
-@section ('menuTransaksi','active')
 @section ('menuAkun','active')
 @section('content')
 <div class="section-header sticky-top">
@@ -42,6 +41,18 @@
           <div class="card-body">
           <form action="{{route('akunSimpan')}}" method="POST" enctype="multipart/form-data">
             @csrf
+            <div class="form-group row mb-4">
+              <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Jenis</label>
+              <div class="col-sm-12 col-md-7">
+                <select class="form-control selectric" tabindex="-1" name="jenis" onchange="eventPendapatan()">
+                  <option value="Operasional">Biaya Produksi</option>
+                  <option value="Operasional">Biaya Operasional</option>
+                  <option value="Non-Operasional">Biaya Non-Operasional</option>
+                  <option value="Pendapatan Lain-lain">Pendapatan Lain-lain</option>
+                  <option value="Modal">Modal</option>
+                </select>
+              </div>
+            </div>
             <div class="form-group row mb-4">
               <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Kategori Akun</label>
               <div class="input-group col-sm-12 col-md-7">
@@ -118,7 +129,7 @@
             <div class="form-group row mb-4">
               <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Kode Akun</label>
               <div class="col-sm-12 col-md-7">
-                <input type="text" class="form-control @error('kodeAkun') is-invalid @enderror" name="kodeAkun" value="{{old('kodeAkun')}}">
+                <input type="text" class="form-control @error('kodeAkun') is-invalid @enderror" name="kodeAkun" value="{{old('kodeAkun')}}" id="kodeAkun">
                 @error('kodeAkun')
                   <div class="invalid-feedback">{{$message}}</div>
                 @enderror
