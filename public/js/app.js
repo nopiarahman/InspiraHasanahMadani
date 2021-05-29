@@ -58975,7 +58975,8 @@ __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js"); // requir
 /* di view harus include script app.js menggunakan mix */
 
 
-window.moment = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js"); // window.moment = require('moment-hijri');
+window.moment = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js"); // window. = require('chart');
+// window.moment = require('moment-hijri');
 // window.popper = require('poper');
 
 /**

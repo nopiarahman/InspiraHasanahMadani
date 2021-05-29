@@ -7,9 +7,11 @@ use App\kavling;
 use App\rumah;
 use App\kios;
 use App\akun;
+use App\user;
 use App\rab;
 use App\rabUnit;
 use App\pembelian;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class PelangganController extends Controller
@@ -43,11 +45,15 @@ class PelangganController extends Controller
      */
     public function store(Request $request)
     {
-        // dd($request->kavling_id);
+        // dd($request);
         // if(preg_match("/^[0-9,]+$/", $a)) 
         // $a = str_replace(',', '', $request->harga);
         // $co=parseInt($request->harga);
-        // dd($a);
+        $parts = explode("@",$request->email);
+        $username = $parts[0];
+        $password = Carbon::parse($request->tanggalLahir)->isoFormat('DDMMYY');
+        dd($password);
+        
         if($request->statusDp=='Credit'){
             $sisaDp=str_replace(',', '', $request->dp);
         }else{

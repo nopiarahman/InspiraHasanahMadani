@@ -166,6 +166,7 @@ return [
          * Package Service Providers...
          */
         Barryvdh\Snappy\ServiceProvider::class,
+        ConsoleTVs\Charts\ChartsServiceProvider::class,
 
         /*
          * Application Service Providers...

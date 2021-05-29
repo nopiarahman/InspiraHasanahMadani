@@ -192,11 +192,11 @@
   @yield('script')
   <script type="text/javascript" src="{{ mix('js/app.js') }}"></script>
   <!-- General JS Scripts -->
- <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
   <script src="{{ mix("js/popper.js") }}"></script>
   <script src="{{ mix("js/bootstrap.js") }}"></script>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@2/dist/Chart.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.nicescroll/3.7.6/jquery.nicescroll.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
   <script src="{{asset('assets/js/stisla.js')}}"></script>
   <!-- JS Libraies -->
   <script src="{{asset('assets/js/chocolat.js')}}"></script>

@@ -12,6 +12,7 @@ require('./bootstrap');
 /* insert moment.js dari folder node_modules ke view */
 /* di view harus include script app.js menggunakan mix */
 window.moment = require('moment');
+// window. = require('chart');
 // window.moment = require('moment-hijri');
 // window.popper = require('poper');
 /**
