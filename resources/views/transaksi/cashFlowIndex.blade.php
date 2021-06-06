@@ -126,8 +126,8 @@
             </div>
           </div>
           <input type="text" id="reportrange" class="form-control filter @error('filter') is-invalid @enderror" name="filter" value="{{ request('filter') }}" id="filter">
-          <input type="hidden" name="start" id="mulai">
-          <input type="hidden" name="end" id="akhir">
+          <input type="hidden" name="start" id="mulai" value="{{$start}}">
+          <input type="hidden" name="end" id="akhir" value="{{$end}}">
           <button type="submit" class="btn btn-primary btn-icon icon-right">Filter
           <i class="fa fa-filter"></i>
           </button>
@@ -136,8 +136,8 @@
       <script type="text/javascript">
         $(function() {
             moment.locale('id');
-            var start = moment().subtract(29, 'days');
-            var end = moment();
+            var start = moment($('#mulai').val());
+              var end = moment($('#akhir').val());
             function cb(start, end) {
                 $('#reportrange span').html(start.format('D M Y') + ' - ' + end.format('DD MMMM YYYY'));
                 $('#mulai').val(start);
@@ -171,6 +171,11 @@
         </tr>
       </thead>
       <tbody>
+        <tr>
+          <td colspan="2"></td>
+          <th class="text-primary " colspan="3" >Sisa Saldo Sebelumnya</th>
+          <th class="text-primary">Rp.{{number_format($awal->saldo+$awal->debit-$awal->kredit)}}</th>
+        </tr>
         @foreach($cashFlow as $transaksi)
         <tr>
           <td>{{formatTanggal($transaksi->tanggal)}}</td>
@@ -227,6 +232,7 @@
                 <th scope="col">Aksi</th>
               </tr>
             </thead>
+
             <tbody>
               @foreach($semuaAkun  as $akun)
                 <tr>
