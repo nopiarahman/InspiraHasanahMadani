@@ -283,6 +283,7 @@
             <th scope="col">Harga Satuan</th>
             <th scope="col">Total</th>
             <th scope="col">Pengeluaran</th>
+            <th scope="col">Persentase</th>
           </tr>
         </thead>
         <tbody>
@@ -294,7 +295,7 @@
           @endphp
           @foreach($perHeader as $header=>$semuaRAB)
           <tr>
-            <th colspan="8" class="bg-primary text-light">{{$loop->iteration}}. {{$header}}</th>
+            <th colspan="9" class="bg-primary text-white">{{$loop->iteration}}. {{$header}}</th>
           </tr>
           @foreach($perJudul[$header] as $judul=>$semuaRAB)
           @php
@@ -303,7 +304,7 @@
               $totalIsi[$judul]=0;
           @endphp
           <tr>
-            <th colspan="8" class="">{{$loop->iteration}}. {{$judul}}</th>
+            <th colspan="9" class="">{{$loop->iteration}}. {{$judul}}</th>
           </tr>
             @foreach($semuaRAB as $rab)
             <tr>
@@ -318,6 +319,15 @@
                   $totalIsi[$judul]=(hitungUnit($rab->isi,$rab->judul,$rab->jenisUnit))*(int)$rab->hargaSatuan+$totalIsi[$judul];
               @endphp
               <th > <a class="text-warning font-weight-bold" href="{{route('transaksiRABUnit',['id'=>$rab->id])}}"> Rp.{{number_format(hitungTransaksiRABUnit($rab->id))}}</a></th>
+              <th>
+                @if((int)$rab->hargaSatuan != 0)
+                {{-- pengeluaran/total*100 --}}
+                {{number_format((float)(hitungTransaksiRABUnit($rab->id)/(hitungUnit($rab->isi,$rab->judul,$rab->jenisUnit)*(int)$rab->hargaSatuan)*100),2)}}%
+                
+                @else
+                -
+                @endif
+              </th>
             </tr>
             @endforeach
             @php
@@ -326,24 +336,24 @@
             @php
                 $c[$judul]=$a[$judul]-$c[$judul];
             @endphp
-            <tr>
-              <th colspan="6" class="text-right bg-secondary" >Sub Total {{$judul}}</th>
-              <th colspan="2" class="bg-secondary" >Rp. {{number_format($c[$judul])}}</th>
+            <tr  class="border-top border-success">
+              <th colspan="6" class="text-right " >Sub Total {{$judul}}</th>
+              <th colspan="3" class="" >Rp. {{number_format($c[$judul])}}</th>
             </tr>
             @endforeach
               @php
                   $b[$header]=array_sum($c)-array_sum($b); /* menghitung total header */
               @endphp
             <tr>
-              <th colspan="6" class="text-white bg-warning text-right">TOTAL {{$header}}</th>
-              <th colspan="2" class="bg-warning text-white" >Rp. {{number_format($b[$header])}}</th>
+              <th colspan="6" class=" bg-secondary text-right">TOTAL {{$header}}</th>
+              <th colspan="3" class="bg-secondary " >Rp. {{number_format($b[$header])}}</th>
             </tr>
             @endforeach
           </tbody>
           <tfoot>
             <tr>
-              <th colspan="6" class="text-white bg-danger text-right">TOTAL BIAYA UNIT</th>
-              <th colspan="2" class="bg-danger text-white" >Rp. {{number_format(array_sum($b))}}</th>
+              <th colspan="6" class="text-white bg-warning text-right">TOTAL BIAYA UNIT</th>
+              <th colspan="3" class="bg-warning text-white" >Rp. {{number_format(array_sum($b))}}</th>
           </tr>
         </tfoot>
       </table>

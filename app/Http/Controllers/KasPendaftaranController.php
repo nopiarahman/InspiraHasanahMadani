@@ -15,18 +15,18 @@ class KasPendaftaranController extends Controller
      */
     public function index(Request $request)
     {
-        $start = Carbon::now()->subDays(29)->isoFormat('YYYY-MM-DD');
-        $end = Carbon::now()->isoFormat('YYYY-MM-DD');
+        $start = Carbon::now()->firstOfMonth()->isoFormat('YYYY-MM-DD');
+        $end = Carbon::now()->endOFMonth()->isoFormat('YYYY-MM-DD');
         // dd($end);
         // $end = moment();
         if($request->get('filter')){
-            $mulai = Carbon::parse($request->start)->isoFormat('YYYY-MM-DD');
-            $akhir = Carbon::parse($request->end)->isoFormat('YYYY-MM-DD');
-            $kasPendaftaran=kasPendaftaran::whereBetween('tanggal',[$mulai,$akhir])->paginate(20);
+            $start = Carbon::parse($request->start)->isoFormat('YYYY-MM-DD');
+            $end = Carbon::parse($request->end)->isoFormat('YYYY-MM-DD');
+            $kasPendaftaran=kasPendaftaran::whereBetween('tanggal',[$start,$end])->paginate(40);
         }else{
-            $kasPendaftaran=kasPendaftaran::whereBetween('tanggal',[$start,$end])->paginate(20);
+            $kasPendaftaran=kasPendaftaran::whereBetween('tanggal',[$start,$end])->paginate(40);
         }
-        return view ('kas/pendaftaran',compact('kasPendaftaran'));
+        return view ('kas/pendaftaran',compact('kasPendaftaran','start','end'));
     }
     public function keluar(Request $request)
     {

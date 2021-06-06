@@ -26,14 +26,15 @@ class LaporanController extends Controller
     
     public function laporanBulanan(Request $request){
         $akunId=akun::where('proyek_id',proyekId())->where('namaAkun','pendapatan')->first();
-        $start = Carbon::now()->subDays(29)->isoFormat('YYYY-MM-DD');
-        $end = Carbon::now()->isoFormat('YYYY-MM-DD');
+        $start = Carbon::now()->firstOfMonth()->isoFormat('YYYY-MM-DD');
+        $end = Carbon::now()->endOfMonth()->isoFormat('YYYY-MM-DD');
         if($request->get('filter')){
             $start = Carbon::parse($request->start)->isoFormat('YYYY-MM-DD');
             $end = Carbon::parse($request->end)->isoFormat('YYYY-MM-DD');
             $pendapatan = transaksi::where('akun_id',$akunId->id)->whereBetween('tanggal',[$start,$end])->get();
+            // dd($request);
         }else{
-        $pendapatan = transaksi::where('akun_id',$akunId->id)->whereBetween('tanggal',[$start,$end])->get();
+            $pendapatan = transaksi::where('akun_id',$akunId->id)->whereBetween('tanggal',[$start,$end])->get();
         }
         $kategoriAkun=akun::where('proyek_id',proyekId())->get()->groupBy('kategori')->forget('Pendapatan');
         // dd($kategoriAkun);
@@ -121,30 +122,16 @@ class LaporanController extends Controller
     public function cetakKwitansi(Cicilan $id){
         $pembelian= pembelian::where('id',$id->pembelian_id)->first();
         $uraian = 'Pembayaran Cicilan Ke '.$id->urut.' '.jenisKepemilikan($pembelian->pelanggan_id).' '.$pembelian->kavling->blok;   
-        /* Jatuh Tempo */
-        $totalBulan = ($pembelian->sisaKewajiban-$pembelian->sisaCicilan)/($pembelian->sisaKewajiban/$pembelian->tenor);
         $cicilanPertama = cicilan::where('pembelian_id',$pembelian->id)->first();
-        if($cicilanPertama != null){
-            $tenorBulan = (int)$totalBulan+1;
-            $tempo=Carbon::parse($cicilanPertama->tanggal)->addMonth($tenorBulan)->isoFormat('YYYY-MM-DD');
-        }else{
-            $tempo=Carbon::now();
-        }
-        return view('cetak/kwitansi',compact('id','pembelian','uraian','tempo'));
+        $sampaiSekarang = cicilan::whereBetween('created_at',[$cicilanPertama->created_at,$id->created_at])->where('pembelian_id',$id->pembelian_id)->get();
+        // dd($sampaiSekarang);
+        return view('cetak/kwitansi',compact('id','pembelian','uraian','sampaiSekarang'));
     }
     public function cetakKwitansiDp(Dp $id){
-        // dd($id);
         $pembelian= pembelian::where('id',$id->pembelian_id)->first();
         $uraian = 'Pembayaran Dp Ke '.$id->urut.' '.jenisKepemilikan($pembelian->pelanggan_id).' '.$pembelian->kavling->blok;   
-        /* Jatuh Tempo */
-        $totalBulan = ($pembelian->sisaKewajiban-$pembelian->sisaDp)/($pembelian->sisaKewajiban/$pembelian->tenor);
         $DpPertama = Dp::where('pembelian_id',$pembelian->id)->first();
-        if($DpPertama != null){
-            $tenorBulan = (int)$totalBulan+1;
-            $tempo=Carbon::parse($DpPertama->tanggal)->addMonth($tenorBulan)->isoFormat('YYYY-MM-DD');
-        }else{
-            $tempo=Carbon::now();
-        }
-        return view('cetak/kwitansiDp',compact('id','pembelian','uraian','tempo'));
+        $sampaiSekarang = dp::whereBetween('created_at',[$DpPertama->created_at,$id->created_at])->where('pembelian_id',$id->pembelian_id)->get();
+        return view('cetak/kwitansiDp',compact('id','pembelian','uraian','sampaiSekarang'));
     }
 }

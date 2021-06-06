@@ -115,7 +115,7 @@
           </tr>
           <tr>
             <th>Total Angsuran Dibayarkan</th>
-            <td>: Rp. {{number_format($pembelian->sisaKewajiban-$pembelian->sisaCicilan)}}</td>
+            <td>: Rp. {{number_format($sampaiSekarang->sum('jumlah'))}}</td>
           </tr>
           <tr>
             <th>Diskon</th>
@@ -123,7 +123,7 @@
           </tr>
           <tr>
             <th>Sisa Hutang</th>
-            <td>: <span class="text-warning">Rp. {{number_format($pembelian->sisaCicilan)}}</span> </td>
+            <td>: <span class="text-warning">Rp. {{number_format($pembelian->sisaKewajiban-$sampaiSekarang->sum('jumlah'))}}</span> </td>
           </tr>
           <tr>
             <th>Status</th>
@@ -131,7 +131,6 @@
               @if($pembelian->sisaCicilan <=0)
               <span class="text-primary"> Lunas </span>
               @else
-              
               <span class="text-warning"> Belum Lunas </span>
               @endif
             </td>
@@ -279,7 +278,7 @@
           </tr>
           <tr>
             <th>Total Angsuran Dibayarkan</th>
-            <td>: Rp. {{number_format($pembelian->sisaKewajiban-$pembelian->sisaCicilan)}}</td>
+            <td>: Rp. {{number_format($sampaiSekarang->sum('jumlah'))}}</td>
           </tr>
           <tr>
             <th>Diskon</th>
@@ -287,7 +286,7 @@
           </tr>
           <tr>
             <th>Sisa Hutang</th>
-            <td>: <span class="text-warning">Rp. {{number_format($pembelian->sisaCicilan)}}</span> </td>
+            <td>: <span class="text-warning">Rp. {{number_format($pembelian->sisaKewajiban-$sampaiSekarang->sum('jumlah'))}}</span> </td>
           </tr>
           <tr>
             <th>Status</th>
@@ -295,14 +294,19 @@
               @if($pembelian->sisaCicilan <=0)
               <span class="text-primary"> Lunas </span>
               @else
-              
               <span class="text-warning"> Belum Lunas </span>
               @endif
             </td>
           </tr>
           <tr>
             <th>Jatuh Tempo</th>
-            <td>: {{formatTanggal($id->tempo)}}</td>
+            <td>: 
+              @if($pembelian->sisaCicilan <=0)
+              -
+              @else
+              1-10 {{Carbon\Carbon::parse($id->tempo)->isoFormat('MMMM YYYY')}}
+              @endif
+            </td>
           </tr>
         </table>
       </div>

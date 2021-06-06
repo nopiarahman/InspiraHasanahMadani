@@ -101,7 +101,9 @@
       <div class="main-sidebar">
         <aside id="sidebar-wrapper">
           <div class="sidebar-brand">
-            <a href="index.html"><img src="{{asset('assets/img/logo-mini.png')}}" alt=""></a>
+            <a href="index.html">
+              <img src="{{asset('assets/img/logo-mini.png')}}" alt="">
+            </a>
           </div>
           <div class="sidebar-brand sidebar-brand-sm">
             <a href="index.html">Menu</a>

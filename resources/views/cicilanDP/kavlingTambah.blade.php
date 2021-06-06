@@ -135,10 +135,11 @@
             @else
             DB
             @endif
-            {{romawi(Carbon\Carbon::parse($cicilanDp->tanggal)->isoFormat('MM'))}}/{{$cicilanDp->ke}}</td>
-            @if($loop->last == true)
+            {{romawi(Carbon\Carbon::parse($cicilanDp->tanggal)->isoFormat('MM'))}}/{{$cicilanDp->ke}}
+          </td>
+            {{-- @if($loop->last == true) --}}
           <td><a href="{{route('cetakKwitansiDp',['id'=>$cicilanDp->id])}}" class="badge badge-primary">Kwitansi</a></td>
-            @endif
+            {{-- @endif --}}
         </tr>
         @endforeach
       </tbody>

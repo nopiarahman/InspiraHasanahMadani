@@ -99,51 +99,36 @@
       <!-- accepted payments column -->
       <div class="col-6">
         <span class="lead font-weight-bold">Metode Pembayaran: <span class="text-primary">TUNAI</span></span>
-
         <table class="" style="border-collapse: collapse">
           <tr class="px-n1">
             <th style="width: 70%">Total Hutang</th>
-            <td>: <span class="text-warning"> Rp {{number_format($pembelian->sisaDp)}}</span></td>
+            <td>: <span class="text-warning"> Rp {{number_format($pembelian->dp)}}</span></td>
           </tr>
           <tr>
             <th>Angsuran DP Ke</th>
             <td>: {{$id->urut}} ( {{terbilang($id->urut)}} )</td>
           </tr>
-          {{-- <tr>
-            <th>Nilai Angsuran</th>
-            <td>: Rp. {{number_format($pembelian->sisaKewajiban/$pembelian->tenor)}}</td>
-          </tr> --}}
           <tr>
             <th>Total Angsuran Dibayarkan</th>
-            <td>: Rp. {{number_format($pembelian->dp-$pembelian->sisaDp)}}</td>
+            <td>: Rp. {{number_format($sampaiSekarang->sum('jumlah'))}}</td>
           </tr>
-          {{-- <tr>
-            <th>Diskon</th>
-            <td>: <span class="text-success"> Rp. {{number_format($pembelian->diskon)}}</span></td>
-          </tr> --}}
           <tr>
             <th>Sisa Hutang</th>
-            <td>: <span class="text-warning">Rp. {{number_format($pembelian->sisaDp)}}</span> </td>
+            <td>: <span class="text-warning">Rp. {{number_format($pembelian->dp-$sampaiSekarang->sum('jumlah'))}}</span> </td>
           </tr>
           <tr>
             <th>Status</th>
             <td>: 
-              @if($pembelian->sisaDp <=0)
+              @if($pembelian->dp-$sampaiSekarang->sum('jumlah') <=0)
               <span class="text-primary"> Lunas </span>
               @else
-              
               <span class="text-warning"> Belum Lunas </span>
               @endif
             </td>
           </tr>
           <tr>
             <th>Jatuh Tempo</th>
-            <td>: 
-              @if($pembelian->sisaDp <=0)
-              -
-              @else
-              1-10 {{Carbon\Carbon::parse($id->tempo)->isoFormat('MMMM YYYY')}}
-              @endif
+            <td>: 1-10 {{Carbon\Carbon::parse($id->tempo)->isoFormat('MMMM YYYY')}}
             </td>
           </tr>
         </table>
@@ -151,7 +136,6 @@
       <!-- /.col -->
       <div class="col-6">
         <div style="height: 90%">
-
         </div>
         <div class="table-responsive">
           <table class="table table-sm" >
@@ -263,51 +247,36 @@
       <!-- accepted payments column -->
       <div class="col-6">
         <span class="lead font-weight-bold">Metode Pembayaran: <span class="text-primary">TUNAI</span></span>
-
         <table class="" style="border-collapse: collapse">
           <tr class="px-n1">
             <th style="width: 70%">Total Hutang</th>
-            <td>: <span class="text-warning"> Rp {{number_format($pembelian->sisaDp)}}</span></td>
+            <td>: <span class="text-warning"> Rp {{number_format($pembelian->dp)}}</span></td>
           </tr>
           <tr>
             <th>Angsuran DP Ke</th>
             <td>: {{$id->urut}} ( {{terbilang($id->urut)}} )</td>
           </tr>
-          {{-- <tr>
-            <th>Nilai Angsuran</th>
-            <td>: Rp. {{number_format($pembelian->sisaKewajiban/$pembelian->tenor)}}</td>
-          </tr> --}}
           <tr>
             <th>Total Angsuran Dibayarkan</th>
-            <td>: Rp. {{number_format($pembelian->dp-$pembelian->sisaDp)}}</td>
+            <td>: Rp. {{number_format($sampaiSekarang->sum('jumlah'))}}</td>
           </tr>
-          {{-- <tr>
-            <th>Diskon</th>
-            <td>: <span class="text-success"> Rp. {{number_format($pembelian->diskon)}}</span></td>
-          </tr> --}}
           <tr>
             <th>Sisa Hutang</th>
-            <td>: <span class="text-warning">Rp. {{number_format($pembelian->sisaDp)}}</span> </td>
+            <td>: <span class="text-warning">Rp. {{number_format($pembelian->dp-$sampaiSekarang->sum('jumlah'))}}</span> </td>
           </tr>
           <tr>
             <th>Status</th>
             <td>: 
-              @if($pembelian->sisaDp <=0)
+              @if($pembelian->dp-$sampaiSekarang->sum('jumlah') <=0)
               <span class="text-primary"> Lunas </span>
               @else
-              
               <span class="text-warning"> Belum Lunas </span>
               @endif
             </td>
           </tr>
           <tr>
             <th>Jatuh Tempo</th>
-            <td>: 
-              @if($pembelian->sisaDp <=0)
-              -
-              @else
-              1-10 {{Carbon\Carbon::parse($id->tempo)->isoFormat('MMMM YYYY')}}
-              @endif
+            <td>: 1-10 {{Carbon\Carbon::parse($id->tempo)->isoFormat('MMMM YYYY')}}
             </td>
           </tr>
         </table>
@@ -315,7 +284,6 @@
       <!-- /.col -->
       <div class="col-6">
         <div style="height: 90%">
-
         </div>
         <div class="table-responsive">
           <table class="table table-sm" >

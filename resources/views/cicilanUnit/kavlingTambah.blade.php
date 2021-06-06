@@ -174,9 +174,9 @@
             @endif
             {{romawi(Carbon\Carbon::parse($cicilanUnit->tanggal)->isoFormat('MM'))}}/{{$cicilanUnit->ke}}</td>
           <td>
-            @if($loop->last == true)
+            {{-- @if($loop->last == true) --}}
             <a href="{{route('cetakKwitansi',['id'=>$cicilanUnit->id])}}" class="badge badge-primary">Kwitansi</a>
-            @endif
+            {{-- @endif --}}
           </td>
         </tr>
         @endforeach

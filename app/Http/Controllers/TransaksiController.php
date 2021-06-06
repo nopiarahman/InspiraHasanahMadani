@@ -23,17 +23,17 @@ class TransaksiController extends Controller
 
     public function masuk(Request $request){
         if($request->get('filter')){
-            $mulai = Carbon::parse($request->start)->isoFormat('YYYY-MM-DD');
-            $akhir = Carbon::parse($request->end)->isoFormat('YYYY-MM-DD');
-            $transaksiMasuk=transaksi::whereBetween('tanggal',[$mulai,$akhir])
-                            ->whereNotNull('kredit')->paginate(20);
-        }else{
-            $start = Carbon::now()->subDays(29)->isoFormat('YYYY-MM-DD');
-            $end = Carbon::now()->isoFormat('YYYY-MM-DD');
+            $start = Carbon::parse($request->start)->isoFormat('YYYY-MM-DD');
+            $end = Carbon::parse($request->end)->isoFormat('YYYY-MM-DD');
             $transaksiMasuk=transaksi::whereBetween('tanggal',[$start,$end])
-            ->whereNotNull('kredit')->paginate(20);
+                            ->whereNotNull('kredit')->paginate(40);
+        }else{
+            $start = Carbon::now()->firstOfMonth()->isoFormat('YYYY-MM-DD');
+            $end = Carbon::now()->endOfMonth()->isoFormat('YYYY-MM-DD');
+            $transaksiMasuk=transaksi::whereBetween('tanggal',[$start,$end])
+            ->whereNotNull('kredit')->paginate(40);
         }
-        return view ('transaksi/masukIndex',compact('transaksiMasuk'));
+        return view ('transaksi/masukIndex',compact('transaksiMasuk','start','end'));
     }
 
     public function keluar(Request $request){
@@ -58,17 +58,17 @@ class TransaksiController extends Controller
         $perKategori = $kategoriAkun;
         
         if($request->get('filter')){
-            $mulai = Carbon::parse($request->start)->isoFormat('YYYY-MM-DD');
-            $akhir = Carbon::parse($request->end)->isoFormat('YYYY-MM-DD');
-            $transaksiKeluar=transaksi::whereBetween('tanggal',[$mulai,$akhir])
+            $start = Carbon::parse($request->start)->isoFormat('YYYY-MM-DD');
+            $end = Carbon::parse($request->end)->isoFormat('YYYY-MM-DD');
+            $transaksiKeluar=transaksi::whereBetween('tanggal',[$start,$end])
                             ->whereNotNull('debet')->paginate(20);
         }else{
-            $start = Carbon::now()->subDays(29)->isoFormat('YYYY-MM-DD');
-            $end = Carbon::now()->isoFormat('YYYY-MM-DD');
+            $start = Carbon::now()->firstOfMonth()->isoFormat('YYYY-MM-DD');
+            $end = Carbon::now()->endOfMonth()->isoFormat('YYYY-MM-DD');
             $transaksiKeluar=transaksi::whereBetween('tanggal',[$start,$end])
                             ->whereNotNull('debet')->paginate(20);
         }
-        return view ('transaksi/keluarIndex',compact('semuaAkun','perKategori','kategoriAkun','transaksiKeluar','perHeader','semuaRAB','perJudul','perHeaderUnit','semuaRABUnit','perJudulUnit'));
+        return view ('transaksi/keluarIndex',compact('semuaAkun','perKategori','kategoriAkun','transaksiKeluar','perHeader','semuaRAB','perJudul','perHeaderUnit','semuaRABUnit','perJudulUnit','start','end'));
     }
     public function cariAkunTransaksi(Request $request){
         if($request->has('q')){
@@ -118,17 +118,20 @@ class TransaksiController extends Controller
     }
     public function cashFlow(Request $request){
         $semuaAkun = akun::where('proyek_id',proyekId())->where('kategori','Pendapatan')->orWhere('kategori','Modal')->get();
-        // dd($semuaAkun);
+        // dd($request);
         if($request->get('filter')){
-            $mulai = Carbon::parse($request->start)->isoFormat('YYYY-MM-DD');
-            $akhir = Carbon::parse($request->end)->isoFormat('YYYY-MM-DD');
-            $cashFlow=transaksi::whereBetween('tanggal',[$mulai,$akhir])->get();
+            $start = Carbon::parse($request->start)->isoFormat('YYYY-MM-DD');
+            $end = Carbon::parse($request->end)->isoFormat('YYYY-MM-DD');
+            $cashFlow=transaksi::whereBetween('tanggal',[$start,$end])->orderBy('tanggal')->get();
+            $awal=$cashFlow->first();
+            // dd($awal);
         }else{
-            $start = Carbon::now()->subDays(29)->isoFormat('YYYY-MM-DD');
-            $end = Carbon::now()->isoFormat('YYYY-MM-DD');
-            $cashFlow=transaksi::whereBetween('tanggal',[$start,$end])->get();
+            $start = Carbon::now()->firstOfMonth()->isoFormat('YYYY-MM-DD');
+            $end = Carbon::now()->endOfMonth()->isoFormat('YYYY-MM-DD');
+            $cashFlow=transaksi::whereBetween('tanggal',[$start,$end])->orderBy('tanggal')->get();
+            $awal=$cashFlow->first();
         }
-        return view ('transaksi/cashFlowIndex',compact('cashFlow','semuaAkun'));
+        return view ('transaksi/cashFlowIndex',compact('cashFlow','semuaAkun','awal','start','end'));
     }
 
     /**

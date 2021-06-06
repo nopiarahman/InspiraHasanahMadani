@@ -234,6 +234,7 @@ class ProyekController extends Controller
     public function transaksiRAB(rab $id, Request $request){
         // dd($id);
         $totalRAB=$id->total;
+        // dd($id);
         if($request->get('filter')){
             // dd($request);
             $mulai = Carbon::parse($request->start)->isoFormat('YYYY-MM-DD');

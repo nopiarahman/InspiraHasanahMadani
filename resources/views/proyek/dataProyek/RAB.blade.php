@@ -277,6 +277,7 @@
             <th scope="col">Harga Satuan</th>
             <th scope="col">Total</th>
             <th scope="col">Pengeluaran</th>
+            <th scope="col">Persentase</th>
           </tr>
         </thead>
         <tbody>
@@ -286,11 +287,11 @@
           @endphp
           @foreach($perHeader as $header=>$semuaRAB)
           <tr>
-            <th colspan="7" class="bg-primary text-light">{{$loop->iteration}}. {{$header}}</th>
+            <th colspan="8" class="bg-primary text-white">{{$loop->iteration}}. {{$header}}</th>
           </tr>
           @foreach($perJudul[$header] as $judul=>$semuaRAB)
           <tr>
-            <th colspan="7" class="">{{$loop->iteration}}. {{$judul}}</th>
+            <th colspan="8" class="">{{$loop->iteration}}. {{$judul}}</th>
           </tr>
             @foreach($semuaRAB as $rab)
             <tr>
@@ -301,30 +302,36 @@
               <td>Rp.{{number_format($rab->hargaSatuan)}}</td>
               <th>Rp.{{number_format($rab->total)}}</th>
               <th> <a class="text-warning font-weight-bold" href="{{route('transaksiRAB',['id'=>$rab->id])}}"> Rp. {{number_Format(hitungTransaksiRAB($rab->id))}}</a></th>
-              
+              <th>
+                @if($rab->total != 0)
+                {{number_format((float)(hitungTransaksiRAB($rab->id)/$rab->total*100),2)}}%
+                @else
+                -
+                @endif
+              </th>
             </tr>
             @endforeach
-            <tr>
-              <th colspan="5" class="text-right bg-secondary" >Sub Total {{$judul}}</th>
-              <th colspan="2" class="bg-secondary" >Rp. {{number_format($semuaRAB->sum('total'))}}</th>
+            <tr class="border-top border-success">
+              <th colspan="5" class="text-right" >Sub Total {{$judul}}</th>
+              <th colspan="3" class="" >Rp. {{number_format($semuaRAB->sum('total'))}}</th>
             </tr>
             @php
                 $a[]=$semuaRAB->sum('total'); /* menghitung per total judul */
                 @endphp
             @endforeach
             <tr>
-              <th colspan="5" class="text-white bg-warning text-right">TOTAL {{$header}}</th>
+              <th colspan="5" class=" bg-secondary text-right">TOTAL {{$header}}</th>
               @php
                   $b[$header]=array_sum($a)-array_sum($b); /* menghitung total header */
                   @endphp
-              <th colspan="2" class="bg-warning text-white" >Rp. {{number_format($b[$header])}}</th>
+              <th colspan="3" class="bg-secondary" >Rp. {{number_format($b[$header])}}</th>
             </tr>
             @endforeach
           </tbody>
           <tfoot>
             <tr>
-              <th colspan="5" class="text-white bg-danger text-right">TOTAL RAB</th>
-              <th colspan="2" class="bg-danger text-white" >Rp. {{number_format(array_sum($b))}}</th>
+              <th colspan="5" class="text-white bg-warning text-right">TOTAL RAB</th>
+              <th colspan="3" class="bg-warning text-white" >Rp. {{number_format(array_sum($b))}}</th>
           </tr>
         </tfoot>
       </table>

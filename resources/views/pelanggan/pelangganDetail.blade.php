@@ -47,15 +47,13 @@
             <div class="profile-widget-item-label">Jenis Kepemilikan</div>
             <div class="profile-widget-item-value">{{jenisKepemilikan($id->id)}}</div>
           </div>
-          {{-- <div class="profile-widget-item">
-            <div class="profile-widget-item-label">Following</div>
-            <div class="profile-widget-item-value">2,1K</div>
-          </div> --}}
+          <div class="profile-widget-item">
+            <button onclick="cetak('cetakPelanggan')" class="btn btn-primary"> <i class="fas fa-print fa-L"></i> Cetak Pelanggan</button>
+          </div>
         </div>
       </div>
       <div class="profile-widget-description">
         <div class="profile-widget-name">{{$id->nama}} <div class="text-muted d-inline font-weight-normal">
-          {{-- <div class="slash"></div> Kavling {{$dataKavling->blok}} --}}
         </div>
         </div>
           <table class="table table-hover">
@@ -153,21 +151,6 @@
           </table>
         {{-- Ujang maman is a superhero name in <b>Indonesia</b>, especially in my family. He is not a fictional character but an original hero in my family, a hero for his children and for his wife. So, I use the name as a user in this template. Not a tribute, I'm just bored with <b>'John Doe'</b>. --}}
       </div>
-      {{-- <div class="card-footer text-center">
-        <div class="font-weight-bold mb-2">Follow Ujang On</div>
-        <a href="#" class="btn btn-social-icon btn-facebook mr-1">
-          <i class="fab fa-facebook-f"></i>
-        </a>
-        <a href="#" class="btn btn-social-icon btn-twitter mr-1">
-          <i class="fab fa-twitter"></i>
-        </a>
-        <a href="#" class="btn btn-social-icon btn-github mr-1">
-          <i class="fab fa-github"></i>
-        </a>
-        <a href="#" class="btn btn-social-icon btn-instagram">
-          <i class="fab fa-instagram"></i>
-        </a>
-      </div> --}}
     </div>
   </div>
   <div class="col-12 col-md-12 col-lg-12">
@@ -459,6 +442,218 @@
     </div>
   </div>
 </div>
+
+{{-- tampilan cetak pelanggan --}}
+<div class="cetak d-none " id="cetakPelanggan"> 
+  <div class="card">
+    <div class="profil-widget">
+      <div class="profile-widget-header row justify-content-center mt-2 ">
+        <img alt="image" src="../assets/img/avatar/avatar-1.png" class=" rounded-circle profile-widget-picture" width="150px">
+      </div>
+      <div class="row justify-content-center mt-2">
+        <h4>{{$id->nama}}</h4>
+      </div>
+
+    </div>
+    <div class="card-header">
+      <h4>Data Pelanggan</h4>
+    </div>
+    <div class="card-body">
+      <table class="table table-hover table-sm">
+        <tbody>
+          <tr>
+            <th style="width: 40%" scope="row">Nama Lengkap</th>
+            <td>{{$id->nama}}</td>
+          </tr>
+          <tr>
+            <th scope="row">Tempat & Tanggal Lahir</th>
+            <td>{{$id->tempatLahir}}, {{formatTanggal($id->tanggalLahir)}}</td>
+          </tr>
+          <tr>
+            <th scope="row">Jenis Kelamin</th>
+            <td>{{$id->jenisKelamin}}</td>
+          </tr>
+          <tr>
+            <th scope="row">Alamat</th>
+            <td>{{$id->alamat}}</td>
+          </tr>
+          <tr>
+            <th scope="row">Status Pernikahan</th>
+            <td>{{$id->statusPernikahan}}</td>
+          </tr>
+          <tr>
+            <th scope="row">Pekerjaan</th>
+            <td>{{$id->pekerjaan}}</td>
+          </tr>
+          <tr>
+            <th scope="row">Nomor Telepon</th>
+            <td>{{$id->nomorTelepon}}</td>
+          </tr>
+          <tr>
+            <th scope="row">Email</th>
+            <td>{{$id->email}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="card-header">
+      <h4>Data Unit Pelanggan</h4>
+    </div>
+    <div class="card-body">
+      <table class="table table-hover table-sm">
+        <tbody>
+          <tr>
+            <th scope="row" style="width: 40%">Objek</th>
+            <td>{{jenisKepemilikan($id->id)}} ( {{ $dataKavling->blok}} )</td>
+            
+          </tr>
+          <tr>
+            <th scope="row">Nomor Akad</th>
+            <td>
+              @if($dataPembelian->nomorAkad != null)
+              {{$dataPembelian->nomorAkad}}
+              @else
+              Belum ada
+              @endif
+            </td>
+          </tr>
+          <tr>
+            <th scope="row">Tanggal Akad</th>
+            <td>
+              @if($dataPembelian->tanggalAkad != null)
+              {{formatTanggal($dataPembelian->tanggalAkad)}}
+            </td>
+              @else
+              Belum ada
+              </td>
+              @endif
+          </tr>
+          <tr>
+            <th scope="row">Harga</th>
+            <td>Rp. {{number_format($dataPembelian->harga)}}</td>
+          </tr>
+          <tr>
+            <th scope="row">Diskon</th>
+            <td>Rp. {{number_format($dataPembelian->diskon)}} ({{$dataPembelian->harga/$dataPembelian->diskon}}%)</td>
+          </tr>
+          <tr>
+            <th scope="row">DP</th>
+            <td>Rp. {{number_format($dataPembelian->dp)}}</td>
+          </tr>
+          <tr>
+            <th scope="row">Tenor</th>
+            <td>{{$dataPembelian->tenor}} bulan</td>
+          </tr>
+          <tr>
+            <th scope="row">Status DP</th>
+            <td>{{$dataPembelian->statusDp}}</td>
+            <td></td>
+          </tr>
+          <tr>
+            <th>Sisa Dp</th>
+            <td>Rp.{{number_format($dataPembelian->sisaDp)}}  
+              @if($dataPembelian->sisaDp==0)
+              /Lunas
+              @endif 
+            </td>
+          </tr>
+          <tr>
+            <th>Status Cicilan</th>
+            <td>{{$dataPembelian->statusCicilan}}</td>
+            <td></td>
+          </tr>
+          <tr>
+            <th>Sisa Cicilan</th>
+            <td>Rp {{number_format($dataPembelian->sisaCicilan)}}
+              @if($dataPembelian->sisaCicilan==0)
+              /
+              <span class="badge badge-info"><i class="fas fa-check"></i> Lunas</span>
+              @endif </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="card-header">
+      <h4>Data Cicilan DP</h4>
+    </div>
+    <div class="card-body">
+      <table class="table table-sm table-hover">
+        <thead>
+          <tr>
+            <th scope="col">Cicilan Ke</th>
+            <th scope="col">Tanggal</th>
+            <th scope="col">Jumlah</th>
+            <th scope="col">Sisa DP</th>
+            <th scope="col">Nomor Faktur</th>
+          </tr>
+        </thead>
+        <tbody>
+          @foreach($dataDp as $cicilanDp)
+          <tr>
+            <th scope="row">{{$cicilanDp->urut}}</th>
+            <td>{{formatTanggal($cicilanDp->tanggal)}}</td>
+            <td>Rp.{{number_format($cicilanDp->jumlah)}}</td>
+            <td>Rp.{{number_format($cicilanDp->sisaDp)}}</td>
+            <td>
+              @if(jenisKepemilikan($id->id)=='Kavling')
+              DK
+              @else
+              DB
+              @endif
+              {{romawi(Carbon\Carbon::parse($cicilanDp->tanggal)->isoFormat('MM'))}}/{{$cicilanDp->ke}}
+            </td>
+          </tr>
+          @endforeach
+        </tbody>
+      </table>
+    </div>
+    <div class="card-header">
+      <h4>Data Cicilan</h4>
+    </div>
+    <div class="card-body">
+      <table class="table table-sm table-hover"> 
+        <thead>
+          <tr>
+            <th scope="col">Cicilan Ke</th>
+            <th scope="col">Tanggal</th>
+            <th scope="col">Jumlah</th>
+            <th scope="col">Sisa Hutang</th>
+            <th scope="col">Nomor Faktur</th>
+          </tr>
+        </thead>
+        <tbody>
+          @foreach($dataCicilan as $cicilanUnit)
+          <tr>
+            <th scope="row">{{$cicilanUnit->urut}}</th>
+            <td>{{formatTanggal($cicilanUnit->tanggal)}}</td>
+            <td>Rp.{{number_format($cicilanUnit->jumlah)}}</td>
+            <td>Rp.{{number_format($cicilanUnit->sisaKewajiban)}}</td>
+            <td>
+              @if(jenisKepemilikan($id->id)=='Kavling')
+              CK
+              @else
+              CB
+              @endif
+              {{romawi(Carbon\Carbon::parse($cicilanUnit->tanggal)->isoFormat('MM'))}}/{{$cicilanUnit->ke}}</td>
+          </tr>
+          @endforeach
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+<script>
+  function cetak(el){
+    var restorePage = document.body.innerHTML;
+    var printContent = document.getElementById(el).innerHTML;
+    document.body.innerHTML = printContent;
+    var inputBaru = document.querySelector('.cetak');
+    // inputBaru.className ='cetak';
+    window.print();
+    document.body.innerHTML = restorePage;
+  }
+</script>
+
   <!-- Modal -->
   <div class="modal fade" tabindex="-1" role="dialog" id="nomorAkad" data-backdrop="false">
     <div class="modal-dialog modal-dialog-centered" role="document">

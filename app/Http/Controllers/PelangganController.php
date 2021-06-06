@@ -9,6 +9,8 @@ use App\kios;
 use App\akun;
 use App\user;
 use App\rab;
+use App\cicilan;
+use App\dp;
 use App\rabUnit;
 use App\pembelian;
 use Carbon\Carbon;
@@ -52,7 +54,7 @@ class PelangganController extends Controller
         $parts = explode("@",$request->email);
         $username = $parts[0];
         $password = Carbon::parse($request->tanggalLahir)->isoFormat('DDMMYY');
-        dd($password);
+        // dd($password);
         
         if($request->statusDp=='Credit'){
             $sisaDp=str_replace(',', '', $request->dp);
@@ -135,6 +137,31 @@ class PelangganController extends Controller
             kios::create($data);
             $cariKios=kios::where('kavling_id',$request->kavling_id)->first();
             $updatePembelian=pembelian::where('kavling_id',$request->kavling_id)->update(['kios_id'=>$cariKios->id]);
+            /* update RAB unit */
+            $cariKavling=kavling::find($request->kavling_id);
+            $rabUnit=rabUnit::create([
+                'proyek_id'=>proyekId(),
+                'header'=>'BIAYA PRODUKSI RUMAH',
+                'judul'=>'Biaya Produksi Rumah',
+                'isi'=>$cariKavling->blok,
+                'jenisUnit'=>'kios',
+                'hargaSatuan'=>hargaSatuanRumah(),
+            ]);$rabUnit->save();
+            /* update Akun */
+            $akun=akun::create([
+                'proyek_id'=>proyekId(),
+                'jenis'=> 'Pembangunan',
+                'kategori'=> 'Pembangunan Rumah',
+                'kodeAkun'=> 'IH-30-'.$cariKavling->blok,
+                'namaAkun'=> 'Biaya Pembangunan Kios '.$cariKavling->blok,
+            ]);$akun->save();
+            $akunPembebanan=akun::create([
+                'proyek_id'=>proyekId(),
+                'jenis'=> 'Pembebanan',
+                'kategori'=> 'Biaya Pembebanan Per-Unit',
+                'kodeAkun'=> 'IH-31-'.$cariKavling->blok,
+                'namaAkun'=> 'Biaya Pembebanan Per-Unit '.$cariKavling->blok,
+            ]);$akunPembebanan->save();
         }
         
         /* update data kavling*/
@@ -199,13 +226,13 @@ class PelangganController extends Controller
     	}
     }
     public function detail(Pelanggan $id){
-        // dd($id);
         $dataKavling=kavling::where('pelanggan_id',$id->id)->first();
         $dataPembelian=pembelian::where('pelanggan_id',$id->id)->first();
-        // dd($dataPembelian->pelanggan->nama);
         $persenDiskon = ($dataPembelian->diskon/$dataPembelian->harga)*100;
-        // dd($persenDiskon);
-        return view ('pelanggan/pelangganDetail',compact('id','dataKavling','dataPembelian','persenDiskon'));
+        /* tambahan model untuk cetak pelanggan */
+        $dataDp = dp::where('pembelian_id',$dataPembelian->id)->get();
+        $dataCicilan = cicilan::where('pembelian_id',$dataPembelian->id)->get();
+        return view ('pelanggan/pelangganDetail',compact('id','dataKavling','dataPembelian','persenDiskon','dataDp','dataCicilan'));
     }
     public function simpanNomorAkad(Pembelian $id ,Request $request){
         
