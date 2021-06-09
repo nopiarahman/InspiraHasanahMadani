@@ -29,6 +29,14 @@
           {{session ('status')}}
         </div>
       @endif
+      @if (session('error'))
+        <div class="alert alert-warning alert-dismissible show fade">
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          {{session ('error')}}
+        </div>
+      @endif
     </div>
     </div>
 
@@ -44,8 +52,8 @@
             <div class="form-group row mb-4">
               <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Jenis</label>
               <div class="col-sm-12 col-md-7">
-                <select class="form-control selectric" tabindex="-1" name="jenis" onchange="eventPendapatan()">
-                  <option value="Operasional">Biaya Produksi</option>
+                <select class="form-control selectric" tabindex="-1" name="jenis" >
+                  <option value="Produksi">Biaya Produksi</option>
                   <option value="Operasional">Biaya Operasional</option>
                   <option value="Non-Operasional">Biaya Non-Operasional</option>
                   <option value="Pendapatan Lain-lain">Pendapatan Lain-lain</option>
@@ -180,6 +188,26 @@
                 <td>{{$loop->iteration}}</td>
                 <td>{{$kategori->kodeAkun}}</td>
                 <td>{{$kategori->namaAkun}}</td>
+                <td>
+                  @if($kategori->jenis != 'Pembangunan' && $kategori->jenis != 'Pembebanan' && $kategori->jenis != 'Pendapatan')
+                  <button type="button" class="btn btn-sm btn-white text-primary" 
+                  data-toggle="modal" 
+                  data-target="#modalEdit" 
+                  data-id="{{$kategori->id}}" 
+                  data-jenis="{{$kategori->jenis}}" 
+                  data-kategori="{{$kategori->kategori}}" 
+                  data-kode="{{$kategori->kodeAkun}}" 
+                  data-nama="{{$kategori->namaAkun}}">
+                  <i class="fa fa-pen" aria-hidden="true" ></i> Edit</button>
+
+                  <button type="button" class="btn btn-sm btn-white text-warning" 
+                  data-toggle="modal" 
+                  data-target="#exampleModalCenter" 
+                  data-id="{{$kategori->id}}" 
+                  data-nama="{{$kategori->namaAkun}}">
+                  <i class="fa fa-trash" aria-hidden="true" ></i> Hapus</button>
+                  @endif
+                </td>
               </tr>
               @endforeach
             @endforeach
@@ -187,4 +215,102 @@
         </table>
       </div>
     </div>
+
+<!-- Modal Hapus-->
+<div class="modal fade exampleModalCenter" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Hapus Akun</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form action="" method="post" id="formHapus">
+          @method('delete')
+          @csrf
+          <p class="modal-text"></p>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary">Hapus</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{{-- modal Edit --}}
+<div class="modal fade modalEdit bd-example-modal-lg ml-5" id="modalEdit" tabindex="-1" role="dialog" aria-labelledby="modalEditTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Edit Akun</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form action="" method="POST" enctype="multipart/form-data" id="formEdit">
+          @method('patch')
+          @csrf
+          <div class="form-group row mb-4">
+            <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Kode Akun</label>
+            <div class="col-sm-12 col-md-7">
+              <input type="text" class="form-control @error('kodeAkun') is-invalid @enderror" name="kodeAkun" value="" id="kodeEdit">
+              @error('kodeAkun')
+                <div class="invalid-feedback">{{$message}}</div>
+              @enderror
+            </div>
+          </div>
+          <div class="form-group row mb-4">
+            <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Nama Akun</label>
+            <div class="col-sm-12 col-md-7">
+              <input type="text" class="form-control @error('namaAkun') is-invalid @enderror" name="namaAkun" value="" id="namaEdit">
+              @error('namaAkun')
+                <div class="invalid-feedback">{{$message}}</div>
+              @enderror
+            </div>
+          </div>
+          <div class="form-group row mb-4">
+            <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3"></label>
+            <div class="col-sm-12 col-md-7">
+              <button class="btn btn-primary" type="submit">Edit</button>
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+            </div>
+          </div>
+        </form>
+        </div>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+$(document).ready(function () {
+  $('#exampleModalCenter').on('show.bs.modal', function (event) {
+  var button = $(event.relatedTarget) // Button that triggered the modal
+  var id = button.data('id') // Extract info from data-* attributes
+  var nama = button.data('nama') 
+  var modal = $(this)
+  modal.find('.modal-text').text('Hapus Akun ' + nama+' ?')
+  document.getElementById('formHapus').action='hapusAkun/'+id;
+  })
+});
+</script>
+<script type="text/javascript">
+$(document).ready(function () {
+  $('#modalEdit').on('show.bs.modal', function (event) {
+  var button = $(event.relatedTarget) // Button that triggered the modal
+  var id = button.data('id') // Extract info from data-* attributes
+  var nama = button.data('nama') 
+  var kode = button.data('kode') 
+  var jenis = button.data('jenis') 
+  var kategori = button.data('kategori')
+  document.getElementById('formEdit').action='editAkun/'+id;
+  $('#kodeEdit').val(kode);
+  $('#namaEdit').val(nama);
+  $('#editJenis').val(jenis);
+  })
+});
+</script>
   @endsection

@@ -29,13 +29,14 @@ class KasController extends Controller
         if($request->get('filter')){
             $start = Carbon::parse($request->start)->isoFormat('YYYY-MM-DD');
             $end = Carbon::parse($request->end)->isoFormat('YYYY-MM-DD');
-            $pettyCash=pettyCash::whereBetween('tanggal',[$start,$end])->paginate(40);
+            $pettyCash=pettyCash::whereBetween('tanggal',[$start,$end])->orderBy('no')->get();
         }else{
-            $pettyCash=pettyCash::whereBetween('tanggal',[$start,$end])->paginate(40);
+            $pettyCash=pettyCash::whereBetween('tanggal',[$start,$end])->orderBy('no')->get();
         }
         return view ('kas/pettyCash',compact('pettyCash','start','end'));
     }
     public function pettyCashSimpan(Request $request){
+        $jumlah = str_replace(',', '', $request->jumlah);
         $rules=[
             'jumlah'=>'required',
             'tanggal'=>'required',
@@ -46,13 +47,41 @@ class KasController extends Controller
         ];
         $this->validate($request,$rules,$costumMessages);
         $requestData=$request->all();
-        $requestData['kredit']=str_replace(',', '', $request->jumlah);
-        $requestData['proyek_id']=proyekId();
-        $requestData['saldo']=saldoTerakhirPettyCash()+str_replace(',', '', $request->jumlah);
+        $cekTransaksiSebelum=pettyCash::where('tanggal','<=',$request->tanggal)->orderBy('no')->get();
+        /* jika transaksi sebelumnya ada value */
+        if($cekTransaksiSebelum != null){
+            $sebelum = $cekTransaksiSebelum->last();
+            $requestData['no']=$sebelum->no+1;
+            $requestData['saldo']=$sebelum->saldo+$jumlah;
+            $requestData['kredit']=str_replace(',', '', $request->jumlah);
+            $requestData['proyek_id']=proyekId();
+        }else{
+            /* jika tidak ada value simpan ke akhir transaksi */
+            $requestData['no']=noTransaksiTerakhir()+1;
+            $requestData['saldo']=saldoTerakhirPettyCash()+$jumlah;
+            $requestData['kredit']=str_replace(',', '', $request->jumlah);
+            $requestData['proyek_id']=proyekId();
+        }
+        /* cek transaksi sesudah input */
+        $cekTransaksi=pettyCash::where('tanggal','>',$request->tanggal)->orderBy('no')->get();
+        if($cekTransaksi != null){
+            /* jika ada, update transaksi sesudah sesuai perubahan input*/
+            foreach($cekTransaksi as $updateTransaksi){
+                $updateTransaksi['no'] = $updateTransaksi->no +1;
+                $updateTransaksi['saldo'] = $updateTransaksi->saldo + $jumlah;
+                $updateTransaksi->save();
+            }
+        }
+        // dd($requestData);
+        // transaksi::create($requestData);
+        // $requestData['kredit']=str_replace(',', '', $request->jumlah);
+        // $requestData['proyek_id']=proyekId();
+        // $requestData['saldo']=saldoTerakhirPettyCash()+str_replace(',', '', $request->jumlah);
         pettyCash::create($requestData);
         return redirect()->route('pettyCash')->with('status','Transaksi Berhasil Disimpan');
     }
     public function kasBesarSimpan(Request $request){
+        $jumlah = str_replace(',', '', $request->jumlah);
         $rules=[
             'jumlah'=>'required',
             'tanggal'=>'required',
@@ -64,9 +93,32 @@ class KasController extends Controller
         $this->validate($request,$rules,$costumMessages);
         $requestData=$request->all();
         // dd($requestData);
-        $requestData['kredit']=str_replace(',', '', $request->jumlah);
-        $requestData['proyek_id']=proyekId();
-        $requestData['saldo']=saldoTerakhir()+str_replace(',', '', $request->jumlah);
+        $cekTransaksiSebelum=transaksi::where('tanggal','<=',$request->tanggal)->orderBy('no')->get();
+        /* jika transaksi sebelumnya ada value */
+        if($cekTransaksiSebelum != null){
+            $sebelum = $cekTransaksiSebelum->last();
+            $requestData['no']=$sebelum->no+1;
+            $requestData['saldo']=$sebelum->saldo+$jumlah;
+            $requestData['kredit']=str_replace(',', '', $request->jumlah);
+            $requestData['proyek_id']=proyekId();
+        }else{
+            /* jika tidak ada value simpan ke akhir transaksi */
+            $requestData['no']=noTransaksiTerakhir()+1;
+            $requestData['saldo']=saldoTerakhir()+$jumlah;
+            $requestData['kredit']=str_replace(',', '', $request->jumlah);
+            $requestData['proyek_id']=proyekId();
+        }
+        /* cek transaksi sesudah input */
+        $cekTransaksi=transaksi::where('tanggal','>',$request->tanggal)->orderBy('no')->get();
+        if($cekTransaksi != null){
+            /* jika ada, update transaksi sesudah sesuai perubahan input*/
+            foreach($cekTransaksi as $updateTransaksi){
+                $updateTransaksi['no'] = $updateTransaksi->no +1;
+                $updateTransaksi['saldo'] = $updateTransaksi->saldo + $jumlah;
+                $updateTransaksi->save();
+            }
+        }
+        // dd($requestData);
         transaksi::create($requestData);
         return redirect()->route('cashFlow')->with('status','Transaksi Berhasil Disimpan');
     }

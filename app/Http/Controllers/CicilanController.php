@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\cicilan;
 use Carbon\Carbon;
 use App\pembelian;
+use App\transaksi;
 use Illuminate\Http\Request;
 
 class CicilanController extends Controller
@@ -44,6 +45,7 @@ class CicilanController extends Controller
         return view('cicilanUnit/kavlingTambah',compact('id','daftarCicilanUnit','cicilanPerBulan','totalTerbayar'));
     }
     public function cicilanKavlingSimpan(Request $request){
+        $jumlah = str_replace(',', '', $request->jumlah);
         // dd($request);
         $rules=[
             'jumlah'=>'required',
@@ -99,10 +101,45 @@ class CicilanController extends Controller
         // dd($id); 
         $this->validate($request,$rules,$costumMessages);
 
-        /* parameter kasBesarMasuk ['tanggal','jumlah','sumber','uraian',]*/
-        kasBesarMasuk($requestCicilan);
-
         cicilan::create($requestCicilan);
+        $requestData=$request->all();
+        $requestData=[
+            'pembelian_id'=>$request->pembelian_id,
+            'urut'=>$urutan+1,
+            'ke'=>$cekBulan+1,
+            'tanggal'=>$request->tanggal,
+            'sisaKewajiban'=>$cicilan-$totalTerbayar-$terbayarSekarang,
+            'tempo'=>$tempo,
+            'sumber'=>'Cash',
+            'uraian'=>'Penerimaan Cicilan Unit '.jenisKepemilikan($cekCicilan->pelanggan_id).' '.$cekCicilan->kavling->blok.' a/n '.$cekCicilan->pelanggan->nama,
+        ];
+        $requestData['kredit']=str_replace(',', '', $request->jumlah);
+        $requestData['proyek_id']=proyekId();
+        /* cek apakah ada transaksi sebelumnya */
+        $cekTransaksiSebelum=transaksi::where('tanggal','<=',$request->tanggal)->orderBy('no')->get();
+        /* jika transaksi sebelumnya ada value */
+        if($cekTransaksiSebelum != null){
+            $sebelum = $cekTransaksiSebelum->last();
+            $requestData['no']=$sebelum->no+1;
+            $requestData['saldo']=$sebelum->saldo+$jumlah;
+        }else{
+            /* jika tidak ada value simpan ke akhir transaksi */
+            $requestData['no']=noTransaksiTerakhir()+1;
+            $requestData['saldo']=saldoTerakhir()+$jumlah;
+        }
+        /* cek transaksi sesudah input */
+        $cekTransaksi=transaksi::where('tanggal','>',$request->tanggal)->orderBy('no')->get();
+        // dd($requestData);
+        if($cekTransaksi != null){
+            /* jika ada, update transaksi sesudah sesuai perubahan input*/
+            foreach($cekTransaksi as $updateTransaksi){
+                $updateTransaksi['no'] = $updateTransaksi->no +1;
+                $updateTransaksi['saldo'] = $updateTransaksi->saldo + $jumlah;
+                $updateTransaksi->save();
+            }
+        }
+        kasBesarMasuk($requestData);
+
         $update=pembelian::find($id)->update(['sisaCicilan'=>$cicilan-$totalTerbayar-$terbayarSekarang]);
 
         $daftarCicilanUnit = cicilan::where('pembelian_id',$id)->get();

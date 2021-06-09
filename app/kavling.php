@@ -46,4 +46,13 @@ class kavling extends Model
     {
         return $this->hasOne(kios::class);
     }
+    /**
+     * Get the pelanggan that owns the kavling
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function pelanggan()
+    {
+        return $this->belongsTo(pelanggan::class);
+    }
 }

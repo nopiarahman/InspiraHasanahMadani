@@ -43,9 +43,6 @@
                   startDate: start,
                   endDate: end,
                   ranges: {
-                      'Hari Ini': [moment(), moment()],
-                      'Kemarin': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-                      '7 Hari Terakhir': [moment().subtract(6, 'days'), moment()],
                       '30 Hari Terakhir': [moment().subtract(29, 'days'), moment()],
                       'Bulan Ini': [moment().startOf('month'), moment().endOf('month')],
                       'Bulan Lalu': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
@@ -84,16 +81,16 @@
           </tbody>
         
             <tr class="border-top border-success">
-              <th colspan=3" class="text-right " >Pendapatan Bulan {{\Carbon\carbon::now()->isoFormat('MMMM')}}</th>
+              <th colspan=3" class="text-right " >Pendapatan Bulan {{\Carbon\carbon::parse($start)->isoFormat('MMMM')}}</th>
               <th class="">Rp.{{number_format($pendapatan->sum('kredit'))}}</th>
             </tr>
             <tr>
-              <th colspan=3" class="text-right " >Sisa Saldo Bulan {{\Carbon\carbon::now()->subMonths(1)->isoFormat('MMMM')}}</th>
-              <th class="">Rp.{{number_format(pendapatanBulanSebelumnya())}}</th>
+              <th colspan=3" class="text-right " >Sisa Saldo Bulan {{\Carbon\carbon::parse($start)->subMonths(1)->isoFormat('MMMM')}}</th>
+              <th class="">Rp.{{number_format(saldoBulanSebelumnya($start))}}</th>
             </tr>
             <tr>
               <th colspan=3" class="text-right bg-secondary" >Total Pendapatan</th>
-              <th class="bg-secondary">Rp.{{number_format(pendapatanBulanSebelumnya()+$pendapatan->sum('kredit'))}}</th>
+              <th class="bg-secondary">Rp.{{number_format(saldoBulanSebelumnya($start)+$pendapatan->sum('kredit'))}}</th>
             </tr>
             @php
             $a=[];
@@ -141,7 +138,7 @@
             </tr>
             <tr>
               <th colspan="3" class="text-right bg-info text-white" >Total Laba/Rugi Berjalan</th>
-                <th class="bg-info text-white" >Rp. {{number_format($pendapatan->sum('kredit')+pendapatanBulanSebelumnya($start,$end)-array_sum($c))}}</th>
+                <th class="bg-info text-white" >Rp. {{number_format($pendapatan->sum('kredit')+saldoBulanSebelumnya($start)-array_sum($c))}}</th>
             </tr>
           </tfoot>
         </table>

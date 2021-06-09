@@ -223,7 +223,6 @@
           </tr>
         </tfoot>
       </table>
-      {{$transaksiKeluar->links()}}
     </div>
   </div>
   {{-- modal RAB--}}

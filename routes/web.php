@@ -29,8 +29,12 @@ Route::group(['middleware'=>['auth','role:admin']],function(){
     Route::patch('/proyek/update/{id}', 'ProyekController@update')->name('proyekUpdate');
     Route::get('/proyek/pengeluaran/{id}', 'ProyekController@transaksiRABUnit')->name('transaksiRABUnit');
     Route::get('/proyek/pengeluaran/RAB/{id}', 'ProyekController@transaksiRAB')->name('transaksiRAB');
+
     Route::get('/kavling', 'KavlingController@index')->name('kavling');
+    Route::patch('/editKavling/{id}', 'KavlingController@update')->name('editKavling');
     Route::post('/kavlingSimpan', 'KavlingController@kavlingSimpan')->name('kavlingSimpan');
+    Route::delete('/hapusKavling/{id}', 'KavlingController@destroy')->name('hapusKavling');
+
     Route::get('/RAB', 'ProyekController@RAB')->name('RAB');
     Route::get('/biayaUnit', 'ProyekController@biayaUnit')->name('biayaUnit');
     Route::post('/rabUnitSimpan', 'ProyekController@rabUnitSimpan')->name('rabUnitSimpan');
@@ -62,6 +66,8 @@ Route::group(['middleware'=>['auth','role:admin']],function(){
     Route::get('/cicilanKios', 'CicilanController@cicilanKios')->name('cicilanKios');
     
     Route::get('/akun', 'AkunController@index')->name('akun');
+    Route::delete('/hapusAkun/{id}', 'AkunController@destroy')->name('hapusAkun');
+    Route::patch('/editAkun/{id}', 'AkunController@update')->name('editAkun');
     Route::post('/akunSimpan', 'AkunController@store')->name('akunSimpan');
     Route::get('/cariAkun', 'AkunController@cariAkun')->name('cariAKun');
     Route::get('/cariAkunTransaksi', 'TransaksiController@cariAkunTransaksi')->name('cariAkunTransaksi');

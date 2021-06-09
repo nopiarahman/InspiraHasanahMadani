@@ -22,26 +22,26 @@ class KasPendaftaranController extends Controller
         if($request->get('filter')){
             $start = Carbon::parse($request->start)->isoFormat('YYYY-MM-DD');
             $end = Carbon::parse($request->end)->isoFormat('YYYY-MM-DD');
-            $kasPendaftaran=kasPendaftaran::whereBetween('tanggal',[$start,$end])->paginate(40);
+            $kasPendaftaran=kasPendaftaran::whereBetween('tanggal',[$start,$end])->orderBy('no')->get();
         }else{
-            $kasPendaftaran=kasPendaftaran::whereBetween('tanggal',[$start,$end])->paginate(40);
+            $kasPendaftaran=kasPendaftaran::whereBetween('tanggal',[$start,$end])->orderBy('no')->get();
         }
         return view ('kas/pendaftaran',compact('kasPendaftaran','start','end'));
     }
     public function keluar(Request $request)
     {
-        $start = Carbon::now()->subDays(29)->isoFormat('YYYY-MM-DD');
-        $end = Carbon::now()->isoFormat('YYYY-MM-DD');
+        $start = Carbon::now()->firstOfMonth()->isoFormat('YYYY-MM-DD');
+        $end = Carbon::now()->endOFMonth()->isoFormat('YYYY-MM-DD');
         // dd($end);
         // $end = moment();
         if($request->get('filter')){
-            $mulai = Carbon::parse($request->start)->isoFormat('YYYY-MM-DD');
-            $akhir = Carbon::parse($request->end)->isoFormat('YYYY-MM-DD');
-            $kasPendaftaran=kasPendaftaran::whereBetween('tanggal',[$mulai,$akhir])->paginate(20);
+            $start = Carbon::parse($request->start)->isoFormat('YYYY-MM-DD');
+            $end = Carbon::parse($request->end)->isoFormat('YYYY-MM-DD');
+            $kasPendaftaran=kasPendaftaran::whereBetween('tanggal',[$start,$end])->orderBy('no')->get();
         }else{
-            $kasPendaftaran=kasPendaftaran::whereBetween('tanggal',[$start,$end])->paginate(20);
+            $kasPendaftaran=kasPendaftaran::whereBetween('tanggal',[$start,$end])->orderBy('no')->get();
         }
-        return view ('kas/pendaftaranKeluar',compact('kasPendaftaran'));
+        return view ('kas/pendaftaranKeluar',compact('kasPendaftaran','start','end'));
     }
 
     /**
@@ -62,6 +62,7 @@ class KasPendaftaranController extends Controller
      */
     public function store(Request $request)
     {
+        $jumlah = str_replace(',', '', $request->jumlah);
         $rules=[
             'jumlah'=>'required',
             'tanggal'=>'required',
@@ -71,16 +72,38 @@ class KasPendaftaranController extends Controller
             'required'=>':attribute tidak boleh kosong'
         ];
         $this->validate($request,$rules,$costumMessages);
+        // $requestData=$request->all();
         $requestData=$request->all();
         $requestData['kredit']=str_replace(',', '', $request->jumlah);
         $requestData['proyek_id']=proyekId();
-        $requestData['saldo']=saldoTerakhirKasPendaftaran()+str_replace(',', '', $request->jumlah);
+        /* cek apakah ada transaksi sebelumnya */
+        $cekTransaksiSebelum=kasPendaftaran::where('tanggal','<=',$request->tanggal)->orderBy('no')->get();
+        /* jika transaksi sebelumnya ada value */
+        if($cekTransaksiSebelum != null){
+            $sebelum = $cekTransaksiSebelum->last();
+            $requestData['no']=$sebelum->no+1;
+            $requestData['saldo']=$sebelum->saldo+$jumlah;
+        }else{
+            /* jika tidak ada value simpan ke akhir transaksi */
+            $requestData['no']=noTransaksiTerakhir()+1;
+            $requestData['saldo']=saldoTerakhirKasPendaftaran()+$jumlah;
+        }
+        /* cek transaksi sesudah input */
+        $cekTransaksi=kasPendaftaran::where('tanggal','>',$request->tanggal)->orderBy('no')->get();
+        if($cekTransaksi != null){
+            /* jika ada, update transaksi sesudah sesuai perubahan input*/
+            foreach($cekTransaksi as $updateTransaksi){
+                $updateTransaksi['no'] = $updateTransaksi->no +1;
+                $updateTransaksi['saldo'] = $updateTransaksi->saldo + $jumlah;
+                $updateTransaksi->save();
+            }
+        }
         kasPendaftaran::create($requestData);
-        // dd($request);
         return redirect()->route('kasPendaftaranMasuk')->with('status','Transaksi Berhasil Disimpan');
     }
     public function storeKeluar(Request $request)
     {
+        $jumlah = str_replace(',', '', $request->jumlah);
         $rules=[
             'jumlah'=>'required',
             'tanggal'=>'required',
@@ -90,10 +113,37 @@ class KasPendaftaranController extends Controller
             'required'=>':attribute tidak boleh kosong'
         ];
         $this->validate($request,$rules,$costumMessages);
+        // $requestData=$request->all();
         $requestData=$request->all();
         $requestData['debet']=str_replace(',', '', $request->jumlah);
         $requestData['proyek_id']=proyekId();
-        $requestData['saldo']=saldoTerakhirKasPendaftaran()-str_replace(',', '', $request->jumlah);
+        /* cek apakah ada transaksi sebelumnya */
+        $cekTransaksiSebelum=kasPendaftaran::where('tanggal','<=',$request->tanggal)->orderBy('no')->get();
+        /* jika transaksi sebelumnya ada value */
+        if($cekTransaksiSebelum != null){
+            $sebelum = $cekTransaksiSebelum->last();
+            // dd($cekTransaksiSebelum);
+            $requestData['no']=$sebelum->no+1;
+            $requestData['saldo']=$sebelum->saldo-$jumlah;
+        }else{
+            /* jika tidak ada value simpan ke akhir transaksi */
+            $requestData['no']=noTransaksiTerakhir()+1;
+            $requestData['saldo']=saldoTerakhirKasPendaftaran()-$jumlah;
+        }
+        /* cek transaksi sesudah input */
+        $cekTransaksi=kasPendaftaran::where('tanggal','>',$request->tanggal)->orderBy('no')->get();
+        // dd($cekTransaksi);
+        if($cekTransaksi != null){
+            /* jika ada, update transaksi sesudah sesuai perubahan input*/
+            foreach($cekTransaksi as $updateTransaksi){
+                $updateTransaksi['no'] = $updateTransaksi->no +1;
+                $updateTransaksi['saldo'] = $updateTransaksi->saldo - $jumlah;
+                $updateTransaksi->save();
+            }
+        }
+        // $requestData['debet']=str_replace(',', '', $request->jumlah);
+        // $requestData['proyek_id']=proyekId();
+        // $requestData['saldo']=saldoTerakhirKasPendaftaran()-str_replace(',', '', $request->jumlah);
         kasPendaftaran::create($requestData);
         // dd($request);
         return redirect()->route('kasPendaftaranKeluar')->with('status','Transaksi Berhasil Disimpan');

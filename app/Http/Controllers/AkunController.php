@@ -102,9 +102,19 @@ class AkunController extends Controller
      * @param  \App\akun  $akun
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, akun $akun)
+    public function update(Request $request, akun $id)
     {
-        //
+        $rules=[
+            'kodeAkun'=>'required',
+            'namaAkun'=>'required',
+        ];
+        $costumMessages = [
+            'required'=>':attribute tidak boleh kosong'
+        ];
+        $requestData = $request->all();
+        $this->validate($request,$rules,$costumMessages);
+        $id->update($requestData);
+        return redirect()->back()->with('status','Akun Berhasil diedit');
     }
 
     /**
@@ -113,8 +123,15 @@ class AkunController extends Controller
      * @param  \App\akun  $akun
      * @return \Illuminate\Http\Response
      */
-    public function destroy(akun $akun)
+    public function destroy(akun $id)
     {
-        //
+        // dd($id->transaksi->count());
+        if($id->transaksi->count() != 0){
+            return redirect()->back()->with('error','Gagal Terhapus, Akun ini memiliki transaksi');
+        }else{
+            akun::destroy($id->id);
+            return redirect()->back()->with('status','Akun Berhasil dihapus');
+            
+        }
     }
 }

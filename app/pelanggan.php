@@ -19,4 +19,13 @@ class pelanggan extends Model
     {
         return $this->hasMany(pembelian::class);
     }
+    /**
+     * Get the kavling associated with the pelanggan
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function kavling()
+    {
+        return $this->hasOne(kavling::class);
+    }
 }

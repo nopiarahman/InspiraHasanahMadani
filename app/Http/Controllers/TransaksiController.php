@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\transaksi;
 use App\akun;
 use App\rabUnit;
+use App\pettycash;
 use App\rab;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -61,12 +62,12 @@ class TransaksiController extends Controller
             $start = Carbon::parse($request->start)->isoFormat('YYYY-MM-DD');
             $end = Carbon::parse($request->end)->isoFormat('YYYY-MM-DD');
             $transaksiKeluar=transaksi::whereBetween('tanggal',[$start,$end])
-                            ->whereNotNull('debet')->paginate(20);
+                            ->whereNotNull('debet')->orderBy('no')->get();
         }else{
             $start = Carbon::now()->firstOfMonth()->isoFormat('YYYY-MM-DD');
             $end = Carbon::now()->endOfMonth()->isoFormat('YYYY-MM-DD');
             $transaksiKeluar=transaksi::whereBetween('tanggal',[$start,$end])
-                            ->whereNotNull('debet')->paginate(20);
+                            ->whereNotNull('debet')->orderBy('no')->get();
         }
         return view ('transaksi/keluarIndex',compact('semuaAkun','perKategori','kategoriAkun','transaksiKeluar','perHeader','semuaRAB','perJudul','perHeaderUnit','semuaRABUnit','perJudulUnit','start','end'));
     }
@@ -95,6 +96,7 @@ class TransaksiController extends Controller
         }
     }
     public function keluarSimpan(Request $request){
+        $jumlah = str_replace(',', '', $request->jumlah);
         $rules=[
             'jumlah'=>'required',
             'tanggal'=>'required',
@@ -104,15 +106,82 @@ class TransaksiController extends Controller
             'required'=>':attribute tidak boleh kosong'
         ];
         $this->validate($request,$rules,$costumMessages);
-        // dd($request);
         $requestData=$request->all();
-        /* parameter kasBesarKeluar=['tanggal','rab_id(nullable)','rabUnit_id(nullable)','akun_id','uraian','sumber','jumlah'] */
+        /* cek apakah ada transaksi sebelumnya */
+        $cekTransaksiSebelum=transaksi::where('tanggal','<=',$request->tanggal)->orderBy('no')->get();
+        /* jika transaksi sebelumnya ada value */
+        if($cekTransaksiSebelum != null){
+            $sebelum = $cekTransaksiSebelum->last();
+            $requestData['no']=$sebelum->no+1;
+            $requestData['saldo']=$sebelum->saldo-$jumlah;
+        }else{
+            /* jika tidak ada value simpan ke akhir transaksi */
+            $requestData['no']=noTransaksiTerakhir()+1;
+            $requestData['saldo']=saldoTerakhir()-$jumlah;
+        }
+        /* parameter kasBesarKeluar=['tanggal','rab_id(nullable)','rabUnit_id(nullable)','akun_id','uraian','sumber','jumlah','no','saldo'] */
         if($request->sumberKas=='kasBesar'){
+            /* cek transaksi sesudah input */
+            $cekTransaksi=transaksi::where('tanggal','>',$request->tanggal)->orderBy('no')->get();
+            if($cekTransaksi != null){
+                /* jika ada, update transaksi sesudah sesuai perubahan input*/
+                foreach($cekTransaksi as $updateTransaksi){
+                    $updateTransaksi['no'] = $updateTransaksi->no +1;
+                    $updateTransaksi['saldo'] = $updateTransaksi->saldo - $jumlah;
+                    $updateTransaksi->save();
+                }
+            }
+            /*  simpan ke kas besar sesuai input requestData*/
             kasBesarKeluar($requestData);
         }else{
+            /* cek transaksi sesudah input */
+            $cekTransaksi=transaksi::where('tanggal','>',$request->tanggal)->orderBy('no')->get();
+            if($cekTransaksi != null){
+                /* jika ada, update transaksi sesudah sesuai perubahan input*/
+                foreach($cekTransaksi as $updateTransaksi){
+                    $updateTransaksi['no'] = $updateTransaksi->no +1;
+                    $updateTransaksi['saldo'] = $updateTransaksi->saldo - $jumlah;
+                    $updateTransaksi->save();
+                }
+            }
+            /*  simpan ke kas besar sesuai input requestData*/
             kasBesarKeluar($requestData);
-            $requestData['keterangan']='Kas Besar';
-            pettyCashKeluar($requestData);
+            /* cek apakah ada transaksi sebelumnya */
+            $cekPettyCashSebelum=pettycash::where('tanggal','<=',$request->tanggal)->orderBy('no')->get();
+            /* jika transaksi sebelumnya ada value */
+            if($cekPettyCashSebelum != null){
+                $sebelum = $cekPettyCashSebelum->last();
+                $requestData['no']=$sebelum->no+1;
+                $requestData['saldo']=$sebelum->saldo-$jumlah;
+                $requestData['keterangan']='Kas Besar';
+                /* cek transaksi sesudah input */
+                $cekTransaksi=pettycash::where('tanggal','>',$request->tanggal)->orderBy('no')->get();
+                if($cekTransaksi != null){
+                    /* jika ada, update transaksi sesudah sesuai perubahan input*/
+                    foreach($cekTransaksi as $updateTransaksi){
+                        $updateTransaksi['no'] = $updateTransaksi->no +1;
+                        $updateTransaksi['saldo'] = $updateTransaksi->saldo - $jumlah;
+                        $updateTransaksi->save();
+                    }
+                }
+                pettyCashKeluar($requestData);
+            }else{
+                /* jika tidak ada value simpan ke akhir transaksi */
+                $requestData['no']=noPettyCashTerakhir()+1;
+                $requestData['saldo']=saldoTerakhirPettyCash()-$jumlah;
+                $requestData['keterangan']='Kas Besar';
+                pettyCashKeluar($requestData);
+                /* cek transaksi sesudah input */
+                $cekTransaksi=pettycash::where('tanggal','>',$request->tanggal)->orderBy('no')->get();
+                if($cekTransaksi != null){
+                    /* jika ada, update transaksi sesudah sesuai perubahan input*/
+                    foreach($cekTransaksi as $updateTransaksi){
+                        $updateTransaksi['no'] = $updateTransaksi->no +1;
+                        $updateTransaksi['saldo'] = $updateTransaksi->saldo - $jumlah;
+                        $updateTransaksi->save();
+                    }
+                }
+            }
         }
         return redirect()->route('transaksiKeluar')->with('status','Transaksi Berhasil disimpan');
     }
@@ -122,13 +191,13 @@ class TransaksiController extends Controller
         if($request->get('filter')){
             $start = Carbon::parse($request->start)->isoFormat('YYYY-MM-DD');
             $end = Carbon::parse($request->end)->isoFormat('YYYY-MM-DD');
-            $cashFlow=transaksi::whereBetween('tanggal',[$start,$end])->orderBy('tanggal')->get();
+            $cashFlow=transaksi::whereBetween('tanggal',[$start,$end])->orderBy('no')->get();
             $awal=$cashFlow->first();
             // dd($awal);
         }else{
             $start = Carbon::now()->firstOfMonth()->isoFormat('YYYY-MM-DD');
             $end = Carbon::now()->endOfMonth()->isoFormat('YYYY-MM-DD');
-            $cashFlow=transaksi::whereBetween('tanggal',[$start,$end])->orderBy('tanggal')->get();
+            $cashFlow=transaksi::whereBetween('tanggal',[$start,$end])->orderBy('no')->get();
             $awal=$cashFlow->first();
         }
         return view ('transaksi/cashFlowIndex',compact('cashFlow','semuaAkun','awal','start','end'));

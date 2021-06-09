@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 use App\pelanggan;
+use App\cicilan;
+use App\dp;
 use App\pembelian;
 use App\kavling;
 use App\transaksi;
@@ -50,7 +52,9 @@ class HomeController extends Controller
         $dataKavling=kavling::where('pelanggan_id',$request->id)->first();
         $dataPembelian=pembelian::where('pelanggan_id',$request->id)->first();
         $persenDiskon = ($dataPembelian->diskon/$dataPembelian->harga)*100;
-        return view ('pelanggan/pelangganDetail',compact('id','dataKavling','dataPembelian','persenDiskon'));
+        $dataDp = dp::where('pembelian_id',$dataPembelian->id)->get();
+        $dataCicilan = cicilan::where('pembelian_id',$dataPembelian->id)->get();
+        return view ('pelanggan/pelangganDetail',compact('id','dataKavling','dataPembelian','persenDiskon','dataDp','dataCicilan'));
     }
     public function cariPelangganDaftar(Request $request){
         if ($request->has('q')) {

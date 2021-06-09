@@ -157,6 +157,11 @@
             </tr>
           </thead>
           <tbody>
+              <tr>
+                <td colspan="2"></td>
+                <th class="text-primary " colspan="3" >Sisa Saldo Sebelumnya</th>
+                <th class="text-primary">Rp.{{number_format(saldoPettyCashBulanSebelumnya($start))}}</th>
+              </tr>
               @foreach($pettyCash as $kas)
               <tr>
                 <td>{{$loop->iteration}}</td>
@@ -183,7 +188,7 @@
               <th colspan="3" class="text-right text-primary">Total</th>
               <th class="text-primary">Rp. {{number_format($pettyCash->sum('kredit'))}}</th>
               <th class="text-primary">Rp. {{number_format($pettyCash->sum('debet'))}}</th>
-              <th colspan="3" class="text-primary">Rp. {{number_format(saldoTerakhirPettyCash())}}</th>
+              <th colspan="3" class="text-primary">Rp. {{number_format(totalPettyCash($start,$end))}}</th>
             </tr>
           </tfoot>
         </table>

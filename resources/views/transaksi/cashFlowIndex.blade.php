@@ -174,7 +174,7 @@
         <tr>
           <td colspan="2"></td>
           <th class="text-primary " colspan="3" >Sisa Saldo Sebelumnya</th>
-          <th class="text-primary">Rp.{{number_format($awal->saldo+$awal->debit-$awal->kredit)}}</th>
+          <th class="text-primary">Rp.{{number_format(saldoBulanSebelumnya($start))}}</th>
         </tr>
         @foreach($cashFlow as $transaksi)
         <tr>
@@ -203,7 +203,7 @@
             <th colspan="3" class="text-right text-primary">Total</th>
             <th class="text-primary">Rp. {{number_format($cashFlow->sum('kredit'))}}</th>
             <th class="text-primary">Rp. {{number_format($cashFlow->sum('debet'))}}</th>
-            <th colspan="2" class="text-primary">Rp. {{number_format(saldoTerakhir())}}</th>
+            <th colspan="2" class="text-primary">Rp. {{number_format(totalKasBesar($start,$end))}}</th>
           </tr>
         </tr>
       </tfoot>

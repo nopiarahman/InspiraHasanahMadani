@@ -161,6 +161,11 @@
             </tr>
           </thead>
           <tbody>
+              <tr>
+                <td colspan="2"></td>
+                <th class="text-primary " colspan="3" >Sisa Saldo Sebelumnya</th>
+                <th class="text-primary">Rp.{{number_format(saldoPendaftaranBulanSebelumnya($start))}}</th>
+              </tr>
               @foreach($kasPendaftaran as $kas)
               <tr>
                 <td>{{$loop->iteration}}</td>
@@ -186,7 +191,7 @@
               <th colspan="3" class="text-right text-primary">Total</th>
               <th class="text-primary">Rp. {{number_format($kasPendaftaran->sum('kredit'))}}</th>
               <th class="text-primary">Rp. {{number_format($kasPendaftaran->sum('debet'))}}</th>
-              <th colspan="2" class="text-primary">Rp. {{number_format(saldoTerakhirKasPendaftaran())}}</th>
+              <th colspan="2" class="text-primary">Rp. {{number_format(totalKasPendaftaran($start,$end))}}</th>
             </tr>
           </tfoot>
         </table>

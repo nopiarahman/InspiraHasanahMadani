@@ -25,7 +25,7 @@ class PelangganController extends Controller
      */
     public function index()
     {
-        $semuaPelanggan = pelanggan::where('proyek_id',proyekId())->paginate(20);
+        $semuaPelanggan = pelanggan::where('proyek_id',proyekId())->orderBy('nama')->paginate(50);
         return view ('pelanggan/index',compact('semuaPelanggan'));
     }
 

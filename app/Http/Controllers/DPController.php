@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\dp;
+use App\transaksi;
 use Carbon\Carbon;
 use App\pembelian;
 
@@ -10,19 +11,7 @@ use Illuminate\Http\Request;
 
 class DPController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-    }
 
-    public function DPRumah(){
-        return view ('cicilanDP/rumah');
-    }
     public function DPKavling(){
         $semuaCicilanDp = pembelian::where('statusDp','Credit')->orderBy('kavling_id')->paginate(20);
         
@@ -36,6 +25,7 @@ class DPController extends Controller
         return view ('cicilanDp/kavlingTambah',compact('id','daftarCicilanDp'));
     }
     public function DPKavlingSimpan(Request $request){
+        $jumlah = str_replace(',', '', $request->jumlah);
         $rules=[
             'jumlah'=>'required',
             'tanggal'=>'required',
@@ -82,84 +72,51 @@ class DPController extends Controller
         ];
         $this->validate($request,$rules,$costumMessages);
 
-        /* parameter kasBesarMasuk ['tanggal','jumlah','sumber','uraian',]*/
+        /* parameter kasBesarMasuk ['tanggal','jumlah','sumber','uraian','no','saldo']*/
         dp::create($requestDp);
-        kasBesarMasuk($requestDp);
+        // $requestData=$request->all();
+        $requestData=$request->all();
+        $requestData=[
+            'urut'=>$urutan+1,
+            'ke'=>$cekBulan+1,
+            'tanggal'=>$request->tanggal,
+            'sisaDp'=>$akadDp-$totalTerbayar-$terbayarSekarang,
+            'tempo'=>$tempo,
+            'sumber'=>'Cash',
+            'uraian'=>'Penerimaan Cicilan DP '.jenisKepemilikan($cekDp->pelanggan_id).' '.$cekDp->kavling->blok.' a/n '.$cekDp->pelanggan->nama,
+        ];
+        $requestData['kredit']=str_replace(',', '', $request->jumlah);
+        $requestData['proyek_id']=proyekId();
+        /* cek apakah ada transaksi sebelumnya */
+        $cekTransaksiSebelum=transaksi::where('tanggal','<=',$request->tanggal)->orderBy('no')->get();
+        /* jika transaksi sebelumnya ada value */
+        if($cekTransaksiSebelum != null){
+            $sebelum = $cekTransaksiSebelum->last();
+            $requestData['no']=$sebelum->no+1;
+            $requestData['saldo']=$sebelum->saldo+$jumlah;
+        }else{
+            /* jika tidak ada value simpan ke akhir transaksi */
+            $requestData['no']=noTransaksiTerakhir()+1;
+            $requestData['saldo']=saldoTerakhir()+$jumlah;
+        }
+        /* cek transaksi sesudah input */
+        $cekTransaksi=transaksi::where('tanggal','>',$request->tanggal)->orderBy('no')->get();
+        // dd($requestData);
+        if($cekTransaksi != null){
+            /* jika ada, update transaksi sesudah sesuai perubahan input*/
+            foreach($cekTransaksi as $updateTransaksi){
+                $updateTransaksi['no'] = $updateTransaksi->no +1;
+                $updateTransaksi['saldo'] = $updateTransaksi->saldo + $jumlah;
+                $updateTransaksi->save();
+            }
+        }
+        kasBesarMasuk($requestData);
         $update=pembelian::find($id)->update(['sisaDp'=>$akadDp-$totalTerbayar-$terbayarSekarang]);
 
         return redirect()->route('DPKavlingTambah',['id'=>$id])->with('status','Cicilan DP Berhasil ditambahkan');
 
 
         
-    }
-    public function DPKios(){
-        return view ('cicilanDP/kios');
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\dp  $dp
-     * @return \Illuminate\Http\Response
-     */
-    public function show(dp $dp)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\dp  $dp
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(dp $dp)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\dp  $dp
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, dp $dp)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\dp  $dp
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(dp $dp)
-    {
-        //
     }
 
 }

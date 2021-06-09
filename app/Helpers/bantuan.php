@@ -2,6 +2,7 @@
 use App\kavling;
 use App\dp;
 use App\akun;
+use App\kios;
 use App\pembelian;
 use App\rumah;
 use App\transaksi;
@@ -37,15 +38,70 @@ function jenisKepemilikan($id){  /* $id = pelanggan_id */
     }
 }
 function saldoTerakhir(){
-    $saldo = transaksi::orderBy('created_at','desc')->first();
+    $saldo = transaksi::orderBy('no','desc')->first();
     $saldoTerakhir=0;
     if($saldo != null){
         $saldoTerakhir=$saldo->saldo;
     }
     return $saldoTerakhir;
 }
+function noTransaksiTerakhir(){
+    $no = transaksi::orderBy('no','desc')->first();
+    $noTerakhir=0;
+    if($no != null){
+        $noTerakhir=$no->no;
+    }
+    return $noTerakhir;
+}
+function noPettyCashTerakhir(){
+    $no = pettycash::orderBy('no','desc')->first();
+    $noTerakhir=0;
+    if($no != null){
+        $noTerakhir=$no->no;
+    }
+    return $noTerakhir;
+}
+function totalKasBesar($start,$end){
+    $total = transaksi::whereBetween('tanggal',[$start,$end])->orderBy('no')->get();
+    if($total != null){
+        $terakhir = $total->last();
+        if($terakhir != null){
+            return $terakhir->saldo;
+        }else{
+            return 0;
+        }
+    }
+    return 0;
+    // dd($total);
+}
+function totalKasPendaftaran($start,$end){
+    $total = kasPendaftaran::whereBetween('tanggal',[$start,$end])->orderBy('no')->get();
+    if($total != null){
+        $terakhir = $total->last();
+        if($terakhir != null){
+            return $terakhir->saldo;
+        }else{
+            return 0;
+        }
+    }
+    return 0;
+    // dd($total);
+}
+function totalPettyCash($start,$end){
+    $total = pettyCash::whereBetween('tanggal',[$start,$end])->orderBy('no')->get();
+    if($total != null){
+        $terakhir = $total->last();
+        if($terakhir != null){
+            return $terakhir->saldo;
+        }else{
+            return 0;
+        }
+    }
+    return 0;
+    // dd($total);
+}
 function saldoTerakhirKasPendaftaran(){
-    $saldo = kasPendaftaran::orderBy('created_at','desc')->first();
+    $saldo = kasPendaftaran::orderBy('no','desc')->first();
     $saldoTerakhir=0;
     if($saldo != null){
         $saldoTerakhir=$saldo->saldo;
@@ -53,7 +109,7 @@ function saldoTerakhirKasPendaftaran(){
     return $saldoTerakhir;
 }
 function saldoTerakhirPettyCash(){
-    $saldo = pettyCash::orderBy('created_at','desc')->first();
+    $saldo = pettyCash::orderBy('no','desc')->first();
     $saldoTerakhir=0;
     if($saldo != null){
         $saldoTerakhir=$saldo->saldo;
@@ -70,13 +126,22 @@ function kasBesarMasuk($dataArray){
         'namaAkun'=>'Pendapatan',
     ]);
     $requestData = $data->all();
-    $requestData['kredit']=$data->get('jumlah');
-    $requestData['saldo']=saldoTerakhir()+$data->get('jumlah');
+    $requestData['kredit']=$data->get('kredit');
+    $requestData['saldo']=$data->get('saldo');
     $requestData['akun_id']=$akunPendapatan->id;
-    $requestData['proyek_id']=proyekId();
+    $requestData['proyek_id']=$data->get('proyek_id');
     // dd($requestData);
     transaksi::create($requestData);
     // return $this; 
+}
+function saldoSebelumnya($tanggalSekarang){
+    $transaksi = transaksi::where('tanggal','<=',$tanggalSekarang)->orderBy('tanggal')->get();
+    if($transaksi != null){
+        $terakhir = $transaksi->last();
+        return $terakhir->saldo;
+    }else{
+        return 0;
+    } 
 }
 function kasBesarKeluar($dataArray)
 {
@@ -89,7 +154,8 @@ function kasBesarKeluar($dataArray)
     $dataTransaksi['uraian'] = $data->get('uraian');
     $dataTransaksi['sumber'] = $data->get('sumber');
     $dataTransaksi['debet'] = $jumlah;
-    $dataTransaksi['saldo'] = saldoTerakhir()-$jumlah;
+    $dataTransaksi['no'] = $data->get('no');
+    $dataTransaksi['saldo'] = $data->get('saldo');
     $dataTransaksi['proyek_id'] = proyekId();
     transaksi::create($dataTransaksi);
     // dd($dataTransaksi);
@@ -103,7 +169,8 @@ function pettyCashKeluar($dataArray)
     $dataTransaksi['sumber'] = $data->get('sumber');
     $dataTransaksi['keterangan'] = $data->get('keterangan');
     $dataTransaksi['debet'] = $jumlah;
-    $dataTransaksi['saldo'] = saldoTerakhirPettyCash()-$jumlah;
+    $dataTransaksi['no'] = $data->get('no');
+    $dataTransaksi['saldo'] = $data->get('saldo');
     $dataTransaksi['proyek_id'] = proyekId();
     pettyCash::create($dataTransaksi);
     // dd($dataTransaksi);
@@ -124,10 +191,18 @@ function satuanUnit($judul){
 
 function hitungUnit($unit,$judul,$jenis){
     $cekBlok=kavling::where('blok',$unit)->first();
+    // dd($unit);
     if($cekBlok != null){
         if($judul=='Biaya Produksi Rumah'){
-            $cariRumah=rumah::where('kavling_id',$cekBlok->id)->first();
-            return $cariRumah->luasBangunan;
+            if($jenis == 'kios' ){
+                $cariKios=kios::where('kavling_id',$cekBlok->id)->first();
+                return $cariKios->luasBangunan;
+
+            }else{
+                $cariRumah=rumah::where('kavling_id',$cekBlok->id)->first();
+                return $cariRumah->luasBangunan;
+
+            }
         }
     }else{
         if($jenis=='kavling'){
@@ -191,13 +266,40 @@ function pendapatanLainTahunan($id,$start,$end){
     }
 }
 
-function pendapatanBulanSebelumnya(){
-    $mulai = \Carbon\carbon::now()->subMonths(1)->firstOfMonth()->isoFormat('YYYY-MM-DD');
-    $akhir = \Carbon\carbon::now()->subMonths(1)->endOfMonth()->isoFormat('YYYY-MM-DD');
-    $akunId=akun::where('proyek_id',proyekId())->where('namaAkun','pendapatan')->first();
-    $pendapatan = transaksi::where('akun_id',$akunId->id)
-                            ->whereBetween('tanggal',[$mulai,$akhir])
-                            ->orderBy('created_at','desc')->first();
+function saldoBulanSebelumnya($start){
+    $mulai = \Carbon\carbon::parse($start)->subMonths(1)->firstOfMonth()->isoFormat('YYYY-MM-DD');
+    $akhir = \Carbon\carbon::parse($start)->subMonths(1)->endOfMonth()->isoFormat('YYYY-MM-DD');
+    // $akunId=akun::where('proyek_id',proyekId())->where('namaAkun','pendapatan')->first();
+    $pendapatan = transaksi::whereBetween('tanggal',[$mulai,$akhir])->where('proyek_id',proyekId())
+                            ->orderBy('no','desc')->first();
+    // dd($akhir);
+    if($pendapatan != null){
+        return $pendapatan->saldo;
+    }else{
+        return 0;
+        // return $pendapatan->saldo;
+    }
+}
+function saldoPettyCashBulanSebelumnya($start){
+    $mulai = \Carbon\carbon::parse($start)->subMonths(1)->firstOfMonth()->isoFormat('YYYY-MM-DD');
+    $akhir = \Carbon\carbon::parse($start)->subMonths(1)->endOfMonth()->isoFormat('YYYY-MM-DD');
+    // $akunId=akun::where('proyek_id',proyekId())->where('namaAkun','pendapatan')->first();
+    $pendapatan = pettyCash::whereBetween('tanggal',[$mulai,$akhir])->where('proyek_id',proyekId())
+                            ->orderBy('no','desc')->first();
+    // dd($akhir);
+    if($pendapatan != null){
+        return $pendapatan->saldo;
+    }else{
+        return 0;
+        // return $pendapatan->saldo;
+    }
+}
+function saldoPendaftaranBulanSebelumnya($start){
+    $mulai = \Carbon\carbon::parse($start)->subMonths(1)->firstOfMonth()->isoFormat('YYYY-MM-DD');
+    $akhir = \Carbon\carbon::parse($start)->subMonths(1)->endOfMonth()->isoFormat('YYYY-MM-DD');
+    // $akunId=akun::where('proyek_id',proyekId())->where('namaAkun','pendapatan')->first();
+    $pendapatan = kasPendaftaran::whereBetween('tanggal',[$mulai,$akhir])->where('proyek_id',proyekId())
+                            ->orderBy('no','desc')->first();
     // dd($akhir);
     if($pendapatan != null){
         return $pendapatan->saldo;
