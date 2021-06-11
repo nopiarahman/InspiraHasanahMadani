@@ -183,8 +183,9 @@
       </tbody>
       <tfoot class="bg-light">
         <tr >
-          <th style="text-align: right" colspan="3">Total Terbayar</th>
+          <th style="text-align: right" colspan="2">Total Terbayar</th>
           <th>Rp.{{number_format($totalTerbayar)}}</th>
+          <td></td>
           <td></td>
           <td></td>
         </tr>

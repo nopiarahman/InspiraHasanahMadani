@@ -13,7 +13,7 @@ class DPController extends Controller
 {
 
     public function DPKavling(){
-        $semuaCicilanDp = pembelian::where('statusDp','Credit')->orderBy('kavling_id')->paginate(20);
+        $semuaCicilanDp = pembelian::where('statusDp','Credit')->orderBy('kavling_id')->paginate(40);
         
 
         return view ('cicilanDP/kavling',compact('semuaCicilanDp'));

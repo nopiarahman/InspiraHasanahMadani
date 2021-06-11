@@ -50,10 +50,20 @@
           </thead>
           <tbody>
             @foreach($semuaCicilanDp as $cicilanDp)
+            @if($cicilanDp->pelanggan !=null)
             <tr>
               <th scope="row">{{$loop->iteration}}</th>
-              <td>{{$cicilanDp->pelanggan->nama}}</td>
+              <td>
+                
+                <a href="{{route('pelangganDetail',['id'=>$cicilanDp->pelanggan->id])}}" class="text-primary">
+                {{$cicilanDp->pelanggan->nama}}
+                </a>
+              </td>
+              @if($cicilanDp->pelanggan->kavling==null)
+              <td>Batal Akad</td>
+              @else
               <td>{{unitPelanggan($cicilanDp->kavling_id)->blok}}</td>
+              @endif
               <td>{{jenisKepemilikan($cicilanDp->pelanggan_id)}}</td>
               <td>Rp.{{number_format($cicilanDp->sisaDp)}}</td>
               <td><a href="{{route('DPKavlingTambah',['id'=>$cicilanDp->id])}}" class="badge badge-primary">Pembayaran</a>
@@ -62,6 +72,7 @@
                 @endif
               </td>
             </tr>
+            @endif
             @endforeach
           </tbody>
         </table>

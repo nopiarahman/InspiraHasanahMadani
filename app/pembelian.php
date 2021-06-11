@@ -28,4 +28,22 @@ class pembelian extends Model
     {
         return $this->belongsTo(kavling::class);
     }
+    /**
+     * Get the rumah that owns the pembelian
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function rumah()
+    {
+        return $this->belongsTo(rumah::class);
+    }
+    /**
+     * Get the kiso that owns the pembelian
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function kios()
+    {
+        return $this->belongsTo(kios::class);
+    }
 }

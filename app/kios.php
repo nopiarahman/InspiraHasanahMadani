@@ -19,5 +19,23 @@ class kios extends Model
     {
         return $this->belongsTo(kavling::class);
     }
+    /**
+     * Get the pembelian associated with the kios
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function pembelian()
+    {
+        return $this->hasOne(pembelian::class);
+    }
+    /**
+     * Get the pelanggan that owns the kios
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function pelanggan()
+    {
+        return $this->belongsTo(pelanggan::class);
+    }
 }
 

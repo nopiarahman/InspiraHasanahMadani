@@ -66,10 +66,15 @@ class KavlingController extends Controller
         return redirect()->back()->with('status','Unit berhasil dirubah');
     }
     public function destroy (Kavling $id){
+        
         $relasi = $id->pelanggan;
-        if($relasi != null){
+        // dd($id->pembelian);
+        if($relasi != null ){
             return redirect()->back()->with('error','Gagal Terhapus, Unit ini dimiliki oleh '.$id->pelanggan->nama);
-        }else{
+        }elseif($relasi == null && $id->pembelian != null){
+            return redirect()->back()->with('error','Gagal Terhapus, Unit ini Memiliki Transaksi dari pelanggan sebelumnya (Batal Akad)');
+        }
+        else{
             kavling::destroy($id->id);
             return redirect()->back()->with('status','Unit Berhasil dihapus');
             

@@ -49,9 +49,13 @@ Route::group(['middleware'=>['auth','role:admin']],function(){
     Route::get('/pelangganTambah', 'PelangganController@create')->name('pelangganTambah');
     Route::get('/pelangganDetail/{id}', 'PelangganController@detail')->name('pelangganDetail');
     Route::post('/pelangganSimpan', 'PelangganController@store')->name('pelangganSimpan');
+    Route::patch('/pelangganUpdate/{id}', 'PelangganController@update')->name('pelangganUpdate');
+    Route::patch('/unitPelangganUpdate/{id}', 'PelangganController@updateUnit')->name('unitPelangganUpdate');
     Route::post('/simpanNomorAkad/{id}', 'PelangganController@simpanNomorAkad')->name('simpanNomorAkad');
     Route::post('/simpanTanggalAkad/{id}', 'PelangganController@simpanTanggalAkad')->name('simpanTanggalAkad');
     Route::get('/cariKavling', 'PelangganController@cariKavling');
+    Route::patch('/batalAkad/{id}', 'PelangganController@batalAkad')->name('batalAkad');
+    Route::delete('/hapusPelanggan/{id}', 'PelangganController@destroy')->name('hapusPelanggan');
     
     Route::get('/DPRumah', 'DPController@DPRumah')->name('DPRumah');
     Route::get('/DPKavling', 'DPController@DPKavling')->name('DPKavling');

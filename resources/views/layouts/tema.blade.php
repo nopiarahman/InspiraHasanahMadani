@@ -182,14 +182,14 @@
       </div>
       <footer class="main-footer">
         <div class="footer-left">
-          Copyright &copy; 2021 <div class="bullet"></div>Build And Design By Nopi Arahman</a>
+          Copyright &copy; 2021 <div class="bullet"></div>Build And Design By  <a href="https://www.instagram.com/khadijah.itsolution/"><i class="fab fa-instagram" aria-hidden="true"></i> Khadijah.itsolution</a>
         </div>
         <div class="footer-right">
           1.0.1
         </div>
       </footer>
     </div>
-  </div>
+  </div> fa
   
   @yield('script')
   <script type="text/javascript" src="{{ mix('js/app.js') }}"></script>

@@ -41,7 +41,7 @@
         <div class="profile-widget-items">
           <div class="profile-widget-item">
             <div class="profile-widget-item-label">Blok</div>
-            <div class="profile-widget-item-value">{{$dataKavling->blok}}</div>
+            <div class="profile-widget-item-value">@if($dataKavling == null)Akad Dibatalkan @else{{$dataKavling->blok}}@endif</div>
           </div>
           <div class="profile-widget-item">
             <div class="profile-widget-item-label">Jenis Kepemilikan</div>
@@ -53,19 +53,20 @@
         </div>
       </div>
       <div class="profile-widget-description">
-        <div class="profile-widget-name">{{$id->nama}} <div class="text-muted d-inline font-weight-normal">
+        <div class="profile-widget-name ml-4 text-primary"> <h4> {{$id->nama}} </h4><div class="text-muted d-inline font-weight-normal">
         </div>
         </div>
           <table class="table table-hover">
             <tbody>
               <tr>
                 <th>Objek</th>
-                <td>{{jenisKepemilikan($id->id)}} ( {{ $dataKavling->blok}} )</td>
+                <td>{{jenisKepemilikan($id->id)}} ( @if($dataKavling == null)Akad Dibatalkan @else{{$dataKavling->blok}}@endif )</td>
                 <td></td>
               </tr>
               <tr>
                 <th scope="row">Nomor Akad</th>
                 <td>
+                  {{-- @if($dataKavling =! null) Akad Dibatalkan @else --}}
                   @if($dataPembelian->nomorAkad != null)
                   {{$dataPembelian->nomorAkad}}
                 </td>
@@ -87,6 +88,7 @@
                     </a>
                   </td>
                   @endif
+                  {{-- @endif --}}
                 </td>
               </tr>
               <tr>
@@ -157,10 +159,12 @@
     <div class="card">
         <div class="card-header">
           <h4>Edit Pelanggan</h4>
+
         </div>
-        <form action="{{route('pelangganSimpan')}}" method="POST" enctype="multipart/form-data" onchange="hitung()">
+        <form action="{{route('pelangganUpdate',['id'=>$id->id])}}" method="POST" enctype="multipart/form-data" onchange="hitung()">
+          @method('patch')
           {{-- Part 1 --}}
-          <div class="card-body" id="pertama">
+          <form class="card-body" id="pertama">
             @csrf
             <div class="form-group row mb-4">
               <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Nama Lengkap</label>
@@ -247,25 +251,79 @@
                 @enderror
               </div>
             </div>
-            
-          </div>
+            <div class="form-group row mb-4">
+              <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3"></label>
+              <div class="col-sm-12 col-md-7">
+                <button class="btn btn-warning" type="submit">Edit Pelanggan</button>
+              </div>
+            </div>
+          </form>
+          {{-- </div> --}}
+          @if($id->kavling != null)
           <div class="card-header ">
-            <h4>  Data Unit</h4>
+            <h4>Edit Data Unit</h4>   
+              <button type="button" class="btn btn-sm btn-danger text-white ml-3" 
+              data-toggle="modal" 
+              data-target="#exampleModalCenter" 
+              data-id="{{$id->id}}" 
+              data-nama="{{$id->nama}}">
+              <i class="fa fa-trash" aria-hidden="true" ></i> Batal Akad</button>       
+            {{-- <a href="{{route('batalAkad',['id'=>$id->id])}}" class="btn btn-danger ml-3"> Batal Akad</a> --}}
           </div>
+                    <!-- Modal Hapus-->
+          <div class="modal fade exampleModalCenter" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLongTitle">Hapus Pelanggan</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <form action="" method="post" id="formHapus">
+                    @method('patch')
+                    @csrf
+                    <p class="modal-text"></p>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="submit" class="btn btn-danger">Batal Akad!</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Tidak</button>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+          <script type="text/javascript">
+            $(document).ready(function(){
+              $('#exampleModalCenter').on('show.bs.modal', function (event) {
+              var button = $(event.relatedTarget) // Button that triggered the modal
+              var id = button.data('id') // Extract info from data-* attributes
+              var nama = button.data('nama') 
+              var modal = $(this)
+              modal.find('.modal-text').text('Yakin ingin Membatalkan akad ' + nama+' ?')
+              document.getElementById('formHapus').action='/batalAkad/'+id;
+              })
+            });
+          </script>
           <div class="card-body" id="kedua">
+            <form action="{{route('unitPelangganUpdate',['id'=>$id->id])}}" method="POST" enctype="multipart/form-data" onchange="hitung()">
+              @method('patch')
+              @csrf
             <div class="form-group row mb-4">
               <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Kavling</label>
               <div class="col-sm-12 col-md-7">
                 {{-- <input type="alamat" class="form-control @error('alamat') is-invalid @enderror" name="alamat" value="{{$dataPembelian->kavling->blok}}"> --}}
-                <select class="cari form-control" style="width:300px;height:calc(1.5em + .75rem + 2px);" name="kavling_id">
-                  <option selected="selected">
+                <select class="cari form-control @error('kavling_id') is-invalid @enderror" style="width:300px;height:calc(1.5em + .75rem + 2px);" name="kavling_id">
+                  {{-- <option selected="selected">
                     {{$dataPembelian->kavling->blok}}
-                    </option></select>
+                  </option> --}}
+                </select>
                 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>
                 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
                 <script type="text/javascript">
                   $('.cari').select2({
-                                      placeholder: 'Pilih Kavling...',
+                                      placeholder: 'Ganti Kavling...',
                                       ajax: {
                                       url: '/cariKavling',
                                       dataType: 'json',
@@ -284,9 +342,40 @@
                                       }
                                   });
                   </script>
-                @error('objek')
+                @error('kavling_id')
                 <div class="invalid-feedback">{{$message}}</div>
                 @enderror
+              </div>
+            </div>
+            <div class="form-group row mb-4">
+              <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Termasuk Pembelian</label>
+              <div class="col-sm-12 col-md-7">
+                <label class="selectgroup-item">
+                  <input type="radio" name="includePembelian" value="" class="selectgroup-input" @if($dataPembelian->rumah_id==null && $dataPembelian->kios_id == null) checked @endif id="notInclude">
+                  <span class="selectgroup-button">Tidak Ada</span>
+                </label>
+                <label class="selectgroup-item">
+                  <input type="radio" name="includePembelian" value="Rumah" class="selectgroup-input" id="rumah" @if($dataPembelian->rumah_id != null) checked @endif>
+                  <span class="selectgroup-button">Rumah</span>
+                </label>
+                <label class="selectgroup-item">
+                  <input type="radio" name="includePembelian" value="Kios" class="selectgroup-input" id="kios" @if($dataPembelian->kios_id != null) checked @endif>
+                  <span class="selectgroup-button">Kios</span>
+                </label>
+                @error('includePembelian')
+                <div class="invalid-feedback">{{$message}}</div>
+                @enderror
+              </div>
+            </div>
+            <div id="luasBangunan" @if($dataPembelian->rumah_id!=null || $dataPembelian->kios_id != null) style="display:block" @else  style="display: none" @endif>
+              <div class="form-group row mb-4" >
+                <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Luas Bangunan</label>
+                <div class="col-sm-12 col-md-7">
+                  <input type="text" class="form-control @error('luasBangunan') is-invalid @enderror" name="luasBangunan" value="{{luasBangunanPelanggan($dataPembelian->pelanggan_id)}}" placeholder="kosongkan jika data belum ada">
+                  @error('luasBangunan')
+                  <div class="invalid-feedback">{{$message}}</div>
+                  @enderror
+                </div>
               </div>
             </div>
             <div class="form-group row mb-4">
@@ -421,24 +510,20 @@
                       bulan
                     </div>
                   </div>
-                  
                 </div>
+              </div>
+            </div>
+            <div class="form-group row mb-4">
+              <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3"></label>
+              <div class="col-sm-12 col-md-7">
+                <button class="btn btn-warning" type="submit">Edit Data Unit </button>
               </div>
             </div>
             
           </div>
-          {{-- button Form --}}
-          <div class="card-footer">
-            <div class="form-group row mb-4">
-              <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3"></label>
-              <div class="col-sm-12 col-md-7">
-                <button class="btn btn-primary" type="submit">Simpan</button>
-              </div>
-            </div>
-          </div>
         </form>
 
-        
+        @endif
     </div>
   </div>
 </div>
@@ -496,6 +581,7 @@
         </tbody>
       </table>
     </div>
+
     <div class="card-header">
       <h4>Data Unit Pelanggan</h4>
     </div>
@@ -504,12 +590,13 @@
         <tbody>
           <tr>
             <th scope="row" style="width: 40%">Objek</th>
-            <td>{{jenisKepemilikan($id->id)}} ( {{ $dataKavling->blok}} )</td>
+            <td>{{jenisKepemilikan($id->id)}} (@if($dataKavling == null)Akad Dibatalkan @else{{$dataKavling->blok}}@endif)</td>
             
           </tr>
           <tr>
             <th scope="row">Nomor Akad</th>
             <td>
+              {{-- @if($dataKavling =! null) Akad Dibatalkan @else  --}}
               @if($dataPembelian->nomorAkad != null)
               {{$dataPembelian->nomorAkad}}
               @else
@@ -527,6 +614,7 @@
               Belum ada
               </td>
               @endif
+              {{-- @endif --}}
           </tr>
           <tr>
             <th scope="row">Harga</th>
@@ -534,7 +622,11 @@
           </tr>
           <tr>
             <th scope="row">Diskon</th>
-            <td>Rp. {{number_format($dataPembelian->diskon)}} ({{$dataPembelian->harga/$dataPembelian->diskon}}%)</td>
+            @if($dataPembelian->diskon != 0)
+            <td>Rp. {{number_format($dataPembelian->diskon)}} ({{$persenDiskon}}%)</td>
+            @else
+            <td>Rp. {{number_format($dataPembelian->diskon)}}%</td>
+            @endif
           </tr>
           <tr>
             <th scope="row">DP</th>
@@ -571,6 +663,7 @@
               @endif </td>
           </tr>
         </tbody>
+
       </table>
     </div>
     <div class="card-header">
@@ -605,6 +698,16 @@
           </tr>
           @endforeach
         </tbody>
+        <tfoot class="bg-light  border-top">
+          <tr >
+            <th style="text-align: right" colspan="2">Total Terbayar</th>
+            <th>Rp.{{number_format($dataDp->sum('jumlah'))}}</th>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+  
+        </tfoot>
       </table>
     </div>
     <div class="card-header">
@@ -638,6 +741,16 @@
           </tr>
           @endforeach
         </tbody>
+        <tfoot class="bg-light">
+          <tr >
+            <th style="text-align: right" colspan="2">Total Terbayar</th>
+            <th>Rp.{{number_format($dataCicilan->sum('jumlah'))}}</th>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+  
+        </tfoot>
       </table>
     </div>
   </div>
@@ -762,7 +875,11 @@
     }else{
       document.getElementById('tenor').style.display = 'none';
     }
-
+        if(document.getElementById('rumah').checked || document.getElementById('kios').checked){
+      document.getElementById('luasBangunan').style.display = 'block';
+    }else{
+      document.getElementById('luasBangunan').style.display = 'none';
+    }
     
     
   }

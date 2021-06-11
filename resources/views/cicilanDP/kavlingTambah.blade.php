@@ -138,8 +138,14 @@
             {{romawi(Carbon\Carbon::parse($cicilanDp->tanggal)->isoFormat('MM'))}}/{{$cicilanDp->ke}}
           </td>
             {{-- @if($loop->last == true) --}}
-          <td><a href="{{route('cetakKwitansiDp',['id'=>$cicilanDp->id])}}" class="badge badge-primary">Kwitansi</a></td>
-            {{-- @endif --}}
+          <td>
+            <a href="{{route('cetakKwitansiDp',['id'=>$cicilanDp->id])}}" class="btn btn-white text-primary"> <i class="fas fa-file-invoice    "></i> Kwitansi</a>
+            <button type="button" class="btn btn-sm btn-white text-danger" 
+            data-toggle="modal" 
+            data-target="#exampleModalCenter" 
+            data-id="{{$cicilanDp->id}}">
+            <i class="fa fa-trash" aria-hidden="true" ></i> Hapus </button>   
+          </td>
         </tr>
         @endforeach
       </tbody>

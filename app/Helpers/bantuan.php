@@ -29,6 +29,7 @@ function pembelianPelanggan($id){
 
 function jenisKepemilikan($id){  /* $id = pelanggan_id */
     $pembelian = pembelian::where('pelanggan_id',$id)->first();
+    // dd($pembelian);
     if($pembelian->rumah_id !=null){
         return 'Kavling dan Rumah';
     }elseif($pembelian->kios_id !=null){
@@ -214,6 +215,18 @@ function hitungUnit($unit,$judul,$jenis){
             return $rumah;
         }
     }
+}
+
+function luasBangunanPelanggan($pelanggan_id){
+    $luas = 0;
+    while(($luas = rumah::where('pelanggan_id',$pelanggan_id)->first()) != null){
+        return $luas->luasBangunan;
+    }
+    while(($luas = kios::where('pelanggan_id',$pelanggan_id)->first()) != null){
+        return $luas->luasBangunan;
+        // dd($luas);
+    }
+    return false;
 }
 
 function hargaSatuanRumah(){

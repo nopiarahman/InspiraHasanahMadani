@@ -137,17 +137,22 @@
               -
               @endif
             </td>
-            @if($kavling->pembelian == !null)
+            @if($kavling->pembelian != null)
             <td>
+              @if($kavling->pelanggan !=null)
               <a href="{{route('pelangganDetail',['id'=>$kavling->pembelian->pelanggan->id])}}" class="text-primary">
-                {{$kavling->pembelian->pelanggan->nama}}
+              @endif
+                @if($kavling->pelanggan == null)
+                -
+                @else
+                {{$kavling->pelanggan->nama}}
+                @endif
               </a>
             </td>
             @else
             <td>-</td>
             @endif
             <td>
-              {{-- <a href="{{route('proyekEdit',['id'=>$kavling->id])}}" class="badge badge-info">Edit</a> --}}
               <button type="button" class="btn btn-sm btn-white text-primary" 
               data-toggle="modal" 
               data-target="#modalEdit" 

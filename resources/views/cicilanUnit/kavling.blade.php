@@ -50,10 +50,19 @@
         </thead>
         <tbody>
           @foreach($semuaCicilanUnit as $cicilanUnit)
+          @if($cicilanUnit->pelanggan !=null)
           <tr>
             <th scope="row">{{$loop->iteration}}</th>
-            <td>{{$cicilanUnit->pelanggan->nama}}</td>
+            <td>
+              <a href="{{route('pelangganDetail',['id'=>$cicilanUnit->pelanggan->id])}}" class="text-primary">
+              {{$cicilanUnit->pelanggan->nama}}
+              </a>
+            </td>
+            @if($cicilanUnit->pelanggan->kavling==null)
+            <td>Batal Akad</td>
+            @else
             <td>{{unitPelanggan($cicilanUnit->kavling_id)->blok}}</td>
+            @endif
             <td>{{jenisKepemilikan($cicilanUnit->pelanggan_id)}}</td>
             <td>
               @if($cicilanUnit->sisaCicilan != null)
@@ -73,6 +82,7 @@
               @endif
             </td>
           </tr>
+          @endif
           @endforeach
 
         </tbody>
