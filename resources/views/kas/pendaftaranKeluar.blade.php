@@ -158,6 +158,7 @@
               <th scope="col">Debit</th>
               <th scope="col">Saldo</th>
               <th scope="col">Sumber</th>
+              <th scope="col">Aksi</th>
             </tr>
           </thead>
           <tbody>
@@ -183,6 +184,14 @@
                 </td>
                 <td>Rp. {{number_format($kas->saldo)}}</td>
                 <td>{{$kas->sumber}}</td>
+                <td>
+                  <button type="button" class="btn btn-sm btn-white text-danger border-danger" 
+                  data-toggle="modal" 
+                  data-target="#hapusTransaksi" 
+                  data-id="{{$kas->id}}" 
+                  data-uraian="{{$kas->uraian}}">
+                  <i class="fa fa-trash" aria-hidden="true" ></i> Hapus</button>  
+                </td>
               </tr>
               @endforeach
           </tbody>
@@ -192,11 +201,48 @@
               <th class="text-primary">Rp. {{number_format($kasPendaftaran->sum('kredit'))}}</th>
               <th class="text-primary">Rp. {{number_format($kasPendaftaran->sum('debet'))}}</th>
               <th colspan="2" class="text-primary">Rp. {{number_format(totalKasPendaftaran($start,$end))}}</th>
+              <td></td>
             </tr>
           </tfoot>
         </table>
       </div>
     </div>
+              <!-- Modal Hapus-->
+              <div class="modal fade hapusTransaksi" id="hapusTransaksi" tabindex="-1" role="dialog" aria-labelledby="hapusTransaksiTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="exampleModalLongTitle">Hapus Transaksi</h5>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div class="modal-body">
+                      <form action="" method="post" id="formHapus">
+                        @method('delete')
+                        @csrf
+                        <p class="modal-text"></p>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="submit" class="btn btn-danger">Hapus!</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <script type="text/javascript">
+                $(document).ready(function(){
+                  $('#hapusTransaksi').on('show.bs.modal', function (event) {
+                  var button = $(event.relatedTarget) // Button that triggered the modal
+                  var id = button.data('id') // Extract info from data-* attributes
+                  var uraian = button.data('uraian') 
+                  var modal = $(this)
+                  modal.find('.modal-text').text('Yakin ingin menghapus transaksi ' + uraian+' ?')
+                  document.getElementById('formHapus').action='/hapusKasPendaftaran/'+id;
+                  })
+                });
+              </script>
     <script src="{{ mix("js/cleave.min.js") }}"></script>
 <script src="{{ mix("js/addons/cleave-phone.id.js") }}"></script>
 <script>

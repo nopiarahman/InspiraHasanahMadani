@@ -60,7 +60,7 @@
             <tbody>
               <tr>
                 <th>Objek</th>
-                <td>{{jenisKepemilikan($id->id)}} ( @if($dataKavling == null)Akad Dibatalkan @else{{$dataKavling->blok}}@endif )</td>
+                <td style="width: 30%">{{jenisKepemilikan($id->id)}} ( @if($dataKavling == null)Akad Dibatalkan @else{{$dataKavling->blok}}@endif )</td>
                 <td></td>
               </tr>
               <tr>
@@ -71,7 +71,7 @@
                   {{$dataPembelian->nomorAkad}}
                 </td>
                   <td>
-                    <a href="#" class="badge badge-warning text-dark"
+                    <a href="#" class="btn btn-white text-warning border-warning"
                             data-toggle="modal" 
                             data-target="#nomorAkad">
                                 Ubah
@@ -81,7 +81,7 @@
                   Belum ada
                   </td>
                   <td>
-                    <a href="#" class="badge badge-primary text-white"
+                    <a href="#" class="btn btn-white text-primary border-success"
                             data-toggle="modal" 
                             data-target="#nomorAkad">
                                 Input
@@ -98,7 +98,7 @@
                   {{$dataPembelian->tanggalAkad}}
                 </td>
                   <td>
-                    <a href="#" class="badge badge-warning text-dark"
+                    <a href="#" class="btn btn-white text-warning border-warning"
                             data-toggle="modal" 
                             data-target="#tanggalAkad">
                                 Ubah
@@ -108,7 +108,7 @@
                   Belum ada
                   </td>
                   <td>
-                    <a href="#" class="badge badge-primary text-white"
+                    <a href="#" class="btn btn-white text-primary border-success"
                             data-toggle="modal" 
                             data-target="#tanggalAkad">
                                 Input
@@ -130,7 +130,7 @@
                   @endif 
                 </td>
                 <td>
-                  <a href="{{route('DPKavlingTambah',['id'=>$dataPembelian->id])}}" class="badge badge-primary">Lihat Pembayaran</a>
+                  <a href="{{route('DPKavlingTambah',['id'=>$dataPembelian->id])}}" class="btn btn-white text-primary border-success">Lihat Pembayaran</a>
                 </td>
               </tr>
               <tr>
@@ -146,7 +146,7 @@
                   <span class="badge badge-info"><i class="fas fa-check"></i> Lunas</span>
                   @endif </td>
                 <td>
-                  <a href="{{route('unitKavlingDetail',['id'=>$dataPembelian->id])}}" class="badge badge-primary">Lihat Pembayaran</a>
+                  <a href="{{route('unitKavlingDetail',['id'=>$dataPembelian->id])}}" class="btn btn-white text-primary border-success">Lihat Pembayaran</a>
                 </td>
               </tr>
             </tbody>

@@ -66,9 +66,9 @@
               @endif
               <td>{{jenisKepemilikan($cicilanDp->pelanggan_id)}}</td>
               <td>Rp.{{number_format($cicilanDp->sisaDp)}}</td>
-              <td><a href="{{route('DPKavlingTambah',['id'=>$cicilanDp->id])}}" class="badge badge-primary">Pembayaran</a>
+              <td><a href="{{route('DPKavlingTambah',['id'=>$cicilanDp->id])}}" class="btn btn-white btn-sm text-primary border-success">Pembayaran</a>
                 @if($cicilanDp->sisaDp==0)
-                <span class="badge badge-info"><i class="fas fa-check"></i> Lunas</span>
+                <span class="badge badge-white text-info"><i class="fas fa-check"></i> Lunas</span>
                 @endif
               </td>
             </tr>

@@ -190,7 +190,7 @@
                 <td>{{$kategori->namaAkun}}</td>
                 <td>
                   @if($kategori->jenis != 'Pembangunan' && $kategori->jenis != 'Pembebanan' && $kategori->jenis != 'Pendapatan')
-                  <button type="button" class="btn btn-sm btn-white text-primary" 
+                  <button type="button" class="btn btn-sm btn-white text-primary border-success" 
                   data-toggle="modal" 
                   data-target="#modalEdit" 
                   data-id="{{$kategori->id}}" 
@@ -200,7 +200,7 @@
                   data-nama="{{$kategori->namaAkun}}">
                   <i class="fa fa-pen" aria-hidden="true" ></i> Edit</button>
 
-                  <button type="button" class="btn btn-sm btn-white text-warning" 
+                  <button type="button" class="btn btn-sm btn-white text-danger border-danger" 
                   data-toggle="modal" 
                   data-target="#exampleModalCenter" 
                   data-id="{{$kategori->id}}" 

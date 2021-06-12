@@ -189,8 +189,30 @@ class KasPendaftaranController extends Controller
      * @param  \App\kasPendaftaran  $kasPendaftaran
      * @return \Illuminate\Http\Response
      */
-    public function destroy(kasPendaftaran $kasPendaftaran)
+    public function hapusPendaftaran(kasPendaftaran $id)
     {
-        //
+        // dd($id);
+        $cekKas=kasPendaftaran::where('tanggal','>=',$id->tanggal)->where('no','>',$id->no)->orderBy('no')->get();
+        if($id->kredit != null){
+            if($cekKas != null){
+                /* jika ada, update transaksi sesudah sesuai perubahan input*/
+                foreach($cekKas as $updateKasBesar){
+                    $updateKasBesar['no'] = $updateKasBesar->no -1;
+                    $updateKasBesar['saldo'] = $updateKasBesar->saldo - $id->kredit;
+                    $updateKasBesar->save();
+                }
+            }
+        }elseif($id->debet !=null){
+            if($cekKas != null){
+                /* jika ada, update transaksi sesudah sesuai perubahan input*/
+                foreach($cekKas as $updateKasBesar){
+                    $updateKasBesar['no'] = $updateKasBesar->no -1;
+                    $updateKasBesar['saldo'] = $updateKasBesar->saldo + $id->debet;
+                    $updateKasBesar->save();
+                }
+            }
+        }
+        $id->delete();
+        return redirect()->back()->with('status','Transaksi berhasil dihapus');
     }
 }

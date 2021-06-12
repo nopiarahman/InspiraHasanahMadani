@@ -139,8 +139,8 @@
           </td>
             {{-- @if($loop->last == true) --}}
           <td>
-            <a href="{{route('cetakKwitansiDp',['id'=>$cicilanDp->id])}}" class="btn btn-white text-primary"> <i class="fas fa-file-invoice    "></i> Kwitansi</a>
-            <button type="button" class="btn btn-sm btn-white text-danger" 
+            <a href="{{route('cetakKwitansiDp',['id'=>$cicilanDp->id])}}" class=" btn-sm border-success btn btn-white text-primary"> <i class="fas fa-file-invoice    "></i> Kwitansi</a>
+            <button type="button" class="btn btn-sm btn-white text-danger border-danger" 
             data-toggle="modal" 
             data-target="#exampleModalCenter" 
             data-id="{{$cicilanDp->id}}">

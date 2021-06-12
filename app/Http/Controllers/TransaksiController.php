@@ -202,70 +202,38 @@ class TransaksiController extends Controller
         }
         return view ('transaksi/cashFlowIndex',compact('cashFlow','semuaAkun','awal','start','end'));
     }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\transaksi  $transaksi
-     * @return \Illuminate\Http\Response
-     */
-    public function show(transaksi $transaksi)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\transaksi  $transaksi
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(transaksi $transaksi)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\transaksi  $transaksi
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, transaksi $transaksi)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\transaksi  $transaksi
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(transaksi $transaksi)
-    {
-        //
+    public function hapusKeluar(Transaksi $id){
+        // dd($id);
+        $dari = Carbon::parse($id->created_at)->subSeconds(5);
+        $sampai = Carbon::parse($id->created_at)->addSeconds(5);
+        $cekPettyCash = pettyCash::where('uraian',$id->uraian)->whereBetween('created_at',[$dari,$sampai])->where('debet',$id->debet)->first();
+        // dd($cekPettyCash);
+        if($cekPettyCash != null){
+            /* cek transaksi sesudah input */
+            $cekTransaksi=pettyCash::where('tanggal','>=',$id->tanggal)->where('no','>',$cekPettyCash->no)->orderBy('no')->get();
+            if($cekTransaksi != null){
+                /* jika ada, update transaksi sesudah sesuai perubahan input*/
+                foreach($cekTransaksi as $updateTransaksi){
+                    $updateTransaksi['no'] = $updateTransaksi->no -1;
+                    $updateTransaksi['saldo'] = $updateTransaksi->saldo + $id->debet;
+                    $updateTransaksi->save();
+                }
+            }
+            $cekPettyCash->delete();
+        }
+        /* cek transaksi sesudah input */
+        // $hapusKasBesar=transaksi::find($id->id);
+        $cekKasBesar=transaksi::where('tanggal','>=',$id->tanggal)->where('no','>',$id->no)->orderBy('no')->get();
+        // dd($cekKasBesar);
+        if($cekKasBesar != null){
+            /* jika ada, update transaksi sesudah sesuai perubahan input*/
+            foreach($cekKasBesar as $updateKasBesar){
+                $updateKasBesar['no'] = $updateKasBesar->no -1;
+                $updateKasBesar['saldo'] = $updateKasBesar->saldo + $id->debet;
+                $updateKasBesar->save();
+            }
+        }
+        $id->delete();
+        return redirect()->back()->with('status','Transaksi berhasil dihapus');
     }
 }

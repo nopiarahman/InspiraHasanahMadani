@@ -71,13 +71,13 @@
               @endif
               <td>{{$pelanggan->nomorTelepon}}</td>
               <td>
-                <a href="{{route('pelangganDetail',['id'=>$pelanggan->id])}}" class="badge badge-primary">Detail</a>
-                <button type="button" class="btn btn-sm btn-white text-danger" 
+                <a href="{{route('pelangganDetail',['id'=>$pelanggan->id])}}" class="btn btn-white text-primary border-success btn-sm">Detail</a>
+                <button type="button" class="btn btn-sm btn-white text-danger border-danger" 
                 data-toggle="modal" 
                 data-target="#exampleModalCenter" 
                 data-id="{{$pelanggan->id}}" 
                 data-nama="{{$pelanggan->nama}}">
-                <i class="fa fa-trash" aria-hidden="true" ></i> Hapus Pelanggan</button>      
+                <i class="fa fa-trash" aria-hidden="true" ></i> Hapus</button>      
               </td>
             </tr>
             @endforeach

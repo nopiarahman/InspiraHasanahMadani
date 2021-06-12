@@ -153,70 +153,40 @@ class CicilanController extends Controller
         return view ('cicilanUnit/kios');
     }
 
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\cicilan  $cicilan
-     * @return \Illuminate\Http\Response
-     */
-    public function show(cicilan $cicilan)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\cicilan  $cicilan
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(cicilan $cicilan)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\cicilan  $cicilan
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, cicilan $cicilan)
-    {
-        //
-    }
-
     /**
      * Remove the specified resource from storage.
      *
      * @param  \App\cicilan  $cicilan
      * @return \Illuminate\Http\Response
      */
-    public function destroy(cicilan $cicilan)
+    public function destroy(cicilan $id)
     {
+        // dd($id);
+        $cekCicilan=pembelian::find($id->pembelian_id);
+        $cicilan=$cekCicilan->sisaKewajiban;
+        /* UPDATE KAS BESAR */
+        /* hapus Kas besar */
+        $dari = Carbon::parse($id->created_at)->subSeconds(5);
+        $sampai = Carbon::parse($id->created_at)->addSeconds(5);
+        $hapusKasBesar = transaksi::whereBetween('created_at',[$dari,$sampai])
+                                    ->where('kredit',$id->jumlah)->where('tanggal',$id->tanggal)->first();
+        // dd($hapusKasBesar);
+        $terbayar=cicilan::where('pembelian_id',$id->pembelian_id)->get();
+        $totalTerbayar = $terbayar->sum('jumlah');
+        /* cek transaksi sesudah input */
+        $cekTransaksi=transaksi::where('tanggal','>=',$id->tanggal)->where('no','>',$hapusKasBesar->no)->orderBy('no')->get();
+        if($cekTransaksi != null){
+            /* jika ada, update transaksi sesudah sesuai perubahan input*/
+            foreach($cekTransaksi as $updateTransaksi){
+                $updateTransaksi['no'] = $updateTransaksi->no -1;
+                $updateTransaksi['saldo'] = $updateTransaksi->saldo -$id->jumlah;
+                $updateTransaksi->save();
+            }
+        }
+        $hapusKasBesar->delete();
+        /* update data pembelian pelanggan */
+        $update=pembelian::find($id->pembelian_id)->update(['sisaCicilan'=>$cicilan-$totalTerbayar+$id->jumlah]);
+
         return redirect()->back()->with('status','Transaksi cicilan berhasil dihapus');
     }
 }

@@ -83,6 +83,7 @@ Route::group(['middleware'=>['auth','role:admin']],function(){
     Route::get('/transaksiMasuk', 'TransaksiController@masuk')->name('transaksiMasuk');
     Route::get('/transaksiKeluar', 'TransaksiController@keluar')->name('transaksiKeluar');
     Route::post('/transaksiKeluarSimpan', 'TransaksiController@keluarSimpan')->name('transaksiKeluarSimpan');
+    Route::delete('/hapusTransaksiKeluar/{id}', 'TransaksiController@hapusKeluar')->name('hapusTransaksiKeluar');
     Route::get('/cashFlow', 'TransaksiController@cashFlow')->name('cashFlow');
     
     Route::get('/kasBesar', 'KasController@kasBesar')->name('kasBesar');
@@ -93,6 +94,7 @@ Route::group(['middleware'=>['auth','role:admin']],function(){
     Route::post('/kasBesarSimpan', 'KasController@kasBesarSimpan')->name('kasBesarSimpan');
     Route::get('/pettyCash', 'KasController@pettyCash')->name('pettyCash');
     Route::post('/pettyCashSimpan', 'KasController@pettyCashSimpan')->name('pettyCashSimpan');
+    Route::delete('/hapusKasPendaftaran/{id}', 'kasPendaftaranController@hapusPendaftaran')->name('hapusKasPendaftaran');
     
     Route::get('/laporanBulanan', 'LaporanController@laporanBulanan')->name('laporanBulanan');
     Route::get('/laporanTahunan', 'LaporanController@laporanTahunan')->name('laporanTahunan');
