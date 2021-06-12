@@ -174,9 +174,12 @@
             @endif
             {{romawi(Carbon\Carbon::parse($cicilanUnit->tanggal)->isoFormat('MM'))}}/{{$cicilanUnit->ke}}</td>
           <td>
-            {{-- @if($loop->last == true) --}}
-            <a href="{{route('cetakKwitansi',['id'=>$cicilanUnit->id])}}" class="badge badge-primary">Kwitansi</a>
-            {{-- @endif --}}
+            <a href="{{route('cetakKwitansi',['id'=>$cicilanUnit->id])}}" class="btn btn-white text-primary"> <i class="fas fa-file-invoice    "></i> Kwitansi</a>
+            <button type="button" class="btn btn-sm btn-white text-danger" 
+            data-toggle="modal" 
+            data-target="#exampleModalCenter" 
+            data-id="{{$cicilanUnit->id}}">
+            <i class="fa fa-trash" aria-hidden="true" ></i> Hapus </button>  
           </td>
         </tr>
         @endforeach
@@ -195,6 +198,41 @@
     
   </div>
 </div>
+    <!-- Modal Hapus-->
+    <div class="modal fade exampleModalCenter" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLongTitle">Hapus Transaksi</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form action="" method="post" id="formHapus">
+              @method('delete')
+              @csrf
+              <p class="modal-text"></p>
+            </div>
+            <div class="modal-footer">
+              <button type="submit" class="btn btn-danger">Hapus!</button>
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script type="text/javascript">
+      $(document).ready(function(){
+        $('#exampleModalCenter').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget) // Button that triggered the modal
+        var id = button.data('id')
+        var modal = $(this)
+        modal.find('.modal-text').text('Yakin ingin menghapus transaksi ini ?')
+        document.getElementById('formHapus').action='/hapusCicilan/'+id;
+        })
+      });
+    </script>
 <script src="{{ mix("js/cleave.min.js") }}"></script>
 <script>
   var cleave = new Cleave('.akadDp', {

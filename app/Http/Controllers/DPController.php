@@ -39,7 +39,6 @@ class DPController extends Controller
         $akadDp=$cekDp->dp;
         /* Jatuh Tempo */
         $tempo=Carbon::parse($request->tanggal)->addMonth(1)->isoFormat('YYYY-MM-DD');
-        /* menghitung dp yang telah terbayar */
         $urut = dp::where('pembelian_id',$id)->orderBy('urut','desc')->first();
         if($urut != null){
             $urutan = $urut->urut;
@@ -50,7 +49,8 @@ class DPController extends Controller
         $awal = Carbon::parse($request->tanggal)->firstOfMonth()->isoFormat('YYYY-MM-DD');
         $akhir = Carbon::parse($request->tanggal)->endOfMonth()->isoFormat('YYYY-MM-DD');
         $cekBulan = dp::whereBetween('tanggal',[$awal,$akhir])->count();
-
+        
+        /* menghitung dp yang telah terbayar */
         $terbayar=dp::where('pembelian_id',$id)->get();
         $totalTerbayar=0;
         $terbayarSekarang=str_replace(',', '', $request->jumlah);
@@ -117,6 +117,36 @@ class DPController extends Controller
 
 
         
+    }
+    public function destroy(Dp $id){
+        /* Cek Akad DP */
+        // dd($id);
+        $cekDp=pembelian::find($id->pembelian_id);
+        // dd($cekDp->kavling->blok);
+        $akadDp=$cekDp->dp;
+        /* UPDATE KAS BESAR */
+        /* hapus Kas besar */
+        $dari = Carbon::parse($id->created_at)->subSeconds(5);
+        $sampai = Carbon::parse($id->created_at)->addSeconds(5);
+        $hapusKasBesar = transaksi::whereBetween('created_at',[$dari,$sampai])
+                                    ->where('kredit',$id->jumlah)->where('tanggal',$id->tanggal)->first();
+        /* cek transaksi sesudah input */
+        $cekTransaksi=transaksi::where('tanggal','>=',$id->tanggal)->where('no','>',$hapusKasBesar->no)->orderBy('no')->get();
+        // dd($cekTransaksi);
+        $terbayar=dp::where('pembelian_id',$id->pembelian_id)->get();
+        $totalTerbayar=$terbayar->sum('jumlah');
+        if($cekTransaksi != null){
+            /* jika ada, update transaksi sesudah sesuai perubahan input*/
+            foreach($cekTransaksi as $updateTransaksi){
+                $updateTransaksi['no'] = $updateTransaksi->no -1;
+                $updateTransaksi['saldo'] = $updateTransaksi->saldo -$id->jumlah;
+                $updateTransaksi->save();
+            }
+        }
+        $hapusKasBesar->delete();
+        dp::destroy($id->id);
+        $update=pembelian::find($id->pembelian_id)->update(['sisaDp'=>$akadDp-$totalTerbayar+$id->jumlah]);
+        return redirect()->back()->with('status','Transaksi DP berhasil dihapus');
     }
 
 }

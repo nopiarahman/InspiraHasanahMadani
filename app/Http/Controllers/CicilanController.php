@@ -217,6 +217,6 @@ class CicilanController extends Controller
      */
     public function destroy(cicilan $cicilan)
     {
-        //
+        return redirect()->back()->with('status','Transaksi cicilan berhasil dihapus');
     }
 }

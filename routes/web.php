@@ -62,12 +62,14 @@ Route::group(['middleware'=>['auth','role:admin']],function(){
     Route::get('/DPKavlingTambah/{id}', 'DPController@DPKavlingTambah')->name('DPKavlingTambah');
     Route::post('/DPKavlingSimpan', 'DPController@DPKavlingSimpan')->name('DPKavlingSimpan');
     Route::get('/DPKios', 'DPController@DPKios')->name('DPKios');
+    Route::delete('/hapusTransaksi/{id}', 'DPController@destroy')->name('hapusTransaksi');
     
     Route::get('/cicilanRumah', 'CicilanController@cicilanRumah')->name('cicilanRumah');
     Route::get('/cicilanKavling', 'CicilanController@cicilanKavling')->name('cicilanKavling');
     Route::get('/unitKavlingDetail/{id}', 'CicilanController@unitKavlingDetail')->name('unitKavlingDetail');
     Route::post('/cicilanKavlingSimpan', 'CicilanController@cicilanKavlingSimpan')->name('cicilanKavlingSimpan');
     Route::get('/cicilanKios', 'CicilanController@cicilanKios')->name('cicilanKios');
+    Route::delete('/hapusCicilan/{id}', 'CicilanController@destroy')->name('hapusCicilan');
     
     Route::get('/akun', 'AkunController@index')->name('akun');
     Route::delete('/hapusAkun/{id}', 'AkunController@destroy')->name('hapusAkun');
