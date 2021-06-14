@@ -49,7 +49,6 @@
             <th scope="col">Nama Proyek</th>
             <th scope="col">Lokasi</th>
             <th scope="col">Proyek Start</th>
-            <th scope="col">Status</th>
             <th scope="col">Aksi</th>
           </tr>
         </thead>
@@ -60,14 +59,7 @@
             <td>{{$pk->nama}}</td>
             <td>{{$pk->lokasi}}</td>
             <td>{{$pk->proyekStart}}</td>
-            <td><a href="{{route('proyekEdit',['id'=>$pk->id])}}" 
-              @if($pk->status=='dipilih')
-              class="badge badge-success"
-              @else
-              class="badge badge-secondary"
-              @endif
-              >{{$pk->status}}</a></td>
-            <td><a href="{{route('proyekEdit',['id'=>$pk->id])}}" class="badge badge-info">Edit</a></td>
+            <td><a href="{{route('proyekEdit',['id'=>$pk->id])}}" class="btn btn-white text-primary border-success"> <i class="fas fa-pen    "></i> Edit</a></td>
           </tr>
           @endforeach
         </tbody>

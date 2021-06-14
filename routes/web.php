@@ -21,7 +21,7 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::group(['middleware'=>['auth','role:admin']],function(){
+Route::group(['middleware'=>['auth','role:admin,projectmanager']],function(){
     Route::get('/proyek', 'ProyekController@index')->name('proyek');
     Route::get('/proyekTambah', 'ProyekController@create')->name('proyekTambah');
     Route::post('/proyekSimpan', 'ProyekController@store')->name('proyekSimpan');
@@ -116,4 +116,12 @@ Route::group(['middleware'=>['auth','role:admin']],function(){
     Route::get('/exportPettyCash', 'KasController@exportPettyCash')->name('exportPettyCash');
     Route::get('/exportBulanan', 'LaporanController@exportBulanan')->name('exportBulanan');
     Route::get('/exportTahunan', 'LaporanController@exportTahunan')->name('exportTahunan');
+});
+Route::group(['middleware'=>['auth','role:projectmanager']],function(){
+    
+    Route::get('/kelolaUser', 'ProjectManagerController@kelolaUser')->name('kelolaUser');
+    Route::get('/userTambah', 'ProjectManagerController@userTambah')->name('userTambah');
+    Route::post('/userSimpan', 'ProjectManagerController@userSimpan')->name('userSimpan');
+    Route::patch('/userEdit/{id}', 'ProjectManagerController@userEdit')->name('userEdit');
+    Route::delete('/hapusUser/{id}', 'ProjectManagerController@hapusUser')->name('hapusUser');
 });

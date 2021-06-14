@@ -39,6 +39,7 @@
         @endif
       </div>
     </div>
+    @if(auth()->user()->role=="admin")
     <div class="row">
       <div class="col-12">
         <div class="card">
@@ -260,6 +261,7 @@
         </div>
       </div>
     </div>
+    @endif
   <div class="card">
     <div class="row">
       <div class="col-12 col-md-8 col-lg-8">

@@ -65,8 +65,8 @@
               </tr>
               <tr>
                 <th scope="row">Nomor Akad</th>
+                @if(auth()->user()->role=="admin")
                 <td>
-                  {{-- @if($dataKavling =! null) Akad Dibatalkan @else --}}
                   @if($dataPembelian->nomorAkad != null)
                   {{$dataPembelian->nomorAkad}}
                 </td>
@@ -88,8 +88,7 @@
                     </a>
                   </td>
                   @endif
-                  {{-- @endif --}}
-                </td>
+                  @endif
               </tr>
               <tr>
                 <th scope="row">Tanggal Akad</th>
@@ -155,6 +154,7 @@
       </div>
     </div>
   </div>
+  @if(auth()->user()->role=="admin")
   <div class="col-12 col-md-12 col-lg-12">
     <div class="card">
         <div class="card-header">
@@ -526,6 +526,7 @@
         @endif
     </div>
   </div>
+  @endif
 </div>
 
 {{-- tampilan cetak pelanggan --}}

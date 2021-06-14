@@ -17,7 +17,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'password','username','role','proyek_id'
     ];
 
     /**
@@ -37,4 +37,22 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+    /**
+     * Get the detailUser that owns the User
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function detailUser()
+    {
+        return $this->belongsTo(detailUser::class);
+    }
+    /**
+     * Get the proyek that owns the User
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function proyek()
+    {
+        return $this->belongsTo(proyek::class);
+    }
 }

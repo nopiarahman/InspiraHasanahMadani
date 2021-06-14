@@ -19,5 +19,13 @@ class proyek extends Model
     {
         return $this->hasMany(kavling::class);
     }
-    
+    /**
+     * Get all of the user for the proyek
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function user()
+    {
+        return $this->hasMany(user::class);
+    }
 }

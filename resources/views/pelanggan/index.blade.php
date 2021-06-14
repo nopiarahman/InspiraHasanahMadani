@@ -31,11 +31,11 @@
         @endif
       </div>
     </div>
-  
+    @if(auth()->user()->role=="admin")
   <div class="section-header">
       <a href="{{route('pelangganTambah')}}" class="btn btn-primary">Tambah Pelanggan Baru</a>
   </div>
-  
+    @endif
     {{-- Content --}}
   <div class="card">
       <div class="card-header">
@@ -72,12 +72,14 @@
               <td>{{$pelanggan->nomorTelepon}}</td>
               <td>
                 <a href="{{route('pelangganDetail',['id'=>$pelanggan->id])}}" class="btn btn-white text-primary border-success btn-sm">Detail</a>
+                @if(auth()->user()->role=="admin")
                 <button type="button" class="btn btn-sm btn-white text-danger border-danger" 
                 data-toggle="modal" 
                 data-target="#exampleModalCenter" 
                 data-id="{{$pelanggan->id}}" 
                 data-nama="{{$pelanggan->nama}}">
                 <i class="fa fa-trash" aria-hidden="true" ></i> Hapus</button>      
+                @endif
               </td>
             </tr>
             @endforeach

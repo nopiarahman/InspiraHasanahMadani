@@ -86,10 +86,10 @@
               <div class="dropdown-divider"></div>
               <a class="dropdown-item" href="{{ route('logout') }}"
                                       onclick="event.preventDefault();
-                                      document.getElementById('logout-form').submit();">
+                                      document.getElementById('logout-form2').submit();">
                                         {{ __('Logout') }}
                                     </a>
-                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                    <form id="logout-form2" action="{{ route('logout') }}" method="POST" class="d-none">
                                       @csrf
                                   </form>
                 {{-- <i class="fas fa-sign-out-alt"></i> Logout --}}
@@ -112,7 +112,9 @@
               <li class="menu-header">Dashboard</li>
               <li class="@yield('menuDashboard')"><a class="nav-link" href="{{route('home')}}"><i class="fas fa-fire"></i> <span>Dashboard</span></a></li>
               <li class="menu-header">Menu Proyek</li>
+              @if(auth()->user()->role=="projectmanager")
               <li class="@yield('menuProyek')"><a class="nav-link" href="{{route('proyek')}}"><i class="fas fa-archway"></i> <span>Proyek</span></a></li>
+              @endif
               <li class="nav-item dropdown @yield('menuDataProyek')">
                 <a href="" class="nav-link has-dropdown" data-toggle="dropdown"><i class="fas fa-home"></i> <span>Data Proyek</span></a>
                 <ul class="dropdown-menu">
@@ -123,26 +125,25 @@
               </li>
               <li class="menu-header">Menu Pelanggan</li>
               <li class="@yield('menuPelanggan')"><a class="nav-link" href="{{route('pelangganIndex')}}"><i class="fas fa-user-friends"></i> <span>Pelanggan</span></a></li>
-              <li class=" @yield('menuCicilanDP')"><a class="nav-link" href="{{route('DPKavling')}}"><i class="fas fa-coins"></i> <span> Cicilan DP</span></a></li>
-              {{-- <li class="nav-item dropdown @yield('menuCicilanDP')">
-                <a href="" class="nav-link has-dropdown"><i class="fas fa-coins"></i> <span>Cicilan DP</span></a>
+              @if(auth()->user()->role=="projectmanager")
+              <li class="menu-header">Menu Project Manager</li>
+              <li class="@yield('menuUser')"><a class="nav-link" href="{{route('kelolaUser')}}"><i class="fa fa-user" aria-hidden="true"></i><span>Kelola User</span></a></li>
+              <li class="nav-item dropdown @yield('menuLaporan')">
+                <a href="" class="nav-link has-dropdown"><i class="fas fa-clipboard-check"></i> <span>Laporan</span></a>
                 <ul class="dropdown-menu">
-                  <li class=" @yield('menuCicilanDPRumah')"><a class="nav-link " href="{{route('DPRumah')}}">Rumah</a></li>
-                  <li class=" @yield('menuCicilanDPKios')"><a class="nav-link " href="{{route('DPKios')}}">Kios</a></li>
-                  
-                </ul> --}}
+                  <li class=" @yield('menuLaporanBulanan')"><a class="nav-link" href="{{route('laporanBulanan')}}">Bulanan</a></li>
+                  <li class=" @yield('menuLaporanTahunan')"><a class="nav-link" href="{{route('laporanTahunan')}}">Tahunan</a></li>
+                </ul>
+              </li>
+              @endif
+              @if(auth()->user()->role=="admin")
+              <li class=" @yield('menuCicilanDP')"><a class="nav-link" href="{{route('DPKavling')}}"><i class="fas fa-coins"></i> <span> Cicilan DP</span></a></li>
               </li>
               <li class=" @yield('menuCicilanUnit')"><a class="nav-link" href="{{route('cicilanKavling')}}"><i class="fas fa-money-bill-wave"></i> <span> Cicilan Unit</span></a></li>
-              {{-- <li class="nav-item dropdown @yield('menuCicilanUnit')">
-                <a href="" class="nav-link has-dropdown"><i class="fas fa-money-bill-wave"></i> <span>Cicilan Unit</span></a>
-                <ul class="dropdown-menu">
-                  <li class=" @yield('menuCicilanUnitRumah')"><a class="nav-link" href="{{route('cicilanRumah')}}">Rumah</a></li>
-                  <li class=" @yield('menuCicilanUnitKios')"><a class="nav-link" href="{{route('cicilanKios')}}">Kios</a></li>
-                  
-                </ul>
-              </li> --}}
+              @endif
               
             </li>
+            @if(auth()->user()->role=="admin")
             <li class="menu-header">Menu Keuangan</li>
             <li class=" @yield('menuAkun')"><a class="nav-link" href="{{route('akun')}}"><i class="fas fa-book-open"></i> <span> Akun</span></a></li>
             <li class="nav-item dropdown @yield('menuTransaksi')">
@@ -170,6 +171,20 @@
                 </ul>
               </li>
               <li class=" @yield('menuGudang')"><a class="nav-link" href="{{route('gudang')}}"><i class="fas fa-warehouse    "></i> <span> Gudang</span></a></li>
+              @endif
+              <div class="mt-4 mb-4 p-3 hide-sidebar-mini">
+                {{-- <a href="https://getstisla.com" class="btn btn-primary btn-lg btn-block btn-icon-split">
+                </a> --}}
+                <a class="btn btn-primary btn-lg btn-block btn-icon-split" href="{{ route('logout') }}"
+                onclick="event.preventDefault();
+                                      document.getElementById('logout-form').submit();">
+                                        {{-- {{ __('Logout') }} --}}
+                                        <i class="fas fa-sign-out-alt" aria-hidden="true"></i> Logout
+                                      </a>
+                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                      @csrf
+                                  </form>
+              </div>
             </aside>
       </div>
 

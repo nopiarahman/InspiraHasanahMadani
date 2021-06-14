@@ -8,6 +8,7 @@ use App\rumah;
 use App\kios;
 use App\akun;
 use App\user;
+use App\detailUser;
 use App\rab;
 use App\cicilan;
 use App\dp;
@@ -15,6 +16,7 @@ use App\rabUnit;
 use App\pembelian;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class PelangganController extends Controller
 {
@@ -47,14 +49,24 @@ class PelangganController extends Controller
      */
     public function store(Request $request){
         // dd($request);
-        // if(preg_match("/^[0-9,]+$/", $a)) 
-        // $a = str_replace(',', '', $request->harga);
-        // $co=parseInt($request->harga);
+        /* Membuat Akun User */
         $parts = explode("@",$request->email);
         $username = $parts[0];
-        $password = Carbon::parse($request->tanggalLahir)->isoFormat('DDMMYY');
-        // dd($password);
-        
+        $sandi = Carbon::parse($request->tanggalLahir)->isoFormat('DDMMYY');
+        $requestUser ['proyek_id'] = proyekId();
+        $requestUser ['name'] = $request->nama;
+        $requestUser ['email'] = $request->email;
+        $requestUser ['username'] = $username;
+        $requestUser ['password'] = Hash::make($sandi);
+        $requestUser ['role'] = 'pelanggan';
+        User::create($requestUser);
+        $cekUser = User::where('email',$request->email)->first();
+        $detail = detailUser::create([
+            'user_id'=>$cekUser->id
+        ]);
+        $detail->save();
+
+        /* membuat data pelanggan */
         if($request->statusDp=='Credit'){
             $sisaDp=str_replace(',', '', $request->dp);
         }else{

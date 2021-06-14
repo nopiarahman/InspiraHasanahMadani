@@ -40,6 +40,7 @@
       @endif
       </div>
     </div>
+    @if(auth()->user()->role=="admin")
   <div class="row">
     <div class="col-12">
       <div class="card">
@@ -78,6 +79,7 @@
       </div>
     </div>
   </div>
+  @endif
 <!-- Modal Hapus-->
 <div class="modal fade exampleModalCenter" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
@@ -115,7 +117,9 @@
             <th scope="col">Luas Tanah</th>
             <th scope="col">Luas Bangunan</th>
             <th scope="col">Kepemilikan</th>
+            @if(auth()->user()->role=="admin")
             <th scope="col">Aksi</th>
+            @endif
           </tr>
         </thead>
         <tbody>
@@ -152,6 +156,7 @@
             @else
             <td>-</td>
             @endif
+            @if(auth()->user()->role=="admin")
             <td>
               <button type="button" class="btn btn-sm btn-white text-primary border-success" 
               data-toggle="modal" 
@@ -160,7 +165,6 @@
               data-blok="{{$kavling->blok}}" 
               data-luas="{{$kavling->luas}}">
               <i class="fa fa-pen" aria-hidden="true" ></i> Edit</button>
-
               <button type="button" class="btn btn-sm btn-white text-danger border-danger" 
               data-toggle="modal" 
               data-target="#exampleModalCenter" 
@@ -168,6 +172,7 @@
               data-blok="{{$kavling->blok}}">
               <i class="fa fa-trash" aria-hidden="true" ></i> Hapus</button>
             </td>
+            @endif
           </tr>
           @endforeach
           @endforeach

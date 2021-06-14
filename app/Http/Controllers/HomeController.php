@@ -30,11 +30,11 @@ class HomeController extends Controller
     public function index()
     {
         /* package laravel chart check di https://v6.charts.erik.cat/installation.html#composer */
-        $kasBesar = transaksi::where('proyek_id',proyekId())->latest()->take(15)->get();
+        $kasBesar = transaksi::where('proyek_id',proyekId())->orderBy('no','desc')->take(15)->get();
         $saldo=$kasBesar->map(function ($item){
                             return $item->saldo;
                             });
-        // dd($saldo);
+        // dd($kasBesar);
         $chartKasBesar = new chartAdmin;
         $chartKasBesar->labels($saldo->reverse()->keys());
         $chartKasBesar->dataset('Kas Besar','line',$saldo->reverse()->values())
