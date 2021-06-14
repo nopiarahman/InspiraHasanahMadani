@@ -145,20 +145,20 @@
             </li>
             <li class="menu-header">Menu Keuangan</li>
             <li class=" @yield('menuAkun')"><a class="nav-link" href="{{route('akun')}}"><i class="fas fa-book-open"></i> <span> Akun</span></a></li>
-              <li class="nav-item dropdown @yield('menuTransaksi')">
-                <a href="" class="nav-link has-dropdown"><i class="far fa-handshake"></i> <span>Transaksi</span></a>
-                <ul class="dropdown-menu">
-                  {{-- <li class=" @yield('menuAkun')"><a href="{{route('akun')}}">Akun</a></li> --}}
-                  <li class=" @yield('menuTransaksiMasuk')"><a href="{{route('transaksiMasuk')}}">Masuk</a></li>
-                  <li class=" @yield('menuTransaksiKeluar')"><a href="{{route('transaksiKeluar')}}">Keluar</a></li>
-                </ul>
-              </li>
-              <li class="nav-item dropdown @yield('menuKas')">
-                <a href="" class="nav-link has-dropdown"><i class="fas fa-book"></i> <span>KAS</span></a>
-                <ul class="dropdown-menu">
-                  <li class=" @yield('menuKasBesar')"><a href="{{route('cashFlow')}}">Kas Besar</a></li>
-                  {{-- <li class=" @yield('menuKasBesar')"><a class="nav-link" href="{{route('kasBesar')}}">Besar</a></li> --}}
-                  <li class=" @yield('menuKasPendaftaran')"><a class="nav-link" href="{{route('kasPendaftaranMasuk')}}">Pendaftaran</a></li>
+            <li class="nav-item dropdown @yield('menuTransaksi')">
+              <a href="" class="nav-link has-dropdown"><i class="fas fa-handshake"></i> <span>Transaksi</span></a>
+              <ul class="dropdown-menu">
+                {{-- <li class=" @yield('menuAkun')"><a href="{{route('akun')}}">Akun</a></li> --}}
+                <li class=" @yield('menuTransaksiMasuk')"><a href="{{route('transaksiMasuk')}}">Masuk</a></li>
+                <li class=" @yield('menuTransaksiKeluar')"><a href="{{route('transaksiKeluar')}}">Keluar</a></li>
+              </ul>
+            </li>
+            <li class="nav-item dropdown @yield('menuKas')">
+              <a href="" class="nav-link has-dropdown"><i class="fas fa-book"></i> <span>KAS</span></a>
+              <ul class="dropdown-menu">
+                <li class=" @yield('menuKasBesar')"><a href="{{route('cashFlow')}}">Kas Besar</a></li>
+                {{-- <li class=" @yield('menuKasBesar')"><a class="nav-link" href="{{route('kasBesar')}}">Besar</a></li> --}}
+                <li class=" @yield('menuKasPendaftaran')"><a class="nav-link" href="{{route('kasPendaftaranMasuk')}}">Pendaftaran</a></li>
                   <li class=" @yield('menuKasKecil')"><a class="nav-link" href="{{route('pettyCash')}}">Petty Cash</a></li>
                 </ul>
               </li>
@@ -169,7 +169,8 @@
                   <li class=" @yield('menuLaporanTahunan')"><a class="nav-link" href="{{route('laporanTahunan')}}">Tahunan</a></li>
                 </ul>
               </li>
-        </aside>
+              <li class=" @yield('menuGudang')"><a class="nav-link" href="{{route('gudang')}}"><i class="fas fa-warehouse    "></i> <span> Gudang</span></a></li>
+            </aside>
       </div>
 
       <!-- Main Content -->

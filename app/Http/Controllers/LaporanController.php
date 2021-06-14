@@ -11,6 +11,9 @@ use App\dp;
 use App\pembelian;
 use PDF;
 use SnappyImage;
+use App\Exports\LaporanBulananExport;
+use App\Exports\LaporanTahunanExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class LaporanController extends Controller
 {
@@ -42,10 +45,14 @@ class LaporanController extends Controller
         return view ('laporan/bulananIndex',compact('pendapatan','start','end','kategoriAkun','perKategori'));
     }
 
-    public function laporanTahunan(){
-        $start = Carbon::now()->firstOfYear()->isoFormat('YYYY-MM-DD');
-        $end = Carbon::now()->endOfYear()->isoFormat('YYYY-MM-DD');
-        // dd($start);
+    public function laporanTahunan(Request $request){
+        if($request->get('filter')){
+            $start = Carbon::parse($request->start)->isoFormat('YYYY-MM-DD');
+            $end = Carbon::parse($request->end)->isoFormat('YYYY-MM-DD');
+        }else{
+            $start = Carbon::now()->firstOfYear()->isoFormat('YYYY-MM-DD');
+            $end = Carbon::now()->endOfYear()->isoFormat('YYYY-MM-DD');
+        }
         $operasional = akun::where('proyek_id',proyekId())->where('jenis','Operasional')->get();
         $produksi = akun::where('proyek_id',proyekId())->where('jenis','Produksi')->get();
         $nonOperasional = akun::where('proyek_id',proyekId())->where('jenis','Non-Operasional')->get();
@@ -54,71 +61,6 @@ class LaporanController extends Controller
         return view ('laporan/tahunanIndex',compact('produksi','operasional','nonOperasional','start','end','pendapatanLain'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
     public function cetakKwitansi(Cicilan $id){
         $pembelian= pembelian::where('id',$id->pembelian_id)->first();
         $uraian = 'Pembayaran Cicilan Ke '.$id->urut.' '.jenisKepemilikan($pembelian->pelanggan_id).' '.$pembelian->kavling->blok;   
@@ -134,4 +76,37 @@ class LaporanController extends Controller
         $sampaiSekarang = dp::whereBetween('created_at',[$DpPertama->created_at,$id->created_at])->where('pembelian_id',$id->pembelian_id)->get();
         return view('cetak/kwitansiDp',compact('id','pembelian','uraian','sampaiSekarang'));
     }
+    public function exportBulanan(Request $request){
+        $akunId=akun::where('proyek_id',proyekId())->where('namaAkun','pendapatan')->first();
+        $start = Carbon::now()->firstOfMonth()->isoFormat('YYYY-MM-DD');
+        $end = Carbon::now()->endOfMonth()->isoFormat('YYYY-MM-DD');
+        if($request->get('filter')){
+            $start = Carbon::parse($request->start)->isoFormat('YYYY-MM-DD');
+            $end = Carbon::parse($request->end)->isoFormat('YYYY-MM-DD');
+            $pendapatan = transaksi::where('akun_id',$akunId->id)->whereBetween('tanggal',[$start,$end])->get();
+            // dd($request);
+        }else{
+            $pendapatan = transaksi::where('akun_id',$akunId->id)->whereBetween('tanggal',[$start,$end])->get();
+        }
+        $kategoriAkun=akun::where('proyek_id',proyekId())->get()->groupBy('kategori')->forget('Pendapatan');
+        // dd($kategoriAkun);
+        $perKategori = $kategoriAkun;
+        return Excel::download(new LaporanBulananExport($pendapatan,$start,$end,$kategoriAkun), 'LaporanBulanan.xlsx');
+    }
+    public function exportTahunan(Request $request){
+        if($request->get('filter')){
+            $start = Carbon::parse($request->start)->isoFormat('YYYY-MM-DD');
+            $end = Carbon::parse($request->end)->isoFormat('YYYY-MM-DD');
+        }else{
+            $start = Carbon::now()->firstOfYear()->isoFormat('YYYY-MM-DD');
+            $end = Carbon::now()->endOfYear()->isoFormat('YYYY-MM-DD');
+        }
+        $operasional = akun::where('proyek_id',proyekId())->where('jenis','Operasional')->get();
+        $produksi = akun::where('proyek_id',proyekId())->where('jenis','Produksi')->get();
+        $nonOperasional = akun::where('proyek_id',proyekId())->where('jenis','Non-Operasional')->get();
+        $pendapatanLain = akun::where('proyek_id',proyekId())->where('jenis','Pendapatan Lain-lain')->get();
+        return Excel::download(new LaporanTahunanExport($produksi,$start,$end,$operasional,$nonOperasional,$pendapatanLain), 'Laporan Tahunan.xlsx');
+        // return view ('laporan/tahunanIndex',compact('produksi','operasional','nonOperasional','start','end','pendapatanLain'));
+    }
+
 }

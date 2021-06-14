@@ -11,6 +11,10 @@ use App\rabUnit;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
+
+use App\Exports\RABExport;
+use App\Exports\UnitExport;
+use Maatwebsite\Excel\Facades\Excel;
 class ProyekController extends Controller
 {
     /**
@@ -251,5 +255,20 @@ class ProyekController extends Controller
         }
         return view('proyek/DataProyek/pengeluaranUnit',compact('transaksiKeluar','id','totalRAB','total'));  
     }
+    public function cetakRAB(){
 
+        $semuaRAB = rab::all()->groupBy(['header',function($item){
+            return $item['judul'];
+        }],$preserveKeys=true);
+        // return view ('excel.rab',compact('semuaRAB'));
+        return Excel::download(new RABExport($semuaRAB), 'RAB.xlsx');
+    }
+    public function cetakRABUnit(){
+
+        $semuaRAB = rabUnit::all()->groupBy(['header',function($item){
+            return $item['judul'];
+        }],$preserveKeys=true);
+        // return view ('excel.rab',compact('semuaRAB'));
+        return Excel::download(new UnitExport($semuaRAB), 'Biaya Unit.xlsx');
+    }
 }

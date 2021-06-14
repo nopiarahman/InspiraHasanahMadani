@@ -85,6 +85,7 @@ Route::group(['middleware'=>['auth','role:admin']],function(){
     Route::post('/transaksiKeluarSimpan', 'TransaksiController@keluarSimpan')->name('transaksiKeluarSimpan');
     Route::delete('/hapusTransaksiKeluar/{id}', 'TransaksiController@hapusKeluar')->name('hapusTransaksiKeluar');
     Route::get('/cashFlow', 'TransaksiController@cashFlow')->name('cashFlow');
+    Route::delete('/hapusKasBesar/{id}', 'TransaksiController@hapusKasBesar')->name('hapusTransaksiKeluar');
     
     Route::get('/kasBesar', 'KasController@kasBesar')->name('kasBesar');
     Route::get('/kasPendaftaranMasuk', 'kasPendaftaranController@index')->name('kasPendaftaranMasuk');
@@ -94,6 +95,7 @@ Route::group(['middleware'=>['auth','role:admin']],function(){
     Route::post('/kasBesarSimpan', 'KasController@kasBesarSimpan')->name('kasBesarSimpan');
     Route::get('/pettyCash', 'KasController@pettyCash')->name('pettyCash');
     Route::post('/pettyCashSimpan', 'KasController@pettyCashSimpan')->name('pettyCashSimpan');
+    Route::delete('/hapusPettyCash/{id}', 'KasController@pettyCashHapus')->name('hapusPettyCash');
     Route::delete('/hapusKasPendaftaran/{id}', 'kasPendaftaranController@hapusPendaftaran')->name('hapusKasPendaftaran');
     
     Route::get('/laporanBulanan', 'LaporanController@laporanBulanan')->name('laporanBulanan');
@@ -102,4 +104,16 @@ Route::group(['middleware'=>['auth','role:admin']],function(){
     Route::get('/cetakKwitansi/{id}', 'LaporanController@cetakKwitansi')->name('cetakKwitansi');
     Route::get('/cetakKwitansiDp/{id}', 'LaporanController@cetakKwitansiDp')->name('cetakKwitansiDp');
     
+    Route::get('/gudang', 'GudangController@index')->name('gudang');
+    Route::post('/transferGudang/{id}', 'GudangController@transferGudang')->name('transferGudang');
+    Route::post('/alokasiGudang/{id}', 'GudangController@alokasiGudang')->name('alokasiGudang');
+    
+    /* cetak */
+    Route::get('/cetakRAB', 'ProyekController@cetakRAB')->name('cetakRAB');
+    Route::get('/cetakRABUnit', 'ProyekController@cetakRABUnit')->name('cetakRABUnit');
+    Route::get('/exportKasBesar', 'TransaksiController@exportKasBesar')->name('exportKasBesar');
+    Route::get('/exportKasPendaftaran', 'kasPendaftaranController@exportKasPendaftaran')->name('exportKasPendaftaran');
+    Route::get('/exportPettyCash', 'KasController@exportPettyCash')->name('exportPettyCash');
+    Route::get('/exportBulanan', 'LaporanController@exportBulanan')->name('exportBulanan');
+    Route::get('/exportTahunan', 'LaporanController@exportTahunan')->name('exportTahunan');
 });

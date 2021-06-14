@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 use App\pettyCash;
 use App\transaksi;
 use Carbon\Carbon;
+use App\Exports\PettyCashExport;
+use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\Request;
 
 class KasController extends Controller
@@ -122,59 +124,52 @@ class KasController extends Controller
         transaksi::create($requestData);
         return redirect()->route('cashFlow')->with('status','Transaksi Berhasil Disimpan');
     }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+    public function pettyCashHapus(pettyCash $id){
+        // dd($id);
+        if($id->debet !=null){
+            $dari = Carbon::parse($id->created_at)->subSeconds(5);
+            $sampai = Carbon::parse($id->created_at)->addSeconds(5);
+            $KasBesar = transaksi::where('uraian',$id->uraian)->whereBetween('created_at',[$dari,$sampai])->first();
+            // dd($KasBesar);
+            /* cek transaksi sesudah input */
+            // $hapusKasBesar=transaksi::find($id->id);
+            $cekKasBesar=transaksi::where('tanggal','>=',$KasBesar->tanggal)->where('no','>',$KasBesar->no)->orderBy('no')->get();
+            // dd($cekKasBesar);
+            if($cekKasBesar != null){
+                /* jika ada, update transaksi sesudah sesuai perubahan input*/
+                foreach($cekKasBesar as $updateKasBesar){
+                    $updateKasBesar['no'] = $updateKasBesar->no -1;
+                    $updateKasBesar['saldo'] = $updateKasBesar->saldo + $id->debet;
+                    $updateKasBesar->save();
+                }
+            }
+            $KasBesar->delete();
+        }
+        /* cek transaksi sesudah input */
+        $cekTransaksi=pettyCash::where('tanggal','>=',$id->tanggal)->where('no','>',$id->no)->orderBy('no')->get();
+        if($cekTransaksi != null){
+            /* jika ada, update transaksi sesudah sesuai perubahan input*/
+            foreach($cekTransaksi as $updateTransaksi){
+                $updateTransaksi['no'] = $updateTransaksi->no -1;
+                $updateTransaksi['saldo'] = $updateTransaksi->saldo + $id->debet;
+                $updateTransaksi->save();
+            }
+        }
+        $id->delete();
+        return redirect()->back()->with('status','Transaksi berhasil dihapus');
     }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
+    public function exportPettyCash(Request $request){
+        $start = Carbon::now()->firstOfMonth()->isoFormat('YYYY-MM-DD');
+        $end = Carbon::now()->endOfMonth()->isoFormat('YYYY-MM-DD');
+        // dd($end);
+        // $end = moment();
+        if($request->get('filter')){
+            $start = Carbon::parse($request->start)->isoFormat('YYYY-MM-DD');
+            $end = Carbon::parse($request->end)->isoFormat('YYYY-MM-DD');
+            $pettyCash=pettyCash::whereBetween('tanggal',[$start,$end])->orderBy('no')->get();
+        }else{
+            $pettyCash=pettyCash::whereBetween('tanggal',[$start,$end])->orderBy('no')->get();
+        }
+        return Excel::download(new PettyCashExport($pettyCash,$start,$end), 'Petty Cash.xlsx');
     }
 }

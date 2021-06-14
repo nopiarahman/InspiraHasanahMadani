@@ -3,8 +3,10 @@ use App\kavling;
 use App\dp;
 use App\akun;
 use App\kios;
+use App\gudang;
 use App\pembelian;
 use App\rumah;
+use App\proyek;
 use App\transaksi;
 use App\pettyCash;
 use App\kasPendaftaran;
@@ -15,6 +17,11 @@ function cekNamaUser(){
 }
 function proyekId(){
     return auth()->user()->proyek_id;
+}
+
+function namaProyek(){
+    $proyek = proyek::find(proyekId());
+    return $proyek->nama;
 }
 
 function unitPelanggan($id){
@@ -437,3 +444,10 @@ function romawi($number) {
     return $returnValue;
 }
 
+function cekGudang($transaksiId){
+    $cek = gudang::where('transaksi_id',$transaksiId)->first();
+    if($cek != null){
+        return true;
+    }
+    return false;
+}

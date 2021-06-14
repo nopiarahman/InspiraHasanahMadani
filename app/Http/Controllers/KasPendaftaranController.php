@@ -5,7 +5,8 @@ namespace App\Http\Controllers;
 use App\kasPendaftaran;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-
+use App\Exports\KasPendaftaranExport;
+use Maatwebsite\Excel\Facades\Excel;
 class KasPendaftaranController extends Controller
 {
     /**
@@ -150,40 +151,6 @@ class KasPendaftaranController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  \App\kasPendaftaran  $kasPendaftaran
-     * @return \Illuminate\Http\Response
-     */
-    public function show(kasPendaftaran $kasPendaftaran)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\kasPendaftaran  $kasPendaftaran
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(kasPendaftaran $kasPendaftaran)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\kasPendaftaran  $kasPendaftaran
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, kasPendaftaran $kasPendaftaran)
-    {
-        //
-    }
-
-    /**
      * Remove the specified resource from storage.
      *
      * @param  \App\kasPendaftaran  $kasPendaftaran
@@ -214,5 +181,17 @@ class KasPendaftaranController extends Controller
         }
         $id->delete();
         return redirect()->back()->with('status','Transaksi berhasil dihapus');
+    }
+    public function exportKasPendaftaran (Request $request){
+        $start = Carbon::now()->firstOfMonth()->isoFormat('YYYY-MM-DD');
+        $end = Carbon::now()->endOFMonth()->isoFormat('YYYY-MM-DD');
+        if($request->get('filter')){
+            $start = Carbon::parse($request->start)->isoFormat('YYYY-MM-DD');
+            $end = Carbon::parse($request->end)->isoFormat('YYYY-MM-DD');
+            $kasPendaftaran=kasPendaftaran::whereBetween('tanggal',[$start,$end])->orderBy('no')->get();
+        }else{
+            $kasPendaftaran=kasPendaftaran::whereBetween('tanggal',[$start,$end])->orderBy('no')->get();
+        }
+        return Excel::download(new KasPendaftaranExport($kasPendaftaran,$start,$end), 'Kas Pendaftaran.xlsx');
     }
 }

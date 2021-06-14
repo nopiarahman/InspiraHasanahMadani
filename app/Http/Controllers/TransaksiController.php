@@ -5,10 +5,13 @@ namespace App\Http\Controllers;
 use App\transaksi;
 use App\akun;
 use App\rabUnit;
+use App\gudang;
 use App\pettycash;
 use App\rab;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use App\Exports\KasBEsarExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class TransaksiController extends Controller
 {
@@ -210,7 +213,7 @@ class TransaksiController extends Controller
         // dd($cekPettyCash);
         if($cekPettyCash != null){
             /* cek transaksi sesudah input */
-            $cekTransaksi=pettyCash::where('tanggal','>=',$id->tanggal)->where('no','>',$cekPettyCash->no)->orderBy('no')->get();
+            $cekTransaksi=pettyCash::where('tanggal','>=',$cekPettyCash->tanggal)->where('no','>',$cekPettyCash->no)->orderBy('no')->get();
             if($cekTransaksi != null){
                 /* jika ada, update transaksi sesudah sesuai perubahan input*/
                 foreach($cekTransaksi as $updateTransaksi){
@@ -234,6 +237,37 @@ class TransaksiController extends Controller
             }
         }
         $id->delete();
+        $cekGudang = gudang::where('transaksi_id',$id->id)->delete();
         return redirect()->back()->with('status','Transaksi berhasil dihapus');
+    }
+    public function hapusKasBesar(Transaksi $id){
+        // dd($id);
+        $cekKasBesar=transaksi::where('tanggal','>=',$id->tanggal)->where('no','>',$id->no)->orderBy('no')->get();
+        // dd($cekKasBesar);
+        if($cekKasBesar != null){
+            /* jika ada, update transaksi sesudah sesuai perubahan input*/
+            foreach($cekKasBesar as $updateKasBesar){
+                $updateKasBesar['no'] = $updateKasBesar->no -1;
+                $updateKasBesar['saldo'] = $updateKasBesar->saldo - $id->kredit;
+                $updateKasBesar->save();
+            }
+        }
+        $id->delete();
+        return redirect()->back()->with('status','Transaksi Berhasil dihapus');
+    }
+    public function exportKasBesar(Request $request){   
+        if($request->get('filter')){
+            $start = Carbon::parse($request->start)->isoFormat('YYYY-MM-DD');
+            $end = Carbon::parse($request->end)->isoFormat('YYYY-MM-DD');
+            $cashFlow=transaksi::whereBetween('tanggal',[$start,$end])->orderBy('no')->get();
+            $awal=$cashFlow->first();
+            // dd($awal);
+        }else{
+            $start = Carbon::now()->firstOfMonth()->isoFormat('YYYY-MM-DD');
+            $end = Carbon::now()->endOfMonth()->isoFormat('YYYY-MM-DD');
+            $cashFlow=transaksi::whereBetween('tanggal',[$start,$end])->orderBy('no')->get();
+            $awal=$cashFlow->first();
+        }
+        return Excel::download(new KasBEsarExport($cashFlow,$start,$end), 'Kas Besar.xlsx');
     }
 }
