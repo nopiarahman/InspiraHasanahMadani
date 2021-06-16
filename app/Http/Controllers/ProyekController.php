@@ -120,11 +120,12 @@ class ProyekController extends Controller
         //
     }
     public function RAB (){
-        $semuaRAB = rab::where('proyek_id',proyekId())->groupBy(['header',function($item){
+        $semuaRAB = rab::all()->where('proyek_id',proyekId())->groupBy(['header',function($item){
             return $item['judul'];
         }],$preserveKeys=true);
         $perHeader=$semuaRAB;
         $perJudul=$semuaRAB;
+        // dd($semuaRAB);
         return view ('proyek/DataProyek/RAB',compact('perHeader','semuaRAB','perJudul'));
     }
     public function cariHeader(Request $request){
@@ -178,7 +179,7 @@ class ProyekController extends Controller
         return redirect()->route('RAB')->with('status','Jenis Biaya Berhasil Disimpan');
     }
     public function biayaUnit(Request $request){
-        $semuaRAB = rabUnit::where('proyek_id',proyekId())->groupBy(['header',function($item){
+        $semuaRAB = rabUnit::all()->where('proyek_id',proyekId())->groupBy(['header',function($item){
             return $item['judul'];
         }],$preserveKeys=true);
         // dd($semuaRAB);

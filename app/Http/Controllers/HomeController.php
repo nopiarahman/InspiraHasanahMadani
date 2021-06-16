@@ -56,12 +56,20 @@ class HomeController extends Controller
         $transferUnit = transferUnit::where('proyek_id',proyekId())->get();
     
         /* pelanggan */
-        $idUser=auth()->user()->pelanggan->id;
-        $id=pelanggan::find($idUser);
-        $dataKavling=kavling::where('pelanggan_id',$idUser)->first();
-        $dataPembelian=pembelian::where('pelanggan_id',$idUser)->first();
-        // dd($dataPembelian);
-        $persenDiskon = ($dataPembelian->diskon/$dataPembelian->harga)*100;
+        if(auth()->user()->role=='pelanggan'){
+            $idUser=auth()->user()->pelanggan->id;
+            $id=pelanggan::find($idUser);
+            $dataKavling=kavling::where('pelanggan_id',$idUser)->first();
+            $dataPembelian=pembelian::where('pelanggan_id',$idUser)->first();
+            // dd($dataPembelian);
+            $persenDiskon = ($dataPembelian->diskon/$dataPembelian->harga)*100;
+        }else{
+            $dataKavling=[];
+            $dataPembelian=[];
+            $id=[];
+            $idUser=[];
+            $persenDiskon=0;
+        }
         return view('home',compact('chartKasBesar','kavling','pelanggan','transferDp','transferUnit','dataKavling','dataPembelian','persenDiskon','id'));
     }
 

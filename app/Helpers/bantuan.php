@@ -211,11 +211,11 @@ function hitungUnit($unit,$judul,$jenis){
     if($cekBlok != null){
         if($judul=='Biaya Produksi Rumah'){
             if($jenis == 'kios' ){
-                $cariKios=kios::where('kavling_id',$cekBlok->id)->where('proyek_id',proyekId())->first();
+                $cariKios=kios::where('kavling_id',$cekBlok->id)->first();
                 return $cariKios->luasBangunan;
 
             }else{
-                $cariRumah=rumah::where('kavling_id',$cekBlok->id)->where('proyek_id',proyekId())->first();
+                $cariRumah=rumah::where('kavling_id',$cekBlok->id)->first();
                 return $cariRumah->luasBangunan;
 
             }

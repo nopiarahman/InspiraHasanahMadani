@@ -113,7 +113,7 @@
         <aside id="sidebar-wrapper">
           <div class="sidebar-brand">
             <a href="{{route('home')}}">
-              <img src="{{asset('assets/img/logo-mini.png')}}" alt="">
+              {{-- <img src="{{asset('assets/img/logo-mini.png')}}" alt=""> --}}
             </a>
           </div>
           <div class="sidebar-brand sidebar-brand-sm">
@@ -125,7 +125,7 @@
           @if(auth()->user()->role=="projectmanager")
               <li class="menu-header">Menu Proyek</li>
               <li class="@yield('menuProyek')"><a class="nav-link" href="{{route('proyek')}}"><i class="fas fa-archway"></i> <span>Proyek</span></a></li>
-          @endif
+          @endif`
           @if(auth()->user()->role=="projectmanager" || auth()->user()->role=="admin")
               <li class="menu-header">Menu Proyek</li>
               <li class="nav-item dropdown @yield('menuDataProyek')">
