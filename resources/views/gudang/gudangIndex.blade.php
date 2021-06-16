@@ -53,6 +53,7 @@
         @php
             $totalNominal =0;
         @endphp
+        @if($daftarGudang->first() != null)
         @foreach($daftarGudang as $gudang)
         <tr>
           <td>{{formatTanggal($gudang->tanggal)}}</td>
@@ -121,6 +122,7 @@
           <th colspan="3" class="text-primary">Rp. {{number_format($totalNominal)}}</th>
         </tr>
       </tfoot>
+      @endif
     </table>
     {{-- {{$transaksiMasuk->links()}} --}}
   </div>

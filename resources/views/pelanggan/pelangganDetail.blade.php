@@ -32,12 +32,23 @@
         @endif
       </div>
     </div>
+    {{-- {{dd($id)}} --}}
 {{-- Detail Pelanggan --}}
 <div class="row mt-sm-4">
   <div class="col-12 col-md-12 col-lg-12">
     <div class="card profile-widget">
       <div class="profile-widget-header">
-        <img alt="image" src="../assets/img/avatar/avatar-1.png" class="rounded-circle profile-widget-picture">
+        <img alt="image" 
+        @if (detailUser($id->user_id) != null)
+            @if(detailUser($id->user_id)->poto != null)
+            src="{{Storage::url(detailUser($id->user_id)->poto)}}"
+            @else
+            src="{{asset('assets/img/avatar/avatar-1.png')}}"   
+            @endif
+        @else
+        src="{{asset('assets/img/avatar/avatar-1.png')}}"   
+        @endif
+        class="rounded-circle profile-widget-picture">
         <div class="profile-widget-items">
           <div class="profile-widget-item">
             <div class="profile-widget-item-label">Blok</div>
@@ -534,7 +545,17 @@
   <div class="card">
     <div class="profil-widget">
       <div class="profile-widget-header row justify-content-center mt-2 ">
-        <img alt="image" src="../assets/img/avatar/avatar-1.png" class=" rounded-circle profile-widget-picture" width="150px">
+        <img alt="image" 
+        @if (detailUser($id->user_id) != null)
+            @if(detailUser($id->user_id)->poto != null)
+            src="{{Storage::url(detailUser($id->user_id)->poto)}}"
+            @else
+            src="{{asset('assets/img/avatar/avatar-1.png')}}"   
+            @endif
+        @else
+        src="{{asset('assets/img/avatar/avatar-1.png')}}"   
+        @endif
+        class=" rounded-circle profile-widget-picture" width="150px">
       </div>
       <div class="row justify-content-center mt-2">
         <h4>{{$id->nama}}</h4>

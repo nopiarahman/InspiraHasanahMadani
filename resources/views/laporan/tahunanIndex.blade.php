@@ -128,6 +128,8 @@
             <tr>
               <th colspan="2" class="">B. Pendapatan Lain-lain</th>
             </tr>
+            {{-- {{dd($pendapatanLain)}} --}}
+            @if($pendapatanLain->first() != null)
             @foreach ($pendapatanLain as $produk)
               <tr>
                 <td class="pl-4">{{$produk->namaAkun}}</td>
@@ -145,11 +147,13 @@
             <tr>
               <th colspan="2" class="">A. Biaya Produksi</th>
             </tr>
+            @endif
             @php
                 $totalProduksi = 0;
                 $totalOperasional = 0;
                 $totalNonOperasional = 0;
             @endphp
+            @if($produksi->first() != null)
             @foreach ($produksi as $produk)
               <tr>
                 <td class="pl-4">{{$produk->namaAkun}}</td>
@@ -177,12 +181,14 @@
                 Rp. {{number_format((penjualanTahunan($start,$end)+pendapatanLainTahunan($produk->id,$start,$end))-($totalProduksi+biayaPembebananTahunan($start,$end)+biayaPembangunanRumahTahunan($start,$end)))}}
               </th>
             </tr>
+            @endif
             <tr>
               <th colspan="2" class="pt-3 bg-success text-white">Pengeluaran Operasional</th>
             </tr>
             <tr>
               <th colspan="2" class="">A. Biaya Operasional</th>
             </tr>
+            @if($operasional->first() != null)
             @foreach ($operasional as $produk)
               <tr>
                 <td class="pl-4">{{$produk->namaAkun}}</td>
@@ -196,9 +202,11 @@
               <th class="">Total Biaya Operasional</th>
               <th class="">Rp. {{number_format($totalOperasional)}}</th>
             </tr>
+            @endif
             <tr >
               <th colspan="2" class="">B. Biaya Non Operasional</th>
             </tr>
+            @if($nonOperasional->first() != null)
             @foreach ($nonOperasional as $produk)
               <tr>
                 <td class="pl-4">{{$produk->namaAkun}}</td>
@@ -220,6 +228,7 @@
               <th class="bg-warning text-white">Laba/Rugi Operasional</th>
               <th class="bg-warning text-white">Rp. {{number_format(((penjualanTahunan($start,$end)+pendapatanLainTahunan($produk->id,$start,$end))-($totalProduksi+biayaPembebananTahunan($start,$end)+biayaPembangunanRumahTahunan($start,$end)))-($totalNonOperasional+$totalOperasional))}}</th>
             </tr>
+            @endif
           </tbody>
         </table>
       </div>

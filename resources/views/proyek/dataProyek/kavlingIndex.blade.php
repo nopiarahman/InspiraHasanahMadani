@@ -144,7 +144,7 @@
             @if($kavling->pembelian != null)
             <td>
               @if($kavling->pelanggan !=null)
-              <a href="{{route('pelangganDetail',['id'=>$kavling->pembelian->pelanggan->id])}}" class="text-primary">
+              <a href="{{route('pelangganDetail',['id'=>$kavling->pelanggan->id])}}" class="text-primary">
               @endif
                 @if($kavling->pelanggan == null)
                 -

@@ -31,9 +31,9 @@ class KasController extends Controller
         if($request->get('filter')){
             $start = Carbon::parse($request->start)->isoFormat('YYYY-MM-DD');
             $end = Carbon::parse($request->end)->isoFormat('YYYY-MM-DD');
-            $pettyCash=pettyCash::whereBetween('tanggal',[$start,$end])->orderBy('no')->get();
+            $pettyCash=pettyCash::whereBetween('tanggal',[$start,$end])->where('proyek_id',proyekId())->orderBy('no')->get();
         }else{
-            $pettyCash=pettyCash::whereBetween('tanggal',[$start,$end])->orderBy('no')->get();
+            $pettyCash=pettyCash::whereBetween('tanggal',[$start,$end])->where('proyek_id',proyekId())->orderBy('no')->get();
         }
         return view ('kas/pettyCash',compact('pettyCash','start','end'));
     }
@@ -166,9 +166,9 @@ class KasController extends Controller
         if($request->get('filter')){
             $start = Carbon::parse($request->start)->isoFormat('YYYY-MM-DD');
             $end = Carbon::parse($request->end)->isoFormat('YYYY-MM-DD');
-            $pettyCash=pettyCash::whereBetween('tanggal',[$start,$end])->orderBy('no')->get();
+            $pettyCash=pettyCash::whereBetween('tanggal',[$start,$end])->where('proyek_id',proyekId())->orderBy('no')->get();
         }else{
-            $pettyCash=pettyCash::whereBetween('tanggal',[$start,$end])->orderBy('no')->get();
+            $pettyCash=pettyCash::whereBetween('tanggal',[$start,$end])->where('proyek_id',proyekId())->orderBy('no')->get();
         }
         return Excel::download(new PettyCashExport($pettyCash,$start,$end), 'Petty Cash.xlsx');
     }

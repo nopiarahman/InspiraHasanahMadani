@@ -55,4 +55,13 @@ class User extends Authenticatable
     {
         return $this->belongsTo(proyek::class);
     }
+    /**
+     * Get the pelanggan that owns the User
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function pelanggan()
+    {
+        return $this->hasOne(pelanggan::class);
+    }
 }

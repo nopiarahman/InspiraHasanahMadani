@@ -20,6 +20,10 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/pengaturan', 'HomeController@pengaturan')->name('pengaturan');
+Route::patch('/gantiFoto/{id}', 'HomeController@gantiFoto')->name('gantiFoto');
+Route::patch('/gantiFoto/{id}', 'HomeController@gantiFoto')->name('gantiFoto');
+Route::patch('/rubahPassword/{id}', 'HomeController@rubahPassword')->name('rubahPassword');
 
 Route::group(['middleware'=>['auth','role:admin,projectmanager']],function(){
     Route::get('/proyek', 'ProyekController@index')->name('proyek');
@@ -70,6 +74,12 @@ Route::group(['middleware'=>['auth','role:admin,projectmanager']],function(){
     Route::post('/cicilanKavlingSimpan', 'CicilanController@cicilanKavlingSimpan')->name('cicilanKavlingSimpan');
     Route::get('/cicilanKios', 'CicilanController@cicilanKios')->name('cicilanKios');
     Route::delete('/hapusCicilan/{id}', 'CicilanController@destroy')->name('hapusCicilan');
+    Route::get('/cekTransferUnitPelanggan', 'CicilanController@cekTransferUnitPelanggan')->name('cekTransferUnitPelanggan');
+    Route::get('/cekTransferDPPelanggan', 'DPController@cekTransferDPPelanggan')->name('cekTransferDPPelanggan');
+    Route::get('/lihatTransferPelanggan/{id}', 'CicilanController@lihatTransferPelanggan')->name('lihatTransferPelanggan');
+    Route::get('/lihatTransferDPPelanggan/{id}', 'DPController@lihatTransferDPPelanggan')->name('lihatTransferDPPelanggan');
+    Route::patch('/tolakTransfer/{id}', 'CicilanController@tolakTransfer')->name('tolakTransfer');
+    Route::patch('/tolakTransferDP/{id}', 'DPController@tolakTransferDP')->name('tolakTransferDP');
     
     Route::get('/akun', 'AkunController@index')->name('akun');
     Route::delete('/hapusAkun/{id}', 'AkunController@destroy')->name('hapusAkun');
@@ -108,6 +118,10 @@ Route::group(['middleware'=>['auth','role:admin,projectmanager']],function(){
     Route::post('/transferGudang/{id}', 'GudangController@transferGudang')->name('transferGudang');
     Route::post('/alokasiGudang/{id}', 'GudangController@alokasiGudang')->name('alokasiGudang');
     
+    Route::get('/rekening', 'ProyekController@rekening')->name('rekening');
+    Route::post('/rekeningSimpan', 'ProyekController@rekeningSimpan')->name('rekeningSimpan');
+    Route::patch('/rekeningUbah/{id}', 'ProyekController@rekeningUbah')->name('rekeningUbah');
+    Route::delete('/hapusRekening/{id}', 'ProyekController@hapusRekening')->name('hapusRekening');
     /* cetak */
     Route::get('/cetakRAB', 'ProyekController@cetakRAB')->name('cetakRAB');
     Route::get('/cetakRABUnit', 'ProyekController@cetakRABUnit')->name('cetakRABUnit');
@@ -124,4 +138,20 @@ Route::group(['middleware'=>['auth','role:projectmanager']],function(){
     Route::post('/userSimpan', 'ProjectManagerController@userSimpan')->name('userSimpan');
     Route::patch('/userEdit/{id}', 'ProjectManagerController@userEdit')->name('userEdit');
     Route::delete('/hapusUser/{id}', 'ProjectManagerController@hapusUser')->name('hapusUser');
+});
+Route::group(['middleware'=>['auth','role:pelanggan']],function(){
+    Route::get('/dataDiri', 'PelangganController@dataDiri')->name('dataDiri');
+    Route::get('/pembelianPelanggan', 'PelangganController@pembelianPelanggan')->name('pembelianPelanggan');
+    Route::get('/DPPelanggan', 'PelangganController@DPPelanggan')->name('DPPelanggan');
+    Route::get('/unitPelanggan', 'PelangganController@unitPelanggan')->name('unitPelanggan');
+    Route::get('/transferUnit', 'PelangganController@transferUnit')->name('transferUnit');
+    Route::get('/transferDP', 'PelangganController@transferDP')->name('transferDP');
+    Route::post('/transferDPSimpan', 'PelangganController@transferDPSimpan')->name('transferDPSimpan');
+    Route::post('/transferCicilanSimpan', 'PelangganController@transferCicilanSimpan')->name('transferCicilanSimpan');
+    Route::get('/lihatTransferUnit/{id}', 'PelangganController@lihatTransferUnit')->name('lihatTransferUnit');
+    Route::get('/lihatTransferDp/{id}', 'PelangganController@lihatTransferDp')->name('lihatTransferDp');
+    Route::patch('/transferCicilanUpdate/{id}', 'PelangganController@transferCicilanUpdate')->name('transferCicilanUpdate');
+    Route::patch('/transferDPUpdate/{id}', 'PelangganController@transferDPUpdate')->name('transferDPUpdate');
+    Route::get('/cetakKwitansi/{id}', 'LaporanController@cetakKwitansi')->name('cetakKwitansi');
+    Route::get('/cetakKwitansiDp/{id}', 'LaporanController@cetakKwitansiDp')->name('cetakKwitansiDp');
 });

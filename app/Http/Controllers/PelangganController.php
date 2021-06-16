@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\pelanggan;
 use App\kavling;
+use App\transferUnit;
+use App\transferDp;
+use App\rekening;
 use App\rumah;
 use App\kios;
 use App\akun;
@@ -88,6 +91,7 @@ class PelangganController extends Controller
             'pekerjaan'=>$request->pekerjaan,
             'nomorTelepon'=>$request->nomorTelepon,
             'proyek_id'=>proyekId(),
+            'user_id'=>$cekuser->id,
         ]);
         $requestpelanggan->save();
         $cariPelanggan=pelanggan::where('email',$request->email)->first(); 
@@ -431,7 +435,6 @@ class PelangganController extends Controller
     }
     public function detail(Pelanggan $id){
         $dataKavling=kavling::where('pelanggan_id',$id->id)->first();
-        // dd($dataKavling);
         $dataPembelian=pembelian::where('pelanggan_id',$id->id)->first();
         $persenDiskon = ($dataPembelian->diskon/$dataPembelian->harga)*100;
         /* tambahan model untuk cetak pelanggan */
@@ -454,5 +457,199 @@ class PelangganController extends Controller
         $pelangganId=$id->pelanggan_id;
     
         return redirect()->route('pelangganDetail',['id'=>$pelangganId])->with('status','Tanggal Akad Tersimpan');
+    }
+    public function dataDiri(){
+        $idUser=auth()->user()->pelanggan->id;
+        $id=pelanggan::find($idUser);
+        $dataKavling=kavling::where('pelanggan_id',$idUser)->first();
+        $dataPembelian=pembelian::where('pelanggan_id',$idUser)->first();
+        // dd($dataPembelian);
+        $persenDiskon = ($dataPembelian->diskon/$dataPembelian->harga)*100;
+        return view('user/dataDiri',compact('dataKavling','dataPembelian','persenDiskon','id'));
+    }
+    public function pembelianPelanggan(){
+        $idUser=auth()->user()->pelanggan->id;
+        $id=pelanggan::find($idUser);
+        $dataKavling=kavling::where('pelanggan_id',$idUser)->first();
+        $dataPembelian=pembelian::where('pelanggan_id',$idUser)->first();
+        // dd($dataPembelian);
+        $persenDiskon = ($dataPembelian->diskon/$dataPembelian->harga)*100;
+        return view('user/pembelianPelanggan',compact('dataKavling','dataPembelian','persenDiskon','id'));
+    }
+    public function DPPelanggan(){
+        $idPelanggan=auth()->user()->pelanggan->id;
+        $id=pembelian::where('pelanggan_id',$idPelanggan)->first();
+        // dd($id->pembelian[0]->id);
+        $daftarCicilanDp = dp::where('pembelian_id',$id->id)->paginate(20);
+        // dd($daftarCicilanDp);
+        $terbayar=dp::where('pembelian_id',$id->id)->get();
+        if($terbayar != null){
+            $info = $terbayar->last();
+        }else{
+            $info = null;
+        }
+        $cekTransferDp = transferDp::where('pembelian_id',$id->id)->first();
+        return view ('user/DPPelanggan',compact('id','daftarCicilanDp','info','cekTransferDp'));
+    }
+    public function unitPelanggan(){
+        $idPelanggan=auth()->user()->pelanggan->id;
+        $id=pembelian::where('pelanggan_id',$idPelanggan)->first();
+        $daftarCicilanUnit = cicilan::where('pembelian_id',$id->id)->paginate(20);
+        $cicilanPerBulan = $id->sisaKewajiban/$id->tenor;
+        $terbayar=cicilan::where('pembelian_id',$id->id)->get();
+        if($terbayar != null){
+            $info = $terbayar->last();
+        }else{
+            $info = null;
+        }
+        
+        $cekTransferUnit = transferUnit::where('pembelian_id',$id->id)->first();
+        // dd($cekTranferUnit);
+        $totalTerbayar=$terbayar->sum('jumlah');
+        return view('user/unitPelanggan',compact('id','daftarCicilanUnit','cicilanPerBulan','totalTerbayar','info','cekTransferUnit'));
+    }
+    public function transferUnit(){
+        $idPelanggan=auth()->user()->pelanggan->id;
+        $id=pembelian::where('pelanggan_id',$idPelanggan)->first();
+        $cicilanPerBulan = $id->sisaKewajiban/$id->tenor;
+        $rekening = rekening::where('proyek_id',proyekId())->get();
+        $cekTransferUnit = transferUnit::where('pembelian_id',$id->id)->first();
+        return view('user/unitTambah',compact('id','cicilanPerBulan','rekening','cekTransferUnit'));
+    }
+    public function transferDP(){
+        $idPelanggan=auth()->user()->pelanggan->id;
+        $id=pembelian::where('pelanggan_id',$idPelanggan)->first();
+        $cicilanPerBulan = $id->sisaKewajiban/$id->tenor;
+        $rekening = rekening::where('proyek_id',proyekId())->get();
+        $cekTransferDp = transferDp::where('pembelian_id',$id->id)->first();
+        return view('user/DPTambah',compact('id','cicilanPerBulan','rekening','cekTransferDp'));
+    }
+    public function transferCicilanSimpan(Request $request){
+        // dd($request);
+        $jumlah = str_replace(',', '', $request->jumlah);
+        $idPelanggan=auth()->user()->pelanggan->id;
+        $rules=[
+            'tanggal'=>'required',
+            'jumlah'=>'required',
+            'rekening_id'=>'required',
+            'namaPemilik'=>'required',
+            'bukti'=>'file|mimes:pdf,jpg,jpeg,png'
+        ];
+        $costumMessages = [
+            'required'=>':attribute tidak boleh kosong'
+        ];
+        $requestData = $request->all();
+        if ($request->hasFile('bukti')) {
+            $file_nama            = $request->file('bukti')->store('public/file/unit/bukti');
+            $requestData['bukti'] = $file_nama;
+        } else {
+            unset($requestData['bukti']);
+        }
+        $requestData['jumlah']=$jumlah;
+        $requestData['proyek_id']=proyekId();
+        $requestData['pelanggan_id']=$idPelanggan;
+        $this->validate($request,$rules,$costumMessages);
+        transferUnit::create($requestData);
+        return redirect()->route('unitPelanggan')->with('status','Terima kasih, pembayaran akan dicek oleh admin kami');
+    }
+    public function lihatTransferUnit(TransferUnit $id){
+        // dd($id);
+        $idPelanggan=auth()->user()->pelanggan->id;
+        $pembelian=pembelian::where('pelanggan_id',$idPelanggan)->first();
+        $rekening = rekening::where('proyek_id',proyekId())->get();
+        return view('user/lihatTransferUnit',compact('id','rekening','pembelian'));
+    }
+    public function lihatTransferDp(TransferDp $id){
+        // dd($id);
+        $idPelanggan=auth()->user()->pelanggan->id;
+        $pembelian=pembelian::where('pelanggan_id',$idPelanggan)->first();
+        $rekening = rekening::where('proyek_id',proyekId())->get();
+        return view('user/lihatTransferDp',compact('id','rekening','pembelian'));
+    }
+    public function transferCicilanUpdate(transferUnit $id,Request $request){
+        // dd($request);
+        $jumlah = str_replace(',', '', $request->jumlah);
+        $idPelanggan=auth()->user()->pelanggan->id;
+        $rules=[
+            'tanggal'=>'required',
+            'jumlah'=>'required',
+            'rekening_id'=>'required',
+            'namaPemilik'=>'required',
+            'bukti'=>'file|mimes:pdf,jpg,jpeg,png'
+        ];
+        $costumMessages = [
+            'required'=>':attribute tidak boleh kosong'
+        ];
+        $requestData = $request->all();
+        if ($request->hasFile('bukti')) {
+            $file_nama            = $request->file('bukti')->store('public/file/unit/bukti');
+            $requestData['bukti'] = $file_nama;
+        } else {
+            unset($requestData['bukti']);
+        }
+        $requestData['jumlah']=$jumlah;
+        $requestData['status']='diupdate';
+        $requestData['proyek_id']=proyekId();
+        $requestData['pelanggan_id']=$idPelanggan;
+        $this->validate($request,$rules,$costumMessages);
+        $id->update($requestData);
+        return redirect()->route('unitPelanggan')->with('status','Terima kasih, pembayaran akan dicek kembali oleh admin kami');
+    }
+    public function transferDPUpdate(transferDp $id,Request $request){
+        // dd($request);
+        $jumlah = str_replace(',', '', $request->jumlah);
+        $idPelanggan=auth()->user()->pelanggan->id;
+        $rules=[
+            'tanggal'=>'required',
+            'jumlah'=>'required',
+            'rekening_id'=>'required',
+            'namaPemilik'=>'required',
+            'bukti'=>'file|mimes:pdf,jpg,jpeg,png'
+        ];
+        $costumMessages = [
+            'required'=>':attribute tidak boleh kosong'
+        ];
+        $requestData = $request->all();
+        if ($request->hasFile('bukti')) {
+            $file_nama            = $request->file('bukti')->store('public/file/unit/bukti');
+            $requestData['bukti'] = $file_nama;
+        } else {
+            unset($requestData['bukti']);
+        }
+        $requestData['jumlah']=$jumlah;
+        $requestData['status']='diupdate';
+        $requestData['proyek_id']=proyekId();
+        $requestData['pelanggan_id']=$idPelanggan;
+        $this->validate($request,$rules,$costumMessages);
+        $id->update($requestData);
+        return redirect()->route('unitPelanggan')->with('status','Terima kasih, pembayaran akan dicek kembali oleh admin kami');
+    }
+    public function transferDPSimpan(Request $request){
+        // dd($request);
+        $jumlah = str_replace(',', '', $request->jumlah);
+        $idPelanggan=auth()->user()->pelanggan->id;
+        $rules=[
+            'tanggal'=>'required',
+            'jumlah'=>'required',
+            'rekening_id'=>'required',
+            'namaPemilik'=>'required',
+            'bukti'=>'file|mimes:pdf,jpg,jpeg,png'
+        ];
+        $costumMessages = [
+            'required'=>':attribute tidak boleh kosong'
+        ];
+        $requestData = $request->all();
+        if ($request->hasFile('bukti')) {
+            $file_nama            = $request->file('bukti')->store('public/file/dp/bukti');
+            $requestData['bukti'] = $file_nama;
+        } else {
+            unset($requestData['bukti']);
+        }
+        $requestData['jumlah']=$jumlah;
+        $requestData['proyek_id']=proyekId();
+        $requestData['pelanggan_id']=$idPelanggan;
+        $this->validate($request,$rules,$costumMessages);
+        transferDp::create($requestData);
+        return redirect()->route('DPPelanggan')->with('status','Terima kasih, pembayaran akan dicek oleh admin kami');
     }
 }

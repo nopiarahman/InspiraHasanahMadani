@@ -10,6 +10,7 @@
 <div class="wrapper" id="wrapper">
   <!-- Main content -->
 <div> {{-- invoice --}}    
+
   <section class="invoice">
     <!-- title row -->
     <div class="row border-bottom ">
@@ -98,8 +99,13 @@
     <div class="row">
       <!-- accepted payments column -->
       <div class="col-6">
-        <span class="lead font-weight-bold">Metode Pembayaran: <span class="text-primary">TUNAI</span></span>
-
+        <span class="lead font-weight-bold">Metode Pembayaran: 
+          @if($id->sumber == 'Cash' || $id->sumber == 'cash')
+          <span class="text-primary">TUNAI</span></span>
+          @else
+          <span class="text-primary">{{$id->sumber}}</span>
+          @endif
+        </span>
         <table class="" style="border-collapse: collapse">
           <tr class="px-n1">
             <th style="width: 70%">Total Hutang</th>
@@ -172,12 +178,12 @@
     
   </section>
 </div>
-<div class="d-none kwitansi2"> {{-- invoice --}}    
-  <section class="invoice">
+<div class="d-none kwitansi2 "> {{-- invoice --}}    
+  <section class="invoice ">
     <!-- title row -->
-    <div class="row border-bottom ">
+    <div class="row border-bottom mt-n5">
       <div class="col-12 ">
-        <div class="page-header">
+        <div class="page-header ">
           <div class="row">
             <div class="col-2">
               <img src="{{asset('assets/img/favicon.png')}}" alt="" class="pl-4">
@@ -261,8 +267,13 @@
     <div class="row">
       <!-- accepted payments column -->
       <div class="col-6">
-        <span class="lead font-weight-bold">Metode Pembayaran: <span class="text-primary">TUNAI</span></span>
-
+        <span class="lead font-weight-bold">Metode Pembayaran: 
+          @if($id->sumber == 'Cash' || $id->sumber == 'cash')
+          <span class="text-primary">TUNAI</span></span>
+          @else
+          <span class="text-primary">{{$id->sumber}}</span>
+          @endif
+        </span>
         <table class="" style="border-collapse: collapse">
           <tr class="px-n1">
             <th style="width: 70%">Total Hutang</th>

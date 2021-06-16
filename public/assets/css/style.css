@@ -737,7 +737,7 @@ select.form-control:not([size]):not([multiple]) {
     border-top: 2px solid #191d21; }
   .card.card-hero .card-header {
     padding: 40px;
-    background-image: linear-gradient(to bottom, #169948, #95a0f4);
+    background-image: linear-gradient(to bottom, #ffbb00, #ff8800);
     color: #fff;
     overflow: hidden;
     height: auto;
@@ -752,7 +752,7 @@ select.form-control:not([size]):not([multiple]) {
       font-size: 16px; }
     .card.card-hero .card-header .card-icon {
       float: right;
-      color: #8c98f3;
+      color: #b9b9b9;
       margin: -60px; }
       .card.card-hero .card-header .card-icon .ion, .card.card-hero .card-header .card-icon .fas, .card.card-hero .card-header .card-icon .far, .card.card-hero .card-header .card-icon .fab, .card.card-hero .card-header .card-icon .fal {
         font-size: 140px; }

@@ -98,7 +98,13 @@
     <div class="row">
       <!-- accepted payments column -->
       <div class="col-6">
-        <span class="lead font-weight-bold">Metode Pembayaran: <span class="text-primary">TUNAI</span></span>
+        <span class="lead font-weight-bold">Metode Pembayaran: 
+          @if($id->sumber == 'Cash' || $id->sumber == 'cash')
+          <span class="text-primary">TUNAI</span></span>
+          @else
+          <span class="text-primary">{{$id->sumber}}</span>
+          @endif
+        </span>
         <table class="" style="border-collapse: collapse">
           <tr class="px-n1">
             <th style="width: 70%">Total Hutang</th>
@@ -246,7 +252,13 @@
     <div class="row">
       <!-- accepted payments column -->
       <div class="col-6">
-        <span class="lead font-weight-bold">Metode Pembayaran: <span class="text-primary">TUNAI</span></span>
+        <span class="lead font-weight-bold">Metode Pembayaran: 
+          @if($id->sumber == 'Cash' || $id->sumber == 'cash')
+          <span class="text-primary">TUNAI</span></span>
+          @else
+          <span class="text-primary">{{$id->sumber}}</span>
+          @endif
+        </span>
         <table class="" style="border-collapse: collapse">
           <tr class="px-n1">
             <th style="width: 70%">Total Hutang</th>

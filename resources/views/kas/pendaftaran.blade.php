@@ -75,6 +75,7 @@
       <a href="{{route('kasPendaftaranMasuk')}}"  class="btn btn-primary disabled ">Masuk</a>
       <a href="{{route('kasPendaftaranKeluar')}}" class="btn btn-primary ml-2">Keluar</a>
   </div>
+  @if(auth()->user()->role=="admin")
     <div class="row">
       <div class="col-12">
         <div class="card">
@@ -136,7 +137,7 @@
         </div>
       </div>
     </div>
-  
+  @endif
     <div class="card">
       <div class="card-header">
         <h4>Daftar Transaksi</h4>
@@ -196,7 +197,9 @@
               <th scope="col">Debit</th>
               <th scope="col">Saldo</th>
               <th scope="col">Sumber</th>
+              @if(auth()->user()->role=="admin")
               <th scope="col">Aksi</th>
+              @endif
             </tr>
           </thead>
           <tbody>
@@ -223,6 +226,7 @@
                 </td>
                 <td>Rp. {{number_format($kas->saldo)}}</td>
                 <td>{{$kas->sumber}}</td>
+                @if(auth()->user()->role=="admin")
                 <td>
                   <button type="button" class="btn btn-sm btn-white text-danger border-danger" 
                   data-toggle="modal" 
@@ -231,6 +235,7 @@
                   data-uraian="{{$kas->uraian}}">
                   <i class="fa fa-trash" aria-hidden="true" ></i> Hapus</button>      
                 </td>
+                @endif
               </tr>
               @endforeach
           </tbody>

@@ -130,7 +130,11 @@
         
             <tr class="border-top border-success">
               <th colspan=3" class="text-right " >Pendapatan Bulan {{\Carbon\carbon::parse($start)->isoFormat('MMMM')}}</th>
+              @if($pendapatan !=null)
               <th class="">Rp.{{number_format($pendapatan->sum('kredit'))}}</th>
+              @else
+              <th class="">Rp.0</th>
+              @endif
             </tr>
             <tr>
               <th colspan=3" class="text-right " >Sisa Saldo Bulan {{\Carbon\carbon::parse($start)->subMonths(1)->isoFormat('MMMM')}}</th>
@@ -138,7 +142,11 @@
             </tr>
             <tr>
               <th colspan=3" class="text-right bg-secondary" >Total Pendapatan</th>
+              @if($pendapatan !=null)
               <th class="bg-secondary">Rp.{{number_format(saldoBulanSebelumnya($start)+$pendapatan->sum('kredit'))}}</th>
+              @else
+              <th class="bg-secondary">Rp.0</th>
+              @endif
             </tr>
             @php
             $a=[];
@@ -186,7 +194,11 @@
             </tr>
             <tr>
               <th colspan="3" class="text-right bg-info text-white" >Total Laba/Rugi Berjalan</th>
-                <th class="bg-info text-white" >Rp. {{number_format($pendapatan->sum('kredit')+saldoBulanSebelumnya($start)-array_sum($c))}}</th>
+              @if($pendapatan !=null)
+              <th class="bg-info text-white" >Rp. {{number_format($pendapatan->sum('kredit')+saldoBulanSebelumnya($start)-array_sum($c))}}</th>
+              @else
+              <th class="bg-info text-white" >Rp. 0</th>
+              @endif
             </tr>
           </tfoot>
         </table>

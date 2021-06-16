@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\proyek;
 use App\kavling;
 use App\rab;
+use App\rekening;
 use App\transaksi;
 use App\rumah;
 use App\rabUnit;
@@ -119,7 +120,7 @@ class ProyekController extends Controller
         //
     }
     public function RAB (){
-        $semuaRAB = rab::all()->groupBy(['header',function($item){
+        $semuaRAB = rab::where('proyek_id',proyekId())->groupBy(['header',function($item){
             return $item['judul'];
         }],$preserveKeys=true);
         $perHeader=$semuaRAB;
@@ -177,7 +178,7 @@ class ProyekController extends Controller
         return redirect()->route('RAB')->with('status','Jenis Biaya Berhasil Disimpan');
     }
     public function biayaUnit(Request $request){
-        $semuaRAB = rabUnit::all()->groupBy(['header',function($item){
+        $semuaRAB = rabUnit::where('proyek_id',proyekId())->groupBy(['header',function($item){
             return $item['judul'];
         }],$preserveKeys=true);
         // dd($semuaRAB);
@@ -270,5 +271,36 @@ class ProyekController extends Controller
         }],$preserveKeys=true);
         // return view ('excel.rab',compact('semuaRAB'));
         return Excel::download(new UnitExport($semuaRAB), 'Biaya Unit.xlsx');
+    }
+    public function rekening(){
+        $rekening = rekening::where('proyek_id',proyekId())->get();
+        return view('rekening/index',compact('rekening'));
+    }
+    public function rekeningSimpan(Request $request){
+        // dd($request);
+        $rules=[
+            'namaBank'=>'required',
+            'noRekening'=>'required',
+            'atasNama'=>'required'
+        ];
+        $costumMessages = [
+            'required'=>':attribute tidak boleh kosong'
+        ];
+        $requestData = $request->all();
+        $this->validate($request,$rules,$costumMessages);
+        $requestData['proyek_id']=proyekId();
+        rekening::create($requestData);
+        return redirect()->route('rekening')->with('status','Data Rekening berhasil ditambahkan');
+    }
+    public function rekeningUbah(Request $request, Rekening $id){
+        // dd($request);
+        $requestData = $request->all();
+        $requestData['proyek_id']=proyekId();
+        $id->update($requestData);
+        return redirect()->route('rekening')->with('status','Data Rekening berhasil dirubah');
+    }
+    public function hapusRekening(Rekening $id){
+        rekening::destroy($id->id);
+        return redirect()->route('rekening')->with('status','Data Rekening berhasil dihapus');
     }
 }

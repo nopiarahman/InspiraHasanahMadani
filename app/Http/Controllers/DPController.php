@@ -6,6 +6,8 @@ use App\dp;
 use App\transaksi;
 use Carbon\Carbon;
 use App\pembelian;
+use App\rekening;
+use App\transferDp;
 
 use Illuminate\Http\Request;
 
@@ -13,10 +15,10 @@ class DPController extends Controller
 {
 
     public function DPKavling(){
-        $semuaCicilanDp = pembelian::where('statusDp','Credit')->orderBy('kavling_id')->paginate(40);
-        
+        $semuaCicilanDp = pembelian::where('statusDp','Credit')->where('proyek_id',proyekId())->orderBy('kavling_id')->paginate(40);
+        $transferDp = transferDp::where('proyek_id',proyekId())->get();
 
-        return view ('cicilanDP/kavling',compact('semuaCicilanDp'));
+        return view ('cicilanDP/kavling',compact('semuaCicilanDp','transferDp'));
     }
     public function DPKavlingTambah(Pembelian $id){
         // dd($id);
@@ -25,7 +27,16 @@ class DPController extends Controller
         return view ('cicilanDp/kavlingTambah',compact('id','daftarCicilanDp'));
     }
     public function DPKavlingSimpan(Request $request){
+        // dd($request);
         $jumlah = str_replace(',', '', $request->jumlah);
+        $rekening=rekening::find($request->rekening_id);
+        if($request->has('rekening_id')){
+            $sumber = 'Transfer Ke '.$rekening->namaBank;
+            $cekTransferUnit = transferDp::where('pembelian_id',$request->pembelian_id)->first();
+            $cekTransferUnit->delete();
+        }else{
+            $sumber = 'Cash';
+        }
         $rules=[
             'jumlah'=>'required',
             'tanggal'=>'required',
@@ -67,7 +78,7 @@ class DPController extends Controller
             'jumlah'=>str_replace(',', '', $request->jumlah),
             'sisaDp'=>$akadDp-$totalTerbayar-$terbayarSekarang,
             'tempo'=>$tempo,
-            'sumber'=>'Cash',
+            'sumber'=>$sumber,
             'uraian'=>'Penerimaan Cicilan DP '.jenisKepemilikan($cekDp->pelanggan_id).' '.$cekDp->kavling->blok.' a/n '.$cekDp->pelanggan->nama,
         ];
         $this->validate($request,$rules,$costumMessages);
@@ -82,7 +93,7 @@ class DPController extends Controller
             'tanggal'=>$request->tanggal,
             'sisaDp'=>$akadDp-$totalTerbayar-$terbayarSekarang,
             'tempo'=>$tempo,
-            'sumber'=>'Cash',
+            'sumber'=>$sumber,
             'uraian'=>'Penerimaan Cicilan DP '.jenisKepemilikan($cekDp->pelanggan_id).' '.$cekDp->kavling->blok.' a/n '.$cekDp->pelanggan->nama,
         ];
         $requestData['kredit']=str_replace(',', '', $request->jumlah);
@@ -147,6 +158,22 @@ class DPController extends Controller
         dp::destroy($id->id);
         $update=pembelian::find($id->pembelian_id)->update(['sisaDp'=>$akadDp-$totalTerbayar+$id->jumlah]);
         return redirect()->back()->with('status','Transaksi DP berhasil dihapus');
+    }
+    public function cekTransferDPPelanggan(){
+        $transfer = transferDp::where('proyek_id',proyekId())->paginate(40);
+        return view('transfer/cekDp',compact('transfer'));
+    }
+    public function lihatTransferDPPelanggan(transferDp $id){
+        // dd($id);
+        $rekening = rekening::where('proyek_id',proyekId())->get();
+        return view('transfer/lihatDP',compact('id','rekening'));
+    }
+    public function tolakTransferDP(transferDp $id, Request $request){
+        // dd($id);
+        $requestData= $request->all();
+        $requestData['status']="review";
+        $id->update($requestData);
+        return redirect()->route('cekTransferDPPelanggan')->with('status','Transfer Ditolak');
     }
 
 }

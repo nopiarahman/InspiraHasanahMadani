@@ -50,5 +50,23 @@ class pelanggan extends Model
     {
         return $this->hasOne(kios::class);
     }
+    /**
+     * Get the user associated with the pelanggan
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+    /**
+     * Get the transferUnit associated with the pelanggan
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function transferUnit()
+    {
+        return $this->hasOne(transferUnit::class);
+    }
 
 }

@@ -23,9 +23,9 @@ class KasPendaftaranController extends Controller
         if($request->get('filter')){
             $start = Carbon::parse($request->start)->isoFormat('YYYY-MM-DD');
             $end = Carbon::parse($request->end)->isoFormat('YYYY-MM-DD');
-            $kasPendaftaran=kasPendaftaran::whereBetween('tanggal',[$start,$end])->orderBy('no')->get();
+            $kasPendaftaran=kasPendaftaran::whereBetween('tanggal',[$start,$end])->where('proyek_id',proyekId())->orderBy('no')->get();
         }else{
-            $kasPendaftaran=kasPendaftaran::whereBetween('tanggal',[$start,$end])->orderBy('no')->get();
+            $kasPendaftaran=kasPendaftaran::whereBetween('tanggal',[$start,$end])->where('proyek_id',proyekId())->orderBy('no')->get();
         }
         return view ('kas/pendaftaran',compact('kasPendaftaran','start','end'));
     }
@@ -38,9 +38,9 @@ class KasPendaftaranController extends Controller
         if($request->get('filter')){
             $start = Carbon::parse($request->start)->isoFormat('YYYY-MM-DD');
             $end = Carbon::parse($request->end)->isoFormat('YYYY-MM-DD');
-            $kasPendaftaran=kasPendaftaran::whereBetween('tanggal',[$start,$end])->orderBy('no')->get();
+            $kasPendaftaran=kasPendaftaran::whereBetween('tanggal',[$start,$end])->where('proyek_id',proyekId())->orderBy('no')->get();
         }else{
-            $kasPendaftaran=kasPendaftaran::whereBetween('tanggal',[$start,$end])->orderBy('no')->get();
+            $kasPendaftaran=kasPendaftaran::whereBetween('tanggal',[$start,$end])->where('proyek_id',proyekId())->orderBy('no')->get();
         }
         return view ('kas/pendaftaranKeluar',compact('kasPendaftaran','start','end'));
     }
@@ -188,9 +188,9 @@ class KasPendaftaranController extends Controller
         if($request->get('filter')){
             $start = Carbon::parse($request->start)->isoFormat('YYYY-MM-DD');
             $end = Carbon::parse($request->end)->isoFormat('YYYY-MM-DD');
-            $kasPendaftaran=kasPendaftaran::whereBetween('tanggal',[$start,$end])->orderBy('no')->get();
+            $kasPendaftaran=kasPendaftaran::whereBetween('tanggal',[$start,$end])->where('proyek_id',proyekId())->orderBy('no')->get();
         }else{
-            $kasPendaftaran=kasPendaftaran::whereBetween('tanggal',[$start,$end])->orderBy('no')->get();
+            $kasPendaftaran=kasPendaftaran::whereBetween('tanggal',[$start,$end])->where('proyek_id',proyekId())->orderBy('no')->get();
         }
         return Excel::download(new KasPendaftaranExport($kasPendaftaran,$start,$end), 'Kas Pendaftaran.xlsx');
     }

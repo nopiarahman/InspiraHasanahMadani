@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\cicilan;
 use Carbon\Carbon;
 use App\pembelian;
+use App\rekening;
+use App\transferUnit;
 use App\transaksi;
 use Illuminate\Http\Request;
 
@@ -27,8 +29,9 @@ class CicilanController extends Controller
     
     public function cicilanKavling()
     {
-        $semuaCicilanUnit = pembelian::where('statusCicilan','Credit')->where('proyek_id',proyekId())->orderBy('kavling_id')->paginate(20);
-        return view ('cicilanUnit/kavling',compact('semuaCicilanUnit'));
+        $semuaCicilanUnit = pembelian::where('statusCicilan','Credit')->where('proyek_id',proyekId())->orderBy('kavling_id')->paginate(40);
+        $transferUnit = transferUnit::where('proyek_id',proyekId())->get();
+        return view ('cicilanUnit/kavling',compact('semuaCicilanUnit','transferUnit'));
     }
     public function unitKavlingDetail(Pembelian $id){
         $daftarCicilanUnit = cicilan::where('pembelian_id',$id->id)->get();
@@ -45,8 +48,16 @@ class CicilanController extends Controller
         return view('cicilanUnit/kavlingTambah',compact('id','daftarCicilanUnit','cicilanPerBulan','totalTerbayar'));
     }
     public function cicilanKavlingSimpan(Request $request){
-        $jumlah = str_replace(',', '', $request->jumlah);
         // dd($request);
+        $jumlah = str_replace(',', '', $request->jumlah);
+        $rekening=rekening::find($request->rekening_id);
+        if($request->has('rekening_id')){
+            $sumber = 'Transfer Ke '.$rekening->namaBank;
+            $cekTransferUnit = transferUnit::where('pembelian_id',$request->pembelian_id)->first();
+            $cekTransferUnit->delete();
+        }else{
+            $sumber = 'Cash';
+        }
         $rules=[
             'jumlah'=>'required',
             'tanggal'=>'required',
@@ -95,12 +106,11 @@ class CicilanController extends Controller
             'jumlah'=>str_replace(',', '', $request->jumlah),
             'sisaKewajiban'=>$cicilan-$totalTerbayar-$terbayarSekarang,
             'tempo'=>$tempo,
-            'sumber'=>'Cash',
+            'sumber'=>$sumber,
             'uraian'=>'Penerimaan Cicilan Unit '.jenisKepemilikan($cekCicilan->pelanggan_id).' '.$cekCicilan->kavling->blok.' a/n '.$cekCicilan->pelanggan->nama,
         ];
         // dd($id); 
         $this->validate($request,$rules,$costumMessages);
-
         cicilan::create($requestCicilan);
         $requestData=$request->all();
         $requestData=[
@@ -110,7 +120,7 @@ class CicilanController extends Controller
             'tanggal'=>$request->tanggal,
             'sisaKewajiban'=>$cicilan-$totalTerbayar-$terbayarSekarang,
             'tempo'=>$tempo,
-            'sumber'=>'Cash',
+            'sumber'=>$sumber,
             'uraian'=>'Penerimaan Cicilan Unit '.jenisKepemilikan($cekCicilan->pelanggan_id).' '.$cekCicilan->kavling->blok.' a/n '.$cekCicilan->pelanggan->nama,
         ];
         $requestData['kredit']=str_replace(',', '', $request->jumlah);
@@ -188,5 +198,21 @@ class CicilanController extends Controller
         $update=pembelian::find($id->pembelian_id)->update(['sisaCicilan'=>$cicilan-$totalTerbayar+$id->jumlah]);
 
         return redirect()->back()->with('status','Transaksi cicilan berhasil dihapus');
+    }
+    public function cekTransferUnitPelanggan(){
+        $transfer = transferUnit::where('proyek_id',proyekId())->paginate(40);
+        return view('transfer/cekUnit',compact('transfer'));
+    }
+    public function lihatTransferPelanggan(transferUnit $id){
+        
+        $rekening = rekening::where('proyek_id',proyekId())->get();
+        return view('transfer/lihat',compact('id','rekening'));
+    }
+    public function tolakTransfer(transferUnit $id, Request $request){
+        // dd($id);
+        $requestData= $request->all();
+        $requestData['status']="review";
+        $id->update($requestData);
+        return redirect()->route('cekTransferUnitPelanggan')->with('status','Transfer Ditolak');
     }
 }

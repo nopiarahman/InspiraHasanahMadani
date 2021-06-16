@@ -75,7 +75,7 @@
         @endif
       </div>
       </div>
-
+@if(auth()->user()->role=="admin")
     <div class="row">
       <div class="col-12">
         <div class="card">
@@ -151,7 +151,7 @@
         </div>
       </div>
     </div>
-    
+@endif
 <div class="card">
   <div class="card-header">
     <h4>Daftar Kas Besar</h4>
@@ -210,7 +210,9 @@
           <th scope="col">Debit</th>
           <th scope="col">Saldo</th>
           <th scope="col">Sumber</th>
+          @if(auth()->user()->role=="admin")
           <th scope="col">Aksi</th>
+          @endif
         </tr>
       </thead>
       <tbody>
@@ -237,6 +239,7 @@
           <td>Rp.{{number_format($transaksi->saldo)}}</td>
           <td>{{$transaksi->sumber}}</td>
           <td>
+            @if(auth()->user()->role=="admin")
             @if( $transaksi->akun->kategori == 'Modal' || $transaksi->akun->kategori == 'Pendapatan')
             @if($transaksi->akun->kodeAkun != 'Pendapatan')
             <button type="button" class="btn btn-sm btn-white text-danger border-danger" 
@@ -244,7 +247,8 @@
             data-target="#hapusTransaksi" 
             data-id="{{$transaksi->id}}" 
             data-uraian="{{$transaksi->uraian}}">
-            <i class="fa fa-trash" aria-hidden="true" ></i> Hapus</button>      
+            <i class="fa fa-trash" aria-hidden="true" ></i> Hapus</button>    
+            @endif  
             @endif
             @endif
           </td>

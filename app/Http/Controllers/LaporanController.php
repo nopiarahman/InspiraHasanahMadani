@@ -31,13 +31,17 @@ class LaporanController extends Controller
         $akunId=akun::where('proyek_id',proyekId())->where('namaAkun','pendapatan')->first();
         $start = Carbon::now()->firstOfMonth()->isoFormat('YYYY-MM-DD');
         $end = Carbon::now()->endOfMonth()->isoFormat('YYYY-MM-DD');
-        if($request->get('filter')){
-            $start = Carbon::parse($request->start)->isoFormat('YYYY-MM-DD');
-            $end = Carbon::parse($request->end)->isoFormat('YYYY-MM-DD');
-            $pendapatan = transaksi::where('akun_id',$akunId->id)->whereBetween('tanggal',[$start,$end])->get();
-            // dd($request);
+        if($akunId != null){
+            if($request->get('filter')){
+                $start = Carbon::parse($request->start)->isoFormat('YYYY-MM-DD');
+                $end = Carbon::parse($request->end)->isoFormat('YYYY-MM-DD');
+                $pendapatan = transaksi::where('akun_id',$akunId->id)->whereBetween('tanggal',[$start,$end])->get();
+                // dd($request);
+            }else{
+                $pendapatan = transaksi::where('akun_id',$akunId->id)->whereBetween('tanggal',[$start,$end])->get();
+            }
         }else{
-            $pendapatan = transaksi::where('akun_id',$akunId->id)->whereBetween('tanggal',[$start,$end])->get();
+            $pendapatan=[];
         }
         $kategoriAkun=akun::where('proyek_id',proyekId())->get()->groupBy('kategori')->forget('Pendapatan');
         // dd($kategoriAkun);
@@ -62,6 +66,7 @@ class LaporanController extends Controller
     }
 
     public function cetakKwitansi(Cicilan $id){
+        // dd($id);
         $pembelian= pembelian::where('id',$id->pembelian_id)->first();
         $uraian = 'Pembayaran Cicilan Ke '.$id->urut.' '.jenisKepemilikan($pembelian->pelanggan_id).' '.$pembelian->kavling->blok;   
         $cicilanPertama = cicilan::where('pembelian_id',$pembelian->id)->first();

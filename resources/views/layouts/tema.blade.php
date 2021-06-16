@@ -25,12 +25,13 @@
 <body>
   <div id="app">
     <div class="main-wrapper">
-      <div class="navbar-bg sticky-top"></div>
-      <nav class="navbar navbar-expand-lg main-navbar sticky-top" >
+      <div class="navbar-bg"></div>
+      <nav class="navbar navbar-expand-lg main-navbar " >
         <ul class=" mr-3 navbarMarker">
           <li><a href="#" data-toggle="sidebar" class="nav-link nav-link-lg navbarMarker"><i class="fas fa-bars mt-3"></i></a></li>
           {{-- <li><a href="#" data-toggle="search" class="nav-link nav-link-lg d-sm-none"><i class="fas fa-search"></i></a></li> --}}
         </ul>
+        @if(auth()->user()->role=="admin" || auth()->user()->role=="projectmanager")
         <form action="{{route('cariPelangganHome')}}" method="post" enctype="multipart/form-data" class="form-inline mr-auto">
         @csrf
           <div class="row ">
@@ -67,21 +68,30 @@
           </div>
         </div>
         </form>
-        <ul class="navbar-nav navbar-right">
-
-          <li class="dropdown"><a href="#" data-toggle="dropdown" class="nav-link dropdown-toggle nav-link-lg nav-link-user">
-            <img alt="image" src="{{asset('assets/img/avatar/avatar-1.png')}}" class="rounded-circle mr-1">
+        @endif
+        <ul class="navbar-nav navbar-right kanan">
+          <li class="dropdown">
+            <a href="#" data-toggle="dropdown" class="nav-link dropdown-toggle nav-link-lg nav-link-user" aria-expanded="false">
+            <img alt="image" 
+            @if (detailUser(auth()->user()->id)->poto != null)
+            src="{{Storage::url(detailUser(auth()->user()->id)->poto)}}"
+            @else
+            src="{{asset('assets/img/avatar/avatar-1.png')}}"   
+            @endif
+            class="rounded-circle mr-1">
             <div class="d-sm-none d-lg-inline-block">Hi, {{cekNamaUser()}}</div></a>
             <div class="dropdown-menu dropdown-menu-right">
-              <div class="dropdown-title"><i class="fas fa-cog"></i>   Pengaturan</div>
-              <a href="features-profile.html" class="dropdown-item has-icon">
-                <i class="far fa-user"></i> Profile
+              <div class="dropdown-title"> {{auth()->user()->role}}</div>
+              @if(auth()->user()->role=="pelanggan")
+              <a href="{{route('dataDiri')}}" class="dropdown-item has-icon">
+                <i class="far fa-user"></i> Profil
               </a>
-              <a href="features-activities.html" class="dropdown-item has-icon">
+              @endif
+              {{-- <a href="features-activities.html" class="dropdown-item has-icon">
                 <i class="fas fa-bolt"></i> Activities
-              </a>
-              <a href="features-settings.html" class="dropdown-item has-icon">
-                <i class="fas fa-cog"></i> Settings
+              </a> --}}
+              <a href="{{route('pengaturan')}}" class="dropdown-item has-icon">
+                <i class="fas fa-cog"></i> Pengaturan
               </a>
               <div class="dropdown-divider"></div>
               <a class="dropdown-item" href="{{ route('logout') }}"
@@ -96,12 +106,13 @@
               {{-- </a> --}}
             </div>
           </li>
+         
         </ul>
       </nav>
       <div class="main-sidebar">
         <aside id="sidebar-wrapper">
           <div class="sidebar-brand">
-            <a href="index.html">
+            <a href="{{route('home')}}">
               <img src="{{asset('assets/img/logo-mini.png')}}" alt="">
             </a>
           </div>
@@ -111,10 +122,12 @@
           <ul class="sidebar-menu">
               <li class="menu-header">Dashboard</li>
               <li class="@yield('menuDashboard')"><a class="nav-link" href="{{route('home')}}"><i class="fas fa-fire"></i> <span>Dashboard</span></a></li>
+          @if(auth()->user()->role=="projectmanager")
               <li class="menu-header">Menu Proyek</li>
-              @if(auth()->user()->role=="projectmanager")
               <li class="@yield('menuProyek')"><a class="nav-link" href="{{route('proyek')}}"><i class="fas fa-archway"></i> <span>Proyek</span></a></li>
-              @endif
+          @endif
+          @if(auth()->user()->role=="projectmanager" || auth()->user()->role=="admin")
+              <li class="menu-header">Menu Proyek</li>
               <li class="nav-item dropdown @yield('menuDataProyek')">
                 <a href="" class="nav-link has-dropdown" data-toggle="dropdown"><i class="fas fa-home"></i> <span>Data Proyek</span></a>
                 <ul class="dropdown-menu">
@@ -125,7 +138,8 @@
               </li>
               <li class="menu-header">Menu Pelanggan</li>
               <li class="@yield('menuPelanggan')"><a class="nav-link" href="{{route('pelangganIndex')}}"><i class="fas fa-user-friends"></i> <span>Pelanggan</span></a></li>
-              @if(auth()->user()->role=="projectmanager")
+          @endif
+          @if(auth()->user()->role=="projectmanager")
               <li class="menu-header">Menu Project Manager</li>
               <li class="@yield('menuUser')"><a class="nav-link" href="{{route('kelolaUser')}}"><i class="fa fa-user" aria-hidden="true"></i><span>Kelola User</span></a></li>
               <li class="nav-item dropdown @yield('menuLaporan')">
@@ -135,15 +149,13 @@
                   <li class=" @yield('menuLaporanTahunan')"><a class="nav-link" href="{{route('laporanTahunan')}}">Tahunan</a></li>
                 </ul>
               </li>
-              @endif
-              @if(auth()->user()->role=="admin")
+          @endif
+          @if(auth()->user()->role=="admin")
               <li class=" @yield('menuCicilanDP')"><a class="nav-link" href="{{route('DPKavling')}}"><i class="fas fa-coins"></i> <span> Cicilan DP</span></a></li>
               </li>
               <li class=" @yield('menuCicilanUnit')"><a class="nav-link" href="{{route('cicilanKavling')}}"><i class="fas fa-money-bill-wave"></i> <span> Cicilan Unit</span></a></li>
-              @endif
-              
-            </li>
-            @if(auth()->user()->role=="admin")
+          @endif
+          @if(auth()->user()->role=="admin")
             <li class="menu-header">Menu Keuangan</li>
             <li class=" @yield('menuAkun')"><a class="nav-link" href="{{route('akun')}}"><i class="fas fa-book-open"></i> <span> Akun</span></a></li>
             <li class="nav-item dropdown @yield('menuTransaksi')">
@@ -154,24 +166,36 @@
                 <li class=" @yield('menuTransaksiKeluar')"><a href="{{route('transaksiKeluar')}}">Keluar</a></li>
               </ul>
             </li>
+            @endif
+            @if(auth()->user()->role=="admin" || auth()->user()->role=="projectmanager")
             <li class="nav-item dropdown @yield('menuKas')">
               <a href="" class="nav-link has-dropdown"><i class="fas fa-book"></i> <span>KAS</span></a>
               <ul class="dropdown-menu">
                 <li class=" @yield('menuKasBesar')"><a href="{{route('cashFlow')}}">Kas Besar</a></li>
                 {{-- <li class=" @yield('menuKasBesar')"><a class="nav-link" href="{{route('kasBesar')}}">Besar</a></li> --}}
                 <li class=" @yield('menuKasPendaftaran')"><a class="nav-link" href="{{route('kasPendaftaranMasuk')}}">Pendaftaran</a></li>
-                  <li class=" @yield('menuKasKecil')"><a class="nav-link" href="{{route('pettyCash')}}">Petty Cash</a></li>
-                </ul>
-              </li>
-              <li class="nav-item dropdown @yield('menuLaporan')">
-                <a href="" class="nav-link has-dropdown"><i class="fas fa-clipboard-check"></i> <span>Laporan</span></a>
-                <ul class="dropdown-menu">
-                  <li class=" @yield('menuLaporanBulanan')"><a class="nav-link" href="{{route('laporanBulanan')}}">Bulanan</a></li>
-                  <li class=" @yield('menuLaporanTahunan')"><a class="nav-link" href="{{route('laporanTahunan')}}">Tahunan</a></li>
-                </ul>
+                <li class=" @yield('menuKasKecil')"><a class="nav-link" href="{{route('pettyCash')}}">Petty Cash</a></li>
+              </ul>
+            </li>
+            @endif
+            @if(auth()->user()->role=="admin")
+            <li class="nav-item dropdown @yield('menuLaporan')">
+              <a href="" class="nav-link has-dropdown"><i class="fas fa-clipboard-check"></i> <span>Laporan</span></a>
+              <ul class="dropdown-menu">
+                <li class=" @yield('menuLaporanBulanan')"><a class="nav-link" href="{{route('laporanBulanan')}}">Bulanan</a></li>
+                <li class=" @yield('menuLaporanTahunan')"><a class="nav-link" href="{{route('laporanTahunan')}}">Tahunan</a></li>
+              </ul>
               </li>
               <li class=" @yield('menuGudang')"><a class="nav-link" href="{{route('gudang')}}"><i class="fas fa-warehouse    "></i> <span> Gudang</span></a></li>
+              <li class=" @yield('menuRekening')"><a class="nav-link" href="{{route('rekening')}}"> <i class="fas fa-dollar-sign    "></i> <span> Rekening</span></a></li>
               @endif
+          @if(auth()->user()->role=="pelanggan")
+              <li class="menu-header">Menu Pelanggan</li>
+              <li class=" @yield('menuDataDiri')"><a class="nav-link" href="{{route('dataDiri')}}"><i class="fas fa-book-open"></i> <span> Data Diri</span></a></li>
+              <li class=" @yield('menuPembelianPelanggan')"><a class="nav-link" href="{{route('pembelianPelanggan')}}"><i class="fas fa-handshake    "></i><span> Pembelian</span></a></li>
+              <li class=" @yield('menuDPPelanggan')"><a class="nav-link" href="{{route('DPPelanggan')}}"><i class="fas fa-coins    "></i> <span> Cicilan DP</span></a></li>
+              <li class=" @yield('menuUnitPelanggan')"><a class="nav-link" href="{{route('unitPelanggan')}}"><i class="fas fa-money-bill    "></i> <span> Cicilan Unit</span></a></li>
+          @endif
               <div class="mt-4 mb-4 p-3 hide-sidebar-mini">
                 {{-- <a href="https://getstisla.com" class="btn btn-primary btn-lg btn-block btn-icon-split">
                 </a> --}}
@@ -186,12 +210,11 @@
                                   </form>
               </div>
             </aside>
-      </div>
+          </div>
 
       <!-- Main Content -->
       <div class="main-content">
         <section class="section">
-          
           {{-- Container --}}
           @yield('content')
         </section>
@@ -205,14 +228,13 @@
         </div>
       </footer>
     </div>
-  </div> fa
-  
+  </div>
   @yield('script')
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
   <script type="text/javascript" src="{{ mix('js/app.js') }}"></script>
   <!-- General JS Scripts -->
-  <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
-  <script src="{{ mix("js/popper.js") }}"></script>
   <script src="{{ mix("js/bootstrap.js") }}"></script>
+  <script src="{{ mix("js/popper.js") }}"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.nicescroll/3.7.6/jquery.nicescroll.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
   <script src="{{asset('assets/js/stisla.js')}}"></script>
