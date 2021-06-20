@@ -91,7 +91,7 @@ class PelangganController extends Controller
             'pekerjaan'=>$request->pekerjaan,
             'nomorTelepon'=>$request->nomorTelepon,
             'proyek_id'=>proyekId(),
-            'user_id'=>$cekuser->id,
+            'user_id'=>$cekUser->id,
         ]);
         $requestpelanggan->save();
         $cariPelanggan=pelanggan::where('email',$request->email)->first(); 

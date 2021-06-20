@@ -28,6 +28,7 @@
     <tr>
       <th style="width: 20pt;font-weight:bold" colspan="2" class="">B. Pendapatan Lain-lain</th>
     </tr>
+    @if($pendapatanLain->first() != null)
     @foreach ($pendapatanLain as $produk)
       <tr>
         <td style="width: 20pt" class="pl-4">{{$produk->namaAkun}}</td>
@@ -45,6 +46,7 @@
     <tr>
       <th style="width: 20pt;font-weight:bold" colspan="2" class="">A. Biaya Produksi</th>
     </tr>
+    @endif
     @php
         $totalProduksi = 0;
         $totalOperasional = 0;

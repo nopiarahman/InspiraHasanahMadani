@@ -223,6 +223,7 @@
         </tr>
         @foreach($cashFlow as $transaksi)
         <tr>
+          {{-- <td>{{$transaksi->no}}</td> --}}
           <td>{{formatTanggal($transaksi->tanggal)}}</td>
           <td>{{$transaksi->akun->kodeAkun}}</td>
           <td>{{$transaksi->uraian}}</td>

@@ -95,6 +95,37 @@
           </div>
         </div>
         <div class="form-group row mb-4">
+          <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Metode Pembayaran</label>
+          <div class="col-sm-12 col-md-7">
+            <label class="selectgroup-item">
+              <input type="radio" name="metode" value="cash" class="selectgroup-input" checked id="metodeCashDp" onclick="cash()">
+              <span class="selectgroup-button">Cash</span>
+            </label>
+            <label class="selectgroup-item">
+              <input type="radio" name="metode" value="transfer" id="" class="selectgroup-input" id="metodeTransferDp" onclick="transfer()">
+              <span class="selectgroup-button">Transfer</span>
+            </label>
+            @error('metode')
+            <div class="invalid-feedback">{{$message}}</div>
+            @enderror
+          </div>
+        </div>
+        <div id="rekeningTransfer" class="rekeningTransfer d-none">
+          <div class="form-group row mb-4">
+            <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Rekening Tujuan</label>
+            <div class="col-sm-12 col-md-7">
+              <select class="form-control selectric" tabindex="-1" name="rekening" >
+                @forelse ($rekening as $item)
+                <option value="" selected>Pilih Rekening...</option>                  
+                <option value="{{$item->id}}">{{$item->namaBank}} {{$item->noRekening}} - a/n {{$item->atasNama}}</option>
+                @empty
+                <option value="">Belum ada rekening</option>                  
+                @endforelse
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="form-group row mb-4">
           <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3"></label>
           <div class="col-sm-12 col-md-7">
             <button class="btn btn-primary" type="submit" @if($id->sisaDp==0) disabled @endif >Tambah Pembayaran</button>
@@ -105,7 +136,16 @@
     </div>
   </div>
 </div>
-
+<script type="text/javascript">
+function transfer(){
+  var transfer = document.querySelector('.rekeningTransfer');
+  transfer.className ='rekeningTransfer';
+}
+function cash(){
+  var cash = document.querySelector('.rekeningTransfer');
+  cash.className ='rekeningTransfer d-none';
+}
+</script>
 <div class="card">
   <div class="card-header">
     <h4>History Pembayaran Cicilan DP {{jenisKepemilikan($id->pelanggan_id)}} {{$id->pelanggan->nama}}</h4>
@@ -210,4 +250,8 @@
       numeralThousandsGroupStyle: 'thousand'
   });
  </script>
+ @endsection
+ @section('script')
+ <script src="{{ mix("js/jquery.min.js") }}"></script>
+
 @endsection

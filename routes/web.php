@@ -33,6 +33,10 @@ Route::group(['middleware'=>['auth','role:admin,projectmanager']],function(){
     Route::delete('/hapusKavling/{id}', 'KavlingController@destroy')->name('hapusKavling');
 
     Route::get('/RAB', 'ProyekController@RAB')->name('RAB');
+    Route::patch('/editRAB/{id}', 'ProyekController@editRAB');
+    Route::patch('/editRABUnit/{id}', 'ProyekController@editRABUnit');
+    Route::delete('/hapusRAB/{id}', 'ProyekController@hapusRAB');
+    Route::delete('/hapusRABUnit/{id}', 'ProyekController@hapusRABUnit');
     Route::get('/biayaUnit', 'ProyekController@biayaUnit')->name('biayaUnit');
     Route::post('/rabUnitSimpan', 'ProyekController@rabUnitSimpan')->name('rabUnitSimpan');
     Route::get('/cariHeader', 'ProyekController@cariHeader')->name('cariHeader');

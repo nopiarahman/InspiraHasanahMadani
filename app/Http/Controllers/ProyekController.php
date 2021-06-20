@@ -156,7 +156,7 @@ class ProyekController extends Controller
         }else{
             $judul = $request->judul;
         }
-        $total=str_replace(',',' ',$request->total);
+        $total=str_replace(',','',$request->total);
         $rules=[
             'header'=>'required',
             'judul'=>'required',
@@ -179,7 +179,7 @@ class ProyekController extends Controller
         return redirect()->route('RAB')->with('status','Jenis Biaya Berhasil Disimpan');
     }
     public function biayaUnit(Request $request){
-        $semuaRAB = rabUnit::all()->where('proyek_id',proyekId())->groupBy(['header',function($item){
+        $semuaRAB = rabUnit::where('proyek_id',proyekId())->get()->groupBy(['header',function($item){
             return $item['judul'];
         }],$preserveKeys=true);
         // dd($semuaRAB);
@@ -259,7 +259,7 @@ class ProyekController extends Controller
     }
     public function cetakRAB(){
 
-        $semuaRAB = rab::all()->groupBy(['header',function($item){
+        $semuaRAB = rab::where('proyek_id',proyekId())->get()->groupBy(['header',function($item){
             return $item['judul'];
         }],$preserveKeys=true);
         // return view ('excel.rab',compact('semuaRAB'));
@@ -267,7 +267,7 @@ class ProyekController extends Controller
     }
     public function cetakRABUnit(){
 
-        $semuaRAB = rabUnit::all()->groupBy(['header',function($item){
+        $semuaRAB = rabUnit::where('proyek_id',proyekId())->get()->groupBy(['header',function($item){
             return $item['judul'];
         }],$preserveKeys=true);
         // return view ('excel.rab',compact('semuaRAB'));
@@ -303,5 +303,37 @@ class ProyekController extends Controller
     public function hapusRekening(Rekening $id){
         rekening::destroy($id->id);
         return redirect()->route('rekening')->with('status','Data Rekening berhasil dihapus');
+    }
+    public function editRAB(RAB $id, Request $request){
+        // dd($request);
+        $hargaSatuan=(int)str_replace(',','',$request->hargaSatuan);
+        $total=(int)str_replace(',','',$request->total);
+        $requestData=$request->all();
+        $requestData['hargaSatuan']=$hargaSatuan;
+        $requestData['total']=$total;
+        $id->update($requestData);
+        return redirect()->back()->with('status','RAB Berhasil diedit');
+    }
+    public function editRABUnit(RABUnit $id, Request $request){
+        // dd($request);
+        $hargaSatuan=(int)str_replace(',','',$request->hargaSatuan);
+        $requestData=$request->all();
+        $requestData['hargaSatuan']=$hargaSatuan;
+        $id->update($requestData);
+        return redirect()->back()->with('status','RAB Unit Berhasil diedit');
+    }
+    public function hapusRAB(RAB $id){
+        if(hitungTransaksiRAB($id->id) != null){
+            return redirect()->back()->with('error','Data RAB gagal dihapus, RAB memiliki transaksi pengeluaran');
+        }
+        RAB::destroy($id->id);
+        return redirect()->back()->with('status','Data RAB berhasil dihapus');
+    }
+    public function hapusRABUnit(RABUnit $id){
+        if(hitungTransaksiRABUnit($id->id) != null){
+            return redirect()->back()->with('error','Data RAB gagal dihapus, RAB memiliki transaksi pengeluaran');
+        }
+        RABUnit::destroy($id->id);
+        return redirect()->back()->with('status','Data RAB berhasil dihapus');
     }
 }

@@ -206,28 +206,30 @@ function satuanUnit($judul){
 }
 
 function hitungUnit($unit,$judul,$jenis){
-    $cekBlok=kavling::where('blok',$unit)->first();
-    // dd($unit);
+    $cekBlok=kavling::where('blok',$unit)->where('proyek_id',proyekId())->first();
+    // dd($judul);
     if($cekBlok != null){
         if($judul=='Biaya Produksi Rumah'){
             if($jenis == 'kios' ){
-                $cariKios=kios::where('kavling_id',$cekBlok->id)->first();
+                $cariKios=kios::where('kavling_id',$cekBlok->id)->where('proyek_id',proyekId())->first();
                 return $cariKios->luasBangunan;
 
             }else{
-                $cariRumah=rumah::where('kavling_id',$cekBlok->id)->first();
+                $cariRumah=rumah::where('kavling_id',$cekBlok->id)->where('proyek_id',proyekId())->first();
+                // dd($cariRumah);
                 return $cariRumah->luasBangunan;
 
             }
         }
     }else{
         if($jenis=='kavling'){
-            $kavling = kavling::all();
+            $kavling = kavling::where('proyek_id',proyekId())->get();
             $hitung=$kavling->count();
             return $hitung;
         }if($jenis=='rumah'){
-            $rumah = rumah::count();
-            return $rumah;
+            $rumah = rumah::where('proyek_id',proyekId())->get();
+            $hitung=$rumah->count();
+            return $hitung;
         }
     }
 }

@@ -78,19 +78,19 @@ class KasPendaftaranController extends Controller
         $requestData['kredit']=str_replace(',', '', $request->jumlah);
         $requestData['proyek_id']=proyekId();
         /* cek apakah ada transaksi sebelumnya */
-        $cekTransaksiSebelum=kasPendaftaran::where('tanggal','<=',$request->tanggal)->orderBy('no')->get();
+        $cekTransaksiSebelum=kasPendaftaran::where('tanggal','<=',$request->tanggal)->orderBy('no')->where('proyek_id',proyekId())->get();
         /* jika transaksi sebelumnya ada value */
-        if($cekTransaksiSebelum != null){
+        if($cekTransaksiSebelum->first() != null){
             $sebelum = $cekTransaksiSebelum->last();
             $requestData['no']=$sebelum->no+1;
             $requestData['saldo']=$sebelum->saldo+$jumlah;
         }else{
-            /* jika tidak ada value simpan ke akhir transaksi */
-            $requestData['no']=noTransaksiTerakhir()+1;
-            $requestData['saldo']=saldoTerakhirKasPendaftaran()+$jumlah;
+            /* jika tidak ada value simpan ke awal transaksi */
+            $requestData['no']=1;
+            $requestData['saldo']=$jumlah;
         }
         /* cek transaksi sesudah input */
-        $cekTransaksi=kasPendaftaran::where('tanggal','>',$request->tanggal)->orderBy('no')->get();
+        $cekTransaksi=kasPendaftaran::where('tanggal','>',$request->tanggal)->orderBy('no')->where('proyek_id',proyekId())->get();
         if($cekTransaksi != null){
             /* jika ada, update transaksi sesudah sesuai perubahan input*/
             foreach($cekTransaksi as $updateTransaksi){
@@ -119,7 +119,7 @@ class KasPendaftaranController extends Controller
         $requestData['debet']=str_replace(',', '', $request->jumlah);
         $requestData['proyek_id']=proyekId();
         /* cek apakah ada transaksi sebelumnya */
-        $cekTransaksiSebelum=kasPendaftaran::where('tanggal','<=',$request->tanggal)->orderBy('no')->get();
+        $cekTransaksiSebelum=kasPendaftaran::where('tanggal','<=',$request->tanggal)->orderBy('no')->where('proyek_id',proyekId())->get();
         /* jika transaksi sebelumnya ada value */
         if($cekTransaksiSebelum != null){
             $sebelum = $cekTransaksiSebelum->last();
@@ -132,7 +132,7 @@ class KasPendaftaranController extends Controller
             $requestData['saldo']=saldoTerakhirKasPendaftaran()-$jumlah;
         }
         /* cek transaksi sesudah input */
-        $cekTransaksi=kasPendaftaran::where('tanggal','>',$request->tanggal)->orderBy('no')->get();
+        $cekTransaksi=kasPendaftaran::where('tanggal','>',$request->tanggal)->orderBy('no')->where('proyek_id',proyekId())->get();
         // dd($cekTransaksi);
         if($cekTransaksi != null){
             /* jika ada, update transaksi sesudah sesuai perubahan input*/

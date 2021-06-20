@@ -37,6 +37,14 @@
             {{session ('status')}}
           </div>
         @endif
+        @if (session('error'))
+          <div class="alert alert-warning alert-dismissible show fade">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+            {{session ('error')}}
+          </div>
+        @endif
       </div>
     </div>
     @if(auth()->user()->role=="admin")
@@ -50,7 +58,7 @@
           <form action="{{route('rabUnitSimpan')}}" method="POST" enctype="multipart/form-data">
             @csrf
             <div class="form-group row mb-4">
-              <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Header</label>
+              <label class="col-form-label text-md-right col-12 col-md-4 col-lg-3">Header</label>
               <div class="input-group col-sm-12 col-md-7">
                 <div class="input-group-prepend">
                   <select name="headerLama" id="header" class="form-control headerAkun">
@@ -289,6 +297,9 @@
             <th scope="col">Total</th>
             <th scope="col">Pengeluaran</th>
             <th scope="col">Persentase</th>
+            @if(auth()->user()->role=="admin")
+            <th scope="col">Aksi</th>
+            @endif
           </tr>
         </thead>
         <tbody>
@@ -300,7 +311,7 @@
           @endphp
           @foreach($perHeader as $header=>$semuaRAB)
           <tr>
-            <th colspan="9" class="bg-primary text-white">{{$loop->iteration}}. {{$header}}</th>
+            <th colspan="10" class="bg-primary text-white">{{$loop->iteration}}. {{$header}}</th>
           </tr>
           @foreach($perJudul[$header] as $judul=>$semuaRAB)
           @php
@@ -309,7 +320,7 @@
               $totalIsi[$judul]=0;
           @endphp
           <tr>
-            <th colspan="9" class="">{{$loop->iteration}}. {{$judul}}</th>
+            <th colspan="10" class="">{{$loop->iteration}}. {{$judul}}</th>
           </tr>
             @foreach($semuaRAB as $rab)
             <tr>
@@ -333,6 +344,31 @@
                 -
                 @endif
               </th>
+              @if(auth()->user()->role=="admin")
+              <th>
+                @if($rab->header == "BIAYA PRODUKSI RUMAH")
+                @else
+                <button type="button" class="btn btn-sm btn-white text-primary border-success" 
+                  data-toggle="modal" 
+                  data-target="#modalEdit" 
+                  data-id="{{$rab->id}}" 
+                  data-header="{{$rab->header}}" 
+                  data-judul="{{$rab->judul}}" 
+                  data-isi="{{$rab->isi}}" 
+                  data-jenis="{{$rab->jenisUnit}}" 
+                  data-harga="{{$rab->hargaSatuan}}"
+                  >
+                  <i class="fa fa-pen" aria-hidden="true" ></i> Edit</button>
+
+                  <button type="button" class="btn btn-sm btn-white text-danger border-danger" 
+                  data-toggle="modal" 
+                  data-target="#exampleModalCenter" 
+                  data-id="{{$rab->id}}" 
+                  data-isi="{{$rab->isi}}">
+                  <i class="fa fa-trash" aria-hidden="true" ></i> Hapus</button>
+                  @endif
+              </th>
+              @endif
             </tr>
             @endforeach
             @php
@@ -343,7 +379,7 @@
             @endphp
             <tr  class="border-top border-success">
               <th colspan="6" class="text-right " >Sub Total {{$judul}}</th>
-              <th colspan="3" class="" >Rp. {{number_format($c[$judul])}}</th>
+              <th colspan="4" class="" >Rp. {{number_format($c[$judul])}}</th>
             </tr>
             @endforeach
               @php
@@ -351,18 +387,155 @@
               @endphp
             <tr>
               <th colspan="6" class=" bg-secondary text-right">TOTAL {{$header}}</th>
-              <th colspan="3" class="bg-secondary " >Rp. {{number_format($b[$header])}}</th>
+              <th colspan="4" class="bg-secondary " >Rp. {{number_format($b[$header])}}</th>
             </tr>
             @endforeach
           </tbody>
           <tfoot>
             <tr>
               <th colspan="6" class="text-white bg-warning text-right">TOTAL BIAYA UNIT</th>
-              <th colspan="3" class="bg-warning text-white" >Rp. {{number_format(array_sum($b))}}</th>
+              <th colspan="4" class="bg-warning text-white" >Rp. {{number_format(array_sum($b))}}</th>
           </tr>
         </tfoot>
       </table>
     </div>
   </div>
-
+{{-- modal Edit --}}
+<div class="modal fade modalEdit bd-example-modal-lg ml-5" id="modalEdit" tabindex="-1" role="dialog" aria-labelledby="modalEditTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Edit RAB</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form action="" method="POST" enctype="multipart/form-data" id="formEdit" onchange="hitung2()">
+          @method('patch')
+          @csrf
+          <div class="form-group row mb-4">
+            <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Isi Biaya</label>
+            <div class="col-sm-12 col-md-7">
+              <input type="text" class="form-control @error('isi') is-invalid @enderror" name="isi" value="{{old('isi')}}" id="isiEdit">
+              @error('isi')
+                <div class="invalid-feedback">{{$message}}</div>
+              @enderror
+            </div>
+          </div>
+          <div class="form-group row mb-4">
+            <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Jenis</label>
+            <div class="col-sm-12 col-md-7">
+              <label class="selectgroup-item">
+                <input type="radio" name="jenisUnit" value="kavling" class="selectgroup-input" checked="" id="jenisKavling">
+                <span class="selectgroup-button">Kavling</span>
+              </label>
+              <label class="selectgroup-item">
+                <input type="radio" name="jenisUnit" value="rumah" class="selectgroup-input" id="jenisRumah">
+                <span class="selectgroup-button">Rumah</span>
+              </label>
+              <label class="selectgroup-item">
+                <input type="radio" name="jenisUnit" value="kios" class="selectgroup-input" id="jenisKios">
+                <span class="selectgroup-button">Kios</span>
+              </label>
+              @error('jenisUnit')
+              <div class="invalid-feedback">{{$message}}</div>
+              @enderror
+            </div>
+          </div>
+          <div class="form-group row mb-4">
+            <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Harga Satuan</label>
+            <div class="input-group col-sm-12 col-md-7">
+              <div class="input-group-prepend">
+                <div class="input-group-text">
+                  Rp
+                </div>
+              </div>
+              <input type="text" class="hargaSatuanEdit form-control @error('hargaSatuan') is-invalid @enderror" name="hargaSatuan" value="{{old('hargaSatuan')}}" id="hargaSatuanEdit">
+              @error('hargaSatuan')
+                <div class="invalid-feedback">{{$message}}</div>
+              @enderror
+            </div>
+          </div>
+          <script src="{{ mix("js/cleave.min.js") }}"></script>
+          <script>
+              var cleave = new Cleave('.hargaSatuanEdit', {
+                  numeral: true,
+                  numeralThousandsGroupStyle: 'thousand'
+              });
+          </script>
+          <div class="form-group row mb-4">
+            <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3"></label>
+            <div class="col-sm-12 col-md-7">
+              <button class="btn btn-primary" type="submit">Edit</button>
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+            </div>
+          </div>
+        </form>
+        </div>
+    </div>
+  </div>
+</div>
+<!-- Modal Hapus-->
+<div class="modal fade exampleModalCenter" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Hapus RAB</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form action="" method="post" id="formHapus">
+          @method('delete')
+          @csrf
+          <p class="modal-text"></p>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary">Hapus</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+  $(document).ready(function () {
+    $('#exampleModalCenter').on('show.bs.modal', function (event) {
+    var button = $(event.relatedTarget) // Button that triggered the modal
+    var id = button.data('id') // Extract info from data-* attributes
+    var isi = button.data('isi') 
+    var modal = $(this)
+    modal.find('.modal-text').text('Hapus RAB ' + isi+' ?')
+    document.getElementById('formHapus').action='hapusRABUnit/'+id;
+    })
+  });
+  </script>
+<script type="text/javascript">
+  $(document).ready(function () {
+    $('#modalEdit').on('show.bs.modal', function (event) {
+    var button = $(event.relatedTarget) // Button that triggered the modal
+    var id = button.data('id') // Extract info from data-* attributes
+    var isi = button.data('isi') 
+    var jenis = button.data('jenis') 
+    console.log(jenis);
+    var satuan = button.data('satuan') 
+    var hargaSatuan = button.data('harga')
+    var total = button.data('total')
+    document.getElementById('formEdit').action='editRABUnit/'+id;
+    $('#isiEdit').val(isi);
+    $('#hargaSatuanEdit').val(hargaSatuan);
+    if(jenis == 'kavling'){
+      $("#jenisKavling").prop("checked", true);
+    }
+    if(jenis == 'rumah'){
+      $("#jenisRumah").prop("checked", true);
+    }
+    if(jenis == 'kios'){
+      $("#jenisKios").prop("checked", true);
+    }
+    })
+  });
+  </script>
 @endsection

@@ -242,7 +242,7 @@
               data-akun="{{$transaksi->akun->id}}" 
               data-awal="{{$transaksi->akun->namaAkun}}" 
               >
-              <i class="fa fa-arrow-right" aria-hidden="true"></i> Ke Gudang</button>
+              Sisa Barang</button>
               @endif
               <button type="button" class="btn btn-sm btn-white text-danger border-danger" 
               data-toggle="modal" 
