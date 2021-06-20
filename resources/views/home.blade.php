@@ -6,7 +6,7 @@
   </div>
   @if(auth()->user()->role=="pelanggan")
   <div class="row ">
-    <div class="col-12 col-md-12 col-lg-12">
+    <div class="col-6 col-md-6 col-sm-12">
       <div class="card profile-widget">
         <div class="profile-widget-header">
           <img style="width: 150px" alt="image" 
@@ -69,6 +69,94 @@
               </tbody>
             </table>
           {{-- Ujang maman is a superhero name in <b>Indonesia</b>, especially in my family. He is not a fictional character but an original hero in my family, a hero for his children and for his wife. So, I use the name as a user in this template. Not a tribute, I'm just bored with <b>'John Doe'</b>. --}}
+        </div>
+      </div>
+    </div>
+    <div class="col-6 col-md-6 col-sm-12 mt-5">
+      <div class="card card-hero ">
+        <div class="card-header">
+          <div class="card-icon" style="color: rgb(192, 125, 0)">
+            <i class="fas fa-coins    "></i>
+          </div>
+          <div class="card-description">Status DP :
+            @if($dataPembelian->sisaDp >0)
+            Belum Lunas
+            @else
+            -
+            @endif
+          </div>
+          
+          @if($dataPembelian->sisaDp >0)
+          <h4 style="font-size: x-large" >Sisa DP : Rp. {{number_format($dataPembelian->sisaDp)}}</h4>
+          @else
+          Lunas
+          @endif
+        </div>
+        <div class="card-body p-0">
+          <div class="tickets-list">
+            <a href="#" class="ticket-item">
+              <div class="ticket-title">
+                <h4>Riwayat Pembayaran</h4>
+              </div>
+              @forelse($dpPelanggan->take(2)->sortByDesc('no') as $dp)
+              <div class="ticket-info">
+                <div>Cicilan DP Ke: {{$dp->urut}} Rp.{{number_format($dp->jumlah)}}</div>
+                <div class="bullet"></div>
+                <div class="text-primary">{{Carbon\Carbon::parse($dp->created_at)->diffForHumans()}}</div>
+              </div>
+              @empty
+            </a>
+            <div class="ticket-info">
+              <div>Tidak Ada data</div>
+            </div>
+            @endforelse
+            <a href="{{route('DPPelanggan')}}" class="ticket-item ticket-more">
+              Lihat lengkap <i class="fas fa-chevron-right"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="card card-hero ">
+        <div class="card-header" style="background-image: linear-gradient(to bottom, #8fe700, #03a827);">
+          <div class="card-icon" style="color:green">
+            <i class="fas fa-money-bill-wave " aria-hidden="true"></i>
+          </div>
+          <div class="card-description">Status Cicilan :
+            @if($dataPembelian->sisaCicilan >0)
+            Belum Lunas
+            @else
+            -
+            @endif
+          </div>
+          
+          @if($dataPembelian->sisaCicilan >0)
+          <h4 style="font-size: x-large">Sisa Kewajiban : Rp. {{number_format($dataPembelian->sisaCicilan)}}</h4>
+          @else
+          Lunas
+          @endif
+        </div>
+        <div class="card-body p-0">
+          <div class="tickets-list">
+            <a href="#" class="ticket-item">
+              <div class="ticket-title">
+                <h4>Riwayat Pembayaran</h4>
+              </div>
+              @forelse($cicilanPelanggan->take(2) as $cicilan)
+              <div class="ticket-info">
+                <div>Cicilan Ke: {{$cicilan->urut}} Rp.{{number_format($cicilan->jumlah)}}</div>
+                <div class="bullet"></div>
+                <div class="text-primary">{{Carbon\Carbon::parse($cicilan->created_at)->diffForHumans()}}</div>
+              </div>
+              @empty
+            </a>
+            <div class="ticket-info">
+              <div>Tidak Ada data</div>
+            </div>
+            @endforelse
+            <a href="{{route('unitPelanggan')}}" class="ticket-item ticket-more">
+              Lihat lengkap <i class="fas fa-chevron-right"></i>
+            </a>
+          </div>
         </div>
       </div>
     </div>

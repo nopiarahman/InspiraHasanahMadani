@@ -63,14 +63,19 @@ class HomeController extends Controller
             $dataPembelian=pembelian::where('pelanggan_id',$idUser)->first();
             // dd($dataPembelian);
             $persenDiskon = ($dataPembelian->diskon/$dataPembelian->harga)*100;
+            $dpPelanggan=dp::where('pembelian_id',$dataPembelian->id)->get()->sortByDesc('urut');
+            $cicilanPelanggan=cicilan::where('pembelian_id',$dataPembelian->id)->get()->sortByDesc('urut');
         }else{
             $dataKavling=[];
             $dataPembelian=[];
             $id=[];
             $idUser=[];
+            $dpPelanggan=[];
             $persenDiskon=0;
+            $cicilanPelanggan=[];
         }
-        return view('home',compact('chartKasBesar','kavling','pelanggan','transferDp','transferUnit','dataKavling','dataPembelian','persenDiskon','id'));
+
+        return view('home',compact('dpPelanggan','cicilanPelanggan','chartKasBesar','kavling','pelanggan','transferDp','transferUnit','dataKavling','dataPembelian','persenDiskon','id'));
     }
 
     public function cariPelangganHome(Request $request){
