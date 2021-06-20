@@ -18,13 +18,6 @@ Route::get('/', function () {
 });
 
 Auth::routes();
-
-Route::get('/home', 'HomeController@index')->name('home');
-Route::get('/pengaturan', 'HomeController@pengaturan')->name('pengaturan');
-Route::patch('/gantiFoto/{id}', 'HomeController@gantiFoto')->name('gantiFoto');
-Route::patch('/gantiFoto/{id}', 'HomeController@gantiFoto')->name('gantiFoto');
-Route::patch('/rubahPassword/{id}', 'HomeController@rubahPassword')->name('rubahPassword');
-
 Route::group(['middleware'=>['auth','role:admin,projectmanager']],function(){
     Route::get('/proyek', 'ProyekController@index')->name('proyek');
     Route::get('/proyekTambah', 'ProyekController@create')->name('proyekTambah');
@@ -131,6 +124,7 @@ Route::group(['middleware'=>['auth','role:admin,projectmanager']],function(){
     Route::get('/exportBulanan', 'LaporanController@exportBulanan')->name('exportBulanan');
     Route::get('/exportTahunan', 'LaporanController@exportTahunan')->name('exportTahunan');
 });
+
 Route::group(['middleware'=>['auth','role:projectmanager']],function(){
     
     Route::get('/kelolaUser', 'ProjectManagerController@kelolaUser')->name('kelolaUser');
@@ -139,6 +133,7 @@ Route::group(['middleware'=>['auth','role:projectmanager']],function(){
     Route::patch('/userEdit/{id}', 'ProjectManagerController@userEdit')->name('userEdit');
     Route::delete('/hapusUser/{id}', 'ProjectManagerController@hapusUser')->name('hapusUser');
 });
+
 Route::group(['middleware'=>['auth','role:pelanggan']],function(){
     Route::get('/dataDiri', 'PelangganController@dataDiri')->name('dataDiri');
     Route::get('/pembelianPelanggan', 'PelangganController@pembelianPelanggan')->name('pembelianPelanggan');
@@ -152,6 +147,11 @@ Route::group(['middleware'=>['auth','role:pelanggan']],function(){
     Route::get('/lihatTransferDp/{id}', 'PelangganController@lihatTransferDp')->name('lihatTransferDp');
     Route::patch('/transferCicilanUpdate/{id}', 'PelangganController@transferCicilanUpdate')->name('transferCicilanUpdate');
     Route::patch('/transferDPUpdate/{id}', 'PelangganController@transferDPUpdate')->name('transferDPUpdate');
-    Route::get('/cetakKwitansi/{id}', 'LaporanController@cetakKwitansi')->name('cetakKwitansi');
-    Route::get('/cetakKwitansiDp/{id}', 'LaporanController@cetakKwitansiDp')->name('cetakKwitansiDp');
+    Route::get('/cetakKwitansiPelanggan/{id}', 'LaporanController@cetakKwitansi')->name('cetakKwitansiPelanggan');
+    Route::get('/cetakKwitansiDpPelanggan/{id}', 'LaporanController@cetakKwitansiDp')->name('cetakKwitansiDpPelanggan');
 });
+Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/pengaturan', 'HomeController@pengaturan')->name('pengaturan');
+Route::patch('/gantiFoto/{id}', 'HomeController@gantiFoto')->name('gantiFoto');
+Route::patch('/gantiFoto/{id}', 'HomeController@gantiFoto')->name('gantiFoto');
+Route::patch('/rubahPassword/{id}', 'HomeController@rubahPassword')->name('rubahPassword');

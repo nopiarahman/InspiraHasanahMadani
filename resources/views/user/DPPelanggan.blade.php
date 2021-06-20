@@ -126,7 +126,7 @@
             {{romawi(Carbon\Carbon::parse($cicilanDp->tanggal)->isoFormat('MM'))}}/{{$cicilanDp->ke}}
           </td>
           <td>
-            <a href="{{route('cetakKwitansiDp',['id'=>$cicilanDp->id])}}" class=" btn-sm border-success btn btn-white text-primary"> <i class="fas fa-file-invoice    "></i> Kwitansi</a>
+            <a href="{{route('cetakKwitansiDpPelanggan',['id'=>$cicilanDp->id])}}" class=" btn-sm border-success btn btn-white text-primary"> <i class="fas fa-file-invoice    "></i> Kwitansi</a>
           </td>
         </tr>
         @endforeach

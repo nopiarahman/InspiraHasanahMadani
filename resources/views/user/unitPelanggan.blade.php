@@ -141,7 +141,7 @@
             <span class="badge badge-info text-white"> <i class="fa fa-check" aria-hidden="true"></i> Diterima</span>
           </td>
           <td>
-            <a href="{{route('cetakKwitansi',['id'=>$cicilanUnit->id])}}" class=" btn-sm border-success btn btn-white text-primary"> <i class="fas fa-file-invoice    "></i> Kwitansi</a>
+            <a href="{{route('cetakKwitansiPelanggan',['id'=>$cicilanUnit->id])}}" class=" btn-sm border-success btn btn-white text-primary"> <i class="fas fa-file-invoice    "></i> Kwitansi</a>
           </td>
         </tr>
         @endforeach
