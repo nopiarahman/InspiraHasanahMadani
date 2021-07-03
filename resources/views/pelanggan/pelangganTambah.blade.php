@@ -50,6 +50,15 @@
             <div class="card-body" id="pertama">
               @csrf
               <div class="form-group row mb-4">
+                <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">NIK</label>
+                <div class="col-sm-12 col-md-7">
+                  <input type="text" class="form-control @error('nik') is-invalid @enderror" name="nik" value="{{old('nik')}}">
+                  @error('nik')
+                  <div class="invalid-feedback">{{$message}}</div>
+                  @enderror
+                </div>
+              </div>
+              <div class="form-group row mb-4">
                 <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Nama Lengkap</label>
                 <div class="col-sm-12 col-md-7">
                   <input type="text" class="form-control @error('nama') is-invalid @enderror" name="nama" value="{{old('nama')}}">
@@ -134,6 +143,15 @@
                   @enderror
                 </div>
               </div>
+              <div class="form-group row mb-4">
+                <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Nomor Darurat</label>
+                <div class="col-sm-12 col-md-7">
+                  <input type="text" class=" input-phone-darurat form-control @error('noDarurat') is-invalid @enderror" name="noDarurat" value="{{old('noDarurat')}}">
+                  @error('noDarurat')
+                  <div class="invalid-feedback">{{$message}}</div>
+                  @enderror
+                </div>
+              </div>
               
             </div>
             <div class="card-header ">
@@ -178,7 +196,7 @@
                 <div class="col-sm-12 col-md-7">
                   <label class="selectgroup-item">
                     <input type="radio" name="includePembelian" value="" class="selectgroup-input" checked id="notInclude">
-                    <span class="selectgroup-button">Tidak Ada</span>
+                    <span class="selectgroup-button">Kavling</span>
                   </label>
                   <label class="selectgroup-item">
                     <input type="radio" name="includePembelian" value="Rumah" class="selectgroup-input" id="rumah">
@@ -327,7 +345,7 @@
                 <div class="form-group row mb-4">
                   <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Tenor</label>
                   <div class="input-group col-sm-12 col-md-7">
-                    <input type="number" class=" form-control @error('tenor') is-invalid @enderror" name="tenor" value="{{old('tenor')}} ">
+                    <input type="number" class=" form-control @error('tenor') is-invalid @enderror" name="tenor">
                     @error('tenor')
                     <div class="invalid-feedback">{{$message}}</div>
                     @enderror
@@ -423,6 +441,10 @@
       numeralThousandsGroupStyle: 'thousand'
   });
   var cleave = new Cleave('.input-phone', {
+    phone: true,
+    phoneRegionCode: 'ID'
+  });
+  var cleave = new Cleave('.input-phone-darurat', {
     phone: true,
     phoneRegionCode: 'ID'
   });

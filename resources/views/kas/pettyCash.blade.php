@@ -6,7 +6,7 @@
   <div class="container">
     <div class="row">
         <div class="col-6">
-          <h1>Petty Cash</h1>
+          <h1>Kas Kecil</h1>
         </div>
         <div class="col-6">
            {{-- filter --}}
@@ -75,7 +75,7 @@
       <div class="col-12">
         <div class="card">
           <div class="card-header">
-            <h4>Tambah Transaksi Masuk Petty Cash</h4>
+            <h4>Tambah Transaksi Masuk Kas Kecil</h4>
           </div>
           <div class="card-body">
           <form action="{{route('pettyCashSimpan')}}" method="POST" enctype="multipart/form-data">

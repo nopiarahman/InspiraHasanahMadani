@@ -220,7 +220,7 @@
         </div>
         <div class="card-wrap">
           <div class="card-header">
-            <h4>Petty Cash</h4>
+            <h4>Kas Kecil</h4>
           </div>
           <div class="card-body">
             <h4>
@@ -336,7 +336,7 @@
         <div class="card-body">
           <a href="{{route('transaksiKeluar')}}" class="btn btn-icon icon-left btn-primary col-12 my-1"><i class="fas fa-money-bill"></i> Tambah Transaksi Keluar</a>
           <a href="{{route('kasPendaftaranMasuk')}}" class="btn btn-icon icon-left btn-primary col-12 my-1"><i class="fas fa-money-bill"></i> Kas Pendaftaran</a>
-          <a href="{{route('pettyCash')}}" class="btn btn-icon icon-left btn-primary col-12 my-1"><i class="fas fa-piggy-bank    "></i> Petty Cash</a>
+          <a href="{{route('pettyCash')}}" class="btn btn-icon icon-left btn-primary col-12 my-1"><i class="fas fa-piggy-bank    "></i> Kas Kecil</a>
         </div>
       </div>
       @endif

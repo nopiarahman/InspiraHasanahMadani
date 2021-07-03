@@ -17,14 +17,6 @@
       </div>
     </div>
   </div>
-  @if($transferDp->count() != 0)
-<div class="card bg-warning">
-  <div class="card-header">
-    <h4 class="text-dark">Ada {{$transferDp->count()}} pelanggan yang melakukan transaksi via transfer</h4>
-    <a href="{{route('cekTransferDPPelanggan')}}" class="btn btn-dark text-white ">Lihat</a>
-  </div>
-</div>
-@endif
     {{-- Alert --}}
     <div class="row">
       <div class="col-12">

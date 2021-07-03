@@ -178,6 +178,15 @@
           <form class="card-body" id="pertama">
             @csrf
             <div class="form-group row mb-4">
+              <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">NIK</label>
+              <div class="col-sm-12 col-md-7">
+                <input type="text" class="form-control @error('nik') is-invalid @enderror" name="nik" value="{{$dataPembelian->pelanggan->nik}}">
+                @error('nik')
+                <div class="invalid-feedback">{{$message}}</div>
+                @enderror
+              </div>
+            </div>
+            <div class="form-group row mb-4">
               <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Nama Lengkap</label>
               <div class="col-sm-12 col-md-7">
                 <input type="text" class="form-control @error('nama') is-invalid @enderror" name="nama" value="{{$dataPembelian->pelanggan->nama}}">
@@ -258,6 +267,15 @@
               <div class="col-sm-12 col-md-7">
                 <input type="text" class=" input-phone form-control @error('nomorTelepon') is-invalid @enderror" name="nomorTelepon" value="{{$dataPembelian->pelanggan->nomorTelepon}}">
                 @error('nomorTelepon')
+                <div class="invalid-feedback">{{$message}}</div>
+                @enderror
+              </div>
+            </div>
+            <div class="form-group row mb-4">
+              <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Nomor Darurat</label>
+              <div class="col-sm-12 col-md-7">
+                <input type="text" class=" input-phone form-control @error('noDarurat') is-invalid @enderror" name="noDarurat" value="{{$dataPembelian->pelanggan->noDarurat}}">
+                @error('noDarurat')
                 <div class="invalid-feedback">{{$message}}</div>
                 @enderror
               </div>

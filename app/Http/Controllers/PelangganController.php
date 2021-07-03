@@ -53,8 +53,11 @@ class PelangganController extends Controller
     public function store(Request $request){
         // dd($request);
         /* Membuat Akun User */
+        $kavlingPelanggan=kavling::where('id',$request->kavling_id)->first();
+        // dd($kavlingPelanggan->blok);
         $parts = explode("@",$request->email);
-        $username = $parts[0];
+        $username =strtolower("kta".$kavlingPelanggan->blok);
+        // dd($username);
         $sandi = Carbon::parse($request->tanggalLahir)->isoFormat('DDMMYY');
         $requestUser ['proyek_id'] = proyekId();
         $requestUser ['name'] = $request->nama;
@@ -81,6 +84,7 @@ class PelangganController extends Controller
             $sisaCicilan=0;
         }
         $requestpelanggan = pelanggan::create([
+            'nik'=>$request->nik,
             'nama'=>$request->nama,
             'email'=>$request->email,
             'tempatLahir'=>$request->tempatLahir,
@@ -90,6 +94,7 @@ class PelangganController extends Controller
             'statusPernikahan'=>$request->statusPernikahan,
             'pekerjaan'=>$request->pekerjaan,
             'nomorTelepon'=>$request->nomorTelepon,
+            'noDarurat'=>$request->noDarurat,
             'proyek_id'=>proyekId(),
             'user_id'=>$cekUser->id,
         ]);

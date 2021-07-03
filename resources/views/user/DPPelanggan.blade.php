@@ -31,13 +31,6 @@
     @endif
   </div>
 </div>
-@if($cekTransferDp !=null)
-<div class="card">
-  <div class="card-header bg-warning">
-    <h4 class="text-dark">Informasi: Pembayaran DP belum bisa disetujui, Keterangan Admin: {{$cekTransferDp->keterangan}}</h4>
-  </div>
-</div>
-@endif
   <div class="card">
     <div class="card-header">
       <h4>Informasi Cicilan DP</h4>
@@ -76,20 +69,6 @@
       </tr>
       <tr>
         <td></td>
-        <td>
-          @if($cekTransferDp !=null)
-            @if($cekTransferDp->pembelian_id != null)
-            <a href="{{route('lihatTransferDp',['id'=>$cekTransferDp->id])}}" class="btn btn-warning">Lihat Pembayaran</a>
-            @else 
-            {{-- <button class="btn btn-primary" type="submit">Tambah Pembayaran</button> --}}
-            <a href="{{route('transferDP')}}" class="btn btn-primary border-success ">Pembayaran</a>
-            @endif
-          @elseif($id->sisaDp <= 0)
-          <a href="#" class="btn btn-info"> <i class="fa fa-check" aria-hidden="true"></i> DP LUNAS</a>
-          @else
-          <a href="{{route('transferDP')}}" class="btn btn-primary border-success ">Pembayaran</a>
-          @endif
-        </td>
       </tr> 
     </table>
     </div>

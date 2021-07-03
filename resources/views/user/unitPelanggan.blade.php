@@ -86,12 +86,11 @@
     </tr>
     <tr>
       <td></td>
-      <td>
+      {{-- <td>
         @if($cekTransferUnit !=null)
           @if($cekTransferUnit->pembelian_id != null)
           <a href="{{route('lihatTransferUnit',['id'=>$cekTransferUnit->id])}}" class="btn btn-warning">Lihat Pembayaran</a>
           @else 
-          {{-- <button class="btn btn-primary" type="submit">Tambah Pembayaran</button> --}}
           <a href="{{route('transferUnit')}}" class="btn btn-primary border-success ">Pembayaran</a>
           @endif
         @elseif($id->sisaDp > 0)
@@ -101,7 +100,7 @@
         @else
         <a href="{{route('transferUnit')}}" class="btn btn-primary border-success ">Pembayaran</a>
         @endif
-      </td>
+      </td> --}}
     </tr> 
   </table>
   </div>

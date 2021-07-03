@@ -128,7 +128,7 @@
               </label>
               <label class="selectgroup-item">
                 <input type="radio" name="sumberKas" value="pettyCash" class="selectgroup-input">
-                <span class="selectgroup-button">Petty Cash</span>
+                <span class="selectgroup-button">Kas Kecil</span>
               </label>
               @error('jenisKelamin')
               <div class="invalid-feedback">{{$message}}</div>

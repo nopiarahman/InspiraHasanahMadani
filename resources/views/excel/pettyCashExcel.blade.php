@@ -1,7 +1,7 @@
 <table class="table table-sm table-hover table-striped mt-3">
   <thead>
     <tr>
-      <th style="width: 20pt; font-weight:bold;font-size:22pt;text-align:center;" colspan="7">PETTY CASH</th>
+      <th style="width: 20pt; font-weight:bold;font-size:22pt;text-align:center;" colspan="7">KAS KECIL</th>
     </tr>
     <tr>
       <th style="width: 20pt;text-align:center;font-style:italic" colspan="7">{{namaProyek()}}</th>

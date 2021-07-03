@@ -177,7 +177,7 @@
                 <li class=" @yield('menuKasBesar')"><a href="{{route('cashFlow')}}">Kas Besar</a></li>
                 {{-- <li class=" @yield('menuKasBesar')"><a class="nav-link" href="{{route('kasBesar')}}">Besar</a></li> --}}
                 <li class=" @yield('menuKasPendaftaran')"><a class="nav-link" href="{{route('kasPendaftaranMasuk')}}">Pendaftaran</a></li>
-                <li class=" @yield('menuKasKecil')"><a class="nav-link" href="{{route('pettyCash')}}">Petty Cash</a></li>
+                <li class=" @yield('menuKasKecil')"><a class="nav-link" href="{{route('pettyCash')}}">Kas Kecil</a></li>
               </ul>
             </li>
             @endif
