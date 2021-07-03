@@ -31,6 +31,9 @@
           <li><a href="#" data-toggle="sidebar" class="nav-link nav-link-lg navbarMarker"><i class="fas fa-bars mt-3"></i></a></li>
           {{-- <li><a href="#" data-toggle="search" class="nav-link nav-link-lg d-sm-none"><i class="fas fa-search"></i></a></li> --}}
         </ul>
+        @if(auth()->user()->role=="pelanggan")
+        <h3 class="text-white align-center mt-2">{{auth()->user()->proyek->nama}}</h3>
+        @endif
         @if(auth()->user()->role=="admin" || auth()->user()->role=="projectmanager")
         <form action="{{route('cariPelangganHome')}}" method="post" enctype="multipart/form-data" class="form-inline mr-auto">
         @csrf
@@ -79,7 +82,7 @@
             src="{{asset('assets/img/avatar/avatar-1.png')}}"   
             @endif
             class="rounded-circle mr-1">
-            <div class="d-sm-none d-lg-inline-block">Hi, {{cekNamaUser()}}</div></a>
+            <div class="d-sm-none d-lg-inline-block">Assalamualaikum, {{cekNamaUser()}}</div></a>
             <div class="dropdown-menu dropdown-menu-right">
               <div class="dropdown-title"> {{auth()->user()->role}}</div>
               @if(auth()->user()->role=="pelanggan")
