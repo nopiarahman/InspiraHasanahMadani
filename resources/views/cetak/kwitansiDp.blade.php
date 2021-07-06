@@ -4,6 +4,8 @@
     <h1>Cetak Kwitansi DP</h1> 
     <div class="kanan">
       <button onclick="cetak('wrapper')" class="btn btn-primary"> <i class="fas fa-print fa-L"></i> Cetak Kwitansi</button>
+      {{-- <a href="javascript:generatePDF()" class="btn btn-info ml-2"> <i class="fas fa-print fa-L"></i> Cetak PDF</a> --}}
+      <a type="button" href="{{route('cetakDPPDF',['id'=>$id->id])}}" class="btn btn-info ml-2"> <i class="fas fa-file-pdf    "></i> Cetak PDF</a>
     </div>
 </div>
 
@@ -12,20 +14,20 @@
 <div> {{-- invoice --}}    
   <section class="invoice">
     <!-- title row -->
-    <div class="row border-bottom ">
-      <div class="col-12 ">
+    <div class="row border-bottom d-none d-md-block">
+      <div class="col-md-12 col-sm-12 ">
         <div class="page-header">
           <div class="row">
-            <div class="col-2">
+            <div class="col-md-2 col-sm-12">
               <img src="{{asset('assets/img/favicon.png')}}" alt="" class="pl-4">
             </div>
-            <div class="col-7">
+            <div class="col-md-7 col-sm-12">
               <h4 style="font-weight:900">PT. INSPIRA HASANAH MADANI</h4>
               <small style="font-size: medium">Jl. Jenderal A. Thalib no 12 Telanaipura. Jambi</small> <br>
               <small style="font-size: medium"> <i class="fa fa-phone" aria-hidden="true"></i> : 0741-3071990</small><br>
               <small style="font-size: medium"> <i class="fas fa-envelope    "></i> : inspirahasanahmadani@gmail.com</small>
             </div>
-            <div class="col-3 ">
+            <div class="col-md-3 col-sm-12">
                 <small style="font-size: medium">Nomor Faktur:            
                   @if(jenisKepemilikan($pembelian->pelanggan_id)=='Kavling')
                   DK
@@ -167,19 +169,19 @@
   <section class="invoice">
     <!-- title row -->
     <div class="row border-bottom ">
-      <div class="col-12 ">
+      <div class="col-md-12 col-sm-12">
         <div class="page-header">
           <div class="row">
-            <div class="col-2">
+            <div class="col-md-2 col-sm-12">
               <img src="{{asset('assets/img/favicon.png')}}" alt="" class="pl-4">
             </div>
-            <div class="col-7">
+            <div class="col-md-7 col-sm-12">
               <h4 style="font-weight:900">PT. INSPIRA HASANAH MADANI</h4>
               <small style="font-size: medium">Jl. Jenderal A. Thalib no 12 Telanaipura. Jambi</small> <br>
               <small style="font-size: medium"> <i class="fa fa-phone" aria-hidden="true"></i> : 0741-3071990</small><br>
               <small style="font-size: medium"> <i class="fas fa-envelope    "></i> : inspirahasanahmadani@gmail.com</small>
             </div>
-            <div class="col-3 ">
+            <div class="col-md-3 col-sm-12">
                 <small style="font-size: medium">Nomor Faktur:            
                   @if(jenisKepemilikan($pembelian->pelanggan_id)=='Kavling')
                   DK

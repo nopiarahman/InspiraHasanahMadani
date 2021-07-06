@@ -59,7 +59,7 @@
             <div class="profile-widget-item-value">{{jenisKepemilikan($id->id)}}</div>
           </div>
           <div class="profile-widget-item">
-            <button onclick="cetak('cetakPelanggan')" class="btn btn-primary"> <i class="fas fa-print fa-L"></i> Cetak Pelanggan</button>
+            <button onclick="cetak('cetakPelanggan')" class="btn btn-primary m-2"> <i class="fas fa-print fa-L"></i> Cetak Pelanggan</button>
           </div>
         </div>
       </div>
@@ -67,12 +67,27 @@
         <div class="profile-widget-name ml-4 text-primary"> <h4> {{$id->nama}} </h4><div class="text-muted d-inline font-weight-normal">
         </div>
         </div>
-          <table class="table table-hover">
+          <table class="table table-hover table-responsive-sm">
             <tbody>
               <tr>
                 <th>Objek</th>
                 <td style="width: 30%">{{jenisKepemilikan($id->id)}} ( @if($dataKavling == null)Akad Dibatalkan @else{{$dataKavling->blok}}@endif )</td>
                 <td></td>
+              </tr>
+              <tr>
+                <th>Status</th>
+                @if($dataPembelian->statusPembelian == "Booking")
+                <td><span class="text-info">{{cekStatusKavling($dataKavling->id)}} / {{carbon\carbon::parse($dataKavling->pembelian->tanggalBooking)->isoFormat('D MMMM Y')}}</span></td>
+                @else
+                <td><span class="text-info">{{cekStatusKavling($dataKavling->id)}}</span></td>
+                @endif
+                <td>
+                  @if($dataPembelian->statusPembelian == "Booking")
+                  <a href="#" type="button" class="btn btn-white border-success text-success" data-toggle="modal" data-target="#modalGantiStatus" data-id="{{$dataKavling->id}}" data-pelanggan="{{$dataKavling->pelanggan->id}}">
+                    Ganti Status
+                  </a>
+                  @endif
+                </td>
               </tr>
               <tr>
                 <th scope="row">Nomor Akad</th>
@@ -956,4 +971,45 @@
 
 
 </script>
+{{-- modal ganti status --}}
+<div class="modal fade modalGantiStatus  ml-5" id="modalGantiStatus" tabindex="-1" role="dialog" aria-labelledby="modalGantiStatusTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Edit Unit</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form action="" method="POST" enctype="multipart/form-data" id="formGantiStatus">
+          @method('patch')
+          @csrf
+          <p class="modal-text"></p>
+          <input type="hidden" name="pelanggan_id" id="pelangganId">
+          <div class="form-group row mb-4">
+            <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3"></label>
+            <div class="col-sm-12 col-md-7">
+              <button class="btn btn-primary" type="submit">Ganti</button>
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+            </div>
+          </div>
+        </form>
+        </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+  $(document).ready(function () {
+    $('#modalGantiStatus').on('show.bs.modal', function (event) {
+    var button = $(event.relatedTarget) // Button that triggered the modal
+    var id = button.data('id')
+    var pelanggan = button.data('pelanggan')
+    var modal = $(this)
+    $('#pelangganId').val(pelanggan);
+    modal.find('.modal-text').text('Ganti Status Pembelian Menjadi Terjual / Sold ?')
+    document.getElementById('formGantiStatus').action='/gantiStatus/'+id;
+    })
+  });
+  </script>
 @endsection

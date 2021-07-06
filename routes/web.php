@@ -32,6 +32,8 @@ Route::group(['middleware'=>['auth','role:admin,projectmanager']],function(){
     Route::post('/kavlingSimpan', 'KavlingController@kavlingSimpan')->name('kavlingSimpan');
     Route::delete('/hapusKavling/{id}', 'KavlingController@destroy')->name('hapusKavling');
 
+    Route::patch('/gantiStatus/{id}', 'KavlingController@gantiStatus')->name('gantiStatus');
+    
     Route::get('/RAB', 'ProyekController@RAB')->name('RAB');
     Route::patch('/editRAB/{id}', 'ProyekController@editRAB');
     Route::patch('/editRABUnit/{id}', 'ProyekController@editRABUnit');
@@ -47,6 +49,7 @@ Route::group(['middleware'=>['auth','role:admin,projectmanager']],function(){
     Route::get('/cariPelangganDaftar', 'HomeController@cariPelangganDaftar');
 
     Route::get('/pelanggan', 'PelangganController@index')->name('pelangganIndex');
+    Route::get('/pelangganNonAktif', 'PelangganController@nonAktif')->name('pelangganNonAktif');
     Route::get('/pelangganTambah', 'PelangganController@create')->name('pelangganTambah');
     Route::get('/pelangganDetail/{id}', 'PelangganController@detail')->name('pelangganDetail');
     Route::post('/pelangganSimpan', 'PelangganController@store')->name('pelangganSimpan');
@@ -94,6 +97,10 @@ Route::group(['middleware'=>['auth','role:admin,projectmanager']],function(){
     Route::get('/cashFlow', 'TransaksiController@cashFlow')->name('cashFlow');
     Route::delete('/hapusKasBesar/{id}', 'TransaksiController@hapusKasBesar')->name('hapusTransaksiKeluar');
     
+    Route::get('/kasKecilLapangan', 'KasController@kasKecilLapangan')->name('kasKecilLapangan');
+    Route::get('/kasKecilLapanganKeluar', 'KasController@kasKecilLapanganKeluar')->name('kasKecilLapanganKeluar');
+    Route::post('/kasKecilLapanganKeluarSimpan', 'KasController@kasKecilLapanganKeluarSimpan')->name('kasKecilLapanganKeluarSimpan');
+    Route::post('/kasKecilLapanganMasukSimpan', 'KasController@kasKecilLapanganMasukSimpan')->name('kasKecilLapanganMasukSimpan');
     Route::get('/kasBesar', 'KasController@kasBesar')->name('kasBesar');
     Route::get('/kasPendaftaranMasuk', 'kasPendaftaranController@index')->name('kasPendaftaranMasuk');
     Route::get('/kasPendaftaranKeluar', 'kasPendaftaranController@keluar')->name('kasPendaftaranKeluar');
@@ -110,6 +117,8 @@ Route::group(['middleware'=>['auth','role:admin,projectmanager']],function(){
     
     Route::get('/cetakKwitansi/{id}', 'LaporanController@cetakKwitansi')->name('cetakKwitansi');
     Route::get('/cetakKwitansiDp/{id}', 'LaporanController@cetakKwitansiDp')->name('cetakKwitansiDp');
+    Route::get('/cetakDPPDF/{id}', 'LaporanController@cetakDPPDF')->name('cetakDPPDF');
+    Route::get('/cetakKwitansiPDF/{id}', 'LaporanController@cetakKwitansiPDF')->name('cetakKwitansiPDF');
     
     Route::get('/gudang', 'GudangController@index')->name('gudang');
     Route::post('/transferGudang/{id}', 'GudangController@transferGudang')->name('transferGudang');

@@ -109,7 +109,7 @@
       <h4>Daftar Unit</h4>
     </div>
     <div class="card-body">
-      <table class="table table-sm table-hover">
+      <table class="table table-sm table-hover table-responsive-sm">
         <thead>
           <tr>
             <th scope="col">No</th>
@@ -117,6 +117,7 @@
             <th scope="col">Luas Tanah</th>
             <th scope="col">Luas Bangunan</th>
             <th scope="col">Kepemilikan</th>
+            <th scope="col">Status</th>
             @if(auth()->user()->role=="admin")
             <th scope="col">Aksi</th>
             @endif
@@ -125,7 +126,7 @@
         <tbody>
           @foreach($perBlok as $judul=>$semuaKavling)
           <tr>
-            <th colspan="6" class="bg-light">Blok {{$judul}}</th>
+            <th colspan="7" class="bg-light">Blok {{$judul}}</th>
           </tr>
           @foreach($semuaKavling as $kavling)
           <tr>
@@ -156,6 +157,17 @@
             @else
             <td>-</td>
             @endif
+            <td>
+              @if(cekStatusKavling($kavling->id) == "Ready")
+              <span class="text-primary">{{cekStatusKavling($kavling->id)}}</span>
+              @elseif(cekStatusKavling($kavling->id) == "Booking")
+              <a href="#" data-toggle="modal" data-target="#modalGantiStatus" data-id="{{$kavling->id}}" data-pelanggan="{{$kavling->pelanggan->id}}">
+                <span class="text-info">{{cekStatusKavling($kavling->id)}} / {{carbon\carbon::parse($kavling->pembelian->tanggalBooking)->isoFormat('D MMMM Y')}}</span>
+              </a>
+              @else
+              <span class="text-danger">{{cekStatusKavling($kavling->id)}}</span>
+              @endif
+            </td>
             @if(auth()->user()->role=="admin")
             <td>
               <button type="button" class="btn btn-sm btn-white text-primary border-success" 
@@ -223,6 +235,34 @@
       </div>
     </div>
   </div>
+  {{-- modal ganti status --}}
+  <div class="modal fade modalGantiStatus  ml-5" id="modalGantiStatus" tabindex="-1" role="dialog" aria-labelledby="modalGantiStatusTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">Edit Unit</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form action="" method="POST" enctype="multipart/form-data" id="formGantiStatus">
+            @method('patch')
+            @csrf
+            <p class="modal-text"></p>
+            <input type="hidden" name="pelanggan_id" id="pelangganId">
+            <div class="form-group row mb-4">
+              <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3"></label>
+              <div class="col-sm-12 col-md-7">
+                <button class="btn btn-primary" type="submit">Ganti</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+              </div>
+            </div>
+          </form>
+          </div>
+      </div>
+    </div>
+  </div>
   <script type="text/javascript">
     $(document).ready(function () {
       $('#modalEdit').on('show.bs.modal', function (event) {
@@ -247,4 +287,17 @@
     });
     });
     </script>
+    <script type="text/javascript">
+      $(document).ready(function () {
+        $('#modalGantiStatus').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget) // Button that triggered the modal
+        var id = button.data('id')
+        var pelanggan = button.data('pelanggan')
+        var modal = $(this)
+        $('#pelangganId').val(pelanggan);
+        modal.find('.modal-text').text('Ganti Status Pembelian Menjadi Terjual / Sold ?')
+        document.getElementById('formGantiStatus').action='gantiStatus/'+id;
+        })
+      });
+      </script>
 @endsection

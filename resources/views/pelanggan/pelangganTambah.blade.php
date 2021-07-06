@@ -358,7 +358,44 @@
                   </div>
                 </div>
               </div>
-              
+              <div class="form-group row mb-4">
+                <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Status Pembelian</label>
+                <div class="col-sm-12 col-md-7">
+                  <label class="selectgroup-item">
+                    <input type="radio" name="statusPembelian" value="Sold" class="selectgroup-input" checked="" onclick="hideTanggal()">
+                    <span class="selectgroup-button">Terjual</span>
+                  </label>
+                  <label class="selectgroup-item">
+                    <input type="radio" name="statusPembelian" value="Booking" class="selectgroup-input" onclick="addTanggal()">
+                    <span class="selectgroup-button">Booking</span>
+                  </label>
+                  @error('statusPembelian')
+                  <div class="invalid-feedback">{{$message}}</div>
+                  @enderror
+                </div>
+              </div>
+              <script>
+                function hideTanggal(){
+                  var tanggalBooking = document.querySelector('.tanggalBooking');
+                  tanggalBooking.className ='tanggalBooking d-none';
+                }
+                function addTanggal(){
+                  var tanggalBooking = document.querySelector('.tanggalBooking');
+                  tanggalBooking.className ='tanggalBooking';
+                }
+              </script>
+              <div id="tanggalBooking" class="tanggalBooking d-none">
+                <div class="form-group row mb-4">
+                  <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Tanggal Booking</label>
+                  <div class="col-sm-12 col-md-7">
+                    <input type="date" class="form-control @error('tanggaBooking') is-invalid @enderror" name="tanggalBooking" value="{{old('tanggaBooking')}}" >
+                    
+                    @error('tanggaBooking')
+                    <div class="invalid-feedback">{{$message}}</div>
+                    @enderror
+                  </div>
+                </div>
+              </div>
             </div>
             {{-- button Form --}}
             <div class="card-footer">
@@ -413,7 +450,6 @@
     }else{
       document.getElementById('tenor').style.display = 'none';
     }
-    
     if(document.getElementById('rumah').checked || document.getElementById('kios').checked){
       document.getElementById('luasBangunan').style.display = 'block';
     }else{

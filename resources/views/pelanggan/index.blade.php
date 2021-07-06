@@ -1,5 +1,6 @@
 @extends('layouts.tema')
 @section ('menuPelanggan','active')
+@section ('menupelangganIndex','active')
 @section('content')
 <div class="section-header">
     <div class="container">
@@ -42,7 +43,7 @@
         <h4>Daftar Pelanggan</h4>
       </div>
       <div class="card-body">
-        <table class="table table-hover">
+        <table class="table table-hover table-sm table-responsive-sm">
           <thead>
             <tr>
               <th scope="col">No</th>
@@ -54,7 +55,7 @@
             </tr>
           </thead>
           <tbody>
-            @foreach($semuaPelanggan as $pelanggan)
+            @foreach($pelangganAktif as $pelanggan)
             <tr>
               <th scope="row">{{$loop->iteration}}</th>
               <td>{{$pelanggan->nama}}</td>
@@ -85,7 +86,7 @@
             @endforeach
           </tbody>
         </table>
-        {{$semuaPelanggan->links()}}
+        {{-- {{$pelangganAktif->links()}} --}}
       </div>
     </div>
     <!-- Modal Hapus-->

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\kavling;
+use App\pembelian;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 
@@ -79,5 +80,12 @@ class KavlingController extends Controller
             return redirect()->back()->with('status','Unit Berhasil dihapus');
             
         }
+    }
+    public function gantiStatus(Request $request, Kavling $id){
+        // dd($request);
+        $update=pembelian::where('kavling_id',$id->id)->where('pelanggan_id',$request->pelanggan_id)->first();
+        // dd($update);
+        $update->update(['statusPembelian'=>'Sold']);
+        return redirect()->back()->with('status','Berhasil Mengganti Status');
     }
 }

@@ -13,14 +13,17 @@ class RABExport implements FromView , WithTitle ,ShouldAutoSize
 {
     
     protected $semuaRAB;
+    protected $semuaUnit;
 
-    function __construct($semuaRAB) {
+    function __construct($semuaRAB,$semuaUnit) {
         $this->semuaRAB = $semuaRAB;
+        $this->semuaUnit = $semuaUnit;
     }
     public function view(): View
     {
         return view ('excel/RAB',[
-            'semuaRAB'=> $this->semuaRAB
+            'semuaRAB'=> $this->semuaRAB,
+            'semuaUnit'=> $this->semuaUnit
         ]);
     }
     public function title(): string

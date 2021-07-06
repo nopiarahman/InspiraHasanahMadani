@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\pettyCash;
+use App\kasKecilLapangan;
 use App\transaksi;
 use Carbon\Carbon;
 use App\Exports\PettyCashExport;
@@ -36,6 +37,34 @@ class KasController extends Controller
             $pettyCash=pettyCash::whereBetween('tanggal',[$start,$end])->where('proyek_id',proyekId())->orderBy('no')->get();
         }
         return view ('kas/pettyCash',compact('pettyCash','start','end'));
+    }
+    public function kasKecilLapangan(Request $request){
+        $start = Carbon::now()->firstOfMonth()->isoFormat('YYYY-MM-DD');
+        $end = Carbon::now()->endOfMonth()->isoFormat('YYYY-MM-DD');
+        // dd($end);
+        // $end = moment();
+        if($request->get('filter')){
+            $start = Carbon::parse($request->start)->isoFormat('YYYY-MM-DD');
+            $end = Carbon::parse($request->end)->isoFormat('YYYY-MM-DD');
+            $kasKecilLapangan=kasKecilLapangan::whereBetween('tanggal',[$start,$end])->where('proyek_id',proyekId())->orderBy('no')->get();
+        }else{
+            $kasKecilLapangan=kasKecilLapangan::whereBetween('tanggal',[$start,$end])->where('proyek_id',proyekId())->orderBy('no')->get();
+        }
+        return view ('kas/kasKecilLapangan',compact('kasKecilLapangan','start','end'));
+    }
+    public function kasKecilLapanganKeluar(Request $request){
+        $start = Carbon::now()->firstOfMonth()->isoFormat('YYYY-MM-DD');
+        $end = Carbon::now()->endOfMonth()->isoFormat('YYYY-MM-DD');
+        // dd($end);
+        // $end = moment();
+        if($request->get('filter')){
+            $start = Carbon::parse($request->start)->isoFormat('YYYY-MM-DD');
+            $end = Carbon::parse($request->end)->isoFormat('YYYY-MM-DD');
+            $kasKecilLapangan=kasKecilLapangan::whereBetween('tanggal',[$start,$end])->where('proyek_id',proyekId())->orderBy('no')->get();
+        }else{
+            $kasKecilLapangan=kasKecilLapangan::whereBetween('tanggal',[$start,$end])->where('proyek_id',proyekId())->orderBy('no')->get();
+        }
+        return view ('kas/kasKecilLapanganKeluar',compact('kasKecilLapangan','start','end'));
     }
     public function pettyCashSimpan(Request $request){
         $jumlah = str_replace(',', '', $request->jumlah);
@@ -171,5 +200,95 @@ class KasController extends Controller
             $pettyCash=pettyCash::whereBetween('tanggal',[$start,$end])->where('proyek_id',proyekId())->orderBy('no')->get();
         }
         return Excel::download(new PettyCashExport($pettyCash,$start,$end), 'Petty Cash.xlsx');
+    }
+    public function kasKecilLapanganMasukSimpan(Request $request)
+    {
+        // dd($request);
+        $jumlah = str_replace(',', '', $request->jumlah);
+        $rules=[
+            'jumlah'=>'required',
+            'tanggal'=>'required',
+            'uraian'=>'required',
+        ];
+        $costumMessages = [
+            'required'=>':attribute tidak boleh kosong'
+        ];
+        $this->validate($request,$rules,$costumMessages);
+        // $requestData=$request->all();
+        $requestData=$request->all();
+        $requestData['kredit']=str_replace(',', '', $request->jumlah);
+        $requestData['proyek_id']=proyekId();
+        /* cek apakah ada transaksi sebelumnya */
+        $cekTransaksiSebelum=kasKecilLapangan::where('tanggal','<=',$request->tanggal)->orderBy('no')->where('proyek_id',proyekId())->get();
+        /* jika transaksi sebelumnya ada value */
+        if($cekTransaksiSebelum->first() != null){
+            $sebelum = $cekTransaksiSebelum->last();
+            $requestData['no']=$sebelum->no+1;
+            $requestData['saldo']=$sebelum->saldo+$jumlah;
+        }else{
+            /* jika tidak ada value simpan ke awal transaksi */
+            $requestData['no']=1;
+            $requestData['saldo']=$jumlah;
+        }
+        // dd($requestData);
+        /* cek transaksi sesudah input */
+        $cekTransaksi=kasKecilLapangan::where('tanggal','>',$request->tanggal)->orderBy('no')->where('proyek_id',proyekId())->get();
+        if($cekTransaksi != null){
+            /* jika ada, update transaksi sesudah sesuai perubahan input*/
+            foreach($cekTransaksi as $updateTransaksi){
+                $updateTransaksi['no'] = $updateTransaksi->no +1;
+                $updateTransaksi['saldo'] = $updateTransaksi->saldo + $jumlah;
+                $updateTransaksi->save();
+            }
+        }
+        kasKecilLapangan::create($requestData);
+        return redirect()->route('kasKecilLapangan')->with('status','Transaksi Berhasil Disimpan');
+    }
+    public function kasKecilLapanganKeluarSimpan(Request $request)
+    {
+        $jumlah = str_replace(',', '', $request->jumlah);
+        $rules=[
+            'jumlah'=>'required',
+            'tanggal'=>'required',
+            'uraian'=>'required',
+        ];
+        $costumMessages = [
+            'required'=>':attribute tidak boleh kosong'
+        ];
+        $this->validate($request,$rules,$costumMessages);
+        // $requestData=$request->all();
+        $requestData=$request->all();
+        $requestData['debet']=str_replace(',', '', $request->jumlah);
+        $requestData['proyek_id']=proyekId();
+        /* cek apakah ada transaksi sebelumnya */
+        $cekTransaksiSebelum=kasKecilLapangan::where('tanggal','<=',$request->tanggal)->orderBy('no')->where('proyek_id',proyekId())->get();
+        /* jika transaksi sebelumnya ada value */
+        if($cekTransaksiSebelum->last() != null){
+            $sebelum = $cekTransaksiSebelum->last();
+            // dd($sebelum);
+            $requestData['no']=$sebelum->no+1;
+            $requestData['saldo']=$sebelum->saldo-$jumlah;
+        }else{
+            /* jika tidak ada value simpan ke akhir transaksi */
+            $requestData['no']=1;
+            $requestData['saldo']=0-$jumlah;
+        }
+        /* cek transaksi sesudah input */
+        $cekTransaksi=kasKecilLapangan::where('tanggal','>',$request->tanggal)->orderBy('no')->where('proyek_id',proyekId())->get();
+        // dd($cekTransaksi);
+        if($cekTransaksi != null){
+            /* jika ada, update transaksi sesudah sesuai perubahan input*/
+            foreach($cekTransaksi as $updateTransaksi){
+                $updateTransaksi['no'] = $updateTransaksi->no +1;
+                $updateTransaksi['saldo'] = $updateTransaksi->saldo - $jumlah;
+                $updateTransaksi->save();
+            }
+        }
+        // $requestData['debet']=str_replace(',', '', $request->jumlah);
+        // $requestData['proyek_id']=proyekId();
+        // $requestData['saldo']=saldoTerakhirkasKecilLapangan()-str_replace(',', '', $request->jumlah);
+        kasKecilLapangan::create($requestData);
+        // dd($request);
+        return redirect()->route('kasKecilLapanganKeluar')->with('status','Transaksi Berhasil Disimpan');
     }
 }

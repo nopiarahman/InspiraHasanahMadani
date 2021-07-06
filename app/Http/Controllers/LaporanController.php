@@ -113,5 +113,23 @@ class LaporanController extends Controller
         return Excel::download(new LaporanTahunanExport($produksi,$start,$end,$operasional,$nonOperasional,$pendapatanLain), 'Laporan Tahunan.xlsx');
         // return view ('laporan/tahunanIndex',compact('produksi','operasional','nonOperasional','start','end','pendapatanLain'));
     }
-
+    public function cetakDPPDF(Dp $id){
+        $pembelian= pembelian::where('id',$id->pembelian_id)->first();
+        // dd($pembelian->pelanggan->nama);
+        $uraian = 'Pembayaran Dp Ke '.$id->urut.' '.jenisKepemilikan($pembelian->pelanggan_id).' '.$pembelian->kavling->blok;   
+        $DpPertama = Dp::where('pembelian_id',$pembelian->id)->first();
+        $sampaiSekarang = dp::whereBetween('created_at',[$DpPertama->created_at,$id->created_at])->where('pembelian_id',$id->pembelian_id)->get();
+        // return view('PDF/kwitansiDp2',compact('id','pembelian','uraian','sampaiSekarang'));
+        $pdf=PDF::loadview('PDF/kwitansiDp2',compact('id','pembelian','uraian','sampaiSekarang'))->setPaper('A5','landscape');
+        return $pdf->download('Kwitansi DP '.$pembelian->pelanggan->nama.' Ke '.$id->urut.'.pdf');
+    }
+    public function cetakKwitansiPDF(Cicilan $id){
+        $pembelian= pembelian::where('id',$id->pembelian_id)->first();
+        $uraian = 'Pembayaran Cicilan Ke '.$id->urut.' '.jenisKepemilikan($pembelian->pelanggan_id).' '.$pembelian->kavling->blok;   
+        $cicilanPertama = cicilan::where('pembelian_id',$pembelian->id)->first();
+        $sampaiSekarang = cicilan::whereBetween('created_at',[$cicilanPertama->created_at,$id->created_at])->where('pembelian_id',$id->pembelian_id)->get();
+        
+        $pdf=PDF::loadview('PDF/kwitansi',compact('id','pembelian','uraian','sampaiSekarang'))->setPaper('A5','landscape');
+        return $pdf->download('Kwitansi Cicilan '.$pembelian->pelanggan->nama.' Ke '.$id->urut.'.pdf');
+    }
 }

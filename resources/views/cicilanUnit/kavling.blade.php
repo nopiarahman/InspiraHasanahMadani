@@ -36,7 +36,7 @@
       <h4>Daftar Cicilan Unit</h4>
     </div>
     <div class="card-body">
-      <table class="table table-hover">
+      <table class="table table-hover table-responsive-sm">
         <thead>
           <tr>
             <th scope="col">No</th>

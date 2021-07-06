@@ -123,10 +123,15 @@ class ProyekController extends Controller
         $semuaRAB = rab::all()->where('proyek_id',proyekId())->groupBy(['header',function($item){
             return $item['judul'];
         }],$preserveKeys=true);
+        $semuaUnit = rabUnit::where('proyek_id',proyekId())->get()->groupBy(['header',function($item){
+            return $item['judul'];
+        }],$preserveKeys=true);
         $perHeader=$semuaRAB;
         $perJudul=$semuaRAB;
+        $perHeaderUnit=$semuaUnit;
+        $perJudulUnit=$semuaUnit;
         // dd($semuaRAB);
-        return view ('proyek/DataProyek/RAB',compact('perHeader','semuaRAB','perJudul'));
+        return view ('proyek/DataProyek/RAB',compact('perHeader','semuaRAB','semuaUnit','perJudul','perHeaderUnit','perJudulUnit'));
     }
     public function cariHeader(Request $request){
         if($request->has('q')){
@@ -259,11 +264,14 @@ class ProyekController extends Controller
     }
     public function cetakRAB(){
 
-        $semuaRAB = rab::where('proyek_id',proyekId())->get()->groupBy(['header',function($item){
+        $semuaRAB = rab::all()->where('proyek_id',proyekId())->groupBy(['header',function($item){
+            return $item['judul'];
+        }],$preserveKeys=true);
+        $semuaUnit = rabUnit::where('proyek_id',proyekId())->get()->groupBy(['header',function($item){
             return $item['judul'];
         }],$preserveKeys=true);
         // return view ('excel.rab',compact('semuaRAB'));
-        return Excel::download(new RABExport($semuaRAB), 'RAB.xlsx');
+        return Excel::download(new RABExport($semuaRAB,$semuaUnit), 'RAB.xlsx');
     }
     public function cetakRABUnit(){
 

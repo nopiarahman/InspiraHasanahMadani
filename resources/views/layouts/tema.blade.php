@@ -140,7 +140,14 @@
                 </ul>
               </li>
               <li class="menu-header">Menu Pelanggan</li>
-              <li class="@yield('menuPelanggan')"><a class="nav-link" href="{{route('pelangganIndex')}}"><i class="fas fa-user-friends"></i> <span>Pelanggan</span></a></li>
+              <li class="nav-item dropdown @yield('menuPelanggan')">
+                <a href="" class="nav-link has-dropdown"><i class="fas fa-clipboard-check"></i> <span>Pelanggan</span></a>
+                <ul class="dropdown-menu">
+                  <li class=" @yield('menupelangganIndex')"><a class="nav-link" href="{{route('pelangganIndex')}}">Aktif</a></li>
+                  <li class=" @yield('menupelangganNonAktif')"><a class="nav-link" href="{{route('pelangganNonAktif')}}">Tidak Aktif</a></li>
+                </ul>
+              </li>
+              {{-- <li class="@yield('menuPelanggan')"><a class="nav-link" href="{{route('pelangganIndex')}}"><i class="fas fa-user-friends"></i> <span>Pelanggan</span></a></li> --}}
           @endif
           @if(auth()->user()->role=="projectmanager")
               <li class="menu-header">Menu Project Manager</li>
@@ -178,6 +185,7 @@
                 {{-- <li class=" @yield('menuKasBesar')"><a class="nav-link" href="{{route('kasBesar')}}">Besar</a></li> --}}
                 <li class=" @yield('menuKasPendaftaran')"><a class="nav-link" href="{{route('kasPendaftaranMasuk')}}">Pendaftaran</a></li>
                 <li class=" @yield('menuKasKecil')"><a class="nav-link" href="{{route('pettyCash')}}">Kas Kecil</a></li>
+                <li class=" @yield('menuKasKecilLapangan')"><a class="nav-link" href="{{route('kasKecilLapangan')}}">Kas Kecil Lapangan</a></li>
               </ul>
             </li>
             @endif

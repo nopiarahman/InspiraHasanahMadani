@@ -30,8 +30,23 @@ class PelangganController extends Controller
      */
     public function index()
     {
-        $semuaPelanggan = pelanggan::where('proyek_id',proyekId())->orderBy('nama')->paginate(50);
-        return view ('pelanggan/index',compact('semuaPelanggan'));
+        $semuaPelanggan = pelanggan::where('proyek_id',proyekId())->orderBy('nama')->get();
+        // $pelanggan=collect($semuaPelanggan);
+        $pelangganAktif = $semuaPelanggan->filter(function ($value, $key) {
+            return $value->kavling != null;
+        });
+        // dd($aktif->paginate());
+        return view ('pelanggan/index',compact('pelangganAktif'));
+    }
+    public function nonAktif()
+    {
+        $semuaPelanggan = pelanggan::where('proyek_id',proyekId())->orderBy('nama')->get();
+        // $pelanggan=collect($semuaPelanggan);
+        $pelangganNonAktif = $semuaPelanggan->filter(function ($value, $key) {
+            return $value->kavling == null;
+        });
+        // dd($aktif->paginate());
+        return view ('pelanggan/nonAktif',compact('pelangganNonAktif'));
     }
 
     /**
@@ -116,6 +131,8 @@ class PelangganController extends Controller
             'proyek_id'=>proyekId(),
             'pelanggan_id'=>$cariPelanggan->id,
             'luasBangunan'=>$request->luasBangunan,
+            'statusPembelian'=>$request->statusPembelian,
+            'tanggalBooking'=>$request->tanggalBooking,
         ]);$requestPembelian->save();
         /* simpan data Rumah dan Kios*/
         if($request->includePembelian =='Rumah'){
@@ -153,6 +170,7 @@ class PelangganController extends Controller
             ]);
         }elseif($request->includePembelian =='Kios'){
             $data ['kavling_id']=$request->kavling_id;
+            $data ['proyek_id']=proyekId();
             $data ['pelanggan_id']=$cariPelanggan->id;
             $data ['luasBangunan']=$request->luasBangunan;
             kios::updateOrCreate(['kavling_id'=>$request->kavling_id],($data));
@@ -413,6 +431,7 @@ class PelangganController extends Controller
                 $updateKios = kios::find($id->kios->id)->update(['pelanggan_id'=>0]);
             }
         }
+        $cekKavling->pembelian->update(['statusPembelian'=>'Ready']);
         $pelanggan->delete();
         return redirect()->back()->with('status','Pelanggan Dihapus!');
     }

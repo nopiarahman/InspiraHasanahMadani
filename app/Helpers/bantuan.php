@@ -11,6 +11,7 @@ use App\transaksi;
 use App\detailUser;
 use App\pettyCash;
 use App\kasPendaftaran;
+use App\kasKecilLapangan;
 use Carbon\Carbon;
 
 function cekNamaUser(){
@@ -46,9 +47,9 @@ function jenisKepemilikan($id){  /* $id = pelanggan_id */
     $pembelian = pembelian::where('pelanggan_id',$id)->first();
     // dd($pembelian);
     if($pembelian->rumah_id !=null){
-        return 'Kavling dan Rumah';
+        return 'Rumah';
     }elseif($pembelian->kios_id !=null){
-        return 'Kavling dan Kios';
+        return 'Kios';
     }elseif($pembelian->kavling_id !=null){
         return 'Kavling';
     }
@@ -63,6 +64,14 @@ function saldoTerakhir(){
 }
 function noTransaksiTerakhir(){
     $no = transaksi::orderBy('no','desc')->where('proyek_id',proyekId())->first();
+    $noTerakhir=0;
+    if($no != null){
+        $noTerakhir=$no->no;
+    }
+    return $noTerakhir;
+}
+function noKasKecilLapanganTerakhir(){
+    $no = kasKecilLapangan::orderBy('no','desc')->where('proyek_id',proyekId())->first();
     $noTerakhir=0;
     if($no != null){
         $noTerakhir=$no->no;
@@ -103,6 +112,19 @@ function totalKasPendaftaran($start,$end){
     return 0;
     // dd($total);
 }
+function totalKasKecilLapangan($start,$end){
+    $total = kasKecilLapangan::whereBetween('tanggal',[$start,$end])->where('proyek_id',proyekId())->orderBy('no')->get();
+    if($total != null){
+        $terakhir = $total->last();
+        if($terakhir != null){
+            return $terakhir->saldo;
+        }else{
+            return 0;
+        }
+    }
+    return 0;
+    // dd($total);
+}
 function totalPettyCash($start,$end){
     $total = pettyCash::whereBetween('tanggal',[$start,$end])->where('proyek_id',proyekId())->orderBy('no')->get();
     if($total != null){
@@ -118,6 +140,14 @@ function totalPettyCash($start,$end){
 }
 function saldoTerakhirKasPendaftaran(){
     $saldo = kasPendaftaran::orderBy('no','desc')->where('proyek_id',proyekId())->first();
+    $saldoTerakhir=0;
+    if($saldo != null){
+        $saldoTerakhir=$saldo->saldo;
+    }
+    return $saldoTerakhir;
+}
+function saldoTerakhirkasKecilLapangan(){
+    $saldo = kasKecilLapangan::orderBy('no','desc')->where('proyek_id',proyekId())->first();
     $saldoTerakhir=0;
     if($saldo != null){
         $saldoTerakhir=$saldo->saldo;
@@ -338,6 +368,20 @@ function saldoPendaftaranBulanSebelumnya($start){
         // return $pendapatan->saldo;
     }
 }
+function saldoKasKecilLapanganSebelumnya($start){
+    $mulai = \Carbon\carbon::parse($start)->subMonths(1)->firstOfMonth()->isoFormat('YYYY-MM-DD');
+    $akhir = \Carbon\carbon::parse($start)->subMonths(1)->endOfMonth()->isoFormat('YYYY-MM-DD');
+    // $akunId=akun::where('proyek_id',proyekId())->where('namaAkun','pendapatan')->first();
+    $pendapatan = kasKecilLapangan::whereBetween('tanggal',[$mulai,$akhir])->where('proyek_id',proyekId())
+                            ->orderBy('no','desc')->first();
+    // dd($akhir);
+    if($pendapatan != null){
+        return $pendapatan->saldo;
+    }else{
+        return 0;
+        // return $pendapatan->saldo;
+    }
+}
 function biayaPembangunanRumahTahunan($start,$end){
     $akun =akun::where('jenis','Pembangunan')->where('proyek_id',proyekId())->get();
     // dd($akun);
@@ -472,4 +516,12 @@ function cekGudang($transaksiId){
         return true;
     }
     return false;
+}
+function cekStatusKavling($id){
+    $cek = pembelian::where("kavling_id",$id)->get()->last();
+    // dd($cek);
+    if($cek != null){
+        return $cek->statusPembelian;
+    }
+    return "Ready";
 }
