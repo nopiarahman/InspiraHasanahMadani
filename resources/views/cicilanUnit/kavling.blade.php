@@ -48,10 +48,16 @@
           </tr>
         </thead>
         <tbody>
+          @php
+                $n=0;
+            @endphp
           @foreach($semuaCicilanUnit as $cicilanUnit)
-          @if($cicilanUnit->pelanggan !=null)
+          @if($cicilanUnit->pelanggan !=null && $cicilanUnit->pelanggan->kavling !=null)
+          @php
+                  $n++
+              @endphp
           <tr>
-            <th scope="row">{{$loop->iteration}}</th>
+            <th scope="row">{{$n}}</th>
             <td>
               <a href="{{route('pelangganDetail',['id'=>$cicilanUnit->pelanggan->id])}}" class="text-primary">
               {{$cicilanUnit->pelanggan->nama}}

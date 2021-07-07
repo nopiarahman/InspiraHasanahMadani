@@ -76,6 +76,7 @@
               </tr>
               <tr>
                 <th>Status</th>
+                @if($dataKavling != null)
                 @if($dataPembelian->statusPembelian == "Booking")
                 <td><span class="text-info">{{cekStatusKavling($dataKavling->id)}} / {{carbon\carbon::parse($dataKavling->pembelian->tanggalBooking)->isoFormat('D MMMM Y')}}</span></td>
                 @else
@@ -88,6 +89,9 @@
                   </a>
                   @endif
                 </td>
+                @else
+                <td>Akad Dibatalkan</td>
+                @endif
               </tr>
               <tr>
                 <th scope="row">Nomor Akad</th>

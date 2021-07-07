@@ -21,7 +21,7 @@ class pelanggan extends Model
      */
     public function pembelian()
     {
-        return $this->hasMany(pembelian::class);
+        return $this->hasOne(pembelian::class);
     }
     /**
      * Get the kavling associated with the pelanggan
@@ -67,6 +67,25 @@ class pelanggan extends Model
     public function transferUnit()
     {
         return $this->hasOne(transferUnit::class);
+    }
+
+    /**
+     * Get all of the dp for the pelanggan
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function dp()
+    {
+        return $this->hasMany(dp::class);
+    }
+    /**
+     * Get all of the cicilan for the pelanggan
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function cicilan()
+    {
+        return $this->hasMany(cicilan::class);
     }
 
 }

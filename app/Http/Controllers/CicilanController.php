@@ -74,13 +74,13 @@ class CicilanController extends Controller
         /* Jatuh Tempo */
         $totalBulan = ($cekCicilan->sisaKewajiban-$cekCicilan->sisaCicilan)/($cekCicilan->sisaKewajiban/$cekCicilan->tenor);
         $tambahBulan = str_replace(',', '', $request->jumlah)/($cekCicilan->sisaKewajiban/$cekCicilan->tenor);
-        // dd($tambahBulan);
-        $tenorBulan = (int)$totalBulan+$tambahBulan;
+        $tenorBulan = round($totalBulan+$tambahBulan,0);
         $cicilanPertama = cicilan::where('pembelian_id',$cekCicilan->id)->first();
+        // dd($cicilanPertama);
         if($cicilanPertama != null){
             $tempo=Carbon::parse($cicilanPertama->tanggal)->addMonth($tenorBulan)->isoFormat('YYYY-MM-DD');
         }else{
-            $tempo=Carbon::now()->addMonth($tenorBulan)->isoFormat('YYYY-MM-DD');
+            $tempo=Carbon::parse($request->tanggal)->addMonth($tenorBulan)->isoFormat('YYYY-MM-DD');
         }
         // dd($tempo);
         /* menghitung cicilan yang telah terbayar */
@@ -103,6 +103,7 @@ class CicilanController extends Controller
         }
         $requestCicilan=[
             'pembelian_id'=>$request->pembelian_id,
+            'pelanggan_id'=>$request->pelanggan_id,
             'urut'=>$urutan+1,
             'ke'=>$cekBulan+1,
             'tanggal'=>$request->tanggal,
@@ -110,6 +111,7 @@ class CicilanController extends Controller
             'sisaKewajiban'=>$cicilan-$totalTerbayar-$terbayarSekarang,
             'tempo'=>$tempo,
             'sumber'=>$sumber,
+            'proyek_id'=>proyekId(),
             'uraian'=>'Penerimaan Cicilan Unit '.jenisKepemilikan($cekCicilan->pelanggan_id).' '.$cekCicilan->kavling->blok.' a/n '.$cekCicilan->pelanggan->nama,
         ];
         // dd($id); 
@@ -197,6 +199,7 @@ class CicilanController extends Controller
             }
         }
         $hapusKasBesar->delete();
+        $id->delete();
         /* update data pembelian pelanggan */
         $update=pembelian::find($id->pembelian_id)->update(['sisaCicilan'=>$cicilan-$totalTerbayar+$id->jumlah]);
 

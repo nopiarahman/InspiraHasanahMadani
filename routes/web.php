@@ -61,6 +61,9 @@ Route::group(['middleware'=>['auth','role:admin,projectmanager']],function(){
     Route::patch('/batalAkad/{id}', 'PelangganController@batalAkad')->name('batalAkad');
     Route::delete('/hapusPelanggan/{id}', 'PelangganController@destroy')->name('hapusPelanggan');
     
+    Route::get('/estimasi', 'EstimasiController@estimasi')->name('estimasi');
+    
+    
     Route::get('/DPRumah', 'DPController@DPRumah')->name('DPRumah');
     Route::get('/DPKavling', 'DPController@DPKavling')->name('DPKavling');
     Route::get('/DPKavlingTambah/{id}', 'DPController@DPKavlingTambah')->name('DPKavlingTambah');
@@ -112,7 +115,7 @@ Route::group(['middleware'=>['auth','role:admin,projectmanager']],function(){
     Route::delete('/hapusPettyCash/{id}', 'KasController@pettyCashHapus')->name('hapusPettyCash');
     Route::delete('/hapusKasPendaftaran/{id}', 'kasPendaftaranController@hapusPendaftaran')->name('hapusKasPendaftaran');
     
-    Route::get('/laporanBulanan', 'LaporanController@laporanBulanan')->name('laporanBulanan');
+    Route::get('/laporanBulanan', 'LaporanController@laporanBulananRAB')->name('laporanBulanan');
     Route::get('/laporanTahunan', 'LaporanController@laporanTahunan')->name('laporanTahunan');
     
     Route::get('/cetakKwitansi/{id}', 'LaporanController@cetakKwitansi')->name('cetakKwitansi');

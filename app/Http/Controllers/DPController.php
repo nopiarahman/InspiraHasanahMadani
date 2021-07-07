@@ -16,6 +16,7 @@ class DPController extends Controller
 
     public function DPKavling(){
         $semuaCicilanDp = pembelian::where('statusDp','Credit')->where('proyek_id',proyekId())->orderBy('kavling_id')->paginate(40);
+        
         $transferDp = transferDp::where('proyek_id',proyekId())->get();
 
         return view ('cicilanDP/kavling',compact('semuaCicilanDp','transferDp'));
@@ -76,6 +77,8 @@ class DPController extends Controller
         // dd($cekDp->kavling->blok);
         $requestDp=[
             'pembelian_id'=>$request->pembelian_id,
+            'pelanggan_id'=>$request->pelanggan_id,
+            'proyek_id'=>proyekId(),
             'urut'=>$urutan+1,
             'ke'=>$cekBulan+1,
             'tanggal'=>$request->tanggal,

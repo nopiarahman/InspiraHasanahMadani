@@ -7,6 +7,7 @@ use App\gudang;
 use App\pembelian;
 use App\rumah;
 use App\proyek;
+use App\cicilan;
 use App\transaksi;
 use App\detailUser;
 use App\pettyCash;
@@ -291,8 +292,28 @@ function hitungTransaksiRAB($idRAB){
         return 0;
     }
 }
+function hitungTransaksiRABRange($idRAB,$start,$end){
+    $total = transaksi::where('rab_id',$idRAB)->where('proyek_id',proyekId())->whereBetween('tanggal',[$start,$end])->get();
+    if($total != null){
+    $totalRAB = $total->sum('debet');
+        // dd($total);
+        return $totalRAB;
+    }else{
+        return 0;
+    }
+}
 function hitungTransaksiRABUnit($idRAB){
     $total = transaksi::where('rabUnit_id',$idRAB)->where('proyek_id',proyekId())->get();
+    if($total != null){
+        $totalRAB = $total->sum('debet');
+        // dd($total);
+        return $totalRAB;
+    }else{
+        return 0;
+    }
+}
+function hitungTransaksiRABUnitRange($idRAB,$start,$end){
+    $total = transaksi::where('rabUnit_id',$idRAB)->where('proyek_id',proyekId())->whereBetween('tanggal',[$start,$end])->get();
     if($total != null){
         $totalRAB = $total->sum('debet');
         // dd($total);
@@ -524,4 +545,25 @@ function cekStatusKavling($id){
         return $cek->statusPembelian;
     }
     return "Ready";
+}
+function cekCicilanTerakhir($pembelianId){
+    $pembelian = pembelian::find($pembelianId);
+    return $pembelian->cicilan->last();
+}
+function cekCicilanTerbayar($cicilanId,$tanggal){
+    $start = \Carbon\carbon::parse($tanggal)->firstOfMonth()->isoFormat('YYYY-MM-DD');
+    $end = \Carbon\carbon::parse($tanggal)->endOfMonth()->isoFormat('YYYY-MM-DD');
+    $cekSekarang = cicilan::find($cicilanId);
+    $cekTerbayar = cicilan::whereBetween('tanggal',[$start,$end])->where('pelanggan_id',$cekSekarang->pelanggan->id)->get();
+
+    if($cekTerbayar->first() != null){
+        $total=0;
+        foreach($cekTerbayar as $terbayar){
+            $total = $total+$terbayar->jumlah;
+        }
+        return $total;
+    }else{
+        return null;
+    }
+
 }

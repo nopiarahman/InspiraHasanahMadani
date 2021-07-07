@@ -422,6 +422,7 @@ class PelangganController extends Controller
     {
         $pelanggan = pelanggan::find($id->id);
         $cekKavling = kavling::where('pelanggan_id',$id->id)->first();
+        $cekKavling->pembelian->update(['statusPembelian'=>'Ready']);
         if($cekKavling!=null){
             $updateKavling = kavling::find($id->kavling->id)->update(['pelanggan_id'=>0]);
             if($id->rumah != null){
@@ -431,12 +432,13 @@ class PelangganController extends Controller
                 $updateKios = kios::find($id->kios->id)->update(['pelanggan_id'=>0]);
             }
         }
-        $cekKavling->pembelian->update(['statusPembelian'=>'Ready']);
         $pelanggan->delete();
         return redirect()->back()->with('status','Pelanggan Dihapus!');
     }
     public function batalAkad(Pelanggan $id){
         // dd($id->kavling->id);
+        $cekKavling = kavling::where('pelanggan_id',$id->id)->first();
+        $cekKavling->pembelian->update(['statusPembelian'=>'Ready']);
         $updateKavling = kavling::find($id->kavling->id)->update(['pelanggan_id'=>0]);
         if($id->rumah != null){
             $updateRumah = rumah::find($id->rumah->id)->update(['pelanggan_id'=>0]);
@@ -459,6 +461,7 @@ class PelangganController extends Controller
     }
     public function detail(Pelanggan $id){
         $dataKavling=kavling::where('pelanggan_id',$id->id)->first();
+        // dd($dataKavling);
         $dataPembelian=pembelian::where('pelanggan_id',$id->id)->first();
         $persenDiskon = ($dataPembelian->diskon/$dataPembelian->harga)*100;
         /* tambahan model untuk cetak pelanggan */

@@ -8,6 +8,8 @@ use App\transaksi;
 use App\cicilan;
 use App\akun;
 use App\dp;
+use App\rab;
+use App\rabUnit;
 use App\pembelian;
 use PDF;
 use SnappyImage;
@@ -27,7 +29,7 @@ class LaporanController extends Controller
         //
     }
     
-    public function laporanBulanan(Request $request){
+    public function laporanBulananRAB(Request $request){
         $akunId=akun::where('proyek_id',proyekId())->where('namaAkun','pendapatan')->first();
         $start = Carbon::now()->firstOfMonth()->isoFormat('YYYY-MM-DD');
         $end = Carbon::now()->endOfMonth()->isoFormat('YYYY-MM-DD');
@@ -44,9 +46,17 @@ class LaporanController extends Controller
             $pendapatan=[];
         }
         $kategoriAkun=akun::where('proyek_id',proyekId())->get()->groupBy('kategori')->forget('Pendapatan');
-        // dd($kategoriAkun);
         $perKategori = $kategoriAkun;
-        return view ('laporan/bulananIndex',compact('pendapatan','start','end','kategoriAkun','perKategori'));
+
+        /* RAB */
+        $semuaRAB = rab::all()->where('proyek_id',proyekId())->groupBy(['header',function($item){
+            return $item['judul'];
+        }],$preserveKeys=true);
+        $semuaUnit = rabUnit::where('proyek_id',proyekId())->get()->groupBy(['header',function($item){
+            return $item['judul'];
+        }],$preserveKeys=true);
+
+        return view ('laporan/bulananRAB',compact('pendapatan','start','end','kategoriAkun','perKategori','semuaRAB','semuaUnit'));
     }
 
     public function laporanTahunan(Request $request){

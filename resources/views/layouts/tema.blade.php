@@ -35,7 +35,7 @@
         <h3 class="text-white align-center mt-2">{{auth()->user()->proyek->nama}}</h3>
         @endif
         @if(auth()->user()->role=="admin" || auth()->user()->role=="projectmanager")
-        <form action="{{route('cariPelangganHome')}}" method="post" enctype="multipart/form-data" class="form-inline mr-auto">
+        <form action="{{route('cariPelangganHome')}}" method="post" enctype="multipart/form-data" class="form-inline mr-auto d-none d-md-block">
         @csrf
           <div class="row ">
           <div class="input-group col-9">
@@ -120,7 +120,7 @@
             </a>
           </div>
           <div class="sidebar-brand sidebar-brand-sm">
-            <a href="index.html">Menu</a>
+            <a href="#">Menu</a>
           </div>
           <ul class="sidebar-menu">
               <li class="menu-header">Dashboard</li>
@@ -147,11 +147,12 @@
                   <li class=" @yield('menupelangganNonAktif')"><a class="nav-link" href="{{route('pelangganNonAktif')}}">Tidak Aktif</a></li>
                 </ul>
               </li>
+              <li class=" @yield('menuEstimasi')"><a class="nav-link" href="{{route('estimasi')}}"><i class="fas fa-calendar-plus    "></i> <span> Estimasi Pemasukan</span></a></li>
               {{-- <li class="@yield('menuPelanggan')"><a class="nav-link" href="{{route('pelangganIndex')}}"><i class="fas fa-user-friends"></i> <span>Pelanggan</span></a></li> --}}
           @endif
           @if(auth()->user()->role=="projectmanager")
               <li class="menu-header">Menu Project Manager</li>
-              <li class="@yield('menuUser')"><a class="nav-link" href="{{route('kelolaUser')}}"><i class="fa fa-user" aria-hidden="true"></i><span>Kelola User</span></a></li>
+              <li class=" @yield('menuUser')"> <a class="nav-link" href="{{route('kelolaUser')}}"> <i class="fas fa-user-friends    "></i> <span> Kelola User</span></a></li>
               <li class="nav-item dropdown @yield('menuLaporan')">
                 <a href="" class="nav-link has-dropdown"><i class="fas fa-clipboard-check"></i> <span>Laporan</span></a>
                 <ul class="dropdown-menu">

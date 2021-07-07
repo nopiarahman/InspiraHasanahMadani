@@ -46,4 +46,17 @@ class pembelian extends Model
     {
         return $this->belongsTo(kios::class);
     }
+    public function cicilan()
+    {
+        return $this->hasMany(cicilan::class);
+    }
+    /**
+     * Get all of the dp for the pembelian
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function dp()
+    {
+        return $this->hasMany(dp::class);
+    }
 }
