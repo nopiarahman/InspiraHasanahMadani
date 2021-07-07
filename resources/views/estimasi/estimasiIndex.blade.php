@@ -4,73 +4,64 @@
 <div class="section-header">
   <div class="container">
     <div class="row">
-      <div class="col">
+      <div class="col-6">
         <h1>Estimasi Pemasukan Bulanan </h1>
+      </div>
+      <div class="col-6">
+        <form action="{{route('estimasi')}}" method="get" enctype="multipart/form-data">
+    
+          <div class="form-group row ">
+            <div class="input-group col-sm-12 col-md-12">
+              {{-- <label class="col-form-label text-md-right col-12 col-md-6 col-lg-6 " > <span style="font-size:small">Pilih Tanggal: </span> </label> --}}
+              <div class="input-group-prepend">
+                <div class="input-group-text">
+                  <i class="fa fa-calendar" aria-hidden="true"></i>
+                </div>
+              </div>
+              <input type="text" id="reportrange" class="form-control filter @error('filter') is-invalid @enderror" name="filter" value="{{ request('filter') }}" id="filter">
+              <input type="hidden" name="start" id="mulai" value="{{$start}}">
+              <input type="hidden" name="end" id="akhir" value="{{$end}}">
+              <button type="submit" class="btn btn-primary btn-icon icon-right">Filter
+              <i class="fa fa-filter"></i>
+              </button>
+            </div>
+          </form>
+          <script type="text/javascript">
+            $(function() {
+                moment.locale('id');
+                var start = moment($('#mulai').val());
+                var end = moment($('#akhir').val());
+                function cb(start, end) {
+                    $('#reportrange span').html(start.format('D M Y') + ' - ' + end.format('DD MMMM YYYY'));
+                    $('#mulai').val(start);
+                    $('#akhir').val(end);
+                }
+                $('#reportrange').daterangepicker({
+                    // autoUpdateInput: false,
+                    startDate: start,
+                    endDate: end,
+                    ranges: {
+                        '30 Hari Terakhir': [moment().subtract(29, 'days'), moment()],
+                        'Bulan Ini': [moment().startOf('month'), moment().endOf('month')],
+                        'Bulan Lalu': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+                    }
+                },cb);
+                });
+            </script>
       </div>
     </div>
   </div>
 </div>
 {{-- filter tanggal --}}
-<div class="card my-n3">
+<div class="card">
   <div class="section mt-4 mr-3 ">
            {{-- filter --}}
-           <form action="{{route('estimasi')}}" method="get" enctype="multipart/form-data">
-    
-            <div class="form-group row ">
-              <div class="input-group col-sm-12 col-md-12">
-                <label class="col-form-label text-md-right col-12 col-md-6 col-lg-6 " > <span style="font-size:small">Pilih Tanggal: </span> </label>
-                <div class="input-group-prepend">
-                  <div class="input-group-text">
-                    <i class="fa fa-calendar" aria-hidden="true"></i>
-                  </div>
-                </div>
-                <input type="text" id="reportrange" class="form-control filter @error('filter') is-invalid @enderror" name="filter" value="{{ request('filter') }}" id="filter">
-                <input type="hidden" name="start" id="mulai" value="{{$start}}">
-                <input type="hidden" name="end" id="akhir" value="{{$end}}">
-                <button type="submit" class="btn btn-primary btn-icon icon-right">Filter
-                <i class="fa fa-filter"></i>
-                </button>
-              </div>
-            </form>
-            <script type="text/javascript">
-              $(function() {
-                  moment.locale('id');
-                  var start = moment($('#mulai').val());
-                  var end = moment($('#akhir').val());
-                  function cb(start, end) {
-                      $('#reportrange span').html(start.format('D M Y') + ' - ' + end.format('DD MMMM YYYY'));
-                      $('#mulai').val(start);
-                      $('#akhir').val(end);
-                  }
-                  $('#reportrange').daterangepicker({
-                      // autoUpdateInput: false,
-                      startDate: start,
-                      endDate: end,
-                      ranges: {
-                          '30 Hari Terakhir': [moment().subtract(29, 'days'), moment()],
-                          'Bulan Ini': [moment().startOf('month'), moment().endOf('month')],
-                          'Bulan Lalu': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
-                      }
-                  },cb);
-                  });
-              </script>
+           
           </div>
               {{-- end filter --}}
               
   </div>
-  {{-- Alert --}}
-  <div class="row">
-    <div class="col-12">
-      @if (session('status'))
-        <div class="alert alert-success alert-dismissible show fade">
-          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-          {{session ('status')}}
-        </div>
-      @endif
-    </div>
-  </div>
+</div>
   {{-- Cicilan DP --}}
   <div class="card">
     <div class="card-header">
