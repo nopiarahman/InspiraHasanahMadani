@@ -67,6 +67,7 @@ class PelangganController extends Controller
      */
     public function store(Request $request){
         // dd($request);
+        
         /* Membuat Akun User */
         $kavlingPelanggan=kavling::where('id',$request->kavling_id)->first();
         // dd($kavlingPelanggan->blok);
@@ -115,6 +116,11 @@ class PelangganController extends Controller
         ]);
         $requestpelanggan->save();
         $cariPelanggan=pelanggan::where('email',$request->email)->first(); 
+        if($request->tenorDP != null){
+            $tenorDP = $request->tenorDP;
+        }else{
+            $tenorDP = 1;
+        }
         $requestPembelian = pembelian::create([
             'kavling_id'=>$request->kavling_id,
             'nomorAkad'=>$request->nomorAkad,
@@ -126,6 +132,7 @@ class PelangganController extends Controller
             'sisaDp'=>$sisaDp,
             'sisaCicilan'=>$sisaCicilan,
             'tenor'=>$request->tenor,
+            'tenorDP'=>$tenorDP,
             'statusDp'=>$request->statusDp,
             'statusCicilan'=>$request->statusCicilan,
             'proyek_id'=>proyekId(),

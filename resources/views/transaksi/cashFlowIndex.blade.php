@@ -226,7 +226,7 @@
           {{-- <td>{{$transaksi->no}}</td> --}}
           <td>{{formatTanggal($transaksi->tanggal)}}</td>
           <td>{{$transaksi->akun->kodeAkun}}</td>
-          <td>{{$transaksi->uraian}}</td>
+          <td>{{$transaksi->uraian}} {{$transaksi->jumlah}} {{$transaksi->satuan}}</td>
           <td>
             @if($transaksi->kredit != null)
             Rp.{{number_format($transaksi->kredit)}}

@@ -297,11 +297,11 @@
                   <div class="input-group-prepend">
                     <div class="input-group-text " style="border: none">
                       <label class="selectgroup-item " >
-                        <input type="radio" name="statusDp" value="Credit" class="selectgroup-input" checked="">
+                        <input type="radio" name="statusDp" value="Credit" class="selectgroup-input" checked="" onclick="addTenorDP()">
                         <span class="selectgroup-button">Credit</span>
                       </label>
                       <label class="selectgroup-item ">
-                        <input type="radio" name="statusDp" value="Cash" class="selectgroup-input">
+                        <input type="radio" name="statusDp" value="Cash" class="selectgroup-input" onclick="hideTenorDP()">
                         <span class="selectgroup-button">Cash</span>
                       </label>
                       @error('statusDp')
@@ -314,6 +314,34 @@
                   {{-- </div> --}}
                 </div>
               </div>
+              <div id="tenorDP" class=" tenorDP">
+                <div class="form-group row mb-4">
+                  <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Tenor DP</label>
+                  <div class="input-group col-sm-12 col-md-7">
+                    <input type="number" class=" form-control @error('tenorDP') is-invalid @enderror" name="tenorDP" id="tenorDPInput">
+                    @error('tenorDP')
+                    <div class="invalid-feedback">{{$message}}</div>
+                    @enderror
+                    <div class="input-group-prepend">
+                      <div class="input-group-text">
+                        bulan
+                      </div>
+                    </div>
+                    
+                  </div>
+                </div>
+              </div>
+              <script>
+                function hideTenorDP(){
+                  var tenorDP = document.querySelector('.tenorDP');
+                  tenorDP.className ='tenorDP d-none';
+                  document.getElementById("tenorDPInput").value = "";
+                }
+                function addTenorDP(){
+                  var tenorDP = document.querySelector('.tenorDP');
+                  tenorDP.className ='tenorDP';
+                }
+              </script>
               <div class="form-group row mb-4">
                 <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Sisa Kewajiban</label>
                 <div class="input-group col-sm-12 col-md-7">

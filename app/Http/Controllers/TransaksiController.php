@@ -99,7 +99,8 @@ class TransaksiController extends Controller
         }
     }
     public function keluarSimpan(Request $request){
-        $jumlah = str_replace(',', '', $request->jumlah);
+        // dd($request);
+        $jumlah = str_replace(',', '', $request->total);
         $rules=[
             'jumlah'=>'required',
             'tanggal'=>'required',
@@ -122,6 +123,7 @@ class TransaksiController extends Controller
             $requestData['no']=1;
             $requestData['saldo']=$jumlah;
         }
+        // dd($requestData);
         /* parameter kasBesarKeluar=['tanggal','rab_id(nullable)','rabUnit_id(nullable)','akun_id','uraian','sumber','jumlah','no','saldo'] */
         if($request->sumberKas=='kasBesar'){
             /* cek transaksi sesudah input */

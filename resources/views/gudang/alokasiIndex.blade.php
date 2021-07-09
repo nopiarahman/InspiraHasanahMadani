@@ -1,18 +1,19 @@
 @extends('layouts.tema')
-@section ('menuTransaksiKeluar','active')
-@section ('menuTransaksi','active')
+@section ('menuGudang','active')
+{{-- @section ('menuTransaksi','active') --}}
 @section('content')
 <div class="section-header sticky-top">
     <div class="container">
       <div class="row">
         <div class="col">
-          <h1>Transaksi Keluar</h1>
+          <h1>Transaksi Gudang</h1>
         </div>
       </div>
       <div class="row">
         <nav aria-label="breadcrumb">
           <ol class="breadcrumb  bg-white mb-n2">
-            <li class="breadcrumb-item" aria-current="page"> Transaksi Keluar </li>
+            <li class="breadcrumb-item"> <a href="{{route('gudang')}}"> Transaksi Gudang </a></li>
+            <li class="breadcrumb-item" aria-current="page"> Alokasi </li>
           </ol>
         </nav>
       </div>
@@ -31,26 +32,14 @@
         @endif
       </div>
     </div>
-    <div class="row">
-      <div class="col-12">
-        @if (session('statusGudang'))
-          <div class="alert alert-success alert-dismissible show fade">
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-            {{session ('statusGudang')}} <a href="{{route('gudang')}} " class="badge badge-warning text-dark">Lihat Gudang</a>
-          </div>
-        @endif
-      </div>
-    </div>
   <div class="row">
     <div class="col-12">
       <div class="card">
         <div class="card-header">
-          <h4>Tambah Transaksi Keluar</h4>
+          <h4>Tambah Alokasi Untuk {{$id->jenisBarang}}</h4>
         </div>
         <div class="card-body">
-        <form action="{{route('transaksiKeluarSimpan')}}" method="POST" enctype="multipart/form-data" onchange="hitung2()">
+        <form action="{{route('alokasiSimpan')}}" method="POST" enctype="multipart/form-data" onchange="hitung2()">
           @csrf
           <div class="form-group row mb-4">
             <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Tanggal</label>
@@ -93,6 +82,7 @@
               <input type="text" hidden class="form-control" name="rab_id" id="idRAB" >
               <input type="text" hidden class="form-control" name="rabUnit_id" id="idRABUnit" >
               <input type="text" hidden class="form-control" name="akun_id" id="idAkunCari" >
+              <input type="text" hidden class="form-control" name="gudang_id" value="{{$id->id}}" >
               <input type="text" readonly class="form-control" name="" id="isiRAB" value="{{old('isi')}}">
             </div>
           </div>
@@ -106,18 +96,28 @@
             </div>
           </div>
           <div class="form-group row mb-4">
-            <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Jumlah</label>
+            <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Sisa Barang</label>
             <div class="col-sm-12 col-md-7">
-              <input type="text" class="form-control jumlah @error('uraian') is-invalid @enderror" name="jumlah" value="{{old('jumlah')}}" id="jumlahBarang">
-              @error('jumlah')
+              <input type="text" readonly class="form-control @error('uraian') is-invalid @enderror" name="" value="{{$id->sisa}}">
+              @error('sisaBarang')
                 <div class="invalid-feedback">{{$message}}</div>
               @enderror
             </div>
           </div>
           <div class="form-group row mb-4">
+            <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Jumlah Alokasi</label>
+            <div class="col-sm-12 col-md-7">
+              <input type="number" class="form-control jumlah @error('uraian') is-invalid @enderror" name="jumlah" value="{{old('jumlah')}}" id="jumlahBarang" max="{{$id->sisa}}">
+              @error('jumlah')
+                <div class="invalid-feedback">{{$message}}</div>
+              @enderror
+            </div>
+          </div>
+
+          <div class="form-group row mb-4">
             <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Satuan</label>
             <div class="col-sm-12 col-md-7">
-              <input type="text" class="form-control @error('uraian') is-invalid @enderror" name="satuan" value="{{old('satuan')}}">
+              <input type="text" readonly class="form-control @error('uraian') is-invalid @enderror" name="satuan" value="{{$id->satuan}}">
               @error('satuan')
                 <div class="invalid-feedback">{{$message}}</div>
               @enderror
@@ -131,14 +131,14 @@
                   Rp
                 </div>
               </div>
-              <input type="text" class="form-control hargaSatuan @error('hargaSatuan') is-invalid @enderror" name="hargaSatuan" value="{{old('hargaSatuan')}}" id="hargaSatuan">
+              <input type="text" class="form-control hargaSatuan @error('hargaSatuan') is-invalid @enderror" name="hargaSatuan" value="{{$id->harga}}" id="hargaSatuan">
               @error('hargaSatuan')
                 <div class="invalid-feedback">{{$message}}</div>
               @enderror
             </div>
           </div>
           <div class="form-group row mb-4">
-            <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Total</label>
+            <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Nominal Alokasi</label>
             <div class="input-group col-sm-12 col-md-7">
               <div class="input-group-prepend">
                 <div class="input-group-text">
@@ -151,37 +151,12 @@
               @enderror
             </div>
           </div>
-          <div class="form-group row mb-4">
-            <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Sumber</label>
-            <div class="col-sm-12 col-md-7">
-              <label class="selectgroup-item">
-                <input type="radio" name="sumberKas" value="kasBesar" class="selectgroup-input" checked="">
-                <span class="selectgroup-button">Kas Besar</span>
-              </label>
-              <label class="selectgroup-item">
-                <input type="radio" name="sumberKas" value="pettyCash" class="selectgroup-input">
-                <span class="selectgroup-button">Kas Kecil</span>
-              </label>
-              @error('jenisKelamin')
-              <div class="invalid-feedback">{{$message}}</div>
-              @enderror
-            </div>
-          </div>
-          <div class="form-group row mb-4">
-            <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Keterangan</label>
-            <div class="col-sm-12 col-md-7">
-              <input type="text" class="form-control @error('sumber') is-invalid @enderror" name="sumber" value="{{old('sumber')}}">
-              @error('sumber')
-                <div class="invalid-feedback">{{$message}}</div>
-              @enderror
-            </div>
-          </div>
         </div>
         <div class="card-footer">
           <div class="form-group row mb-4">
             <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3"></label>
             <div class="col-sm-12 col-md-7">
-              <button class="btn btn-primary" type="submit">Simpan</button>
+              <button class="btn btn-primary" type="submit">Alokasi</button>
             </div>
           </div>
         </div>
@@ -208,67 +183,35 @@
       <h4>Daftar Transaksi Keluar</h4>
     </div>
     <div class="card-body">
-      {{-- filter --}}
-      <form action="{{route('transaksiKeluar')}}" method="get" enctype="multipart/form-data">
-
-        <div class="form-group row mb-4">
-          <label class="col-form-label text-md-right col-12 col-md-6 col-lg-6 mt-1 mr-n3" > <span style="font-size:small">Pilih Tanggal: </span> </label>
-          <div class="input-group col-sm-12 col-md-6">
-            <div class="input-group-prepend">
-              <div class="input-group-text">
-                <i class="fa fa-calendar" aria-hidden="true"></i>
-              </div>
-            </div>
-            <input type="text" id="reportrange" class="form-control filter @error('filter') is-invalid @enderror" name="filter" value="{{ request('filter') }}" id="filter">
-            <input type="hidden" name="start" id="mulai" value="{{$start}}">
-            <input type="hidden" name="end" id="akhir" value="{{$end}}">
-            <button type="submit" class="btn btn-primary btn-icon icon-right">Filter
-            <i class="fa fa-filter"></i>
-            </button>
-          </div>
-        </form>
-        <script type="text/javascript">
-          $(function() {
-              moment.locale('id');
-              var start = moment($('#mulai').val());
-              var end = moment($('#akhir').val());
-              function cb(start, end) {
-                  $('#reportrange span').html(start.format('D M Y') + ' - ' + end.format('DD MMMM YYYY'));
-                  $('#mulai').val(start);
-                  $('#akhir').val(end);
-              }
-              $('#reportrange').daterangepicker({
-                  startDate: start,
-                  endDate: end,
-                  ranges: {
-                      'Hari Ini': [moment(), moment()],
-                      'Kemarin': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-                      '7 Hari Terakhir': [moment().subtract(6, 'days'), moment()],
-                      '30 Hari Terakhir': [moment().subtract(29, 'days'), moment()],
-                      'Bulan Ini': [moment().startOf('month'), moment().endOf('month')],
-                      'Bulan Lalu': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
-                  }
-              }, cb);
-              });
-          </script>
-          {{-- end filter --}}
+      
       <table class="table table-sm table-hover table-striped mt-3">
         <thead>
           <tr>
             <th scope="col">Tanggal</th>
-            <th scope="col">Kode Transaksi</th>
             <th scope="col">Uraian</th>
-            <th scope="col">Jumlah</th>
-            <th scope="col">Sumber</th>
+            <th scope="col">Jumlah Alokasi</th>
+            <th scope="col">Nominal Alokasi</th>
             <th scope="col">Aksi</th>
           </tr>
         </thead>
         <tbody>
-          @foreach($transaksiKeluar as $transaksi)
+          @forelse ($id->alokasiGudang as $alokasi)
+            <tr>
+              <td>{{formatTanggal($alokasi->tanggal)}}</td>
+              <td>{{$alokasi->uraian}}</td>
+              <td>{{$alokasi->jumlah}} {{$alokasi->satuan}}</td>
+              <td>Rp. {{number_format($alokasi->debet)}}</td>
+            </tr>
+          @empty
+            <tr>
+              Belum Ada Alokasi
+            </tr>
+          @endforelse
+          {{-- @foreach($transaksiKeluar as $transaksi)
           <tr>
             <td>{{formatTanggal($transaksi->tanggal)}}</td>
             <td>{{$transaksi->akun->kodeAkun}}</td>
-            <td>{{$transaksi->uraian}} {{$transaksi->jumlah}} {{$transaksi->satuan}}</td>
+            <td>{{$transaksi->uraian}}</td>
             <td>Rp.{{number_format($transaksi->debet)}}</td>
             <td>{{$transaksi->sumber}}</td>
             <td>
@@ -299,153 +242,18 @@
               data-uraian="{{$transaksi->uraian}}">
               <i class="fa fa-trash" aria-hidden="true" ></i> Hapus</button>
             </td>
-          @endforeach
+          @endforeach --}}
         </tbody>
         <tfoot>
           <tr>
             <th colspan="3" class="text-right text-primary">Total Transaksi</th>
-            <th colspan="2" class="text-primary">Rp. {{number_format($transaksiKeluar->sum('debet'))}}</th>
+            {{-- <th colspan="2" class="text-primary">Rp. {{number_format($transaksiKeluar->sum('debet'))}}</th> --}}
           </tr>
         </tfoot>
       </table>
     </div>
   </div>
-  {{-- modal keGudang --}}
-<div class="modal fade keGudang bd-example-modal-lg ml-5" id="keGudang" tabindex="-1" role="dialog" aria-labelledby="keGudangTitle" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLongTitle">Transfer transaksi ke Gudang</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <form action="" method="POST" enctype="multipart/form-data" id="formTransfer" onchange="hitung()">
-          @csrf
-          <input type="hidden" class="form-control" name="transaksi_id" value="" id="id">
-          <input type="hidden"  class="form-control " name="akun_id" value="" id="akun">
-          <div class="form-group row mb-4">
-            <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Tanggal</label>
-            <div class="col-sm-12 col-md-7">
-              <input type="date" class="form-control @error('tanggal') is-invalid @enderror" name="tanggal" value="" id="tanggal">
-              @error('tanggal')
-                <div class="invalid-feedback">{{$message}}</div>
-              @enderror
-            </div>
-          </div>
-          <div class="form-group row mb-4">
-            <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Alokasi Awal</label>
-            <div class="col-sm-12 col-md-7">
-              <input type="text" class="form-control @error('alokasiAwal') is-invalid @enderror" name="alokasiAwal" value="" id="alokasiAwal">
-              @error('alokasiAwal')
-                <div class="invalid-feedback">{{$message}}</div>
-              @enderror
-            </div>
-          </div>
-          <div class="form-group row mb-4">
-            <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Uraian</label>
-            <div class="col-sm-12 col-md-7">
-              <input type="text" class="form-control @error('uraian') is-invalid @enderror" name="uraian" value="" id="uraian">
-              @error('uraian')
-                <div class="invalid-feedback">{{$message}}</div>
-              @enderror
-            </div>
-          </div>
-          <div class="form-group row mb-4">
-            <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Jumlah Awal</label>
-            <div class="col-sm-12 col-md-7">
-              <input type="text" readonly class="form-control @error('banyaknya') is-invalid @enderror" name="banyaknya" value="" id="banyaknya">
-              @error('banyaknya')
-                <div class="invalid-feedback">{{$message}}</div>
-              @enderror
-            </div>
-          </div>
-          <div class="form-group row mb-4">
-            <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Satuan</label>
-            <div class="col-sm-12 col-md-7">
-              <input type="text" readonly class="form-control @error('satuan') is-invalid @enderror" name="satuan" value="" id="satuan">
-              @error('satuan')
-                <div class="invalid-feedback">{{$message}}</div>
-              @enderror
-            </div>
-          </div>
-          <div class="form-group row mb-4">
-            <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Harga Satuan</label>
-            <div class="input-group col-sm-12 col-md-7">
-              <div class="input-group-prepend">
-                <div class="input-group-text">
-                  Rp
-                </div>
-              </div>
-              <input type="text" readonly class="hargaGudang form-control @error('harga') is-invalid @enderror" name="harga" value="" min="0" max="100" id="harga">
-              @error('harga')
-              <div class="invalid-feedback">{{$message}}</div>
-              @enderror
-            </div>
-          </div>
-          <div class="form-group row mb-4">
-            <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Total</label>
-            <div class="input-group col-sm-12 col-md-7">
-              <div class="input-group-prepend">
-                <div class="input-group-text">
-                  Rp
-                </div>
-              </div>
-              <input type="text" readonly class="totalGudang form-control @error('total') is-invalid @enderror" name="total" value="{{old('total')}} " min="0" max="100" id="total">
-              @error('total')
-              <div class="invalid-feedback">{{$message}}</div>
-              @enderror
-            </div>
-          </div>
-          <div class="form-group row mb-4">
-            <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Jumlah Terpakai</label>
-            <div class="col-sm-12 col-md-7">
-              <input type="text" class="form-control @error('terpakai') is-invalid @enderror" name="terpakai" value="" id="terpakai">
-              @error('terpakai')
-                <div class="invalid-feedback">{{$message}}</div>
-              @enderror
-            </div>
-          </div>
-          <div class="form-group row mb-4">
-            <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3"></label>
-            <div class="col-sm-12 col-md-7">
-              <button class="btn btn-primary" type="submit">Transfer</button>
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
-            </div>
-          </div>
-        </form>
-        </div>
-    </div>
-  </div>
-</div>
-<script type="text/javascript">
-  $(document).ready(function () {
-    $('#keGudang').on('show.bs.modal', function (event) {
-    var button = $(event.relatedTarget) // Button that triggered the modal
-    var id = button.data('id') // Extract info from data-* attributes
-    var tanggal = button.data('tanggal') 
-    var uraian = button.data('uraian') 
-    var satuan = button.data('satuan') 
-    var jumlah = button.data('jumlah') 
-    var harga = button.data('harga') 
-    var total = button.data('total') 
-    var akun = button.data('akun') 
-    var kategori = button.data('kategori')
-    var awal = button.data('awal')
-    document.getElementById('formTransfer').action='transferGudang/'+id;
-    $('#id').val(id);
-    $('#tanggal').val(tanggal);
-    $('#akun').val(akun);
-    $('#uraian').val(uraian);
-    $('#banyaknya').val(jumlah);
-    $('#satuan').val(satuan);
-    $('#harga').val(harga);
-    $('#total').val(total);
-    $('#alokasiAwal').val(awal);
-    })
-  });
-  </script>
+
       <!-- Modal Hapus-->
       <div class="modal fade hapusTransaksi" id="hapusTransaksi" tabindex="-1" role="dialog" aria-labelledby="hapusTransaksiTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
@@ -673,15 +481,7 @@
 </script>
 <script src="{{ mix("js/cleave.min.js") }}"></script>
 <script>
-  var cleave = new Cleave('.jumlah', {
-      numeral: true,
-      numeralThousandsGroupStyle: 'thousand'
-  });
   var cleave = new Cleave('.hargaSatuan', {
-      numeral: true,
-      numeralThousandsGroupStyle: 'thousand'
-  });
-  var cleave = new Cleave('.hargaGudang', {
       numeral: true,
       numeralThousandsGroupStyle: 'thousand'
   });

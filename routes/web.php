@@ -125,7 +125,9 @@ Route::group(['middleware'=>['auth','role:admin,projectmanager']],function(){
     
     Route::get('/gudang', 'GudangController@index')->name('gudang');
     Route::post('/transferGudang/{id}', 'GudangController@transferGudang')->name('transferGudang');
-    Route::post('/alokasiGudang/{id}', 'GudangController@alokasiGudang')->name('alokasiGudang');
+    Route::get('/alokasiGudang/{id}', 'GudangController@alokasi')->name('alokasiGudang');
+    Route::post('/alokasiSimpan', 'GudangController@alokasiSimpan')->name('alokasiSimpan');
+    // Route::post('/alokasiGudang/{id}', 'GudangController@alokasiGudang')->name('alokasiGudang');
     
     Route::get('/rekening', 'ProyekController@rekening')->name('rekening');
     Route::post('/rekeningSimpan', 'ProyekController@rekeningSimpan')->name('rekeningSimpan');

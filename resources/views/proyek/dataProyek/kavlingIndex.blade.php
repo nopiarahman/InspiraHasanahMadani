@@ -109,7 +109,7 @@
       <h4>Daftar Unit</h4>
     </div>
     <div class="card-body">
-      <table class="table table-sm table-hover table-responsive-sm">
+      <table class="table table-sm table-hover table-responsive-sm" id="table">
         <thead>
           <tr>
             <th scope="col">No</th>

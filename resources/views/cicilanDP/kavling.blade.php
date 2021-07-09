@@ -1,4 +1,7 @@
 @extends('layouts.tema')
+@section('head')
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.css">
+@endsection
 @section ('menuCicilanDP','active')
 @section('content')
 <div class="section-header">
@@ -36,7 +39,7 @@
         <h4>Daftar Cicilan DP</h4>
       </div>
       <div class="card-body">
-        <table class="table table-hover table-responsive-sm">
+        <table class="table table-hover table-responsive-sm" id="table">
           <thead>
             <tr>
               <th scope="col">No</th>
@@ -67,7 +70,7 @@
               @if($cicilanDp->pelanggan->kavling==null)
               <td>Batal Akad</td>
               @else
-              <td>{{unitPelanggan($cicilanDp->kavling_id)->blok}}</td>
+              <td>{{$cicilanDp->kavling->blok}}</td>
               @endif
               <td>{{jenisKepemilikan($cicilanDp->pelanggan_id)}}</td>
               <td>Rp.{{number_format($cicilanDp->sisaDp)}}</td>
@@ -81,7 +84,35 @@
             @endforeach
           </tbody>
         </table>
-        {{$semuaCicilanDp->links()}}
+        {{-- {{$semuaCicilanDp->links()}} --}}
       </div>
     </div>
+@endsection
+@section('script')
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.js"></script>
+<script type="text/javascript" >
+    $('#table').DataTable({
+      "pageLength":     25,
+      "language": {
+        "decimal":        "",
+        "emptyTable":     "Tidak ada data tersedia",
+        "info":           "Menampilkan _START_ sampai _END_ dari _TOTAL_ data",
+        "infoEmpty":      "Menampilkan 0 sampai 0 dari 0 data",
+        "infoFiltered":   "(difilter dari _MAX_ total data)",
+        "infoPostFix":    "",
+        "thousands":      ",",
+        "lengthMenu":     "Menampilkan _MENU_ data",
+        "loadingRecords": "Loading...",
+        "processing":     "Processing...",
+        "search":         "Cari:",
+        "zeroRecords":    "Tidak ada data ditemukan",
+        "paginate": {
+            "first":      "Awal",
+            "last":       "Akhir",
+            "next":       "Selanjutnya",
+            "previous":   "Sebelumnya"
+        },
+        }
+    });
+</script>
 @endsection

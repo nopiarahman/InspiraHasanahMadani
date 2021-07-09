@@ -9,7 +9,6 @@ use App\rekening;
 use App\transferUnit;
 use App\transaksi;
 use Illuminate\Http\Request;
-
 class CicilanController extends Controller
 {
     /**
@@ -29,7 +28,7 @@ class CicilanController extends Controller
     
     public function cicilanKavling()
     {
-        $semuaCicilanUnit = pembelian::where('statusCicilan','Credit')->where('proyek_id',proyekId())->orderBy('kavling_id')->paginate(40);
+        $semuaCicilanUnit = pembelian::where('statusCicilan','Credit')->where('proyek_id',proyekId())->orderBy('kavling_id')->get();
         $transferUnit = transferUnit::where('proyek_id',proyekId())->get();
         return view ('cicilanUnit/kavling',compact('semuaCicilanUnit','transferUnit'));
     }
@@ -49,6 +48,7 @@ class CicilanController extends Controller
     }
     public function cicilanKavlingSimpan(Request $request){
         // dd($request);
+        
         $jumlah = str_replace(',', '', $request->jumlah);
         $rekening=rekening::find($request->rekening_id);
         if($request->has('rekening_id')){
@@ -77,9 +77,28 @@ class CicilanController extends Controller
         $tenorBulan = round($totalBulan+$tambahBulan,0);
         $cicilanPertama = cicilan::where('pembelian_id',$cekCicilan->id)->first();
         // dd($cicilanPertama);
-        if($cicilanPertama != null){
-            $tempo=Carbon::parse($cicilanPertama->tanggal)->addMonth($tenorBulan)->isoFormat('YYYY-MM-DD');
+        /* cek performa pembayaran */
+        $cekCicilanlagi = cicilan::where('pembelian_id',$request->pembelian_id)->get();
+        $cicilanTerakhir=$cekCicilanlagi->last();
+        $tempoTerakhir=Carbon::parse($cicilanTerakhir->tempo)->firstOfMonth();
+        $tanggalPembayaran=Carbon::parse($request->tanggal)->firstOfMonth();
+        $cek=$tanggalPembayaran->diffInMonths($tempoTerakhir,false);
+        // dd($cek);
+        if($cek>0){
+            $status = "lancar";
         }else{
+            $status = "nunggak";
+        }
+        // dd($status);
+        if($cicilanPertama != null){
+            /* cicilan selanjutnya */
+            if($status == 'lancar'){
+                $tempo=Carbon::parse($cicilanPertama->tanggal)->addMonth($tenorBulan)->isoFormat('YYYY-MM-DD');
+            }elseif($status=='nunggak'){
+                $tempo=Carbon::parse($request->tanggal)->addMonth(1)->isoFormat('YYYY-MM-DD');
+            }
+        }else{
+            /* cicilan pertama */
             $tempo=Carbon::parse($request->tanggal)->addMonth($tenorBulan)->isoFormat('YYYY-MM-DD');
         }
         // dd($tempo);

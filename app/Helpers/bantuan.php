@@ -8,6 +8,7 @@ use App\pembelian;
 use App\rumah;
 use App\proyek;
 use App\cicilan;
+use App\pelanggan;
 use App\transaksi;
 use App\detailUser;
 use App\pettyCash;
@@ -194,28 +195,38 @@ function kasBesarKeluar($dataArray)
 {
     $data = collect($dataArray);
     $jumlah= str_replace(',', '', $data->get('jumlah'));
+    $hargaSatuan= str_replace(',', '', $data->get('hargaSatuan'));
+    $total= str_replace(',', '', $data->get('total'));
     $dataTransaksi['tanggal'] = $data->get('tanggal');
+    $dataTransaksi['satuan'] = $data->get('satuan');
     $dataTransaksi['rab_id'] = $data->get('rab_id');
     $dataTransaksi['rabUnit_id'] = $data->get('rabUnit_id');
     $dataTransaksi['akun_id'] = $data->get('akun_id');
     $dataTransaksi['uraian'] = $data->get('uraian');
     $dataTransaksi['sumber'] = $data->get('sumber');
-    $dataTransaksi['debet'] = $jumlah;
+    $dataTransaksi['debet'] = $total;
+    $dataTransaksi['jumlah'] = $jumlah;
+    $dataTransaksi['hargaSatuan'] = $hargaSatuan;
     $dataTransaksi['no'] = $data->get('no');
     $dataTransaksi['saldo'] = $data->get('saldo');
     $dataTransaksi['proyek_id'] = proyekId();
-    transaksi::create($dataTransaksi);
     // dd($dataTransaksi);
+    transaksi::create($dataTransaksi);
 }
 function pettyCashKeluar($dataArray)
 {
     $data = collect($dataArray);
     $jumlah= str_replace(',', '', $data->get('jumlah'));
+    $hargaSatuan= str_replace(',', '', $data->get('hargaSatuan'));
+    $total= str_replace(',', '', $data->get('total'));
     $dataTransaksi['tanggal'] = $data->get('tanggal');
     $dataTransaksi['uraian'] = $data->get('uraian');
+    $dataTransaksi['satuan'] = $data->get('satuan');
     $dataTransaksi['sumber'] = $data->get('sumber');
     $dataTransaksi['keterangan'] = $data->get('keterangan');
-    $dataTransaksi['debet'] = $jumlah;
+    $dataTransaksi['debet'] = $total;
+    $dataTransaksi['jumlah'] = $jumlah;
+    $dataTransaksi['hargaSatuan'] = $hargaSatuan;
     $dataTransaksi['no'] = $data->get('no');
     $dataTransaksi['saldo'] = $data->get('saldo');
     $dataTransaksi['proyek_id'] = proyekId();
@@ -550,11 +561,11 @@ function cekCicilanTerakhir($pembelianId){
     $pembelian = pembelian::find($pembelianId);
     return $pembelian->cicilan->last();
 }
-function cekCicilanTerbayar($cicilanId,$tanggal){
+function cekDPTerbayar($DPId,$tanggal){
     $start = \Carbon\carbon::parse($tanggal)->firstOfMonth()->isoFormat('YYYY-MM-DD');
     $end = \Carbon\carbon::parse($tanggal)->endOfMonth()->isoFormat('YYYY-MM-DD');
-    $cekSekarang = cicilan::find($cicilanId);
-    $cekTerbayar = cicilan::whereBetween('tanggal',[$start,$end])->where('pelanggan_id',$cekSekarang->pelanggan->id)->get();
+    $cekSekarang = dp::find($DPId);
+    $cekTerbayar = dp::whereBetween('tanggal',[$start,$end])->where('pelanggan_id',$cekSekarang->pelanggan->id)->get();
 
     if($cekTerbayar->first() != null){
         $total=0;
@@ -565,5 +576,24 @@ function cekCicilanTerbayar($cicilanId,$tanggal){
     }else{
         return null;
     }
-
+}
+function cekPembayaranDP($DPId){
+    $cekDPIni = dp::find($DPId);
+    $tempo = \Carbon\carbon::parse($cekDPIni->tempo)->firstOfMonth()->isoFormat('YYYY-MM-DD');
+    $cekTerbayar = dp::where('pelanggan_id',$cekDPIni->pelanggan_id)->where('tanggal','>',$tempo)->get();
+    if($cekTerbayar->first() != null){
+        $pembayaranSelanjutnya= $cekTerbayar->first();
+        return $pembayaranSelanjutnya->jumlah;
+    }
+        return null;
+}
+function cekPembayaranCicilan($cicilanId){
+    $cekCicilanIni = cicilan::find($cicilanId);
+    $tempo = \Carbon\carbon::parse($cekCicilanIni->tempo)->firstOfMonth()->isoFormat('YYYY-MM-DD');
+    $cekTerbayar = cicilan::where('pelanggan_id',$cekCicilanIni->pelanggan_id)->where('tanggal','>',$tempo)->get();
+    if($cekTerbayar->first() != null){
+        $pembayaranSelanjutnya= $cekTerbayar->first();
+        return $pembayaranSelanjutnya->jumlah;
+    }
+        return null;
 }

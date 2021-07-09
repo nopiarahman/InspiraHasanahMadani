@@ -5,10 +5,11 @@
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
   <title>PT Inspira Hasanah Madani</title>
 
+  @yield('head')
   <!-- General CSS Files -->
   <link rel="stylesheet" href="{{ mix("css/app.css") }}">
   {{-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"> --}}
-  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" ></script>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet" />
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
   <link rel="shortcut icon" href="{{asset('assets/img/favicon.png')}}">
@@ -19,7 +20,6 @@
   <link rel="stylesheet" href="{{asset('assets/css/daterangepicker.css')}}">
   <link rel="stylesheet" href="{{asset('assets/css/custom.css')}}">
 
-  @yield('head')
 </head>
 
 <body>
@@ -147,7 +147,6 @@
                   <li class=" @yield('menupelangganNonAktif')"><a class="nav-link" href="{{route('pelangganNonAktif')}}">Tidak Aktif</a></li>
                 </ul>
               </li>
-              <li class=" @yield('menuEstimasi')"><a class="nav-link" href="{{route('estimasi')}}"><i class="fas fa-calendar-plus    "></i> <span> Estimasi Pemasukan</span></a></li>
               {{-- <li class="@yield('menuPelanggan')"><a class="nav-link" href="{{route('pelangganIndex')}}"><i class="fas fa-user-friends"></i> <span>Pelanggan</span></a></li> --}}
           @endif
           @if(auth()->user()->role=="projectmanager")
@@ -179,6 +178,7 @@
             </li>
             @endif
             @if(auth()->user()->role=="admin" || auth()->user()->role=="projectmanager")
+            <li class=" @yield('menuEstimasi')"><a class="nav-link" href="{{route('estimasi')}}"><i class="fas fa-calendar-plus    "></i> <span> Estimasi Pemasukan</span></a></li>
             <li class="nav-item dropdown @yield('menuKas')">
               <a href="" class="nav-link has-dropdown"><i class="fas fa-book"></i> <span>KAS</span></a>
               <ul class="dropdown-menu">
@@ -241,9 +241,10 @@
       </footer>
     </div>
   </div>
-  @yield('script')
-  <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+  
   <script type="text/javascript" src="{{ mix('js/app.js') }}"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" ></script>  
+  @yield('script')
   <!-- General JS Scripts -->
   <script src="{{ mix("js/bootstrap.js") }}"></script>
   <script src="{{ mix("js/popper.js") }}"></script>
@@ -252,7 +253,7 @@
   <script src="{{asset('assets/js/stisla.js')}}"></script>
   <!-- JS Libraies -->
   <script src="{{asset('assets/js/chocolat.js')}}"></script>
-
+  
   <!-- Template JS File -->
   <script src="{{asset('assets/js/scripts.js')}}"></script>
   <script src="{{asset('assets/js/custom.js')}}"></script>

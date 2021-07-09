@@ -1,4 +1,7 @@
 @extends('layouts.tema')
+@section('head')
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.css">
+@endsection
 @section ('menuGudang','active')
 @section('content')
 <div class="section-header sticky-top">
@@ -30,12 +33,13 @@
         @endif
       </div>
     </div>
+    
 <div class="card">
   <div class="card-header">
     <h4>Daftar Stok Gudang</h4>
   </div>
   <div class="card-body">
-    <table class="table table-sm table-hover table-striped mt-3">
+    <table class="table table-hover table-sm table-responsive-sm" id="table">
       <thead>
         <tr>
           <th scope="col">Tanggal</th>
@@ -46,7 +50,6 @@
           <th scope="col">Sisa</th>
           <th scope="col">Nominal Sisa</th>
           <th scope="col">Alokasi</th>
-          <th scope="col">Aksi</th>
         </tr>
       </thead>
       <tbody>
@@ -70,44 +73,7 @@
           </td>
           <td>Rp.{{number_format(($gudang->sisa)*$gudang->harga)}}</td>
           <td>
-            @if ($gudang->alokasi ==null)
-            
-            @else
-            {{$gudang->alokasi}} 
-            @endif
-          </td>
-          <td>
-            @if ($gudang->alokasi ==null)
-            <button type="button" class="btn btn-sm btn-white text-primary border-success" 
-            data-toggle="modal" 
-            data-target="#keGudang" 
-            data-id="{{$gudang->id}}" 
-            data-satuan="{{$gudang->satuan}}" 
-            data-alokasi="{{$gudang->alokasi}}" 
-            data-sisa="{{$gudang->sisa}}" 
-            >
-            <i class="fas fa-pen" aria-hidden="true"></i> Input</button>
-            @elseif($gudang->sisa > 0)
-            <button type="button" class="btn btn-sm btn-white text-warning border-success" 
-            data-toggle="modal" 
-            data-target="#keGudang" 
-            data-id="{{$gudang->id}}" 
-            data-satuan="{{$gudang->satuan}}" 
-            data-alokasi="{{$gudang->alokasi}}" 
-            data-sisa="{{$gudang->sisa}}" 
-            >
-            <i class="fas fa-pen" aria-hidden="true"></i> Input Ulang</button>
-            @else
-            <button type="button" class="btn btn-sm btn-white text-warning border-success" 
-            data-toggle="modal" 
-            data-target="#keGudang" 
-            data-id="{{$gudang->id}}" 
-            data-satuan="{{$gudang->satuan}}" 
-            data-alokasi="{{$gudang->alokasi}}" 
-            data-sisa="{{$gudang->sisa}}" 
-            >
-            <i class="fas fa-pen" aria-hidden="true"></i> Input Ulang</button>
-            @endif
+            <a href="{{route('alokasiGudang',['id'=>$gudang->id])}}" class="btn btn-white border-success text-primary"> <i class="fas fa-pen    "></i> Input </a>
           </td>
         </tr>
         @php
@@ -119,90 +85,39 @@
         <tr class="bg-light">
           <th colspan="4" class="text-right text-primary">Total</th>
           <th colspan="2" class="text-primary">Rp. {{number_format($gudang->sum('total'))}}</th>
-          <th colspan="3" class="text-primary">Rp. {{number_format($totalNominal)}}</th>
+          <th colspan="2" class="text-primary">Rp. {{number_format($totalNominal)}}</th>
         </tr>
       </tfoot>
       @endif
     </table>
-    {{-- {{$transaksiMasuk->links()}} --}}
   </div>
 </div>
-  {{-- modal keGudang --}}
-  <div class="modal fade keGudang bd-example-modal-lg ml-5" id="keGudang" tabindex="-1" role="dialog" aria-labelledby="keGudangTitle" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLongTitle">Input Alokasi Baru</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <form action="" method="POST" enctype="multipart/form-data" id="formTransfer">
-            @csrf
-            <div class="form-group row mb-4">
-              <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Sisa</label>
-              <div class="input-group col-sm-12 col-md-7">
-                <input type="text" class="form-control @error('sisa') is-invalid @enderror" name="sisaSebelumnya" value="" min="0" max="100" id="sisa">
-                @error('sisa')
-                <div class="invalid-feedback">{{$message}}</div>
-                @enderror
-                <div class="input-group-prepend">
-                  <div class="input-group-text " >
-                    <span id="satuanSisa"></span>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="form-group row mb-4">
-              <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Jumlah Alokasi</label>
-              <div class="input-group col-sm-12 col-md-7">
-                <input type="text" class="form-control @error('jumlahAlokasi') is-invalid @enderror" name="jumlahAlokasi" value="" min="0" max="100" id="jumlahAlokasi">
-                @error('jumlahAlokasi')
-                <div class="invalid-feedback">{{$message}}</div>
-                @enderror
-                <div class="input-group-prepend">
-                  <div class="input-group-text " >
-                    <span id="satuanAlokasi"></span>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="form-group row mb-4">
-              <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Tujuan Alokasi</label>
-              <div class="col-sm-12 col-md-7">
-                <input type="text" class="form-control @error('keterangan') is-invalid @enderror" name="keterangan" value="" id="keterangan">
-                @error('keterangan')
-                  <div class="invalid-feedback">{{$message}}</div>
-                @enderror
-              </div>
-            </div>
-            <div class="form-group row mb-4">
-              <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3"></label>
-              <div class="col-sm-12 col-md-7">
-                <button class="btn btn-primary" type="submit">Transfer</button>
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
-              </div>
-            </div>
-          </form>
-          </div>
-      </div>
-    </div>
-  </div>
-  <script type="text/javascript">
-    $(document).ready(function () {
-      $('#keGudang').on('show.bs.modal', function (event) {
-      var button = $(event.relatedTarget) // Button that triggered the modal
-      var id = button.data('id') // Extract info from data-* attributes
-      var sisa = button.data('sisa') 
-      var satuan = button.data('satuan') 
-      var alokasi = button.data('alokasi') 
-      document.getElementById('formTransfer').action='alokasiGudang/'+id;
-      $('#satuanSisa').text(satuan);
-      $('#sisa').val(sisa);
-      $('#satuanAlokasi').text(satuan);
-      $('#keterangan').val(alokasi);
-      })
+
+@endsection
+@section('script')
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.js"></script>
+<script type="text/javascript" >
+    $('#table').DataTable({
+      "language": {
+        "decimal":        "",
+        "emptyTable":     "Tidak ada data tersedia",
+        "info":           "Menampilkan _START_ sampai _END_ dari _TOTAL_ data",
+        "infoEmpty":      "Menampilkan 0 sampai 0 dari 0 data",
+        "infoFiltered":   "(difilter dari _MAX_ total data)",
+        "infoPostFix":    "",
+        "thousands":      ",",
+        "lengthMenu":     "Menampilkan _MENU_ data",
+        "loadingRecords": "Loading...",
+        "processing":     "Processing...",
+        "search":         "Cari:",
+        "zeroRecords":    "Tidak ada data ditemukan",
+        "paginate": {
+            "first":      "Awal",
+            "last":       "Akhir",
+            "next":       "Selanjutnya",
+            "previous":   "Sebelumnya"
+        },
+        }
     });
-    </script>
+</script>
 @endsection

@@ -5,19 +5,19 @@ namespace App;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class gudang extends Model
+class alokasiGudang extends Model
 {
     use HasFactory;
-    protected $table = 'gudang';
+    protected $table = 'alokasiGudang';
     protected $guarded = ['id','created_at','updated_at']; /* melindungi field yang tidak boleh diisi manual, lihat mass assignment */
 
     /**
-     * Get the alokasiGudang that owns the gudang
+     * Get all of the gudang for the alokasiGudang
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function alokasiGudang()
+    public function gudang()
     {
-        return $this->hasMany(alokasiGudang::class);
+        return $this->belongsTo(gudang::class);
     }
 }
