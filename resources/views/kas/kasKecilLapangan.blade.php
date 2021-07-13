@@ -10,7 +10,7 @@
         </div>
         <div class="col-6">
            {{-- filter --}}
-    <form action="{{route('exportKasPendaftaran')}}" method="get" enctype="multipart/form-data">
+    <form action="{{route('exportKasLapangan')}}" method="get" enctype="multipart/form-data">
       <div class="form-group row mb-4">
         <div class="input-group col-sm-12 col-md-12">
           <div class="input-group-prepend">
@@ -211,7 +211,7 @@
               @foreach($kasKecilLapangan as $kas)
               <tr>
                 <td>{{$loop->iteration}}</td>
-                <td>{{$kas->tanggal}}</td>
+                <td>{{formatTanggal($kas->tanggal)}}</td>
                 <td>{{$kas->uraian}}</td>
                 <td>
                   @if($kas->kredit != null)
@@ -282,7 +282,7 @@
               var uraian = button.data('uraian') 
               var modal = $(this)
               modal.find('.modal-text').text('Yakin ingin menghapus transaksi ' + uraian+' ?')
-              document.getElementById('formHapus').action='/hapusKasPendaftaran/'+id;
+              document.getElementById('formHapus').action='/hapusKasKecilLapangan/'+id;
               })
             });
           </script>

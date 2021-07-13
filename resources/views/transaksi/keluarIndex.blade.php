@@ -1,4 +1,7 @@
 @extends('layouts.tema')
+@section('head')
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.css">
+@endsection
 @section ('menuTransaksiKeluar','active')
 @section ('menuTransaksi','active')
 @section('content')
@@ -162,6 +165,10 @@
                 <input type="radio" name="sumberKas" value="pettyCash" class="selectgroup-input">
                 <span class="selectgroup-button">Kas Kecil</span>
               </label>
+              <label class="selectgroup-item">
+                <input type="radio" name="sumberKas" value="kasKecilLapangan" class="selectgroup-input">
+                <span class="selectgroup-button">Kas Kecil Lapangan</span>
+              </label>
               @error('jenisKelamin')
               <div class="invalid-feedback">{{$message}}</div>
               @enderror
@@ -226,6 +233,7 @@
             <i class="fa fa-filter"></i>
             </button>
           </div>
+        </div>
         </form>
         <script type="text/javascript">
           $(function() {
@@ -252,7 +260,7 @@
               });
           </script>
           {{-- end filter --}}
-      <table class="table table-sm table-hover table-striped mt-3">
+      <table class="table table-sm table-hover table-striped mt-3" id="table">
         <thead>
           <tr>
             <th scope="col">Tanggal</th>
@@ -272,6 +280,7 @@
             <td>Rp.{{number_format($transaksi->debet)}}</td>
             <td>{{$transaksi->sumber}}</td>
             <td>
+              @if($transaksi->sumber != "Gudang")
               @if (cekGudang($transaksi->id) == true)
               
               <a href="{{route('gudang')}}" type="button" class="btn btn-sm btn-white text-primary border-success">
@@ -299,6 +308,7 @@
               data-uraian="{{$transaksi->uraian}}">
               <i class="fa fa-trash" aria-hidden="true" ></i> Hapus</button>
             </td>
+            @endif
           @endforeach
         </tbody>
         <tfoot>
@@ -401,7 +411,7 @@
           <div class="form-group row mb-4">
             <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Jumlah Terpakai</label>
             <div class="col-sm-12 col-md-7">
-              <input type="text" class="form-control @error('terpakai') is-invalid @enderror" name="terpakai" value="" id="terpakai">
+              <input type="number" class="form-control @error('terpakai') is-invalid @enderror" max="" name="terpakai" value="" id="terpakai">
               @error('terpakai')
                 <div class="invalid-feedback">{{$message}}</div>
               @enderror
@@ -439,6 +449,7 @@
     $('#akun').val(akun);
     $('#uraian').val(uraian);
     $('#banyaknya').val(jumlah);
+    $('#terpakai').attr({"max":jumlah});
     $('#satuan').val(satuan);
     $('#harga').val(harga);
     $('#total').val(total);
@@ -688,3 +699,31 @@
 
 </script>
   @endsection
+  @section('script')
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.js"></script>
+<script type="text/javascript" >
+    $('#table').DataTable({
+      "pageLength":     25,
+      "language": {
+        "decimal":        "",
+        "emptyTable":     "Tidak ada data tersedia",
+        "info":           "Menampilkan _START_ sampai _END_ dari _TOTAL_ data",
+        "infoEmpty":      "Menampilkan 0 sampai 0 dari 0 data",
+        "infoFiltered":   "(difilter dari _MAX_ total data)",
+        "infoPostFix":    "",
+        "thousands":      ",",
+        "lengthMenu":     "Menampilkan _MENU_ data",
+        "loadingRecords": "Loading...",
+        "processing":     "Processing...",
+        "search":         "Cari:",
+        "zeroRecords":    "Tidak ada data ditemukan",
+        "paginate": {
+            "first":      "Awal",
+            "last":       "Akhir",
+            "next":       "Selanjutnya",
+            "previous":   "Sebelumnya"
+        },
+        }
+    });
+</script>
+@endsection

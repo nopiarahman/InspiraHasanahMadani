@@ -211,7 +211,7 @@
               @foreach($kasKecilLapangan as $kas)
               <tr>
                 <td>{{$loop->iteration}}</td>
-                <td>{{$kas->tanggal}}</td>
+                <td>{{formatTanggal($kas->tanggal)}}</td>
                 <td>{{$kas->uraian}}</td>
                 <td>
                   @if($kas->kredit != null)

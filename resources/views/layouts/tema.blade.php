@@ -243,7 +243,7 @@
   </div>
   
   <script type="text/javascript" src="{{ mix('js/app.js') }}"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" ></script>  
+  {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" ></script>   --}}
   @yield('script')
   <!-- General JS Scripts -->
   <script src="{{ mix("js/bootstrap.js") }}"></script>

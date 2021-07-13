@@ -114,6 +114,7 @@ Route::group(['middleware'=>['auth','role:admin,projectmanager']],function(){
     Route::post('/pettyCashSimpan', 'KasController@pettyCashSimpan')->name('pettyCashSimpan');
     Route::delete('/hapusPettyCash/{id}', 'KasController@pettyCashHapus')->name('hapusPettyCash');
     Route::delete('/hapusKasPendaftaran/{id}', 'kasPendaftaranController@hapusPendaftaran')->name('hapusKasPendaftaran');
+    Route::delete('/hapusKasKecilLapangan/{id}', 'KasController@hapusKasLapangan')->name('hapusKasLapangan');
     
     Route::get('/laporanBulanan', 'LaporanController@laporanBulananRAB')->name('laporanBulanan');
     Route::get('/laporanTahunan', 'LaporanController@laporanTahunan')->name('laporanTahunan');
@@ -127,6 +128,7 @@ Route::group(['middleware'=>['auth','role:admin,projectmanager']],function(){
     Route::post('/transferGudang/{id}', 'GudangController@transferGudang')->name('transferGudang');
     Route::get('/alokasiGudang/{id}', 'GudangController@alokasi')->name('alokasiGudang');
     Route::post('/alokasiSimpan', 'GudangController@alokasiSimpan')->name('alokasiSimpan');
+    Route::delete('/hapusAlokasi/{id}', 'GudangController@hapusAlokasi')->name('hapusAlokasi');
     // Route::post('/alokasiGudang/{id}', 'GudangController@alokasiGudang')->name('alokasiGudang');
     
     Route::get('/rekening', 'ProyekController@rekening')->name('rekening');
@@ -138,6 +140,7 @@ Route::group(['middleware'=>['auth','role:admin,projectmanager']],function(){
     Route::get('/cetakRABUnit', 'ProyekController@cetakRABUnit')->name('cetakRABUnit');
     Route::get('/exportKasBesar', 'TransaksiController@exportKasBesar')->name('exportKasBesar');
     Route::get('/exportKasPendaftaran', 'kasPendaftaranController@exportKasPendaftaran')->name('exportKasPendaftaran');
+    Route::get('/exportKasLapangan', 'KasController@exportKasLapangan')->name('exportKasLapangan');
     Route::get('/exportPettyCash', 'KasController@exportPettyCash')->name('exportPettyCash');
     Route::get('/exportBulanan', 'LaporanController@exportBulanan')->name('exportBulanan');
     Route::get('/exportTahunan', 'LaporanController@exportTahunan')->name('exportTahunan');

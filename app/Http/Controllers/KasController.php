@@ -6,6 +6,8 @@ use App\kasKecilLapangan;
 use App\transaksi;
 use Carbon\Carbon;
 use App\Exports\PettyCashExport;
+use App\Exports\KasPendaftaranExport;
+use App\Exports\kasKecilLapanganExport;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\Request;
 
@@ -51,6 +53,18 @@ class KasController extends Controller
             $kasKecilLapangan=kasKecilLapangan::whereBetween('tanggal',[$start,$end])->where('proyek_id',proyekId())->orderBy('no')->get();
         }
         return view ('kas/kasKecilLapangan',compact('kasKecilLapangan','start','end'));
+    }
+    public function exportKasLapangan (Request $request){
+        $start = Carbon::now()->firstOfMonth()->isoFormat('YYYY-MM-DD');
+        $end = Carbon::now()->endOFMonth()->isoFormat('YYYY-MM-DD');
+        if($request->get('filter')){
+            $start = Carbon::parse($request->start)->isoFormat('YYYY-MM-DD');
+            $end = Carbon::parse($request->end)->isoFormat('YYYY-MM-DD');
+            $kasKecilLapangan=kasKecilLapangan::whereBetween('tanggal',[$start,$end])->where('proyek_id',proyekId())->orderBy('no')->get();
+        }else{
+            $kasKecilLapangan=kasKecilLapangan::whereBetween('tanggal',[$start,$end])->where('proyek_id',proyekId())->orderBy('no')->get();
+        }
+        return Excel::download(new kasKecilLapanganExport($kasKecilLapangan,$start,$end), 'Kas Kecil Lapangan.xlsx');
     }
     public function kasKecilLapanganKeluar(Request $request){
         $start = Carbon::now()->firstOfMonth()->isoFormat('YYYY-MM-DD');
@@ -290,5 +304,38 @@ class KasController extends Controller
         kasKecilLapangan::create($requestData);
         // dd($request);
         return redirect()->route('kasKecilLapanganKeluar')->with('status','Transaksi Berhasil Disimpan');
+    }
+    public function hapusKasLapangan(kasKecilLapangan $id){
+        if($id->debet !=null){
+            $dari = Carbon::parse($id->created_at)->subSeconds(5);
+            $sampai = Carbon::parse($id->created_at)->addSeconds(5);
+            $KasBesar = transaksi::where('uraian',$id->uraian)->whereBetween('created_at',[$dari,$sampai])->first();
+            // dd($KasBesar);
+            /* cek transaksi sesudah input */
+            // $hapusKasBesar=transaksi::find($id->id);
+            $cekKasBesar=transaksi::where('tanggal','>=',$KasBesar->tanggal)->where('no','>',$KasBesar->no)->orderBy('no')->get();
+            // dd($cekKasBesar);
+            if($cekKasBesar != null){
+                /* jika ada, update transaksi sesudah sesuai perubahan input*/
+                foreach($cekKasBesar as $updateKasBesar){
+                    $updateKasBesar['no'] = $updateKasBesar->no -1;
+                    $updateKasBesar['saldo'] = $updateKasBesar->saldo + $id->debet;
+                    $updateKasBesar->save();
+                }
+            }
+            $KasBesar->delete();
+        }
+        /* cek transaksi sesudah input */
+        $cekTransaksi=kasKecilLapangan::where('tanggal','>=',$id->tanggal)->where('no','>',$id->no)->orderBy('no')->get();
+        if($cekTransaksi != null){
+            /* jika ada, update transaksi sesudah sesuai perubahan input*/
+            foreach($cekTransaksi as $updateTransaksi){
+                $updateTransaksi['no'] = $updateTransaksi->no -1;
+                $updateTransaksi['saldo'] = $updateTransaksi->saldo + $id->debet;
+                $updateTransaksi->save();
+            }
+        }
+        $id->delete();
+        return redirect()->back()->with('status','Transaksi berhasil dihapus');
     }
 }

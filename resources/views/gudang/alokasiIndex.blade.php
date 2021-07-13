@@ -201,12 +201,26 @@
               <td>{{$alokasi->uraian}}</td>
               <td>{{$alokasi->jumlah}} {{$alokasi->satuan}}</td>
               <td>Rp. {{number_format($alokasi->debet)}}</td>
+              @if(auth()->user()->role=="admin")
+              <td>
+                <button type="button" class="btn btn-sm btn-white text-danger border-danger" 
+              data-toggle="modal" 
+              data-target="#hapusTransaksi" 
+              data-id="{{$alokasi->id}}" 
+              data-uraian="{{$alokasi->uraian}}">
+              <i class="fa fa-trash" aria-hidden="true" ></i> Hapus</button>
+              </td>
+              @endif
             </tr>
           @empty
             <tr>
-              Belum Ada Alokasi
+              <td>
+
+                Belum Ada Alokasi
+              </td>
             </tr>
           @endforelse
+          
           {{-- @foreach($transaksiKeluar as $transaksi)
           <tr>
             <td>{{formatTanggal($transaksi->tanggal)}}</td>
@@ -286,7 +300,7 @@
           var uraian = button.data('uraian') 
           var modal = $(this)
           modal.find('.modal-text').text('Yakin ingin menghapus transaksi ' + uraian+' ?')
-          document.getElementById('formHapus').action='/hapusTransaksiKeluar/'+id;
+          document.getElementById('formHapus').action='/hapusAlokasi/'+id;
           })
         });
       </script>

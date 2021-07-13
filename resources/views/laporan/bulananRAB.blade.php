@@ -365,7 +365,11 @@
               <tr>
                 <th colspan="2" class="text-white bg-warning text-right">TOTAL PENGELUARAN</th>
                 <th class="bg-warning text-white" >Rp. {{number_format(array_sum($b)+array_sum($bRAB))}}</th>
-            </tr>
+              </tr>
+              <tr>
+                <th colspan="2" class="text-white bg-info text-right">LABA/RUGI Berjalan</th>
+                <th class="bg-info text-white" >Rp. {{number_format(saldoBulanSebelumnya($start)+$pendapatan->sum('kredit')-(array_sum($b)+array_sum($bRAB)))}}</th>
+              </tr>
           </tfoot>
         </table>
       </div>

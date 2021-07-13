@@ -233,6 +233,26 @@ function pettyCashKeluar($dataArray)
     pettyCash::create($dataTransaksi);
     // dd($dataTransaksi);
 }
+function kasLapanganKeluar($dataArray)
+{
+    $data = collect($dataArray);
+    $jumlah= str_replace(',', '', $data->get('jumlah'));
+    $hargaSatuan= str_replace(',', '', $data->get('hargaSatuan'));
+    $total= str_replace(',', '', $data->get('total'));
+    $dataTransaksi['tanggal'] = $data->get('tanggal');
+    $dataTransaksi['uraian'] = $data->get('uraian');
+    $dataTransaksi['satuan'] = $data->get('satuan');
+    $dataTransaksi['sumber'] = $data->get('sumber');
+    $dataTransaksi['keterangan'] = $data->get('keterangan');
+    $dataTransaksi['debet'] = $total;
+    $dataTransaksi['jumlah'] = $jumlah;
+    $dataTransaksi['hargaSatuan'] = $hargaSatuan;
+    $dataTransaksi['no'] = $data->get('no');
+    $dataTransaksi['saldo'] = $data->get('saldo');
+    $dataTransaksi['proyek_id'] = proyekId();
+    kasKecilLapangan::create($dataTransaksi);
+    // dd($dataTransaksi);
+}
 
 function formatTanggal($date){
     $newDate = \Carbon\Carbon::parse($date);
