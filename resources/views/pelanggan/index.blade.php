@@ -61,7 +61,11 @@
             @foreach($pelangganAktif as $pelanggan)
             <tr>
               <th scope="row">{{$loop->iteration}}</th>
-              <td>{{$pelanggan->nama}}</td>
+              <td>{{$pelanggan->nama}}
+              @if($pelanggan->pembelian->statusPembelian == 'Booking')
+                <span class="text-info"> : Booking Tanggal {{formatTanggal($pelanggan->pembelian->tanggalBooking)}}</span>
+              @endif
+              </td>
               @if($pelanggan->kavling==null)
               <td>Batal Akad</td>
               @else
@@ -97,7 +101,7 @@
       <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLongTitle">Batal Akad</h5>
+            <h5 class="modal-title" id="exampleModalLongTitle">Hapus Pelanggan</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>

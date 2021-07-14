@@ -39,7 +39,7 @@
       @endif
     </div>
     </div>
-
+    @if(auth()->user()->role=="admin")
     <div class="row">
       <div class="col-12">
         <div class="card">
@@ -88,7 +88,7 @@
         </div>
       </div>
     </div>
-  
+  @endif
     <div class="card">
       <div class="card-header">
         <h4>Daftar Rekening</h4>
@@ -101,7 +101,9 @@
               <th scope="col">Bank</th>
               <th scope="col">Nomor Rekening</th>
               <th scope="col">Atas Nama</th>
+              @if(auth()->user()->role=="admin")
               <th scope="col">Aksi</th>
+              @endif
             </tr>
           </thead>
           <tbody>
@@ -111,6 +113,7 @@
                 <td>{{$item->namaBank}}</td>
                 <td>{{$item->noRekening}}</td>
                 <td>{{$item->atasNama}}</td>
+                @if(auth()->user()->role=="admin")
                 <td>
                   <button type="button" class="btn btn-sm btn-white text-primary border-success" 
                   data-toggle="modal" 
@@ -129,6 +132,7 @@
                   >
                   <i class="fa fa-trash" aria-hidden="true" ></i> Hapus</button>
                 </td>
+                @endif
               </tr>
               @endforeach
           </tbody>

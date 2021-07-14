@@ -89,7 +89,7 @@
           @if($dataPembelian->sisaDp >0)
           <h4 style="font-size: x-large" >Sisa DP : Rp. {{number_format($dataPembelian->sisaDp)}}</h4>
           @else
-          Lunas
+          <h4>Lunas</h4>
           @endif
         </div>
         <div class="card-body p-0">
