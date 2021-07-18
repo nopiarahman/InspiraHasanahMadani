@@ -63,7 +63,7 @@
               <th scope="row">{{$loop->iteration}}</th>
               <td>{{$pelanggan->nama}}
               @if($pelanggan->pembelian->statusPembelian == 'Booking')
-                <span class="text-info"> : Booking Tanggal {{formatTanggal($pelanggan->pembelian->tanggalBooking)}}</span>
+                <span class="text-info"> : Daftar Tanggal {{formatTanggal($pelanggan->pembelian->tanggalBooking)}}</span>
               @endif
               </td>
               @if($pelanggan->kavling==null)

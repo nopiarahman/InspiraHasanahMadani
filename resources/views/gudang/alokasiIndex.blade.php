@@ -132,7 +132,7 @@
                   Rp
                 </div>
               </div>
-              <input type="text" class="form-control hargaSatuan @error('hargaSatuan') is-invalid @enderror" name="hargaSatuan" value="{{$id->harga}}" id="hargaSatuan">
+              <input type="text" readonly class="form-control hargaSatuan @error('hargaSatuan') is-invalid @enderror" name="hargaSatuan" value="{{$id->harga}}" id="hargaSatuan">
               @error('hargaSatuan')
                 <div class="invalid-feedback">{{$message}}</div>
               @enderror
