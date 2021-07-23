@@ -82,6 +82,7 @@
             <th scope="col">Nilai Cicilan</th>
             <th scope="col">DP Ke</th>
             <th scope="col">Terbayar</th>
+            <th scope="col">Tanggal Pembayaran</th>
             <th scope="col">Keterangan</th>
           </tr>
         </thead>
@@ -119,6 +120,13 @@
             @php
                 $totalDPTerbayar +=cekPembayaranDP($dp->id,$start);
             @endphp
+            <td>
+              @if(cekDPEstimasi($dp->id)!=null)
+              {{formatTanggal(cekDPEstimasi($dp->id)->tanggal)}}
+              @else
+              
+              @endif
+            </td>
             @if ($dp->pembelian->sisaDp <= 0)
             <td> <span class="text-info">DP LUNAS</span> </td>
             @else
@@ -132,7 +140,7 @@
             <th colspan="5" class=" text-primary text-right border-success border-top">Total</th>
             <th class="border-success border-top text-primary">Rp.{{number_format($totalDP)}}</th>
             <th class=" text-primary text-right border-success border-top">Total</th>
-            <th colspan="2" class="border-success border-top text-primary">Rp.{{number_format($totalDPTerbayar)}}</th>
+            <th colspan="3" class="border-success border-top text-primary">Rp.{{number_format($totalDPTerbayar)}}</th>
           </tr>
         </tfoot>
       </table>
@@ -155,6 +163,7 @@
             <th scope="col">Nilai Cicilan</th>
             <th scope="col">Cicilan Ke</th>
             <th scope="col">Terbayar</th>
+            <th scope="col">Tanggal Pembayaran</th>
           </tr>
         </thead>
         <tbody>
@@ -192,6 +201,13 @@
             @php
                 $totalTerbayar +=cekPembayaranCicilan($cicilan->id);
             @endphp
+            <td>
+              @if(cekPembayaranEstimasi($cicilan->id)!=null)
+              {{formatTanggal(cekPembayaranEstimasi($cicilan->id)->tanggal)}}
+              @else
+              
+              @endif
+            </td>
           </tr>
           @endforeach
         </tbody>
@@ -200,7 +216,7 @@
             <th colspan="5" class=" text-primary text-right border-success border-top">Total</th>
             <th class="border-success border-top text-primary">Rp.{{number_format($totalCicilan)}}</th>
             <th class=" text-primary text-right border-success border-top">Total</th>
-            <th class="border-success border-top text-primary">Rp.{{number_format($totalTerbayar)}}</th>
+            <th colspan="2" class="border-success border-top text-primary">Rp.{{number_format($totalTerbayar)}}</th>
           </tr>
         </tfoot>
       </table>
@@ -306,53 +322,194 @@
 @endsection
 @section('script')
 <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.js"></script>
+<script>
+  //fungsi untuk filtering data berdasarkan tanggal 
+  var start_date;
+   var end_date;
+   var DateFilterFunction = (function (oSettings, aData, iDataIndex) {
+      var dateStart = parseDateValue(start_date);
+      var dateEnd = parseDateValue(end_date);
+      var evalDate= parseDateValue(aData[8]);
+        if ( ( isNaN( dateStart ) && isNaN( dateEnd ) ) ||
+             ( isNaN( dateStart ) && evalDate <= dateEnd ) ||
+             ( dateStart <= evalDate && isNaN( dateEnd ) ) ||
+             ( dateStart <= evalDate && evalDate <= dateEnd ) )
+        {
+            return true;
+        }
+        return false;
+  });
+
+  // fungsi untuk converting format tanggal dd/mm/yyyy menjadi format tanggal javascript menggunakan zona aktubrowser
+  function parseDateValue(rawDate) {
+      var dateArray= rawDate.split("/");
+      var parsedDate= new Date(dateArray[2], parseInt(dateArray[1])-1, dateArray[0]);  // -1 because months are from 0 to 11   
+      return parsedDate;
+  }    
+
+  $( document ).ready(function() {
+  //konfigurasi DataTable pada tabel dengan id example dan menambahkan  div class dateseacrhbox dengan dom untuk meletakkan inputan daterangepicker
+   var $dTable = $('#dpAktif').DataTable({
+    "pageLength":     25,
+    "language": {
+        "decimal":        "",
+        "emptyTable":     "Tidak ada data tersedia",
+        "info":           "Menampilkan _START_ sampai _END_ dari _TOTAL_ data",
+        "infoEmpty":      "Menampilkan 0 sampai 0 dari 0 data",
+        "infoFiltered":   "(difilter dari _MAX_ total data)",
+        "infoPostFix":    "",
+        "thousands":      ",",
+        "lengthMenu":     "Menampilkan _MENU_ data",
+        "loadingRecords": "Loading...",
+        "processing":     "Processing...",
+        "search":         "Cari:",
+        "zeroRecords":    "Tidak ada data ditemukan",
+        "paginate": {
+            "first":      "Awal",
+            "last":       "Akhir",
+            "next":       "Selanjutnya",
+            "previous":   "Sebelumnya"
+        },
+        },
+    "dom": "<'row'<'col-sm-6'l><'col-sm-3' <'datesearchbox'>><'col-sm-3'f>>" +
+      "<'row'<'col-sm-12'tr>>" +
+      "<'row'<'col-sm-5'i><'col-sm-7'p>>"
+   });
+
+   //menambahkan daterangepicker di dalam datatables
+   $("div.datesearchbox").html('<input type="text" class="form-control mb-3 mt-n2" id="datesearch" placeholder="Filter tanggal pembayaran..">');
+
+   document.getElementsByClassName("datesearchbox")[0].style.textAlign = "right";
+
+   //konfigurasi daterangepicker pada input dengan id datesearch
+   $('#datesearch').daterangepicker({
+      autoUpdateInput: false
+    });
+
+   //menangani proses saat apply date range
+    $('#datesearch').on('apply.daterangepicker', function(ev, picker) {
+       $(this).val(picker.startDate.format('DD/MM/YYYY') + ' - ' + picker.endDate.format('DD/MM/YYYY'));
+       start_date=picker.startDate.format('DD/MM/YYYY');
+       end_date=picker.endDate.format('DD/MM/YYYY');
+       $.fn.dataTableExt.afnFiltering.push(DateFilterFunction);
+       $dTable.draw();
+    });
+
+    $('#datesearch').on('cancel.daterangepicker', function(ev, picker) {
+      $(this).val('');
+      start_date='';
+      end_date='';
+      $.fn.dataTable.ext.search.splice($.fn.dataTable.ext.search.indexOf(DateFilterFunction, 1));
+      $dTable.draw();
+    });
+  });
+</script>
+<script>
+  //fungsi untuk filtering data berdasarkan tanggal 
+  var start_date;
+   var end_date;
+   var DateFilterFunction = (function (oSettings, aData, iDataIndex) {
+      var dateStart = parseDateValue(start_date);
+      var dateEnd = parseDateValue(end_date);
+      var evalDate= parseDateValue(aData[8]);
+        if ( ( isNaN( dateStart ) && isNaN( dateEnd ) ) ||
+             ( isNaN( dateStart ) && evalDate <= dateEnd ) ||
+             ( dateStart <= evalDate && isNaN( dateEnd ) ) ||
+             ( dateStart <= evalDate && evalDate <= dateEnd ) )
+        {
+            return true;
+        }
+        return false;
+  });
+
+  // fungsi untuk converting format tanggal dd/mm/yyyy menjadi format tanggal javascript menggunakan zona aktubrowser
+  function parseDateValue(rawDate) {
+      var dateArray= rawDate.split("/");
+      var parsedDate= new Date(dateArray[2], parseInt(dateArray[1])-1, dateArray[0]);  // -1 because months are from 0 to 11   
+      return parsedDate;
+  }    
+
+  $( document ).ready(function() {
+  //konfigurasi DataTable pada tabel dengan id example dan menambahkan  div class dateseacrhbox dengan dom untuk meletakkan inputan daterangepicker
+   var $dTable = $('#cicilanAktif').DataTable({
+    "pageLength":     25,
+    "language": {
+        "decimal":        "",
+        "emptyTable":     "Tidak ada data tersedia",
+        "info":           "Menampilkan _START_ sampai _END_ dari _TOTAL_ data",
+        "infoEmpty":      "Menampilkan 0 sampai 0 dari 0 data",
+        "infoFiltered":   "(difilter dari _MAX_ total data)",
+        "infoPostFix":    "",
+        "thousands":      ",",
+        "lengthMenu":     "Menampilkan _MENU_ data",
+        "loadingRecords": "Loading...",
+        "processing":     "Processing...",
+        "search":         "Cari:",
+        "zeroRecords":    "Tidak ada data ditemukan",
+        "paginate": {
+            "first":      "Awal",
+            "last":       "Akhir",
+            "next":       "Selanjutnya",
+            "previous":   "Sebelumnya"
+        },
+        },
+    "dom": "<'row'<'col-sm-6'l><'col-sm-3' <'datesearchbox2'>><'col-sm-3'f>>" +
+      "<'row'<'col-sm-12'tr>>" +
+      "<'row'<'col-sm-5'i><'col-sm-7'p>>"
+   });
+
+   //menambahkan daterangepicker di dalam datatables
+   $("div.datesearchbox2").html('<input type="text" class="form-control mb-3 mt-n2" id="datesearch2" placeholder="Filter tanggal pembayaran..">');
+
+   document.getElementsByClassName("datesearchbox2")[0].style.textAlign = "right";
+
+   //konfigurasi daterangepicker pada input dengan id datesearch
+   $('#datesearch2').daterangepicker({
+      autoUpdateInput: false
+    });
+
+   //menangani proses saat apply date range
+    $('#datesearch2').on('apply.daterangepicker', function(ev, picker) {
+       $(this).val(picker.startDate.format('DD/MM/YYYY') + ' - ' + picker.endDate.format('DD/MM/YYYY'));
+       start_date=picker.startDate.format('DD/MM/YYYY');
+       end_date=picker.endDate.format('DD/MM/YYYY');
+       $.fn.dataTableExt.afnFiltering.push(DateFilterFunction);
+       $dTable.draw();
+    });
+
+    $('#datesearch2').on('cancel.daterangepicker', function(ev, picker) {
+      $(this).val('');
+      start_date='';
+      end_date='';
+      $.fn.dataTable.ext.search.splice($.fn.dataTable.ext.search.indexOf(DateFilterFunction, 1));
+      $dTable.draw();
+    });
+  });
+</script>
 <script type="text/javascript" >
-    $('#dpAktif').DataTable({
-      "pageLength":     25,
-      "language": {
-        "decimal":        "",
-        "emptyTable":     "Tidak ada data tersedia",
-        "info":           "Menampilkan _START_ sampai _END_ dari _TOTAL_ data",
-        "infoEmpty":      "Menampilkan 0 sampai 0 dari 0 data",
-        "infoFiltered":   "(difilter dari _MAX_ total data)",
-        "infoPostFix":    "",
-        "thousands":      ",",
-        "lengthMenu":     "Menampilkan _MENU_ data",
-        "loadingRecords": "Loading...",
-        "processing":     "Processing...",
-        "search":         "Cari:",
-        "zeroRecords":    "Tidak ada data ditemukan",
-        "paginate": {
-            "first":      "Awal",
-            "last":       "Akhir",
-            "next":       "Selanjutnya",
-            "previous":   "Sebelumnya"
-        },
-        }
-    });
-    $('#cicilanAktif').DataTable({
-      "pageLength":     25,
-      "language": {
-        "decimal":        "",
-        "emptyTable":     "Tidak ada data tersedia",
-        "info":           "Menampilkan _START_ sampai _END_ dari _TOTAL_ data",
-        "infoEmpty":      "Menampilkan 0 sampai 0 dari 0 data",
-        "infoFiltered":   "(difilter dari _MAX_ total data)",
-        "infoPostFix":    "",
-        "thousands":      ",",
-        "lengthMenu":     "Menampilkan _MENU_ data",
-        "loadingRecords": "Loading...",
-        "processing":     "Processing...",
-        "search":         "Cari:",
-        "zeroRecords":    "Tidak ada data ditemukan",
-        "paginate": {
-            "first":      "Awal",
-            "last":       "Akhir",
-            "next":       "Selanjutnya",
-            "previous":   "Sebelumnya"
-        },
-        }
-    });
+    // $('#cicilanAktif').DataTable({
+    //   "pageLength":     25,
+    //   "language": {
+    //     "decimal":        "",
+    //     "emptyTable":     "Tidak ada data tersedia",
+    //     "info":           "Menampilkan _START_ sampai _END_ dari _TOTAL_ data",
+    //     "infoEmpty":      "Menampilkan 0 sampai 0 dari 0 data",
+    //     "infoFiltered":   "(difilter dari _MAX_ total data)",
+    //     "infoPostFix":    "",
+    //     "thousands":      ",",
+    //     "lengthMenu":     "Menampilkan _MENU_ data",
+    //     "loadingRecords": "Loading...",
+    //     "processing":     "Processing...",
+    //     "search":         "Cari:",
+    //     "zeroRecords":    "Tidak ada data ditemukan",
+    //     "paginate": {
+    //         "first":      "Awal",
+    //         "last":       "Akhir",
+    //         "next":       "Selanjutnya",
+    //         "previous":   "Sebelumnya"
+    //     },
+    //     }
+    // });
     $('#dpNunggak').DataTable({
       "pageLength":     25,
       "language": {
@@ -400,4 +557,5 @@
         }
     });
 </script>
+
 @endsection

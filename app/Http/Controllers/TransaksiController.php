@@ -5,10 +5,13 @@ namespace App\Http\Controllers;
 use App\transaksi;
 use App\akun;
 use App\rabUnit;
+use App\rab;
+use App\pelanggan;
+use App\pengembalian;
 use App\gudang;
+use App\isiPengadaan;
 use App\pettycash;
 use App\kasKecilLapangan;
-use App\rab;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Exports\KasBEsarExport;
@@ -42,8 +45,8 @@ class TransaksiController extends Controller
     }
 
     public function keluar(Request $request){
-        /* RAB */
         // dd($request);
+        /* RAB */
         $semuaRAB = rab::where('proyek_id',proyekId())->get()->groupBy(['header',function($item){
             return $item['judul'];
         }],$preserveKeys=true);
@@ -103,7 +106,7 @@ class TransaksiController extends Controller
         // dd($request);
         $jumlah = str_replace(',', '', $request->total);
         $rules=[
-            'jumlah'=>'required',
+            'total'=>'required',
             'tanggal'=>'required',
             'uraian'=>'required',
         ];
@@ -112,6 +115,10 @@ class TransaksiController extends Controller
         ];
         $this->validate($request,$rules,$costumMessages);
         $requestData=$request->all();
+        if($request->pengembalian != null){
+            $requestData['jumlah']=$jumlah;
+            $requestData['hargaSatuan']=1;
+        }
         /* cek apakah ada transaksi sebelumnya */
         $cekTransaksiSebelum=transaksi::where('tanggal','<=',$request->tanggal)->orderBy('no')->where('proyek_id',proyekId())->get();
         /* jika transaksi sebelumnya ada value */
@@ -137,6 +144,7 @@ class TransaksiController extends Controller
                     $updateTransaksi->save();
                 }
             }
+            // dd($requestData);
             /*  simpan ke kas besar sesuai input requestData*/
             kasBesarKeluar($requestData);
         }elseif($request->sumberKas=='kasKecilLapangan'){
@@ -239,7 +247,27 @@ class TransaksiController extends Controller
                 }
             }
         }
-        return redirect()->route('transaksiKeluar')->with('status','Transaksi Berhasil disimpan');
+        if($request->isiPengadaan_id != null){
+            isiPengadaan::find($request->isiPengadaan_id)->update(['statusTransfer'=>1]);
+        }
+        if($request->pengembalian !=null){
+            
+            $pelanggan=pelanggan::find($request->pengembalian);
+            $pengembalian=pengembalian::where('pelanggan_id',$pelanggan->id)->first();
+
+            $requestPengembalian = $request->all();
+            $requestPengembalian['proyek_id']=proyekId();
+            $requestPengembalian['pelanggan_id']=$pelanggan->id;
+            $requestPengembalian['jumlah']=$jumlah;
+            if($pengembalian == null){
+                $requestPengembalian['sisaPengembalian']=$pelanggan->pembelian->sisaKewajiban-$pelanggan->pembelian->sisaCicilan- $jumlah;
+            }else{
+                $terakhir = $pengembalian->last();
+                $requestPengembalian['sisaPengembalian']=$terakhir->sisaPengembalian - $jumlah;
+            }
+            pengembalian::create($requestPengembalian);
+        }
+        return redirect()->back()->with('status','Transaksi Berhasil disimpan');
     }
     public function cashFlow(Request $request){
         $semuaAkun = akun::where('proyek_id',proyekId())->where('kategori','Pendapatan')->orWhere('kategori','Modal')->get();

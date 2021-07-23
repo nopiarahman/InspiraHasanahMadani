@@ -23,11 +23,11 @@
 <table cellspacing="0" border="0">
 	<tbody>
 		<tr>
-			<td rowspan="4" valign="top" align="center"><br><img src="assets/img/favicon.png" width="70px"></td>
-			<td align="left" colspan="3"><b><font size="4">PT. INSPIRA HASANAH MADANI</b></td>
+			<td rowspan="4" valign="top" align="center"><br><img src="{{public_path(Storage::url($proyek->logoPT))}}" alt="" width="60px"></td>
+			<td align="left" colspan="3"><b><font size="4">{{$proyek->namaPT}}</b></td>
 		</tr>
 		<tr>
-			<td colspan="2">Jl. Jenderal A. Thalib no 12 Telanaipura. Jambi</td>
+			<td colspan="2">{{$proyek->alamatPT}}</td>
 			<td>Nomor Faktur:  @if(jenisKepemilikan($pembelian->pelanggan_id)=='Kavling')
 				DK
 				@else
@@ -35,11 +35,11 @@
 				@endif {{romawi(Carbon\Carbon::parse($id->tanggal)->isoFormat('MM'))}}/{{$id->ke}}</td>
 		</tr>
 		<tr>
-			<td colspan="2">Telp: 0741-3071990</td>
+			<td colspan="2">Telp: {{$proyek->telpPT}}</td>
 			<td>Tanggal: {{formatTanggal($id->tanggal)}}</td>
 		</tr>
 		<tr>
-			<td colspan="2">Email: inspirahasanahmadani@gmail.com</td>
+			<td colspan="2">Email: {{$proyek->emailPT}}</td>
 			<td>Kode Pelanggan: C{{$pembelian->kavling->blok}}</td>
 		</tr>
 		<tr>
@@ -69,14 +69,15 @@
 			@if($id->sumber == 'Cash' || $id->sumber == 'cash')
 			TUNAI 
 			@else
-			{{$id->sumber}}
+			{{-- {{$id->sumber}} --}}
+			TRANSFER
 			@endif
 		</span></b></td>
 		</tr>
 	<tr>
 		<td>Total Hutang</td>
 		<td>: Rp {{number_format($pembelian->dp)}}</td>
-		<td rowspan="5" colspan="2" align="center"> <img src="assets/img/stempel.png" width="100px"></td>
+		<td rowspan="5" colspan="2" align="center"> <img src="{{public_path(Storage::url($proyek->logoPT))}}" width="100px"></td>
 	</tr>
 	<tr>
 		<td>Angsuran DP Ke</td>
@@ -106,7 +107,19 @@
 	<tr>
 		<td align="center" colspan="4" valign="bottom" style="height: 25px">Kwitansi ini sah tanpa tanda tangan</td>
 		</tr>
-</tbody></table>
+</tbody>
+<tfoot>
+	<tr>
+		<td colspan="5" style="text-align: center">
+			@forelse($rekening as $r)
+			<span>{{$r->namaBank}} | {{$r->atasNama}} | {{$r->noRekening}}</span>
+			@empty
+			-
+			@endforelse
+		</td>
+	</tr>
+</tfoot>
+</table>
 
 <br clear="left">
 <!-- ************************************************************************** -->

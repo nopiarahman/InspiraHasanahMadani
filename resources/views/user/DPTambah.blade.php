@@ -131,7 +131,7 @@
                         }
                         reader.readAsDataURL(input.files[0]);
                     }
-                }
+              
                 $("#bukti").change(function(){
                     readURL(this);
                 });

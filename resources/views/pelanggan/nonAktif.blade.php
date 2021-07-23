@@ -50,6 +50,7 @@
               <th scope="col">Jenis</th>
               <th scope="col">No Telp</th>
               <th scope="col">Aksi</th>
+              <th scope="col">Pengembalian</th>
             </tr>
           </thead>
           <tbody>
@@ -79,6 +80,9 @@
                 data-nama="{{$pelanggan->nama}}">
                 <i class="fa fa-trash" aria-hidden="true" ></i> Hapus</button>      
                 @endif
+              </td>
+              <td>
+                <a href="{{route('pengembalian',['id'=>$pelanggan->id])}}" class="btn btn-white text-primary border-success btn-sm"> <i class="fa fa-check" aria-hidden="true"></i> Input</a>
               </td>
             </tr>
             @endforeach

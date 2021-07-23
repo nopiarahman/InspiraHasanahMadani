@@ -176,8 +176,17 @@
                 <li class=" @yield('menuTransaksiKeluar')"><a href="{{route('transaksiKeluar')}}">Keluar</a></li>
               </ul>
             </li>
+            <li class="nav-item dropdown @yield('menuPengadaan')">
+              <a href="" class="nav-link has-dropdown"><i class="fas fa-box-open    "></i> <span>Pengadaan</span></a>
+              <ul class="dropdown-menu">
+                {{-- <li class=" @yield('menuAkun')"><a href="{{route('akun')}}">Akun</a></li> --}}
+                <li class=" @yield('menuDaftarPengadaan')"><a href="{{route('pengadaan')}}">Daftar Pengadaan</a></li>
+                <li class=" @yield('menuDaftarBarang')"><a href="{{route('barang')}}">Daftar Barang</a></li>
+              </ul>
+            </li>
             @endif
             @if(auth()->user()->role=="admin" || auth()->user()->role=="projectmanager")
+
             <li class=" @yield('menuEstimasi')"><a class="nav-link" href="{{route('estimasi')}}"><i class="fas fa-calendar-plus    "></i> <span> Estimasi Pemasukan</span></a></li>
             <li class="nav-item dropdown @yield('menuKas')">
               <a href="" class="nav-link has-dropdown"><i class="fas fa-book"></i> <span>KAS</span></a>
@@ -191,6 +200,9 @@
             </li>
             <li class=" @yield('menuGudang')"><a class="nav-link" href="{{route('gudang')}}"><i class="fas fa-warehouse    "></i> <span> Gudang</span></a></li>
             <li class=" @yield('menuRekening')"><a class="nav-link" href="{{route('rekening')}}"> <i class="fas fa-dollar-sign    "></i> <span> Rekening</span></a></li>
+            @endif
+            @if(auth()->user()->role=="projectmanager")
+            <li class=" @yield('menuDaftarPengadaan')"><a class="nav-link" href="{{route('pengadaan')}}"><i class="fas fa-box-open    "></i> <span> Pengadaan Barang</span></a></li>
             @endif
             @if(auth()->user()->role=="admin")
             <li class="nav-item dropdown @yield('menuLaporan')">

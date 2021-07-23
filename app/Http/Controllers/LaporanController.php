@@ -7,16 +7,18 @@ use Carbon\Carbon;
 use App\transaksi;
 use App\cicilan;
 use App\akun;
+use App\proyek;
 use App\dp;
 use App\rab;
 use App\rabUnit;
+use App\rekening;
 use App\pembelian;
 use PDF;
 use SnappyImage;
 use App\Exports\LaporanBulananExport;
 use App\Exports\LaporanTahunanExport;
 use Maatwebsite\Excel\Facades\Excel;
-
+use Illuminate\Support\Facades\Storage;
 class LaporanController extends Controller
 {
     /**
@@ -77,19 +79,23 @@ class LaporanController extends Controller
 
     public function cetakKwitansi(Cicilan $id){
         // dd($id);
+        $proyek=proyek::find(proyekId());
+        $rekening=rekening::where('proyek_id',proyekId())->get();
         $pembelian= pembelian::where('id',$id->pembelian_id)->first();
         $uraian = 'Pembayaran Cicilan Ke '.$id->urut.' '.jenisKepemilikan($pembelian->pelanggan_id).' '.$pembelian->kavling->blok;   
         $cicilanPertama = cicilan::where('pembelian_id',$pembelian->id)->first();
         $sampaiSekarang = cicilan::whereBetween('created_at',[$cicilanPertama->created_at,$id->created_at])->where('pembelian_id',$id->pembelian_id)->get();
         // dd($sampaiSekarang);
-        return view('cetak/kwitansi',compact('id','pembelian','uraian','sampaiSekarang'));
+        return view('cetak/kwitansi',compact('id','pembelian','uraian','sampaiSekarang','rekening','proyek'));
     }
     public function cetakKwitansiDp(Dp $id){
+        $proyek=proyek::find(proyekId());       
         $pembelian= pembelian::where('id',$id->pembelian_id)->first();
+        $rekening=rekening::where('proyek_id',proyekId())->get();
         $uraian = 'Pembayaran Dp Ke '.$id->urut.' '.jenisKepemilikan($pembelian->pelanggan_id).' '.$pembelian->kavling->blok;   
         $DpPertama = Dp::where('pembelian_id',$pembelian->id)->first();
         $sampaiSekarang = dp::whereBetween('created_at',[$DpPertama->created_at,$id->created_at])->where('pembelian_id',$id->pembelian_id)->get();
-        return view('cetak/kwitansiDp',compact('id','pembelian','uraian','sampaiSekarang'));
+        return view('cetak/kwitansiDp',compact('id','pembelian','uraian','sampaiSekarang','rekening','proyek'));
     }
     public function exportBulanan(Request $request){
         $akunId=akun::where('proyek_id',proyekId())->where('namaAkun','pendapatan')->first();
@@ -124,22 +130,29 @@ class LaporanController extends Controller
         // return view ('laporan/tahunanIndex',compact('produksi','operasional','nonOperasional','start','end','pendapatanLain'));
     }
     public function cetakDPPDF(Dp $id){
+        $proyek=proyek::find(proyekId()); 
+        // $logoPT = Storage::url($proyek->logoPT);
+        // dd($logoPT);
+        $rekening=rekening::where('proyek_id',proyekId())->get();
         $pembelian= pembelian::where('id',$id->pembelian_id)->first();
         // dd($pembelian->pelanggan->nama);
         $uraian = 'Pembayaran Dp Ke '.$id->urut.' '.jenisKepemilikan($pembelian->pelanggan_id).' '.$pembelian->kavling->blok;   
         $DpPertama = Dp::where('pembelian_id',$pembelian->id)->first();
         $sampaiSekarang = dp::whereBetween('created_at',[$DpPertama->created_at,$id->created_at])->where('pembelian_id',$id->pembelian_id)->get();
-        // return view('PDF/kwitansiDp2',compact('id','pembelian','uraian','sampaiSekarang'));
-        $pdf=PDF::loadview('PDF/kwitansiDp2',compact('id','pembelian','uraian','sampaiSekarang'))->setPaper('A5','landscape');
+        // return view('PDF/kwitansiDp2',compact('id','pembelian','uraian','sampaiSekarang','rekening','proyek'));
+        $pdf=PDF::loadview('PDF/kwitansiDp2',compact('id','pembelian','uraian','sampaiSekarang','rekening','proyek'))->setPaper('A5','landscape');
         return $pdf->download('Kwitansi DP '.$pembelian->pelanggan->nama.' Ke '.$id->urut.'.pdf');
     }
     public function cetakKwitansiPDF(Cicilan $id){
+        $proyek=proyek::find(proyekId());
+        $logoPT = Storage::url($proyek->logoPT);
+        // dd($logoPT); 
+        $rekening=rekening::where('proyek_id',proyekId())->get();
         $pembelian= pembelian::where('id',$id->pembelian_id)->first();
         $uraian = 'Pembayaran Cicilan Ke '.$id->urut.' '.jenisKepemilikan($pembelian->pelanggan_id).' '.$pembelian->kavling->blok;   
         $cicilanPertama = cicilan::where('pembelian_id',$pembelian->id)->first();
         $sampaiSekarang = cicilan::whereBetween('created_at',[$cicilanPertama->created_at,$id->created_at])->where('pembelian_id',$id->pembelian_id)->get();
-        
-        $pdf=PDF::loadview('PDF/kwitansi',compact('id','pembelian','uraian','sampaiSekarang'))->setPaper('A5','landscape');
+        $pdf=PDF::loadview('PDF/kwitansi',compact('id','pembelian','uraian','sampaiSekarang','rekening','proyek','logoPT'))->setPaper('A5','landscape');
         return $pdf->download('Kwitansi Cicilan '.$pembelian->pelanggan->nama.' Ke '.$id->urut.'.pdf');
     }
 }

@@ -607,6 +607,16 @@ function cekPembayaranDP($DPId){
     }
         return null;
 }
+function cekDPEstimasi($DPId){
+    $cekDPIni = dp::find($DPId);
+    $tempo = \Carbon\carbon::parse($cekDPIni->tempo)->firstOfMonth()->isoFormat('YYYY-MM-DD');
+    $cekTerbayar = dp::where('pelanggan_id',$cekDPIni->pelanggan_id)->where('tanggal','>',$tempo)->get();
+    if($cekTerbayar->first() != null){
+        $pembayaranSelanjutnya= $cekTerbayar->first();
+        return $pembayaranSelanjutnya;
+    }
+        return null;
+}
 function cekPembayaranCicilan($cicilanId){
     $cekCicilanIni = cicilan::find($cicilanId);
     $tempo = \Carbon\carbon::parse($cekCicilanIni->tempo)->firstOfMonth()->isoFormat('YYYY-MM-DD');
@@ -614,6 +624,16 @@ function cekPembayaranCicilan($cicilanId){
     if($cekTerbayar->first() != null){
         $pembayaranSelanjutnya= $cekTerbayar->first();
         return $pembayaranSelanjutnya->jumlah;
+    }
+        return null;
+}
+function cekPembayaranEstimasi($cicilanId){
+    $cekCicilanIni = cicilan::find($cicilanId);
+    $tempo = \Carbon\carbon::parse($cekCicilanIni->tempo)->firstOfMonth()->isoFormat('YYYY-MM-DD');
+    $cekTerbayar = cicilan::where('pelanggan_id',$cekCicilanIni->pelanggan_id)->where('tanggal','>',$tempo)->get();
+    if($cekTerbayar->first() != null){
+        $pembayaranSelanjutnya= $cekTerbayar->first();
+        return $pembayaranSelanjutnya;
     }
         return null;
 }

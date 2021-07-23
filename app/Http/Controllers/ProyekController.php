@@ -48,16 +48,25 @@ class ProyekController extends Controller
      */
     public function store(Request $request)
     {
+        // dd($request);
         $rules=[
             'nama'=>'required',
             'lokasi'=>'required',
+            'proyekStart'=>'required',
+            'namaPT'=>'required',
+            'alamatPT'=>'required',
             'proyekStart'=>'required'
         ];
         $costumMessages = [
             'required'=>':attribute tidak boleh kosong'
         ];
-
         $requestData = $request->all();
+        if ($request->hasFile('logoPT')) {
+            $file_nama            = $request->file('logoPT')->store('public/file/proyek/logoPT');
+            $requestData['logoPT'] = $file_nama;
+        } else {
+            unset($requestData['logoPT']);
+        }
         $this->validate($request,$rules,$costumMessages);
         proyek::create($requestData);
 
@@ -98,6 +107,8 @@ class ProyekController extends Controller
     {
         $rules=[
             'nama'=>'required',
+            'namaPT'=>'required',
+            'alamatPT'=>'required',
             'lokasi'=>'required',
             'proyekStart'=>'required'
         ];
@@ -105,6 +116,12 @@ class ProyekController extends Controller
             'required'=>':attribute tidak boleh kosong'
         ];
         $requestData = $request->all();
+        if ($request->hasFile('logoPT')) {
+            $file_nama            = $request->file('logoPT')->store('public/file/proyek/logoPT');
+            $requestData['logoPT'] = $file_nama;
+        } else {
+            unset($requestData['logoPT']);
+        }
         $this->validate($request,$rules,$costumMessages);
         $id->update($requestData);
         return redirect()->route('proyek')->with('status','Data Proyek Berhasil dirubah');

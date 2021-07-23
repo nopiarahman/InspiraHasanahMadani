@@ -103,7 +103,8 @@
           @if($id->sumber == 'Cash' || $id->sumber == 'cash')
           <span class="text-primary">TUNAI</span></span>
           @else
-          <span class="text-primary">{{$id->sumber}}</span>
+          {{-- <span class="text-primary">{{$id->sumber}}</span> --}}
+          <span class="text-primary">TRANSFER</span></span>
           @endif
         </span>
         <table class="" style="border-collapse: collapse">

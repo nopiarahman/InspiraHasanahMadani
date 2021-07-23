@@ -144,8 +144,24 @@ Route::group(['middleware'=>['auth','role:admin,projectmanager']],function(){
     Route::get('/exportPettyCash', 'KasController@exportPettyCash')->name('exportPettyCash');
     Route::get('/exportBulanan', 'LaporanController@exportBulanan')->name('exportBulanan');
     Route::get('/exportTahunan', 'LaporanController@exportTahunan')->name('exportTahunan');
-});
+    
+    Route::get('/pengadaan', 'PengadaanController@pengadaanIndex')->name('pengadaan');
+    Route::get('/barang', 'PengadaanController@barangIndex')->name('barang');
+    Route::get('/cariBarang', 'PengadaanController@cariBarang')->name('cariBarang');
+    Route::get('/isiPengadaan/{id}', 'PengadaanController@isiPengadaanIndex')->name('isiPengadaan');
+    Route::post('/isiPengadaanSimpan/{id}', 'PengadaanController@isiPengadaanSimpan')->name('isiPengadaanSimpan');
+    Route::post('/barangSimpan', 'PengadaanController@barangSimpan')->name('barangSimpan');
+    Route::post('/pengadaanSimpan', 'PengadaanController@pengadaanSimpan')->name('pengadaanSimpan');
+    Route::patch('/editBarang/{id}', 'PengadaanController@editBarang')->name('editBarang');
+    Route::delete('/hapusBarang/{id}', 'PengadaanController@hapusBarang')->name('hapusBarang');
+    Route::delete('/hapusIsiPengadaan/{id}', 'PengadaanController@hapusIsiPengadaan')->name('hapusIsiPengadaan');
+    Route::get('/terimaPengadaan/{id}', 'PengadaanController@terimaPengadaan')->name('terimaPengadaan');
+    Route::get('/tolakPengadaan/{id}', 'PengadaanController@tolakPengadaan')->name('tolakPengadaan');
+    Route::get('/buatTransaksi/{id}', 'PengadaanController@buatTransaksi')->name('buatTransaksi');
+    
+    Route::get('/pengembalian/{id}', 'PengembalianController@buatPengembalian')->name('pengembalian');
 
+});
 Route::group(['middleware'=>['auth','role:projectmanager']],function(){
     
     Route::get('/kelolaUser', 'ProjectManagerController@kelolaUser')->name('kelolaUser');

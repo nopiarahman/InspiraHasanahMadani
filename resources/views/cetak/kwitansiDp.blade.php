@@ -19,13 +19,13 @@
         <div class="page-header">
           <div class="row">
             <div class="col-md-2 col-sm-12">
-              <img src="{{asset('assets/img/favicon.png')}}" alt="" class="pl-4">
+              <img src="{{Storage::url($proyek->logoPT)}}" alt="" class="pl-4">
             </div>
             <div class="col-md-7 col-sm-12">
-              <h4 style="font-weight:900">PT. INSPIRA HASANAH MADANI</h4>
-              <small style="font-size: medium">Jl. Jenderal A. Thalib no 12 Telanaipura. Jambi</small> <br>
-              <small style="font-size: medium"> <i class="fa fa-phone" aria-hidden="true"></i> : 0741-3071990</small><br>
-              <small style="font-size: medium"> <i class="fas fa-envelope    "></i> : inspirahasanahmadani@gmail.com</small>
+              <h4 style="font-weight:900">{{$proyek->namaPT}}</h4>
+              <small style="font-size: medium">{{$proyek->alamatPT}}</small> <br>
+              <small style="font-size: medium"> <i class="fa fa-phone" aria-hidden="true"></i> : {{$proyek->telpPT}}</small><br>
+              <small style="font-size: medium"> <i class="fas fa-envelope    "></i> : {{$proyek->emailPT}}</small>
             </div>
             <div class="col-md-3 col-sm-12">
                 <small style="font-size: medium">Nomor Faktur:            
@@ -104,7 +104,8 @@
           @if($id->sumber == 'Cash' || $id->sumber == 'cash')
           <span class="text-primary">TUNAI</span></span>
           @else
-          <span class="text-primary">{{$id->sumber}}</span>
+          <span class="text-primary">TRANSFER</span></span>
+          {{-- <span class="text-primary">{{$id->sumber}}</span> --}}
           @endif
         </span>
         <table class="" style="border-collapse: collapse">
@@ -158,7 +159,11 @@
     </div>
     <div class="row justify-content-md-center mt-4">
       <div class="align-center ">
-        <span>BNI Syariah | PT . Inspira Hasanah Madani | 2020011334</span>
+        @forelse($rekening as $r)
+        <span>{{$r->namaBank}} | {{$r->atasNama}} | {{$r->noRekening}}</span>
+        @empty
+        -
+        @endforelse
       </div>
     </div>
     <!-- /.row -->
@@ -173,13 +178,13 @@
         <div class="page-header">
           <div class="row">
             <div class="col-md-2 col-sm-12">
-              <img src="{{asset('assets/img/favicon.png')}}" alt="" class="pl-4">
+              <img src="{{Storage::url($proyek->logoPT)}}" alt="" class="pl-4">
             </div>
             <div class="col-md-7 col-sm-12">
-              <h4 style="font-weight:900">PT. INSPIRA HASANAH MADANI</h4>
-              <small style="font-size: medium">Jl. Jenderal A. Thalib no 12 Telanaipura. Jambi</small> <br>
-              <small style="font-size: medium"> <i class="fa fa-phone" aria-hidden="true"></i> : 0741-3071990</small><br>
-              <small style="font-size: medium"> <i class="fas fa-envelope    "></i> : inspirahasanahmadani@gmail.com</small>
+              <h4 style="font-weight:900">{{$proyek->namaPT}}</h4>
+              <small style="font-size: medium">{{$proyek->alamatPT}}</small> <br>
+              <small style="font-size: medium"> <i class="fa fa-phone" aria-hidden="true"></i> : {{$proyek->telpPT}}</small><br>
+              <small style="font-size: medium"> <i class="fas fa-envelope    "></i> : {{$proyek->emailPT}}</small>
             </div>
             <div class="col-md-3 col-sm-12">
                 <small style="font-size: medium">Nomor Faktur:            
@@ -258,7 +263,8 @@
           @if($id->sumber == 'Cash' || $id->sumber == 'cash')
           <span class="text-primary">TUNAI</span></span>
           @else
-          <span class="text-primary">{{$id->sumber}}</span>
+          <span class="text-primary">TRANSFER</span></span>
+          {{-- <span class="text-primary">{{$id->sumber}}</span> --}}
           @endif
         </span>
         <table class="" style="border-collapse: collapse">
@@ -312,7 +318,11 @@
     </div>
     <div class="row justify-content-md-center mt-4">
       <div class="align-center ">
-        <span>BNI Syariah | PT . Inspira Hasanah Madani | 2020011334</span>
+        @forelse($rekening as $r)
+        <span>{{$r->namaBank}} | {{$r->atasNama}} | {{$r->noRekening}}</span>
+        @empty
+        -
+        @endforelse
       </div>
     </div>
     <!-- /.row -->
