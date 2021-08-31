@@ -123,7 +123,7 @@
         var nama = button.data('nama') 
         var modal = $(this)
         modal.find('.modal-text').text('Yakin ingin menghapus pelanggan atas nama ' + nama+' ?')
-        document.getElementById('formHapus').action='/hapusPelanggan/'+id;
+        document.getElementById('formHapus').action='/hapusPelangganNonAktif/'+id;
         })
       });
     </script>
