@@ -443,6 +443,11 @@ class PelangganController extends Controller
         $pelanggan->delete();
         return redirect()->back()->with('status','Pelanggan Dihapus!');
     }
+    public function destroyNonAktif(Pelanggan $id){
+        // dd($id->kavling);
+        $id->delete();
+        return redirect()->back()->with('status','Pelanggan Dihapus!');
+    }
     public function batalAkad(Pelanggan $id){
         // dd($id->kavling->id);
         $cekKavling = kavling::where('pelanggan_id',$id->id)->first();

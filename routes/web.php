@@ -60,6 +60,7 @@ Route::group(['middleware'=>['auth','role:admin,projectmanager']],function(){
     Route::get('/cariKavling', 'PelangganController@cariKavling');
     Route::patch('/batalAkad/{id}', 'PelangganController@batalAkad')->name('batalAkad');
     Route::delete('/hapusPelanggan/{id}', 'PelangganController@destroy')->name('hapusPelanggan');
+    Route::delete('/hapusPelangganNonAktif/{id}', 'PelangganController@destroyNonAktif')->name('hapusPelangganNonAktif');
     
     Route::get('/estimasi', 'EstimasiController@estimasi')->name('estimasi');
     
