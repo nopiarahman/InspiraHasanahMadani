@@ -429,6 +429,7 @@ class PelangganController extends Controller
     {
         $pelanggan = pelanggan::find($id->id);
         $cekKavling = kavling::where('pelanggan_id',$id->id)->first();
+        dd($cekKavling);
         $cekKavling->pembelian->update(['statusPembelian'=>'Ready']);
         if($cekKavling!=null){
             $updateKavling = kavling::find($id->kavling->id)->update(['pelanggan_id'=>0]);

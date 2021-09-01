@@ -130,8 +130,7 @@
                             $('#img-tag').attr('src', e.target.result);
                         }
                         reader.readAsDataURL(input.files[0]);
-                    }
-              
+                    };
                 $("#bukti").change(function(){
                     readURL(this);
                 });

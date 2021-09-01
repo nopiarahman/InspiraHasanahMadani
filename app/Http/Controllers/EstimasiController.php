@@ -20,17 +20,23 @@ class EstimasiController extends Controller
         }
         $cicilanTempo = cicilan::whereBetween('tempo',[$start,$end])->where('proyek_id',proyekId())->where('sisaKewajiban','>',0)->get();
         $cicilanAktif = $cicilanTempo->filter(function ($value, $key) {
-            return $value->pelanggan->kavling != null;
+            if($value->pelanggan != null){
+                return $value->pelanggan->kavling != null;
+            }
         });
         $dpTempo = dp::whereBetween('tempo',[$start,$end])->where('proyek_id',proyekId())->where('sisaDp','>',0)->get();
         $dpAktif = $dpTempo->filter(function ($value, $key) {
-            return $value->pelanggan->kavling != null;
+            if($value->pelanggan != null){
+                return $value->pelanggan->kavling != null;
+            }
         });
         // dd($dpAktif);
         /* Tunggakan */
         $semuadp=dp::where('tempo','<',$start)->where('proyek_id',proyekId())->where('sisaDp','>',0)->get();
         $semuaTunggakanDP = $semuadp->filter(function ($value, $key) {
-            return $value->pelanggan->kavling != null;
+            if($value->pelanggan != null){
+                return $value->pelanggan->kavling != null;
+            }
         });
         $DPtertunggak=[];
         foreach($semuaTunggakanDP as $dp){
@@ -40,7 +46,9 @@ class EstimasiController extends Controller
         }
         $semuaCicilan=cicilan::where('tempo','<',$start)->where('proyek_id',proyekId())->where('sisaKewajiban','>',0)->get();
         $semuaTunggakanCicilan = $semuaCicilan->filter(function ($value, $key) {
-            return $value->pelanggan->kavling != null;
+            if($value->pelanggan != null){
+                return $value->pelanggan->kavling != null;
+            }
         });
         $cicilanTertunggak=[];
         foreach($semuaTunggakanCicilan as $cicilan){

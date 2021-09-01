@@ -116,7 +116,7 @@
         <aside id="sidebar-wrapper">
           <div class="sidebar-brand">
             <a href="{{route('home')}}">
-              {{-- <img src="{{asset('assets/img/logo-mini.png')}}" alt=""> --}}
+              <img src="{{asset('assets/img/logo-mini.png')}}" alt="">
             </a>
           </div>
           <div class="sidebar-brand sidebar-brand-sm">
