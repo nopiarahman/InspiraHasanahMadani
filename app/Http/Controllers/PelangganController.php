@@ -247,9 +247,6 @@ class PelangganController extends Controller
     public function update(Request $request, pelanggan $id){
         $rules=[
             'nama'=>'required',
-            'tempatLahir'=>'required',
-            'tanggalLahir'=>'required',
-            'nomorTelepon'=>'required',
         ];
         $costumMessages = [
             'required'=>':attribute tidak boleh kosong'
