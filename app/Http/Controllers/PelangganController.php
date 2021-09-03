@@ -71,7 +71,7 @@ class PelangganController extends Controller
         /* Membuat Akun User */
         $kavlingPelanggan=kavling::where('id',$request->kavling_id)->first();
         // dd($kavlingPelanggan->blok);
-        $parts = explode("@",$request->email);
+        // $parts = explode("@",$request->email);
         $username =strtolower("kta".$kavlingPelanggan->blok);
         // dd($username);
         $sandi = Carbon::parse($request->tanggalLahir)->isoFormat('DDMMYY');
@@ -82,7 +82,7 @@ class PelangganController extends Controller
         $requestUser ['password'] = Hash::make($sandi);
         $requestUser ['role'] = 'pelanggan';
         User::create($requestUser);
-        $cekUser = User::where('email',$request->email)->first();
+        $cekUser = User::where('username',$username)->first();
         $detail = detailUser::create([
             'user_id'=>$cekUser->id
         ]);
@@ -100,22 +100,17 @@ class PelangganController extends Controller
             $sisaCicilan=0;
         }
         $requestpelanggan = pelanggan::create([
-            'nik'=>$request->nik,
             'nama'=>$request->nama,
-            'email'=>$request->email,
-            'tempatLahir'=>$request->tempatLahir,
-            'tanggalLahir'=>$request->tanggalLahir,
             'alamat'=>$request->alamat,
             'jenisKelamin'=>$request->jenisKelamin,
             'statusPernikahan'=>$request->statusPernikahan,
             'pekerjaan'=>$request->pekerjaan,
-            'nomorTelepon'=>$request->nomorTelepon,
             'noDarurat'=>$request->noDarurat,
             'proyek_id'=>proyekId(),
             'user_id'=>$cekUser->id,
         ]);
         $requestpelanggan->save();
-        $cariPelanggan=pelanggan::where('email',$request->email)->first(); 
+        $cariPelanggan=pelanggan::where('user_id',$cekUser->id)->first(); 
         if($request->tenorDP != null){
             $tenorDP = $request->tenorDP;
         }else{
@@ -253,14 +248,9 @@ class PelangganController extends Controller
         ];
         $requestpelanggan = ([
             'nama'=>$request->nama,
-            'email'=>$request->email,
-            'tempatLahir'=>$request->tempatLahir,
-            'tanggalLahir'=>$request->tanggalLahir,
             'alamat'=>$request->alamat,
             'jenisKelamin'=>$request->jenisKelamin,
-            'statusPernikahan'=>$request->statusPernikahan,
             'pekerjaan'=>$request->pekerjaan,
-            'nomorTelepon'=>$request->nomorTelepon,
             'proyek_id'=>proyekId(),
         ]);
         $this->validate($request,$rules,$costumMessages);
