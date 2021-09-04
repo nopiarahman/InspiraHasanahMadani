@@ -66,7 +66,7 @@ class PelangganController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request){
-        // dd($request);
+        dd($request);
         
         /* Membuat Akun User */
         $kavlingPelanggan=kavling::where('id',$request->kavling_id)->first();
@@ -100,11 +100,16 @@ class PelangganController extends Controller
             $sisaCicilan=0;
         }
         $requestpelanggan = pelanggan::create([
+            'nik'=>$request->nik,
             'nama'=>$request->nama,
+            'email'=>$request->email,
+            'tempatLahir'=>$request->tempatLahir,
+            'tanggalLahir'=>$request->tanggalLahir,
             'alamat'=>$request->alamat,
             'jenisKelamin'=>$request->jenisKelamin,
             'statusPernikahan'=>$request->statusPernikahan,
             'pekerjaan'=>$request->pekerjaan,
+            'nomorTelepon'=>$request->nomorTelepon,
             'noDarurat'=>$request->noDarurat,
             'proyek_id'=>proyekId(),
             'user_id'=>$cekUser->id,
