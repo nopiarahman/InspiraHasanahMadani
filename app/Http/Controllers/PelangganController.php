@@ -66,7 +66,7 @@ class PelangganController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request){
-        dd($request);
+        // dd($request);
         
         /* Membuat Akun User */
         $kavlingPelanggan=kavling::where('id',$request->kavling_id)->first();
