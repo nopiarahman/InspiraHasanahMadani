@@ -252,10 +252,17 @@ class PelangganController extends Controller
             'required'=>':attribute tidak boleh kosong'
         ];
         $requestpelanggan = ([
+            'nik'=>$request->nik,
             'nama'=>$request->nama,
+            'email'=>$request->email,
+            'tempatLahir'=>$request->tempatLahir,
+            'tanggalLahir'=>$request->tanggalLahir,
             'alamat'=>$request->alamat,
             'jenisKelamin'=>$request->jenisKelamin,
+            'statusPernikahan'=>$request->statusPernikahan,
             'pekerjaan'=>$request->pekerjaan,
+            'nomorTelepon'=>$request->nomorTelepon,
+            'noDarurat'=>$request->noDarurat,
             'proyek_id'=>proyekId(),
         ]);
         $this->validate($request,$rules,$costumMessages);
@@ -421,7 +428,6 @@ class PelangganController extends Controller
     {
         $pelanggan = pelanggan::find($id->id);
         $cekKavling = kavling::where('pelanggan_id',$id->id)->first();
-        dd($cekKavling);
         $cekKavling->pembelian->update(['statusPembelian'=>'Ready']);
         if($cekKavling!=null){
             $updateKavling = kavling::find($id->kavling->id)->update(['pelanggan_id'=>0]);
