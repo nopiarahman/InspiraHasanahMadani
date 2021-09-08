@@ -140,8 +140,9 @@ class KasController extends Controller
         // dd($requestData);
         $cekTransaksiSebelum=transaksi::where('tanggal','<=',$request->tanggal)->orderBy('no')->get();
         /* jika transaksi sebelumnya ada value */
-        if($cekTransaksiSebelum != null){
-            $sebelum = $cekTransaksiSebelum->last();
+        $sebelum = $cekTransaksiSebelum->last();
+        // dd($cekTransaksiSebelum);
+        if($cekTransaksiSebelum->first() != null){
             $requestData['no']=$sebelum->no+1;
             $requestData['saldo']=$sebelum->saldo+$jumlah;
             $requestData['kredit']=str_replace(',', '', $request->jumlah);
