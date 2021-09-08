@@ -100,12 +100,15 @@ class KasController extends Controller
             $requestData['saldo']=$sebelum->saldo+$jumlah;
             $requestData['kredit']=str_replace(',', '', $request->jumlah);
             $requestData['proyek_id']=proyekId();
+            $requestData['jumlah']=null;
         }else{
             /* jika tidak ada value simpan ke akhir transaksi */
             $requestData['no']=1;
             $requestData['saldo']=$jumlah;
             $requestData['kredit']=str_replace(',', '', $request->jumlah);
             $requestData['proyek_id']=proyekId();
+            $requestData['jumlah']=null;
+
         }
         /* cek transaksi sesudah input */
         $cekTransaksi=pettyCash::where('tanggal','>',$request->tanggal)->orderBy('no')->where('proyek_id',proyekId())->get();
@@ -140,19 +143,22 @@ class KasController extends Controller
         // dd($requestData);
         $cekTransaksiSebelum=transaksi::where('tanggal','<=',$request->tanggal)->orderBy('no')->get();
         /* jika transaksi sebelumnya ada value */
-        $sebelum = $cekTransaksiSebelum->last();
         // dd($cekTransaksiSebelum);
         if($cekTransaksiSebelum->first() != null){
+            $sebelum = $cekTransaksiSebelum->last();
             $requestData['no']=$sebelum->no+1;
             $requestData['saldo']=$sebelum->saldo+$jumlah;
             $requestData['kredit']=str_replace(',', '', $request->jumlah);
             $requestData['proyek_id']=proyekId();
+            $requestData['jumlah']=null;
         }else{
             /* jika tidak ada value simpan ke akhir transaksi */
             $requestData['no']=noTransaksiTerakhir()+1;
             $requestData['saldo']=saldoTerakhir()+$jumlah;
             $requestData['kredit']=str_replace(',', '', $request->jumlah);
             $requestData['proyek_id']=proyekId();
+            $requestData['jumlah']=null;
+
         }
         /* cek transaksi sesudah input */
         $cekTransaksi=transaksi::where('tanggal','>',$request->tanggal)->orderBy('no')->get();
