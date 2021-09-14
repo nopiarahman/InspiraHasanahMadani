@@ -122,7 +122,7 @@ class TransaksiController extends Controller
         /* cek apakah ada transaksi sebelumnya */
         $cekTransaksiSebelum=transaksi::where('tanggal','<=',$request->tanggal)->orderBy('no')->where('proyek_id',proyekId())->get();
         /* jika transaksi sebelumnya ada value */
-        if($cekTransaksiSebelum != null){
+        if($cekTransaksiSebelum->first() != null){
             $sebelum = $cekTransaksiSebelum->last();
             $requestData['no']=$sebelum->no+1;
             $requestData['saldo']=$sebelum->saldo-$jumlah;

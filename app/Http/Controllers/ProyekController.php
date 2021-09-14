@@ -250,12 +250,12 @@ class ProyekController extends Controller
             $akhir = Carbon::parse($request->end)->isoFormat('YYYY-MM-DD');
             // dd($mulai);
             $transaksiKeluar=transaksi::whereBetween('tanggal',[$mulai,$akhir])
-                            ->where('rabUnit_id',$id->id)->paginate(20);
+                            ->where('rabUnit_id',$id->id)->get();
             // dd($transaksiKeluar);
             $total=transaksi::where('rabUnit_id',$id->id)->get();
         }else{
             $total=transaksi::where('rabUnit_id',$id->id)->get();
-            $transaksiKeluar=transaksi::where('rabUnit_id',$id->id)->paginate(20);
+            $transaksiKeluar=transaksi::where('rabUnit_id',$id->id)->get();
         }
         return view('proyek/DataProyek/pengeluaranUnit',compact('transaksiKeluar','id','totalRAB','total'));        
     }
@@ -270,12 +270,12 @@ class ProyekController extends Controller
             $akhir = Carbon::parse($request->end)->isoFormat('YYYY-MM-DD');
             // dd($mulai);
             $transaksiKeluar=transaksi::whereBetween('tanggal',[$mulai,$akhir])
-                            ->where('rab_id',$id->id)->paginate(20);
+                            ->where('rab_id',$id->id)->get();
             // dd($transaksiKeluar);
             $total=transaksi::where('rab_id',$id->id)->get();
         }else{
             $total=transaksi::where('rab_id',$id->id)->get();
-            $transaksiKeluar=transaksi::where('rab_id',$id->id)->paginate(20);
+            $transaksiKeluar=transaksi::where('rab_id',$id->id)->get();
         }
         return view('proyek/DataProyek/pengeluaranUnit',compact('transaksiKeluar','id','totalRAB','total'));  
     }
