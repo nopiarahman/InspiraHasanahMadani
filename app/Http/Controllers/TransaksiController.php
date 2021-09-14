@@ -69,12 +69,12 @@ class TransaksiController extends Controller
             $start = Carbon::parse($request->start)->isoFormat('YYYY-MM-DD');
             $end = Carbon::parse($request->end)->isoFormat('YYYY-MM-DD');
             $transaksiKeluar=transaksi::whereBetween('tanggal',[$start,$end])
-                            ->whereNotNull('debet')->where('proyek_id',proyekId())->orderBy('no')->get();
+                            ->whereNotNull('debet')->where('proyek_id',proyekId())->orderBy('tanggal')->get();
         }else{
             $start = Carbon::now()->firstOfMonth()->isoFormat('YYYY-MM-DD');
             $end = Carbon::now()->endOfMonth()->isoFormat('YYYY-MM-DD');
             $transaksiKeluar=transaksi::whereBetween('tanggal',[$start,$end])
-                            ->whereNotNull('debet')->where('proyek_id',proyekId())->orderBy('no')->get();
+                            ->whereNotNull('debet')->where('proyek_id',proyekId())->orderBy('tanggal')->get();
         }
         return view ('transaksi/keluarIndex',compact('semuaAkun','perKategori','kategoriAkun','transaksiKeluar','perHeader','semuaRAB','perJudul','perHeaderUnit','semuaRABUnit','perJudulUnit','start','end'));
     }
