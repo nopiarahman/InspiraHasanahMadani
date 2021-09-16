@@ -291,7 +291,7 @@ class PelangganController extends Controller
             $sisaCicilan=0;
         }
         $rules=[
-            'kavling_id'=>'required',
+            // 'kavling_id'=>'required',
             'harga'=>'required',
             'dp'=>'required',
             'tenor'=>'required',
@@ -301,8 +301,14 @@ class PelangganController extends Controller
         ];
         $this->validate($request,$rules,$costumMessages);
         // dd($request);
+        if($request->kavling_id){
+            $kavlingBaru = $request->kavling_id;
+        }else{
+            $kavlingBaru = $cekPembelian->kavling_id;
+            $kavlingsebelum=kavling::find($cekPembelian->kavling_id);
+        }
         $requestPembelian = ([
-            'kavling_id'=>$request->kavling_id,
+            'kavling_id'=>$kavlingBaru,
             'nomorAkad'=>$request->nomorAkad,
             'tanggalAkad'=>$request->tanggalAkad,
             'harga'=>str_replace(',', '', $request->harga),
@@ -326,94 +332,115 @@ class PelangganController extends Controller
             if($cekKios != null){
                 /* dihapus dulu kepemilikan kios */
                 $updatePembelian = pembelian::find($cekPembelian->id)->update(['kios_id'=>null]);
-                /* buat rumah baru di kavling terpilih */
-                $data ['kavling_id']=$request->kavling_id;
-                $data ['proyek_id']=proyekId();
-                $data ['pelanggan_id']=$id->id;
-                $data ['luasBangunan']=$request->luasBangunan;
-                rumah::create($data);
                 /* hapus kios */
                 kios::where('pelanggan_id',$id->id)->delete();
-            }
-            /* update data rumah dari rumah sebelumnya */
-            $updateRumah = rumah::where('kavling_id',$request->kavling_id)->update(['luasBangunan'=>$request->luasBangunan,'kavling_id'=>$request->kavling_id]);
-            /* update pembelian */
-            $cekRumahKavlingSebelum = rumah::where('kavling_id',$request->kavling_id)->first();
-            // dd($cariRumah);
-            if($cekRumahKavlingSebelum == null){
-                $data ['kavling_id']=$request->kavling_id;
+                rumah::where('pelanggan_id',$id->id)->delete();
+                /* buat rumah baru di kavling terpilih */
+                $data ['kavling_id']=$kavlingBaru;
                 $data ['proyek_id']=proyekId();
                 $data ['pelanggan_id']=$id->id;
                 $data ['luasBangunan']=$request->luasBangunan;
                 rumah::create($data);
             }
+            /* update data rumah dari rumah sebelumnya */
+            if($request->kavling_id){
+                $updateRumah = rumah::where('kavling_id',$request->kavling_id)->update(['luasBangunan'=>$request->luasBangunan]);
+                 /* update pembelian */
+                $cariRumah = rumah::where('kavling_id',$request->kavling_id)->first();
+                $updatePembelian=pembelian::where('kavling_id',$kavlingBaru)->update(['rumah_id'=>$cariRumah->id]);
+                /* update RAB unit */
+                $cariKavling=kavling::find($request->kavling_id);
+                if($cekKios != null){
+                    $cariruRabUnit = rabUnit::where('isi',$cekKavling->blok)->update(['isi'=>$cariKavling->blok,'jenisUnit'=>'rumah']);
+                }else{
+                    $cariruRabUnit = rabUnit::where('isi',$cekKavling->blok)->update(['isi'=>$cariKavling->blok]);
+                }
+                /* update Akun */
+                $updateAkun= akun::where('kodeAkun','IH-30-'.$cekKavling->blok)->update(['kodeAkun'=>'IH-30-'.$cariKavling->blok,'namaAkun'=>'Biaya Pembangunan Rumah '.$cariKavling->blok]);
+                $updateAkun= akun::where('kodeAkun','IH-31-'.$cekKavling->blok)->update(['kodeAkun'=>'IH-31-'.$cariKavling->blok,'namaAkun'=>'Biaya Pembebanan Per-Unit '.$cariKavling->blok]);
+                /* update kavling */
+                $updateKepemilikanKavling=kavling::find($cekKavling->id)->update(['pelanggan_id'=>0]);
+                $updateKavling = kavling::find($cariKavling->id)->update(['pelanggan_id'=>$id->id]);
+            }
             if($cekRumah !=null){
-                $updateRumahPelangganSebelum = rumah::where('kavling_id',$cekKavling->id)->delete();
+                $updateRumahPelangganSebelum = rumah::where('pelanggan_id',$id->id)->delete();
+                /* Buat Rumah jika sebelum nya belum punya rumah */
+                $data ['kavling_id']=$kavlingBaru;
+                $data ['proyek_id']=proyekId();
+                $data ['pelanggan_id']=$id->id;
+                $data ['luasBangunan']=$request->luasBangunan;
+                rumah::create($data);
+                $rumah=rumah::where('kavling_id',$kavlingBaru)->first();
+                $updatePembelian=pembelian::where('kavling_id',$kavlingBaru)->update(['rumah_id'=>$rumah->id]);
+            }elseif($cekRumah==null){
+                $updateRumahPelangganSebelum = rumah::where('pelanggan_id',$id->id)->delete();
+                $data ['kavling_id']=$kavlingBaru;
+                $data ['proyek_id']=proyekId();
+                $data ['pelanggan_id']=$id->id;
+                $data ['luasBangunan']=$request->luasBangunan;
+                rumah::create($data);
+                $updatePembelian=pembelian::where('kavling_id',$kavlingBaru)->update(['rumah_id'=>$kavlingsebelum->rumah->id]);
             }
-            $cariRumah = rumah::where('kavling_id',$request->kavling_id)->first();
-            $updatePembelian=pembelian::where('kavling_id',$request->kavling_id)->update(['rumah_id'=>$cariRumah->id]);
-            /* update RAB unit */
-            $cariKavling=kavling::find($request->kavling_id);
-            if($cekKios != null){
-                $cariruRabUnit = rabUnit::where('isi',$cekKavling->blok)->update(['isi'=>$cariKavling->blok,'jenisUnit'=>'rumah']);
-            }else{
-                $cariruRabUnit = rabUnit::where('isi',$cekKavling->blok)->update(['isi'=>$cariKavling->blok]);
-            }
-            /* update Akun */
-            $updateAkun= akun::where('kodeAkun','IH-30-'.$cekKavling->blok)->update(['kodeAkun'=>'IH-30-'.$cariKavling->blok,'namaAkun'=>'Biaya Pembangunan Rumah '.$cariKavling->blok]);
-            $updateAkun= akun::where('kodeAkun','IH-31-'.$cekKavling->blok)->update(['kodeAkun'=>'IH-31-'.$cariKavling->blok,'namaAkun'=>'Biaya Pembebanan Per-Unit '.$cariKavling->blok]);
-            /* update kavling */
-            $updateKepemilikanKavling=kavling::find($cekKavling->id)->update(['pelanggan_id'=>0]);
-            $updateKavling = kavling::find($cariKavling->id)->update(['pelanggan_id'=>$id->id]);
         }elseif($request->includePembelian =='Kios'){
             // dd($cekRumah);
             if($cekRumah != null){
                 /* dihapus dulu kepemilikan kios */
                 $updatePembelian = pembelian::find($cekPembelian->id)->update(['rumah_id'=>null]);
-                /* buat rumah baru di kavling terpilih */
-                $data ['kavling_id']=$request->kavling_id;
-                $data ['proyek_id']=proyekId();
-                $data ['pelanggan_id']=$id->id;
-                $data ['luasBangunan']=$request->luasBangunan;
-                kios::create($data);
-                /* hapus kios */
+                /* hapus rumah */
                 rumah::where('pelanggan_id',$id->id)->delete();
-            }
-            /* cek dan rubah jika pembelian sebelumnya adalah kios */
-            if($cekRumah != null){
-                /* dihapus dulu kepemilikan rumah */
-                $updatePembelian = pembelian::find($cekPembelian->id)->update(['rumah_id'=>null]);
-            }
-            /* update data kios dari kios sebelumnya */
-            $updateKios = kios::where('kavling_id',$request->kavling_id)->update(['luasBangunan'=>$request->luasBangunan,'kavling_id'=>$request->kavling_id]);
-            /* update data pembelian */
-            $cekKiosKavlingSebelum = kios::where('kavling_id',$request->kavling_id)->first();
-            // dd($cariRumah);
-            if($cekKiosKavlingSebelum == null){
-                $data ['kavling_id']=$request->kavling_id;
+                kios::where('pelanggan_id',$id->id)->delete();
+                /* buat kios baru di kavling terpilih */
+                $data ['kavling_id']=$kavlingBaru;
                 $data ['proyek_id']=proyekId();
                 $data ['pelanggan_id']=$id->id;
                 $data ['luasBangunan']=$request->luasBangunan;
                 kios::create($data);
+            }
+            if($request->kavling_id){
+                /* update data kios dari kios sebelumnya */
+                $updateKios = kios::where('kavling_id',$request->kavling_id)->update(['luasBangunan'=>$request->luasBangunan,'kavling_id'=>$request->kavling_id]);
+                /* update pembelian */
+                $cariKios=kios::where('kavling_id',$request->kavling_id)->first();
+                $updatePembelian=pembelian::where('kavling_id',$request->kavling_id)->update(['kios_id'=>$cariKios->id]);
+                 /* update RAB unit */
+                $cariKavling=kavling::find($request->kavling_id);
+                if($cekRumah != null){
+                    $cariruRabUnit = rabUnit::where('isi',$cekKavling->blok)->update(['isi'=>$cariKavling->blok,'jenisUnit'=>'kios']);
+                }else{
+                    $cariruRabUnit = rabUnit::where('isi',$cekKavling->blok)->update(['isi'=>$cariKavling->blok]);
+                }
+                /* update Akun */
+                $updateAkun= akun::where('kodeAkun','IH-30-'.$cekKavling->blok)->update(['kodeAkun'=>'IH-30-'.$cariKavling->blok,'namaAkun'=>'Biaya Pembangunan Kios '.$cariKavling->blok]);
+                $updateAkun= akun::where('kodeAkun','IH-31-'.$cekKavling->blok)->update(['kodeAkun'=>'IH-31-'.$cariKavling->blok,'namaAkun'=>'Biaya Pembebanan Per-Unit '.$cariKavling->blok]);
+                /* update kavling */
+                $updateKepemilikanKavling=kavling::find($cekKavling->id)->update(['pelanggan_id'=>0]);
+                $updateKavling = kavling::find($cariKavling->id)->update(['pelanggan_id'=>$id->id]);
+            }
+            /* cek dan rubah jika pembelian sebelumnya adalah rumah */
+            if($cekKios != null){
+                /* dihapus dulu kepemilikan rumah */
+                $updatePembelian = pembelian::find($cekPembelian->id)->update(['kios_id'=>null]);
             }
             if($cekKios !=null){
-                $updateKiosPelangganSebelum = kios::where('kavling_id',$cekKavling->id)->delete();
+                $updateKiosPelangganSebelum = kios::where('pelanggan_id',$id->id)->delete();
+                $data ['kavling_id']=$kavlingBaru;
+                $data ['proyek_id']=proyekId();
+                $data ['pelanggan_id']=$id->id;
+                $data ['luasBangunan']=$request->luasBangunan;
+                kios::create($data);
+                $kios=kios::where('kavling_id',$kavlingBaru)->first();
+                $updatePembelian=pembelian::where('kavling_id',$kavlingBaru)->update(['kios_id'=>$kios->id]);
+            }elseif($cekKios==null){
+                $updateKiosPelangganSebelum = kios::where('pelanggan_id',$id->id)->delete();
+                $data ['kavling_id']=$kavlingBaru;
+                $data ['proyek_id']=proyekId();
+                $data ['pelanggan_id']=$id->id;
+                $data ['luasBangunan']=$request->luasBangunan;
+                kios::create($data);
+                $updatePembelian=pembelian::where('kavling_id',$kavlingBaru)->update(['kios_id'=>$kavlingsebelum->kios->id]);
             }
-            $cariKios=kios::where('kavling_id',$request->kavling_id)->first();
-            $updatePembelian=pembelian::where('kavling_id',$request->kavling_id)->update(['kios_id'=>$cariKios->id]);
-            /* update RAB unit */
-            $cariKavling=kavling::find($request->kavling_id);
-            if($cekRumah != null){
-                $cariruRabUnit = rabUnit::where('isi',$cekKavling->blok)->update(['isi'=>$cariKavling->blok,'jenisUnit'=>'kios']);
-            }else{
-                $cariruRabUnit = rabUnit::where('isi',$cekKavling->blok)->update(['isi'=>$cariKavling->blok]);
-            }
-            /* update Akun */
-            $updateAkun= akun::where('kodeAkun','IH-30-'.$cekKavling->blok)->update(['kodeAkun'=>'IH-30-'.$cariKavling->blok,'namaAkun'=>'Biaya Pembangunan Kios '.$cariKavling->blok]);
-            $updateAkun= akun::where('kodeAkun','IH-31-'.$cekKavling->blok)->update(['kodeAkun'=>'IH-31-'.$cariKavling->blok,'namaAkun'=>'Biaya Pembebanan Per-Unit '.$cariKavling->blok]);
-            /* update kavling */
-            $updateKepemilikanKavling=kavling::find($cekKavling->id)->update(['pelanggan_id'=>0]);
-            $updateKavling = kavling::find($cariKavling->id)->update(['pelanggan_id'=>$id->id]);
+            
+           
         }
         return redirect()->back()->with('startus','Data Unit Pelanggan berhasil diedit');
     }

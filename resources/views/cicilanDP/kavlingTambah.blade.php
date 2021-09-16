@@ -82,6 +82,17 @@
           </div>
         </div>
         <div class="form-group row mb-4">
+          <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Sisa DP</label>
+          <div class="input-group col-sm-12 col-md-7">
+            <div class="input-group-prepend">
+              <div class="input-group-text">
+                Rp
+              </div>
+            </div>
+            <input type="text" readonly class="akadDp form-control"  value="{{number_format($id->dp-$sampaiSekarang->sum('jumlah'))}} " id="totalDiskon">
+          </div>
+        </div>
+        <div class="form-group row mb-4">
           <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Pembayaran DP</label>
           <div class="input-group col-sm-12 col-md-7">
             <div class="input-group-prepend">
@@ -158,7 +169,7 @@ function cash(){
           <th scope="col">No</th>
           <th scope="col">Tanggal</th>
           <th scope="col">Jumlah</th>
-          <th scope="col">Sisa DP</th>
+          {{-- <th scope="col">Sisa DP</th> --}}
           <th scope="col">Nomor Faktur</th>
           <th scope="col">Aksi</th>
         </tr>
@@ -169,7 +180,7 @@ function cash(){
           <th scope="row">{{$loop->iteration}}</th>
           <td>{{formatTanggal($cicilanDp->tanggal)}}</td>
           <td>Rp.{{number_format($cicilanDp->jumlah)}}</td>
-          <td>Rp.{{number_format($cicilanDp->sisaDp)}}</td>
+          {{-- <td>Rp.{{number_format($cicilanDp->sisaDp)}}</td> --}}
           <td>
             @if(jenisKepemilikan($id->pelanggan_id)=='Kavling')
             DK

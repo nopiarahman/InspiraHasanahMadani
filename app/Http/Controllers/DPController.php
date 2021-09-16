@@ -25,7 +25,10 @@ class DPController extends Controller
         $daftarCicilanDp = dp::where('pembelian_id',$id->id)->get();
         $rekening = rekening::where('proyek_id',proyekId())->get();
         // dd($rekening);
-        return view ('cicilanDp/kavlingTambah',compact('id','daftarCicilanDp','rekening'));
+        $DpPertama = Dp::where('pembelian_id',$id->id)->first();
+        $sampaiSekarang = dp::where('pembelian_id',$id->id)->get();
+        // dd($sampaiSekarang);
+        return view ('cicilanDp/kavlingTambah',compact('id','daftarCicilanDp','rekening','sampaiSekarang'));
     }
     public function DPKavlingSimpan(Request $request){
         // dd($request);
