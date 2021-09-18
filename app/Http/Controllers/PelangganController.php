@@ -271,11 +271,12 @@ class PelangganController extends Controller
         return redirect()->back()->with('status','Pelanggan berhasil dirubah');
     }
     public function updateUnit(Pelanggan $id, Request $request){
-        $cekPembelian=$id->pembelian->first();
+        $cekPembelian=pembelian::where('pelanggan_id',$id->id)->first();
         $cekRumah=$cekPembelian->rumah;
         $cekKios=$cekPembelian->kios;
         $cekKavling=$id->kavling;
         // dd($id);
+        // dd($request);
         // dd($cekRumah);
         // dd($cekRumah->kavling->blok);
         $terbayar=dp::where('pembelian_id',$cekPembelian->id)->get()->sum('jumlah');
@@ -324,6 +325,7 @@ class PelangganController extends Controller
             'pelanggan_id'=>$id->id,
             'luasBangunan'=>$request->luasBangunan,
         ]);
+        // dd($cekPembelian);
         /* update pembelian dibawah */
         $cekPembelian->update($requestPembelian);
         /* simpan data Rumah dan Kios*/

@@ -903,7 +903,7 @@
 <script type="text/javascript">
   function hitung(){
   var harga = parseInt((document.getElementById('harga').value).replace(/,/g, ''));
-  var diskon = parseInt((document.getElementById('diskon').value).replace(/,/g, ''));
+  var diskon = parseFloat((document.getElementById('diskon').value).replace(/,/g, ''));
   var dp = parseInt((document.getElementById('dp').value).replace(/,/g, ''));
 
   var totalDiskon = harga*diskon/100;
