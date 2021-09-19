@@ -121,13 +121,14 @@ class PelangganController extends Controller
         }else{
             $tenorDP = 1;
         }
+        $potonganDp=str_replace(',', '', $request->potonganDp);
         $requestPembelian = pembelian::create([
             'kavling_id'=>$request->kavling_id,
             'nomorAkad'=>$request->nomorAkad,
             'tanggalAkad'=>$request->tanggalAkad,
             'harga'=>str_replace(',', '', $request->harga),
             'diskon'=>str_replace(',', '', $request->totalDiskon),
-            'dp'=>str_replace(',', '', $request->dp),
+            'dp'=>str_replace(',', '', $request->dp)-$potonganDp,
             'sisaKewajiban'=>str_replace(',', '', $request->sisaKewajiban),
             'sisaDp'=>$sisaDp,
             'sisaCicilan'=>$sisaCicilan,
@@ -140,6 +141,7 @@ class PelangganController extends Controller
             'luasBangunan'=>$request->luasBangunan,
             'statusPembelian'=>$request->statusPembelian,
             'tanggalBooking'=>$request->tanggalBooking,
+            'potonganDp'=>$potonganDp,
         ]);$requestPembelian->save();
         /* simpan data Rumah dan Kios*/
         if($request->includePembelian =='Rumah'){
@@ -277,6 +279,8 @@ class PelangganController extends Controller
         $cekKavling=$id->kavling;
         // dd($id);
         // dd($request);
+        /* Potongan DP */
+        $potonganDp=str_replace(',', '', $request->potonganDp);
         // dd($cekRumah);
         // dd($cekRumah->kavling->blok);
         $terbayar=dp::where('pembelian_id',$cekPembelian->id)->get()->sum('jumlah');
@@ -314,7 +318,7 @@ class PelangganController extends Controller
             'tanggalAkad'=>$request->tanggalAkad,
             'harga'=>str_replace(',', '', $request->harga),
             'diskon'=>str_replace(',', '', $request->totalDiskon),
-            'dp'=>str_replace(',', '', $request->dp),
+            'dp'=>str_replace(',', '', $request->dp)-$potonganDp,
             'sisaKewajiban'=>str_replace(',', '', $request->sisaKewajiban),
             'sisaDp'=>$sisaDp,
             'sisaCicilan'=>$sisaCicilan,
@@ -324,6 +328,7 @@ class PelangganController extends Controller
             'proyek_id'=>proyekId(),
             'pelanggan_id'=>$id->id,
             'luasBangunan'=>$request->luasBangunan,
+            'potonganDp'=>$potonganDp,
         ]);
         // dd($cekPembelian);
         /* update pembelian dibawah */
@@ -467,6 +472,8 @@ class PelangganController extends Controller
                 $updateKios = kios::find($id->kios->id)->update(['pelanggan_id'=>0]);
             }
         }
+        $user=user::find($id->user_id);
+        $user->delete();
         $pelanggan->delete();
         return redirect()->back()->with('status','Pelanggan Dihapus!');
     }

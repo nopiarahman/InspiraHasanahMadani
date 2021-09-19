@@ -637,3 +637,7 @@ function cekPembayaranEstimasi($cicilanId){
     }
         return null;
 }
+function cekTotalDp($pembelianId){
+    $total = dp::where('pembelian_id',$pembelianId)->get();
+    return $total->sum('jumlah');
+}

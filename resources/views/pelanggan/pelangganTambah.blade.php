@@ -343,6 +343,17 @@
                 }
               </script>
               <div class="form-group row mb-4">
+                <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Potongan DP</label>
+                <div class="input-group col-sm-12 col-md-7">
+                  <div class="input-group-prepend">
+                    <div class="input-group-text">
+                      Rp
+                    </div>
+                  </div>
+                  <input type="text" class="form-control potonganDp" id="potonganDp" name="potonganDp" value="">
+                </div>
+              </div>
+              <div class="form-group row mb-4">
                 <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Sisa Kewajiban</label>
                 <div class="input-group col-sm-12 col-md-7">
                   <div class="input-group-prepend">
@@ -449,7 +460,8 @@
   var harga = parseInt((document.getElementById('harga').value).replace(/,/g, ''));
   var diskon = parseFloat((document.getElementById('diskon').value).replace(/,/g, ''));
   var dp = parseInt((document.getElementById('dp').value).replace(/,/g, ''));
-
+  var potonganDp = parseInt((document.getElementById('potonganDp').value).replace(/,/g, ''));
+    console.log(potonganDp);
   var totalDiskon = harga*diskon/100;
   if(isNaN(totalDiskon)){
     document.getElementById("totalDiskon").value =0;
@@ -460,13 +472,13 @@
       numeral: true,
       numeralThousandsGroupStyle: 'thousand'
     });
-    var kewajiban = harga-dp-totalDiskon;
+    var kewajiban = harga-dp-totalDiskon-potonganDp;
     }
-
+    console.log(kewajiban-potonganDp);
     if(isNaN(kewajiban)){
       document.getElementById("sisaKewajiban").value =0;
     }else{
-    document.getElementById("sisaKewajiban").value = kewajiban; 
+    document.getElementById("sisaKewajiban").value = kewajiban-potonganDp; 
     var cleave = new Cleave('.sisaKewajiban', {
       numeral: true,
       numeralThousandsGroupStyle: 'thousand'
@@ -501,6 +513,10 @@
       numeralThousandsGroupStyle: 'thousand'
   });
   var cleave = new Cleave('.dp', {
+      numeral: true,
+      numeralThousandsGroupStyle: 'thousand'
+  });
+  var cleave = new Cleave('.potonganDp', {
       numeral: true,
       numeralThousandsGroupStyle: 'thousand'
   });

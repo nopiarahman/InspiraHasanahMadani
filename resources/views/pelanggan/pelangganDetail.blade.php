@@ -152,8 +152,8 @@
               </tr>
               <tr>
                 <th>Sisa Dp</th>
-                <td>Rp.{{number_format($dataPembelian->sisaDp)}}  
-                  @if($dataPembelian->sisaDp==0)
+                <td>Rp.{{number_format($dataPembelian->dp-cekTotalDp($dataPembelian->id))}}  
+                  @if($dataPembelian->dp <= cekTotalDp($dataPembelian->id))
                   /
                   <span class="badge badge-info text-white"><i class="fas fa-check"></i> Lunas</span>
                   @endif 
@@ -501,11 +501,11 @@
                 <div class="input-group-prepend">
                   <div class="input-group-text " style="border: none">
                     <label class="selectgroup-item " >
-                      <input type="radio" name="statusDp" value="Credit" class="selectgroup-input" @if($dataPembelian->statusDp == 'Credit') checked @endif>
+                      <input type="radio" name="statusDp" value="Credit" class="selectgroup-input" checked="" onclick="addTenorDP()">
                       <span class="selectgroup-button">Credit</span>
                     </label>
                     <label class="selectgroup-item ">
-                      <input type="radio" name="statusDp" value="Cash" class="selectgroup-input" @if($dataPembelian->statusDp == 'Cash') checked @endif>
+                      <input type="radio" name="statusDp" value="Cash" class="selectgroup-input" onclick="hideTenorDP()">
                       <span class="selectgroup-button">Cash</span>
                     </label>
                     @error('statusDp')
@@ -516,6 +516,45 @@
                   {{-- <div class="col-sm-12 col-md-4 input-group-text "> --}}
                     
                 {{-- </div> --}}
+              </div>
+            </div>
+            <div id="tenorDP" class=" tenorDP">
+              <div class="form-group row mb-4">
+                <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Tenor DP</label>
+                <div class="input-group col-sm-12 col-md-7">
+                  <input type="number" class=" form-control @error('tenorDP') is-invalid @enderror" name="tenorDP" id="tenorDPInput">
+                  @error('tenorDP')
+                  <div class="invalid-feedback">{{$message}}</div>
+                  @enderror
+                  <div class="input-group-prepend">
+                    <div class="input-group-text">
+                      bulan
+                    </div>
+                  </div>
+                  
+                </div>
+              </div>
+            </div>
+            <script>
+              function hideTenorDP(){
+                var tenorDP = document.querySelector('.tenorDP');
+                tenorDP.className ='tenorDP d-none';
+                document.getElementById("tenorDPInput").value = "";
+              }
+              function addTenorDP(){
+                var tenorDP = document.querySelector('.tenorDP');
+                tenorDP.className ='tenorDP';
+              }
+            </script>
+            <div class="form-group row mb-4">
+              <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Potongan DP</label>
+              <div class="input-group col-sm-12 col-md-7">
+                <div class="input-group-prepend">
+                  <div class="input-group-text">
+                    Rp
+                  </div>
+                </div>
+                <input type="text" class="form-control potonganDp" id="potonganDp" name="potonganDp" value="" placeholder="masukkan potongan dp baru">
               </div>
             </div>
             <div class="form-group row mb-4">
@@ -905,6 +944,7 @@
   var harga = parseInt((document.getElementById('harga').value).replace(/,/g, ''));
   var diskon = parseFloat((document.getElementById('diskon').value).replace(/,/g, ''));
   var dp = parseInt((document.getElementById('dp').value).replace(/,/g, ''));
+  var potonganDp = parseInt((document.getElementById('potonganDp').value).replace(/,/g, ''));
 
   var totalDiskon = harga*diskon/100;
   if(isNaN(totalDiskon)){
@@ -916,7 +956,7 @@
       numeral: true,
       numeralThousandsGroupStyle: 'thousand'
     });
-    var kewajiban = harga-dp-totalDiskon;
+    var kewajiban = harga-dp-totalDiskon-potonganDp;
     }
 
     if(isNaN(kewajiban)){
@@ -968,6 +1008,10 @@
       numeralThousandsGroupStyle: 'thousand'
   });
   var cleave = new Cleave('.totalDiskon', {
+      numeral: true,
+      numeralThousandsGroupStyle: 'thousand'
+  });
+  var cleave = new Cleave('.potonganDp', {
       numeral: true,
       numeralThousandsGroupStyle: 'thousand'
   });

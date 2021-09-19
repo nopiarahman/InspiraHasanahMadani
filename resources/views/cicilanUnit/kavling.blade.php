@@ -80,7 +80,7 @@
               @endif
             </td>
             <td>
-              @if($cicilanUnit->sisaDp<=0)
+              @if($cicilanUnit->dp <= cekTotalDp($cicilanUnit->id))
               <a href="{{route('unitKavlingDetail',['id'=>$cicilanUnit->id])}}" class="btn btn-white text-primary border-success btn-sm">Pembayaran</a>
               @else
               <a href="#" class="badge badge-secondary">DP Belum Lunas</a>
