@@ -1,8 +1,8 @@
-<!DOCTYPE html >
+<!DOCTYPE html>
 <!--[if lt IE 7 ]><html class="ie ie6" lang="en"> <![endif]-->
 <!--[if IE 7 ]><html class="ie ie7" lang="en"> <![endif]-->
 <!--[if IE 8 ]><html class="ie ie8" lang="en"> <![endif]-->
-<!--[if (gte IE 9)|!(IE)]><!--><html lang="{{ str_replace('_', '-', app()->getLocale()) }}"> <!--<![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!--><html lang="en"> <!--<![endif]-->
 
 <head>
 
@@ -13,14 +13,14 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-<title>Inspira Property</title>
+<title>Glax | Homepage</title>
 
 <!-- STYLES -->
-<link rel="stylesheet" type="text/css" href="{{asset('frontPage/css/fontello.css')}}" />
-<link rel="stylesheet" type="text/css" href="{{asset('frontPage/css/skeleton.css')}}" />
-<link rel="stylesheet" type="text/css" href="{{asset('frontPage/css/plugins.css')}}" />
-<link rel="stylesheet" type="text/css" href="{{asset('frontPage/css/base.css')}}" />
-<link rel="stylesheet" type="text/css" href="{{asset('frontPage/css/style.css')}}" />
+<link rel="stylesheet" type="text/css" href="css/fontello.css" />
+<link rel="stylesheet" type="text/css" href="css/skeleton.css" />
+<link rel="stylesheet" type="text/css" href="css/plugins.css" />
+<link rel="stylesheet" type="text/css" href="css/base.css" />
+<link rel="stylesheet" type="text/css" href="css/style.css" />
 <link href="https://fonts.googleapis.com/css?family=Montserrat:300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i,800,800i" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css?family=Rubik:300,300i,400,400i,500,500i,700,700i,900" rel="stylesheet">
@@ -56,10 +56,10 @@
 	<!-- /BORDERS -->
 	
 	<!-- HOLDER -->
-	{{-- <div class="glax_tm_holder_wrap">
+	<div class="glax_tm_holder_wrap">
 		<div class="holder left"></div>
 		<div class="holder right"></div>
-	</div> --}}
+	</div>
 	<!-- /HOLDER -->
 	
 	<!-- TOP BAR -->
@@ -83,16 +83,16 @@
 				<div class="right_part_wrap">
 					<ul>
 						<li data-style="home">
-							<a href="#"><img class="svg" src="{{asset('frontPage/img/svg/home.svg')}}" alt="" /></a>
+							<a href="#"><img class="svg" src="img/svg/home.svg" alt="" /></a>
 						</li>
 						<li data-style="message">
-							<a href="#"><img class="svg" src="{{asset('frontPage/img/svg/message2.svg')}}" alt="" /></a>
+							<a href="#"><img class="svg" src="img/svg/message2.svg" alt="" /></a>
 						</li>
 						<li data-style="phone">
-							<a href="#"><img class="svg" src="{{asset('frontPage/img/svg/old_phone.svg')}}" alt="" /></a>
+							<a href="#"><img class="svg" src="img/svg/old_phone.svg" alt="" /></a>
 						</li>
 						<li data-style="clock">
-							<a href="#"><img class="svg" src="{{asset('frontPage/img/svg/clock.svg')}}" alt="" /></a>
+							<a href="#"><img class="svg" src="img/svg/clock.svg" alt="" /></a>
 						</li>
 					</ul>
 				</div>
@@ -109,9 +109,9 @@
 				<div class="header_inner_wrap">
 					<div class="menu_wrap">
 						<ul>
-							<li><a href="index.html">Beranda</a></li>
+							<li><a href="index.html">Home</a></li>
 							<li class="shape">
-								<a href="project.html">Proyek</a>
+								<a href="project.html">Projects</a>
 								<div class="submenu_wrap">
 									<ul>
 										<li><a href="project.html">Project</a></li>
@@ -120,7 +120,16 @@
 								</div>
 							</li>
 							<li class="shape">
-								<a href="blog.html">Kabar Berita</a>
+								<a href="service.html">Services</a>
+								<div class="submenu_wrap">
+									<ul>
+										<li><a href="service.html">Service</a></li>
+										<li><a href="service-single.html">Service Single</a></li>
+									</ul>
+								</div>
+							</li>
+							<li class="shape">
+								<a href="blog.html">News</a>
 								<div class="submenu_wrap">
 									<ul>
 										<li><a href="blog.html">News</a></li>
@@ -128,25 +137,15 @@
 									</ul>
 								</div>
 							</li>
-							<li><a href="about.html">Tentang Kami</a></li>
-							<li><a href="contact.html">Kontak</a></li>
+							<li><a href="about.html">About</a></li>
+							<li><a href="contact.html">Contact</a></li>
 						</ul>
 					</div>
 					<div class="purchase_button">
-                        @if (Route::has('login'))
-                            @auth
-                                <a href="{{ url('/home') }}">Home</a>
-                            @else
-                                <a href="{{ route('login') }}">Login</a>
-        
-                                {{-- @if (Route::has('register'))
-                                    <a href="{{ route('register') }}">Register</a>
-                                @endif --}}
-                            @endauth
-                    @endif
+						<a href="https://themeforest.net/user/marketify/portfolio">Purchase now</a>
 					</div>
 					<div class="logo_wrap">
-						<img src="{{asset('frontPage/img/desktop-logo.png')}}" alt="" />
+						<img src="img/desktop-logo.png" alt="" />
 						<span class="left"></span>
 						<span class="right"></span>
 						<span class="extra_first"></span>
@@ -165,10 +164,10 @@
 					<div class="inner_wrap">
 						<div class="short_info_wrap">
 							<ul>
-								<li data-type="home"><a href="#"><img class="svg" src="{{asset('frontPage/img/svg/home.svg')}}" alt="" /></a></li>
-								<li data-type="message"><a href="#"><img class="svg" src="{{asset('frontPage/img/svg/message2.svg')}}" alt="" /></a></li>
-								<li data-type="phone"><a href="#"><img class="svg" src="{{asset('frontPage/img/svg/old-phone.svg')}}" alt="" /></a></li>
-								<li data-type="clock"><a href="#"><img class="svg" src="{{asset('frontPage/img/svg/clock.svg')}}" alt="" /></a></li>
+								<li data-type="home"><a href="#"><img class="svg" src="img/svg/home.svg" alt="" /></a></li>
+								<li data-type="message"><a href="#"><img class="svg" src="img/svg/message2.svg" alt="" /></a></li>
+								<li data-type="phone"><a href="#"><img class="svg" src="img/svg/old-phone.svg" alt="" /></a></li>
+								<li data-type="clock"><a href="#"><img class="svg" src="img/svg/clock.svg" alt="" /></a></li>
 							</ul>
 						</div>
 						<div class="mobile_socials_wrap">
@@ -186,8 +185,8 @@
 			<div class="mobile_header_wrap">
 				<div class="container">
 					<div class="inner_wrap">
-						<div class="logo_wrap " style="align-content: center">
-							<a href="index.html"><img src="{{asset('frontPage/img/mobile-logo.png')}}" alt="" /></a>
+						<div class="logo_wrap">
+							<a href="index.html"><img src="img/mobile-logo.png" alt="" /></a>
 						</div>
 						<div class="trigger_wrap">
 							<div class="hamburger hamburger--collapse-r">
@@ -231,7 +230,7 @@
 					<div class="drop_list home">
 						<div class="adress_wrap">
 							<div class="office_image">
-								<img src="{{asset('frontPage/img/contact/1.jpg')}}" alt="" />
+								<img src="img/contact/1.jpg" alt="" />
 							</div>
 							<div class="definitions_wrap">
 								<h3>Head Office in New-York</h3>
@@ -271,7 +270,7 @@
 					<div class="drop_list phone">
 						<div class="call_wrap">
 							<div class="image">
-								<img src="{{asset('frontPage/img/estimate/call.png')}}" alt="" />
+								<img src="img/estimate/call.png" alt="" />
 							</div>
 							<h3>Toll Free</h3>
 							<p>1-800-987-6543</p>
@@ -312,16 +311,16 @@
 				<div class="widget_icons_wrap">
 					<ul>
 						<li class="home" data-style="home">
-							<a href="#"><img class="svg" src="{{asset('frontPage/img/svg/home.svg')}}" alt="" /></a>
+							<a href="#"><img class="svg" src="img/svg/home.svg" alt="" /></a>
 						</li>
 						<li class="message" data-style="message">
-							<a href="#"><img class="svg" src="{{asset('frontPage/img/svg/message2.svg')}}" alt="" /></a>
+							<a href="#"><img class="svg" src="img/svg/message2.svg" alt="" /></a>
 						</li>
 						<li class="phone" data-style="phone">
-							<a href="#"><img class="svg" src="{{asset('frontPage/img/svg/old_phone.svg')}}" alt="" /></a>
+							<a href="#"><img class="svg" src="img/svg/old_phone.svg" alt="" /></a>
 						</li>
 						<li class="clock" data-style="clock">
-							<a href="#"><img class="svg" src="{{asset('frontPage/img/svg/clock.svg')}}" alt="" /></a>
+							<a href="#"><img class="svg" src="img/svg/clock.svg" alt="" /></a>
 						</li>
 					</ul>
 				</div>
@@ -331,7 +330,7 @@
 					<div class="drop_list home">
 						<div class="adress_wrap">
 							<div class="office_image">
-								<img src="{{asset('frontPage/img/contact/1.jpg')}}" alt="" />
+								<img src="img/contact/1.jpg" alt="" />
 							</div>
 							<div class="definitions_wrap">
 								<h3>Head Office in New-York</h3>
@@ -371,7 +370,7 @@
 					<div class="drop_list phone">
 						<div class="call_wrap">
 							<div class="image">
-								<img src="{{asset('frontPage/img/estimate/call.png')}}" alt="" />
+								<img src="img/estimate/call.png" alt="" />
 							</div>
 							<h3>Toll Free</h3>
 							<p>1-800-987-6543</p>
@@ -412,39 +411,7 @@
 				<div class="swiper-container">
 					<div class="swiper-wrapper">
 						<div class="image_wrap swiper-slide">
-							<div class="bg_img" data-img-url="{{asset('frontPage/img/slider/1.jpg')}}"></div>
-							<div class="swiper_content">
-								<div class="texts_wrap">
-									<h3>Inspira Group</h3>
-									<p>The foundations and aspirations of our business remain true to those established by our visionary founders, and their innovation and energy continue to be our inspiration. Our passion and entrepreneurial culture will ensure that we deliver for our customers in safety, quality and assurance – today and in the future.</p>
-								</div>
-								<div class="switches">
-									<div class="prev_next">
-										<div class="tm_next_button"></div>
-										<div class="tm_prev_button"></div>
-									</div>
-									<div class="swiper-pagination my_swiper_pagination"></div>
-								</div>
-							</div>
-						</div>
-						<div class="image_wrap swiper-slide">
-							<div class="bg_img" data-img-url="{{asset('frontPage/img/slider/2.jpg')}}"></div>
-							<div class="swiper_content">
-								<div class="texts_wrap">
-									<h3>Dapatkan Rumah Tanpa Riba</h3>
-									<p>The foundations and aspirations of our business remain true to those established by our visionary founders, and their innovation and energy continue to be our inspiration. Our passion and entrepreneurial culture will ensure that we deliver for our customers in safety, quality and assurance – today and in the future.</p>
-								</div>
-								<div class="switches">
-									<div class="prev_next">
-										<div class="tm_next_button"></div>
-										<div class="tm_prev_button"></div>
-									</div>
-									<div class="swiper-pagination my_swiper_pagination"></div>
-								</div>
-							</div>
-						</div>
-						<div class="image_wrap swiper-slide">
-							<div class="bg_img" data-img-url="{{asset('frontPage/img/slider/3.jpg')}}"></div>
+							<div class="bg_img" data-img-url="img/slider/1.jpg"></div>
 							<div class="swiper_content">
 								<div class="texts_wrap">
 									<h3>We are more than industrial company</h3>
@@ -460,7 +427,7 @@
 							</div>
 						</div>
 						<div class="image_wrap swiper-slide">
-							<div class="bg_img" data-img-url="{{asset('frontPage/img/slider/4.jpg')}}"></div>
+							<div class="bg_img" data-img-url="img/slider/4.jpg"></div>
 							<div class="swiper_content">
 								<div class="texts_wrap">
 									<h3>We are more than industrial company</h3>
@@ -476,7 +443,39 @@
 							</div>
 						</div>
 						<div class="image_wrap swiper-slide">
-							<div class="bg_img" data-img-url="{{asset('frontPage/img/slider/5.jpg')}}"></div>
+							<div class="bg_img" data-img-url="img/slider/5.jpg"></div>
+							<div class="swiper_content">
+								<div class="texts_wrap">
+									<h3>We are more than industrial company</h3>
+									<p>The foundations and aspirations of our business remain true to those established by our visionary founders, and their innovation and energy continue to be our inspiration. Our passion and entrepreneurial culture will ensure that we deliver for our customers in safety, quality and assurance – today and in the future.</p>
+								</div>
+								<div class="switches">
+									<div class="prev_next">
+										<div class="tm_next_button"></div>
+										<div class="tm_prev_button"></div>
+									</div>
+									<div class="swiper-pagination my_swiper_pagination"></div>
+								</div>
+							</div>
+						</div>
+						<div class="image_wrap swiper-slide">
+							<div class="bg_img" data-img-url="img/slider/7.jpg"></div>
+							<div class="swiper_content">
+								<div class="texts_wrap">
+									<h3>We are more than industrial company</h3>
+									<p>The foundations and aspirations of our business remain true to those established by our visionary founders, and their innovation and energy continue to be our inspiration. Our passion and entrepreneurial culture will ensure that we deliver for our customers in safety, quality and assurance – today and in the future.</p>
+								</div>
+								<div class="switches">
+									<div class="prev_next">
+										<div class="tm_next_button"></div>
+										<div class="tm_prev_button"></div>
+									</div>
+									<div class="swiper-pagination my_swiper_pagination"></div>
+								</div>
+							</div>
+						</div>
+						<div class="image_wrap swiper-slide">
+							<div class="bg_img" data-img-url="img/slider/8.jpg"></div>
 							<div class="swiper_content">
 								<div class="texts_wrap">
 									<h3>We are more than industrial company</h3>
@@ -498,7 +497,7 @@
 				<div class="container swiper">
 					<div class="swiper_content">
 						<div class="texts_wrap">
-							<h3>Dapatkan Property Syariah Tanpa Riba</h3>
+							<h3>We are more than industrial company</h3>
 							<p>The foundations and aspirations of our business remain true to those established by our visionary founders, and their innovation and energy continue to be our inspiration. Our passion and entrepreneurial culture will ensure that we deliver for our customers in safety, quality and assurance – today and in the future.</p>
 						</div>
 						<div class="switches">
@@ -522,20 +521,20 @@
 					<div class="glax_tm_introduce_wrap">
 						<div class="inner_wrap">
 							<div class="main_info_wrap">
-								<span class="top_title">Perkenalkan</span>
-								<h3 class="title">Inspira Group</h3>
+								<span class="top_title">Let me introduce</span>
+								<h3 class="title">Our Company</h3>
 								<p class="text">For over 47 years, the Glax family has been building relationships and projects that last. We build safe environments and eco-friendly solutions in the communities in which we work. Most importantly, we build strong relationships that allow us to build anything, anywhere. No matter the job, we go beyond building.</p>
 							</div>
 							<div class="experience_box">
 								<div class="top">
-									<p>Developer Property Syariah</p>
+									<p>World's Leading Industry Corporation</p>
 								</div>
 								<div class="bottom">
 									<div class="number">
-										<span>5</span>
+										<span>47</span>
 									</div>
 									<div class="definition">
-										<p>Tahun Pengalaman</p>
+										<p>Years of experience</p>
 									</div>
 								</div>
 							</div>
@@ -565,7 +564,7 @@
 						<li>
 							<div class="inner_list glax_tm_minibox">
 								<div class="icon_wrap">
-									<img class="svg" src="{{asset('frontPage/img/svg/service-flasks.svg')}}" alt="" />
+									<img class="svg" src="img/svg/service-flasks.svg" alt="" />
 								</div>
 								<div class="title_holder">
 									<h3>Basic &amp; Industrial Chemicals</h3>
@@ -577,8 +576,8 @@
 									<a href="#">
 										More Details
 										<span class="arrow_wrap">
-											<span class="first"><img class="svg" src="{{asset('frontPage/img/svg/arrow-right.svg')}}" alt="" /></span>
-											<span class="second"><img class="svg" src="{{asset('frontPage/img/svg/arrow-right.svg')}}" alt="" /></span>
+											<span class="first"><img class="svg" src="img/svg/arrow-right.svg" alt="" /></span>
+											<span class="second"><img class="svg" src="img/svg/arrow-right.svg" alt="" /></span>
 										</span>
 									</a>
 								</div>
@@ -588,7 +587,7 @@
 						<li>
 							<div class="inner_list glax_tm_minibox">
 								<div class="icon_wrap">
-									<img class="svg" src="{{asset('frontPage/img/svg/service-tower.svg')}}" alt="" />
+									<img class="svg" src="img/svg/service-tower.svg" alt="" />
 								</div>
 								<div class="title_holder">
 									<h3>Construction &amp; Engineering</h3>
@@ -611,7 +610,7 @@
 						<li>
 							<div class="inner_list glax_tm_minibox">
 								<div class="icon_wrap">
-									<img class="svg" src="{{asset('frontPage/img/svg/service-transformer.svg')}}" alt="" />
+									<img class="svg" src="img/svg/service-transformer.svg" alt="" />
 								</div>
 								<div class="title_holder">
 									<h3>Energy and Commodities Industry</h3>
@@ -634,7 +633,7 @@
 						<li>
 							<div class="inner_list glax_tm_minibox">
 								<div class="icon_wrap">
-									<img class="svg" src="{{asset('frontPage/img/svg/service-oil.svg')}}" alt="" />
+									<img class="svg" src="img/svg/service-oil.svg" alt="" />
 								</div>
 								<div class="title_holder">
 									<h3>The Shale Oil &amp; Gas Revolution</h3>
@@ -659,122 +658,7 @@
 			</div>
 		</div>
 		<!-- /HOME SERVICE -->
-		<!-- HOME BLOG -->
-		<div class="glax_tm_section">
-			<div class="glax_tm_home_blog_wrap">
-				<div class="container">
-					<div class="inner_wrap">
-						<div class="blog_title_holder">
-							<h3>Kabar &amp; Berita</h3>
-						</div>
-						<div class="blog_list">
-							<ul>
-								<li>
-									<div class="inner">
-										<div class="image_holder">
-											<img src="{{asset('frontPage/img/blog/370x250.jpg')}}" alt="" />
-											<div class="main_image" data-img-url="{{asset('frontPage/img/blog/1.jpg')}}"></div>
-											<div class="overlay"></div>
-											<div class="date_wrap">
-												<h3><span>08</span></h3>
-												<h5>Aug</h5>
-												<h5>2020</h5>
-											</div>
-											<a class="full_link" href="blog-single.html"></a>
-										</div>
-										<div class="descriptions_wrap">
-											<p class="category">
-												<span class="author">By <a href="#">Admin</a></span>
-												<span class="city">Di <a href="#">Kampung Tahfidz Al Kausar</a></span>
-											</p>
-										</div>
-										<div class="title_holder">
-											<h3><a href="blog-single.html">Peletakan Batu Pertama Kampung Tahfidz Al Kausar</a></h3>
-										</div>
-										<div class="glax_tm_button_more_wrap">
-											<a href="blog-single.html">
-												Read More
-												<span class="arrow_wrap">
-													<span class="first"><img class="svg" src="img/svg/arrow-right.svg" alt="" /></span>
-													<span class="second"><img class="svg" src="img/svg/arrow-right.svg" alt="" /></span>
-												</span>
-											</a>
-										</div>
-									</div>
-								</li>
-								<li>
-									<div class="inner">
-										<div class="image_holder">
-											<img src="{{asset('frontPage/img/blog/370x250.jpg')}}" alt="" />
-											<div class="main_image" data-img-url="{{asset('frontPage/img/blog/2.jpg')}}"></div>
-											<div class="overlay"></div>
-											<div class="date_wrap">
-												<h3><span>07</span></h3>
-												<h5>Aug</h5>
-												<h5>2018</h5>
-											</div>
-											<a class="full_link" href="blog-single.html"></a>
-										</div>
-										<div class="descriptions_wrap">
-											<p class="category">
-												<span class="author">By <a href="#">Admin</a></span>
-												<span class="city">In <a href="#">Kampung Tahfidz Al Kausar</a></span>
-											</p>
-										</div>
-										<div class="title_holder">
-											<h3><a href="blog-single.html">Pembukaan Lahan</a></h3>
-										</div>
-										<div class="glax_tm_button_more_wrap">
-											<a href="blog-single.html">
-												Read More
-												<span class="arrow_wrap">
-													<span class="first"><img class="svg" src="img/svg/arrow-right.svg" alt="" /></span>
-													<span class="second"><img class="svg" src="img/svg/arrow-right.svg" alt="" /></span>
-												</span>
-											</a>
-										</div>
-									</div>
-								</li>
-								<li>
-									<div class="inner">
-										<div class="image_holder">
-											<img src="{{asset('frontPage/img/blog/370x250.jpg')}}" alt="" />
-											<div class="main_image" data-img-url="{{asset('frontPage/img/blog/3.jpg')}}"></div>
-											<div class="overlay"></div>
-											<div class="date_wrap">
-												<h3><span>06</span></h3>
-												<h5>Aug</h5>
-												<h5>2018</h5>
-											</div>
-											<a class="full_link" href="blog-single.html"></a>
-										</div>
-										<div class="descriptions_wrap">
-											<p class="category">
-												<span class="author">By <a href="#">Admin</a></span>
-												<span class="city">In <a href="#">Kampung Tahfidz Al Kausar</a></span>
-											</p>
-										</div>
-										<div class="title_holder">
-											<h3><a href="blog-single.html">Proses Penimbunan Jalan dan Pemasangan Gorong-gorong</a></h3>
-										</div>
-										<div class="glax_tm_button_more_wrap">
-											<a href="blog-single.html">
-												Read More
-												<span class="arrow_wrap">
-													<span class="first"><img class="svg" src="img/svg/arrow-right.svg" alt="" /></span>
-													<span class="second"><img class="svg" src="img/svg/arrow-right.svg" alt="" /></span>
-												</span>
-											</a>
-										</div>
-									</div>
-								</li>
-							</ul>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-		<!-- /HOME BLOG -->
+		
 		<!-- WHY CHOOSE US-->
 		<div class="glax_tm_section">
 			<div class="glax_tm_rating_wrap">
@@ -1003,8 +887,8 @@
 										<li>
 											<div class="inner">
 												<div class="image_wrap">
-													<img src="{{asset('frontPage/img/portfolio/750x500.jpg')}}" alt="" />
-													<div class="image" data-img-url="{{asset('frontPage/img/portfolio/1.jpg')}}"></div>
+													<img src="img/portfolio/750x500.jpg" alt="" />
+													<div class="image" data-img-url="img/portfolio/1.jpg"></div>
 													<div class="overlay_color"></div>
 													<span class="plus"></span>
 													<div class="title_holder">
@@ -1023,8 +907,8 @@
 										<li>
 											<div class="inner">
 												<div class="image_wrap">
-													<img src="{{asset('frontPage/img/portfolio/750x500.jpg')}}" alt="" />
-													<div class="image" data-img-url="{{asset('frontPage/img/portfolio/2.jpg')}}"></div>
+													<img src="img/portfolio/750x500.jpg" alt="" />
+													<div class="image" data-img-url="img/portfolio/2.jpg"></div>
 													<div class="overlay_color"></div>
 													<span class="plus"></span>
 													<div class="title_holder">
@@ -1043,8 +927,8 @@
 										<li>
 											<div class="inner">
 												<div class="image_wrap">
-													<img src="{{asset('frontPage/img/portfolio/750x500.jpg')}}" alt="" />
-													<div class="image" data-img-url="{{asset('frontPage/img/portfolio/3.jpg')}}"></div>
+													<img src="img/portfolio/750x500.jpg" alt="" />
+													<div class="image" data-img-url="img/portfolio/3.jpg"></div>
 													<div class="overlay_color"></div>
 													<span class="plus"></span>
 													<div class="title_holder">
@@ -1069,6 +953,123 @@
 			</div>
 		</div>
 		<!-- /HOME PROJECT -->
+		
+		<!-- HOME BLOG -->
+		<div class="glax_tm_section">
+			<div class="glax_tm_home_blog_wrap">
+				<div class="container">
+					<div class="inner_wrap">
+						<div class="blog_title_holder">
+							<h3>Thoughts &amp; Experiments</h3>
+						</div>
+						<div class="blog_list">
+							<ul>
+								<li>
+									<div class="inner">
+										<div class="image_holder">
+											<img src="img/blog/370x250.jpg" alt="" />
+											<div class="main_image" data-img-url="img/blog/1.jpg"></div>
+											<div class="overlay"></div>
+											<div class="date_wrap">
+												<h3><span>08</span></h3>
+												<h5>Aug</h5>
+												<h5>2018</h5>
+											</div>
+											<a class="full_link" href="blog-single.html"></a>
+										</div>
+										<div class="descriptions_wrap">
+											<p class="category">
+												<span class="author">By <a href="#">Marketify</a></span>
+												<span class="city">In <a href="#">Australia</a></span>
+											</p>
+										</div>
+										<div class="title_holder">
+											<h3><a href="blog-single.html">Laing O’Rourke: Moves, projects and bids</a></h3>
+										</div>
+										<div class="glax_tm_button_more_wrap">
+											<a href="blog-single.html">
+												Read More
+												<span class="arrow_wrap">
+													<span class="first"><img class="svg" src="img/svg/arrow-right.svg" alt="" /></span>
+													<span class="second"><img class="svg" src="img/svg/arrow-right.svg" alt="" /></span>
+												</span>
+											</a>
+										</div>
+									</div>
+								</li>
+								<li>
+									<div class="inner">
+										<div class="image_holder">
+											<img src="img/blog/370x250.jpg" alt="" />
+											<div class="main_image" data-img-url="img/blog/1.jpg"></div>
+											<div class="overlay"></div>
+											<div class="date_wrap">
+												<h3><span>07</span></h3>
+												<h5>Aug</h5>
+												<h5>2018</h5>
+											</div>
+											<a class="full_link" href="blog-single.html"></a>
+										</div>
+										<div class="descriptions_wrap">
+											<p class="category">
+												<span class="author">By <a href="#">Marketify</a></span>
+												<span class="city">In <a href="#">Discussion</a></span>
+											</p>
+										</div>
+										<div class="title_holder">
+											<h3><a href="blog-single.html">How to turn Victorian gasholders apartments</a></h3>
+										</div>
+										<div class="glax_tm_button_more_wrap">
+											<a href="blog-single.html">
+												Read More
+												<span class="arrow_wrap">
+													<span class="first"><img class="svg" src="img/svg/arrow-right.svg" alt="" /></span>
+													<span class="second"><img class="svg" src="img/svg/arrow-right.svg" alt="" /></span>
+												</span>
+											</a>
+										</div>
+									</div>
+								</li>
+								<li>
+									<div class="inner">
+										<div class="image_holder">
+											<img src="img/blog/370x250.jpg" alt="" />
+											<div class="main_image" data-img-url="img/blog/1.jpg"></div>
+											<div class="overlay"></div>
+											<div class="date_wrap">
+												<h3><span>06</span></h3>
+												<h5>Aug</h5>
+												<h5>2018</h5>
+											</div>
+											<a class="full_link" href="blog-single.html"></a>
+										</div>
+										<div class="descriptions_wrap">
+											<p class="category">
+												<span class="author">By <a href="#">Marketify</a></span>
+												<span class="city">In <a href="#">Video</a></span>
+											</p>
+										</div>
+										<div class="title_holder">
+											<h3><a href="blog-single.html">CITB appoints Peter Lauener as new chairman</a></h3>
+										</div>
+										<div class="glax_tm_button_more_wrap">
+											<a href="blog-single.html">
+												Read More
+												<span class="arrow_wrap">
+													<span class="first"><img class="svg" src="img/svg/arrow-right.svg" alt="" /></span>
+													<span class="second"><img class="svg" src="img/svg/arrow-right.svg" alt="" /></span>
+												</span>
+											</a>
+										</div>
+									</div>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- /HOME BLOG -->
 		
 		<!-- FOOTER -->
 		<footer class="glax_tm_footer_wrap">
@@ -1193,103 +1194,12 @@
 
 
 <!-- SCRIPTS -->
-<script src="{{asset('frontPage/js/jquery.js')}}"></script>
-<script src="{{asset('frontPage/js/plugins.js')}}"></script>
+<script src="js/jquery.js"></script>
+<script src="js/plugins.js"></script>
 <!--[if lt IE 10]> <script type="text/javascript" src="js/ie8.js"></script> <![endif]-->	
-<script src="{{asset('frontPage/js/init.js')}}"></script>
+<script src="js/init.js"></script>
 <!-- /SCRIPTS -->
 
 
 </body>
 </html>
-
-{{-- <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-
-        <title>PT Inspira Hasanah Madani</title>
-        <link rel="shortcut icon" href="{{asset('assets/img/favicon.png')}}">
-        <!-- Fonts -->
-        <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@200;600&display=swap" rel="stylesheet">
-
-        <!-- Styles -->
-        <style>
-            html, body {
-                background-color: #fff;
-                color: #636b6f;
-                font-family: 'Nunito', sans-serif;
-                font-weight: 200;
-                height: 100vh;
-                margin: 0;
-            }
-
-            .full-height {
-                height: 100vh;
-            }
-
-            .flex-center {
-                align-items: center;
-                display: flex;
-                justify-content: center;
-            }
-
-            .position-ref {
-                position: relative;
-            }
-
-            .top-right {
-                position: absolute;
-                right: 10px;
-                top: 18px;
-            }
-
-            .content {
-                text-align: center;
-            }
-
-            .title {
-                font-size: 84px;
-            }
-
-            .links > a {
-                color: #636b6f;
-                padding: 0 25px;
-                font-size: 13px;
-                font-weight: 600;
-                letter-spacing: .1rem;
-                text-decoration: none;
-                text-transform: uppercase;
-            }
-
-            .m-b-md {
-                margin-bottom: 30px;
-            }
-        </style>
-    </head>
-    <body>
-        <div class="flex-center position-ref full-height">
-            @if (Route::has('login'))
-                <div class="top-right links">
-                    @auth
-                        <a href="{{ url('/home') }}">Home</a>
-                    @else
-                        <a href="{{ route('login') }}">Login</a>
-
-                        @if (Route::has('register'))
-                            <a href="{{ route('register') }}">Register</a>
-                        @endif
-                    @endauth
-                </div>
-            @endif
-
-            <div class="content">
-                <img src="{{asset('assets/img/logo-mini.png')}}" alt="">
-                <div class="title m-b-md">
-                    <span style="font-size:xx-large"> PT. Inspira Hasanah Madani</span>
-                </div>
-            </div>
-        </div>
-    </body>
-</html> --}}

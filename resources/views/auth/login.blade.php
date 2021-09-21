@@ -23,8 +23,13 @@
         <div class="col-lg-4 col-md-6 col-12 order-lg-1 min-vh-100 order-2 bg-white">
           <div class="p-4 m-3 ">
             <div class="row">
-              <div class="col-md-12">
-                <img src="{{asset('assets/img/logo-mini.png')}}" alt="" style="width:100%">
+              <div class="col-md-5">
+                <a href="/" class=""> <i class="fa fa-chevron-left" aria-hidden="true"></i> Beranda</a>
+              </div>
+            </div>
+            <div class="row ">
+              <div class="d-flex flex-row justify-content-center">
+                <img src="{{asset('assets/img/logo-color.png')}}" alt="" style="width:75%; padding:8em 0em; ">
               </div>
             </div>
             <form method="POST" action="{{ route('login') }}">
