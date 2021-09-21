@@ -151,6 +151,11 @@
                 <td></td>
               </tr>
               <tr>
+                <th scope="row">Potongan DP</th>
+                <td>Rp. {{number_format($dataPembelian->potonganDp)}}</td>
+                <td></td>
+              </tr>
+              <tr>
                 <th>Sisa Dp</th>
                 <td>Rp.{{number_format($dataPembelian->dp-cekTotalDp($dataPembelian->id))}}  
                   @if($dataPembelian->dp <= cekTotalDp($dataPembelian->id))
@@ -944,7 +949,6 @@
   var harga = parseInt((document.getElementById('harga').value).replace(/,/g, ''));
   var diskon = parseFloat((document.getElementById('diskon').value).replace(/,/g, ''));
   var dp = parseInt((document.getElementById('dp').value).replace(/,/g, ''));
-  var potonganDp = parseInt((document.getElementById('potonganDp').value).replace(/,/g, ''));
 
   var totalDiskon = harga*diskon/100;
   if(isNaN(totalDiskon)){
@@ -956,7 +960,7 @@
       numeral: true,
       numeralThousandsGroupStyle: 'thousand'
     });
-    var kewajiban = harga-dp-totalDiskon-potonganDp;
+    var kewajiban = harga-dp-totalDiskon;
     }
 
     if(isNaN(kewajiban)){

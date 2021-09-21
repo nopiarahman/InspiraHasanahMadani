@@ -120,7 +120,7 @@
 								</div>
 							</li>
 							<li class="shape">
-								<a href="blog.html">Kabar Berita</a>
+								<a href="#">Kabar Berita</a>
 								<div class="submenu_wrap">
 									<ul>
 										<li><a href="blog.html">News</a></li>

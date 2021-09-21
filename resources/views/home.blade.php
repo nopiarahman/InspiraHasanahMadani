@@ -216,7 +216,7 @@
           {{-- <canvas id="sales-chart" height="63" width="269" style="display: block; height: 71px; width: 300px;" class="chartjs-render-monitor"></canvas> --}}
         </div>
         <div class="card-icon shadow-primary bg-primary">
-          <i class="fas fa-piggy-bank"></i>
+          <i class="fas fa-donate    "></i>
         </div>
         <div class="card-wrap">
           <div class="card-header">
