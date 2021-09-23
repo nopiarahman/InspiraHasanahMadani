@@ -154,29 +154,31 @@ class PelangganController extends Controller
             $updatePembelian=pembelian::where('kavling_id',$request->kavling_id)->update(['rumah_id'=>$cariRumah->id]);
             /* update RAB unit */
             $cariKavling=kavling::find($request->kavling_id);
+            $blok= $cariKavling->blok;
             $rabUnit=rabUnit::updateOrCreate(['isi'=>$cariKavling->blok],[
                 'proyek_id'=>proyekId(),
                 'header'=>'BIAYA PRODUKSI RUMAH',
                 'judul'=>'Biaya Produksi Rumah',
+                'kodeRAB'=>'IH-5-'.$blok->b.'-'.$blok->nr,
                 'isi'=>$cariKavling->blok,
                 'jenisUnit'=>'rumah',
                 'hargaSatuan'=>hargaSatuanRumah(),
             ]);
             /* update Akun */
-            $akun=akun::updateOrCreate(['kodeAkun'=> 'IH-30-'.$cariKavling->blok],[
-                'proyek_id'=>proyekId(),
-                'jenis'=> 'Pembangunan',
-                'kategori'=> 'Pembangunan Rumah',
-                'kodeAkun'=> 'IH-30-'.$cariKavling->blok,
-                'namaAkun'=> 'Biaya Pembangunan Rumah '.$cariKavling->blok,
-            ]);
-            $akunPembebanan=akun::updateOrCreate(['kodeAkun'=> 'IH-31-'.$cariKavling->blok],[
-                'proyek_id'=>proyekId(),
-                'jenis'=> 'Pembebanan',
-                'kategori'=> 'Biaya Pembebanan Per-Unit',
-                'kodeAkun'=> 'IH-31-'.$cariKavling->blok,
-                'namaAkun'=> 'Biaya Pembebanan Per-Unit '.$cariKavling->blok,
-            ]);
+            // $akun=akun::updateOrCreate(['kodeAkun'=> 'IH-30-'.$cariKavling->blok],[
+            //     'proyek_id'=>proyekId(),
+            //     'jenis'=> 'Pembangunan',
+            //     'kategori'=> 'Pembangunan Rumah',
+            //     'kodeAkun'=> 'IH-30-'.$cariKavling->blok,
+            //     'namaAkun'=> 'Biaya Pembangunan Rumah '.$cariKavling->blok,
+            // ]);
+            // $akunPembebanan=akun::updateOrCreate(['kodeAkun'=> 'IH-31-'.$cariKavling->blok],[
+            //     'proyek_id'=>proyekId(),
+            //     'jenis'=> 'Pembebanan',
+            //     'kategori'=> 'Biaya Pembebanan Per-Unit',
+            //     'kodeAkun'=> 'IH-31-'.$cariKavling->blok,
+            //     'namaAkun'=> 'Biaya Pembebanan Per-Unit '.$cariKavling->blok,
+            // ]);
         }elseif($request->includePembelian =='Kios'){
             $data ['kavling_id']=$request->kavling_id;
             $data ['proyek_id']=proyekId();
@@ -187,29 +189,31 @@ class PelangganController extends Controller
             $updatePembelian=pembelian::where('kavling_id',$request->kavling_id)->update(['kios_id'=>$cariKios->id]);
             /* update RAB unit */
             $cariKavling=kavling::find($request->kavling_id);
+            $blok= $cariKavling->blok;
             $rabUnit=rabUnit::updateOrCreate(['isi'=>$cariKavling->blok],[
                 'proyek_id'=>proyekId(),
                 'header'=>'BIAYA PRODUKSI RUMAH',
                 'judul'=>'Biaya Produksi Rumah',
+                'kodeRAB'=>'IH-5-'.$blok->b.'-'.$blok->nr,
                 'isi'=>$cariKavling->blok,
                 'jenisUnit'=>'kios',
                 'hargaSatuan'=>hargaSatuanRumah(),
             ]);
             /* update Akun */
-            $akun=akun::updateOrCreate(['kodeAkun'=> 'IH-30-'.$cariKavling->blok,],[
-                'proyek_id'=>proyekId(),
-                'jenis'=> 'Pembangunan',
-                'kategori'=> 'Pembangunan Rumah',
-                'kodeAkun'=> 'IH-30-'.$cariKavling->blok,
-                'namaAkun'=> 'Biaya Pembangunan Kios '.$cariKavling->blok,
-            ]);
-            $akunPembebanan=akun::updateOrCreate(['kodeAkun'=> 'IH-31-'.$cariKavling->blok,],[
-                'proyek_id'=>proyekId(),
-                'jenis'=> 'Pembebanan',
-                'kategori'=> 'Biaya Pembebanan Per-Unit',
-                'kodeAkun'=> 'IH-31-'.$cariKavling->blok,
-                'namaAkun'=> 'Biaya Pembebanan Per-Unit '.$cariKavling->blok,
-            ]);
+            // $akun=akun::updateOrCreate(['kodeAkun'=> 'IH-30-'.$cariKavling->blok,],[
+            //     'proyek_id'=>proyekId(),
+            //     'jenis'=> 'Pembangunan',
+            //     'kategori'=> 'Pembangunan Rumah',
+            //     'kodeAkun'=> 'IH-30-'.$cariKavling->blok,
+            //     'namaAkun'=> 'Biaya Pembangunan Kios '.$cariKavling->blok,
+            // ]);
+            // $akunPembebanan=akun::updateOrCreate(['kodeAkun'=> 'IH-31-'.$cariKavling->blok,],[
+            //     'proyek_id'=>proyekId(),
+            //     'jenis'=> 'Pembebanan',
+            //     'kategori'=> 'Biaya Pembebanan Per-Unit',
+            //     'kodeAkun'=> 'IH-31-'.$cariKavling->blok,
+            //     'namaAkun'=> 'Biaya Pembebanan Per-Unit '.$cariKavling->blok,
+            // ]);
         }
         
         /* update data kavling*/
@@ -363,8 +367,8 @@ class PelangganController extends Controller
                     $cariruRabUnit = rabUnit::where('isi',$cekKavling->blok)->update(['isi'=>$cariKavling->blok]);
                 }
                 /* update Akun */
-                $updateAkun= akun::where('kodeAkun','IH-30-'.$cekKavling->blok)->update(['kodeAkun'=>'IH-30-'.$cariKavling->blok,'namaAkun'=>'Biaya Pembangunan Rumah '.$cariKavling->blok]);
-                $updateAkun= akun::where('kodeAkun','IH-31-'.$cekKavling->blok)->update(['kodeAkun'=>'IH-31-'.$cariKavling->blok,'namaAkun'=>'Biaya Pembebanan Per-Unit '.$cariKavling->blok]);
+                // $updateAkun= akun::where('kodeAkun','IH-30-'.$cekKavling->blok)->update(['kodeAkun'=>'IH-30-'.$cariKavling->blok,'namaAkun'=>'Biaya Pembangunan Rumah '.$cariKavling->blok]);
+                // $updateAkun= akun::where('kodeAkun','IH-31-'.$cekKavling->blok)->update(['kodeAkun'=>'IH-31-'.$cariKavling->blok,'namaAkun'=>'Biaya Pembebanan Per-Unit '.$cariKavling->blok]);
                 /* update kavling */
                 $updateKepemilikanKavling=kavling::find($cekKavling->id)->update(['pelanggan_id'=>0]);
                 $updateKavling = kavling::find($cariKavling->id)->update(['pelanggan_id'=>$id->id]);
@@ -417,8 +421,8 @@ class PelangganController extends Controller
                     $cariruRabUnit = rabUnit::where('isi',$cekKavling->blok)->update(['isi'=>$cariKavling->blok]);
                 }
                 /* update Akun */
-                $updateAkun= akun::where('kodeAkun','IH-30-'.$cekKavling->blok)->update(['kodeAkun'=>'IH-30-'.$cariKavling->blok,'namaAkun'=>'Biaya Pembangunan Kios '.$cariKavling->blok]);
-                $updateAkun= akun::where('kodeAkun','IH-31-'.$cekKavling->blok)->update(['kodeAkun'=>'IH-31-'.$cariKavling->blok,'namaAkun'=>'Biaya Pembebanan Per-Unit '.$cariKavling->blok]);
+                // $updateAkun= akun::where('kodeAkun','IH-30-'.$cekKavling->blok)->update(['kodeAkun'=>'IH-30-'.$cariKavling->blok,'namaAkun'=>'Biaya Pembangunan Kios '.$cariKavling->blok]);
+                // $updateAkun= akun::where('kodeAkun','IH-31-'.$cekKavling->blok)->update(['kodeAkun'=>'IH-31-'.$cariKavling->blok,'namaAkun'=>'Biaya Pembebanan Per-Unit '.$cariKavling->blok]);
                 /* update kavling */
                 $updateKepemilikanKavling=kavling::find($cekKavling->id)->update(['pelanggan_id'=>0]);
                 $updateKavling = kavling::find($cariKavling->id)->update(['pelanggan_id'=>$id->id]);

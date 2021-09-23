@@ -76,20 +76,22 @@ class CicilanController extends Controller
         $tambahBulan = str_replace(',', '', $request->jumlah)/($cekCicilan->sisaKewajiban/$cekCicilan->tenor);
         $tenorBulan = round($totalBulan+$tambahBulan,0);
         $cicilanPertama = cicilan::where('pembelian_id',$cekCicilan->id)->first();
-        // dd($cicilanPertama);
         /* cek performa pembayaran */
         $cekCicilanlagi = cicilan::where('pembelian_id',$request->pembelian_id)->get();
-        $cicilanTerakhir=$cekCicilanlagi->last();
-        $tempoTerakhir=Carbon::parse($cicilanTerakhir->tempo)->firstOfMonth();
+        // dd($cekCicilanlagi);
+        if($cekCicilanlagi->last()){
+            $cicilanTerakhir=$cekCicilanlagi->last();
+            $tempoTerakhir=Carbon::parse($cicilanTerakhir->tempo)->firstOfMonth();
+        }else{
+            $tempoTerakhir = Carbon::parse($request->tanggal)->firstOfMonth();
+        }
         $tanggalPembayaran=Carbon::parse($request->tanggal)->firstOfMonth();
         $cek=$tanggalPembayaran->diffInMonths($tempoTerakhir,false);
-        // dd($cek);
         if($cek>0){
             $status = "lancar";
         }else{
             $status = "nunggak";
         }
-        // dd($status);
         if($cicilanPertama != null){
             /* cicilan selanjutnya */
             if($status == 'lancar'){
@@ -101,13 +103,10 @@ class CicilanController extends Controller
             /* cicilan pertama */
             $tempo=Carbon::parse($request->tanggal)->addMonth($tenorBulan)->isoFormat('YYYY-MM-DD');
         }
-        // dd($tempo);
         /* menghitung cicilan yang telah terbayar */
         $awal = Carbon::parse($request->tanggal)->firstOfMonth()->isoFormat('YYYY-MM-DD');
         $akhir = Carbon::parse($request->tanggal)->endOfMonth()->isoFormat('YYYY-MM-DD');
         $cekBulan = cicilan::whereBetween('tanggal',[$awal,$akhir])->count();
-        // dd($cekBulan);
-        
         $urut = cicilan::where('pembelian_id',$id)->orderBy('urut','desc')->first();
         if($urut != null){
             $urutan = $urut->urut;
@@ -133,7 +132,6 @@ class CicilanController extends Controller
             'proyek_id'=>proyekId(),
             'uraian'=>'Penerimaan Cicilan Unit '.jenisKepemilikan($cekCicilan->pelanggan_id).' '.$cekCicilan->kavling->blok.' a/n '.$cekCicilan->pelanggan->nama,
         ];
-        // dd($id); 
         $this->validate($request,$rules,$costumMessages);
         cicilan::create($requestCicilan);
         $requestData=$request->all();
@@ -173,12 +171,9 @@ class CicilanController extends Controller
             }
         }
         kasBesarMasuk($requestData);
-
         $update=pembelian::find($id)->update(['sisaCicilan'=>$cicilan-$totalTerbayar-$terbayarSekarang]);
-
         $daftarCicilanUnit = cicilan::where('pembelian_id',$id)->get();
         $cicilanPerBulan = $cekCicilan->sisaKewajiban/$cekCicilan->tenor;
-
         return redirect()->route('unitKavlingDetail',['id'=>$id,'daftarCicilanUnit'=>$daftarCicilanUnit,'cicilanPerBulan'=>$cicilanPerBulan])
                 ->with('status','Cicilan Unit Berhasil Ditambahkan');
     }

@@ -129,9 +129,11 @@ class KasController extends Controller
         return redirect()->route('pettyCash')->with('status','Transaksi Berhasil Disimpan');
     }
     public function kasBesarSimpan(Request $request){
+        // dd($request);
         $jumlah = str_replace(',', '', $request->jumlah);
         $rules=[
             'jumlah'=>'required',
+            'kategori'=>'required',
             'tanggal'=>'required',
             'uraian'=>'required',
         ];
@@ -147,6 +149,7 @@ class KasController extends Controller
         if($cekTransaksiSebelum->first() != null){
             $sebelum = $cekTransaksiSebelum->last();
             $requestData['no']=$sebelum->no+1;
+            $requestData['kategori']=$request->kategori;
             $requestData['saldo']=$sebelum->saldo+$jumlah;
             $requestData['kredit']=str_replace(',', '', $request->jumlah);
             $requestData['proyek_id']=proyekId();
@@ -154,6 +157,7 @@ class KasController extends Controller
         }else{
             /* jika tidak ada value simpan ke akhir transaksi */
             $requestData['no']=noTransaksiTerakhir()+1;
+            $requestData['kategori']=$request->kategori;
             $requestData['saldo']=saldoTerakhir()+$jumlah;
             $requestData['kredit']=str_replace(',', '', $request->jumlah);
             $requestData['proyek_id']=proyekId();

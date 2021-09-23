@@ -166,17 +166,18 @@ function saldoTerakhirPettyCash(){
 }
 function kasBesarMasuk($dataArray){
     $data = collect($dataArray);
-    $akunPendapatan=akun::firstOrCreate([
-        'proyek_id'=>proyekId(),
-        'jenis'=>'Pendapatan',
-        'kategori'=>'Pendapatan',
-        'kodeAkun'=>'Pendapatan',
-        'namaAkun'=>'Pendapatan',
-    ]);
+    // $akunPendapatan=akun::firstOrCreate([
+    //     'proyek_id'=>proyekId(),
+    //     'jenis'=>'Pendapatan',
+    //     'kategori'=>'Pendapatan',
+    //     'kodeAkun'=>'Pendapatan',
+    //     'namaAkun'=>'Pendapatan',
+    // ]);
     $requestData = $data->all();
     $requestData['kredit']=$data->get('kredit');
     $requestData['saldo']=$data->get('saldo');
-    $requestData['akun_id']=$akunPendapatan->id;
+    $requestData['kategori']='Pendapatan';
+    // $requestData['akun_id']=$akunPendapatan->id;
     $requestData['proyek_id']=proyekId();
     // dd($requestData);
     transaksi::create($requestData);

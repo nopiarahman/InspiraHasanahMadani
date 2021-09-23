@@ -143,11 +143,11 @@ class ProyekController extends Controller
         $semuaUnit = rabUnit::where('proyek_id',proyekId())->get()->groupBy(['header',function($item){
             return $item['judul'];
         }],$preserveKeys=true);
-        $perHeader=$semuaRAB;
-        $perJudul=$semuaRAB;
-        $perHeaderUnit=$semuaUnit;
-        $perJudulUnit=$semuaUnit;
-        // dd($semuaRAB);
+        $perHeader=$semuaRAB->sortBy('kodeRAB');
+        $perJudul=$semuaRAB->sortBy('kodeRAB');
+        $perHeaderUnit=$semuaUnit->sortBy('kodeRAB');
+        $perJudulUnit=$semuaUnit->sortBy('kodeRAB');
+        
         return view ('proyek/DataProyek/RAB',compact('perHeader','semuaRAB','semuaUnit','perJudul','perHeaderUnit','perJudulUnit'));
     }
     public function cariHeader(Request $request){
@@ -182,15 +182,18 @@ class ProyekController extends Controller
         $rules=[
             'header'=>'required',
             'judul'=>'required',
-            'isi'=>'required'
+            'isi'=>'required',
+            'kodeRAB'=>'required'
         ];
         $costumMessages = [
             'required'=>':attribute tidak boleh kosong'
         ];
+        $this->validate($request,$rules,$costumMessages);
         $rab = rab::create([
             'proyek_id'=>proyekId(),
             'header'=>$header,
             'judul'=>$judul,
+            'kodeRAB'=>$request->kodeRAB,
             'isi'=>$request->isi,
             'volume'=>$request->volume,
             'satuan'=>$request->satuan,
@@ -230,6 +233,7 @@ class ProyekController extends Controller
         $costumMessages = [
             'required'=>':attribute tidak boleh kosong'
         ];
+        $this->validate($request,$rules,$costumMessages);
         $rabUnit = rabUnit::create([
             'proyek_id'=>proyekId(),
             'header'=>$header,

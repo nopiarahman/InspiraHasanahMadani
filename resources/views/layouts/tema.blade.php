@@ -116,7 +116,7 @@
         <aside id="sidebar-wrapper">
           <div class="sidebar-brand">
             <a href="{{route('home')}}">
-              <img src="{{asset('assets/img/logo-mini.png')}}" alt="">
+              <img src="{{asset('assets/img/logo-color.png')}}" alt="" width="200px" style="padding-top: 3em">
             </a>
           </div>
           <div class="sidebar-brand sidebar-brand-sm">
@@ -167,7 +167,7 @@
           @endif
           @if(auth()->user()->role=="admin")
             <li class="menu-header">Menu Keuangan</li>
-            <li class=" @yield('menuAkun')"><a class="nav-link" href="{{route('akun')}}"><i class="fas fa-book-open"></i> <span> Akun</span></a></li>
+            {{-- <li class=" @yield('menuAkun')"><a class="nav-link" href="{{route('akun')}}"><i class="fas fa-book-open"></i> <span> Akun</span></a></li> --}}
             <li class="nav-item dropdown @yield('menuTransaksi')">
               <a href="" class="nav-link has-dropdown"><i class="fas fa-handshake"></i> <span>Transaksi</span></a>
               <ul class="dropdown-menu">

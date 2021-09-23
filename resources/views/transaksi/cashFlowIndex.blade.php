@@ -86,19 +86,18 @@
           <form action="{{route('kasBesarSimpan')}}" method="POST" enctype="multipart/form-data">
             @csrf
             <div class="form-group row mb-4">
-              <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Kode Akun</label>
-              <div class="input-group col-sm-12 col-md-7">
-                  <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#pilihAkun">Pilih Akun</a>
-                  <input type="text" hidden class="form-control" name="akun_id" id="idAkunCari" >
-              </div>
-            </div>
-            <div class="form-group row mb-4">
-              <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Nama Akun</label>
+              <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Kategori</label>
               <div class="col-sm-12 col-md-7">
-                <input type="text" readonly class="form-control" name="" id="isiNamaAkun" value="{{old('isiNamaAkun')}}">
+                <select class="form-control" tabindex="-1" name="kategori" >
+                <option value="Modal">Modal</option>                  
+                <option value="Aset">Aset</option>                  
+                <option value="Pendapatan">Pendapatan Lain-lain</option>                  
+              </select>
+                @error('uraian')
+                  <div class="invalid-feedback">{{$message}}</div>
+                @enderror
               </div>
             </div>
-            
             <div class="form-group row mb-4">
               <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Tanggal</label>
               <div class="col-sm-12 col-md-7">
@@ -225,7 +224,14 @@
         <tr>
           {{-- <td>{{$transaksi->no}}</td> --}}
           <td data-order="{{$transaksi->tanggal}}"" >{{formatTanggal($transaksi->tanggal)}}</td>
-          <td>{{$transaksi->akun->kodeAkun}}</td>
+          <td>
+            @if($transaksi->rab)
+            {{$transaksi->rab->kodeRAB}}
+            @elseif($transaksi->rabUnit)
+            {{$transaksi->rabUnit->kodeRAB}}
+            @endif
+            {{$transaksi->kategori}}
+          </td>
           <td>{{$transaksi->uraian}} {{$transaksi->jumlah}} {{$transaksi->satuan}}</td>
           <td>
             @if($transaksi->kredit != null)
@@ -240,18 +246,18 @@
           <td>Rp.{{number_format($transaksi->saldo)}}</td>
           <td>{{$transaksi->sumber}}</td>
           <td>
-            @if(auth()->user()->role=="admin")
-            @if( $transaksi->akun->kategori == 'Modal' || $transaksi->akun->kategori == 'Pendapatan')
-            @if($transaksi->akun->kodeAkun != 'Pendapatan')
-            <button type="button" class="btn btn-sm btn-white text-danger border-danger" 
-            data-toggle="modal" 
-            data-target="#hapusTransaksi" 
-            data-id="{{$transaksi->id}}" 
-            data-uraian="{{$transaksi->uraian}}">
-            <i class="fa fa-trash" aria-hidden="true" ></i> Hapus</button>    
-            @endif  
-            @endif
-            @endif
+              @if(auth()->user()->role=="admin")
+                @if( $transaksi->kategori == 'Modal' || $transaksi->kategori == 'Pendapatan')
+                  @if($transaksi->kategori != 'Pendapatan')
+                  <button type="button" class="btn btn-sm btn-white text-danger border-danger" 
+                  data-toggle="modal" 
+                  data-target="#hapusTransaksi" 
+                  data-id="{{$transaksi->id}}" 
+                  data-uraian="{{$transaksi->uraian}}">
+                  <i class="fa fa-trash" aria-hidden="true" ></i> Hapus</button>    
+                  @endif
+                @endif  
+              @endif
           </td>
         </tr>
         @endforeach
@@ -304,54 +310,6 @@
           })
         });
       </script>
-{{-- Modal --}}
-<div class="modal fade " id="pilihAkun" tabindex="-1"  role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Pilih Akun</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <div class="body table-responsive-xl">
-          <table class="table table-sm table-hover">
-            <thead>
-              <tr>
-                <th scope="col">No</th>
-                <th scope="col">Kode Akun</th>
-                <th scope="col">Nama</th>
-                <th scope="col">Aksi</th>
-              </tr>
-            </thead>
-
-            <tbody>
-              @foreach($semuaAkun  as $akun)
-                <tr>
-                  <td>{{$loop->iteration}}</td>
-                  <td>{{$akun->kodeAkun}}</td>
-                  <td>{{$akun->namaAkun}}</td>
-                  <td>
-                    @if($akun->namaAkun == 'Pendapatan')
-                    {{-- <a href="#" disabled class="badge badge-info pilihRAB" id="akun" >Pilih</a> --}}
-                    @else
-                    <a href="#" class="badge badge-info pilihRAB" data-id-akun={{$akun->id}} data-isi="{{$akun->namaAkun}}" id="akun" >Pilih</a>
-                    @endif
-                  </td>
-                </tr>
-              @endforeach
-            </tbody>
-          </table>
-          </div>
-        </div>
-      </div>
-      <div class="modal-footer">
-        </form>  
-      </div>
-    </div>
-  </div>
-</div>
 
 <script type="text/javascript">
   $(document).ready(function(){
@@ -364,6 +322,12 @@
       $('.close').click(); 
     });
   });
-
+</script>
+<script src="{{ mix("js/cleave.min.js") }}"></script>
+<script>
+  var cleave = new Cleave('.jumlah', {
+      numeral: true,
+      numeralThousandsGroupStyle: 'thousand'
+  });
 </script>
 @endsection

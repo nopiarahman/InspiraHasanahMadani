@@ -66,12 +66,10 @@
               @enderror
             </div>
           </div>
-          <div class="form-group row mb-4">
+          {{-- <div class="form-group row mb-4">
             <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Kode Akun</label>
             <div class="input-group col-sm-12 col-md-7">
-              {{-- <div class="input-group-prepend"> --}}
                 <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#pilihAkun">Pilih Akun</a>
-              {{-- </div> --}}
             </div>
           </div>
           <div class="form-group row mb-4">
@@ -79,7 +77,7 @@
             <div class="col-sm-12 col-md-7">
               <input type="text" readonly class="form-control" name="" id="isiNamaAkun" value="{{old('isiNamaAkun')}}">
             </div>
-          </div>
+          </div> --}}
           <div class="form-group row mb-4">
             <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Kategori RAB</label>
             <div class="input-group col-sm-12 col-md-7">
@@ -280,7 +278,14 @@
           @foreach($transaksiKeluar as $transaksi)
           <tr>
             <td>{{formatTanggal($transaksi->tanggal)}}</td>
-            <td>{{$transaksi->akun->kodeAkun}}</td>
+            <td>
+              @if($transaksi->rab)
+              {{$transaksi->rab->kodeRAB}}
+              @elseif($transaksi->rabUnit)
+              {{$transaksi->rabUnit->kodeRAB}}
+              @endif
+              {{$transaksi->kategori}}
+            </td>
             <td>{{$transaksi->uraian}} {{$transaksi->jumlah}} {{$transaksi->satuan}}</td>
             <td>Rp.{{number_format($transaksi->debet)}}</td>
             <td>{{$transaksi->sumber}}</td>
@@ -301,8 +306,8 @@
               data-satuan="{{$transaksi->satuan}}" 
               data-harga="{{$transaksi->hargaSatuan}}" 
               data-total="{{$transaksi->debet}}" 
-              data-akun="{{$transaksi->akun->id}}" 
-              data-awal="{{$transaksi->akun->namaAkun}}" 
+              {{-- data-akun="{{$transaksi->akun->id}}" 
+              data-awal="{{$transaksi->akun->namaAkun}}"  --}}
               >
               Sisa Barang</button>
               @endif
@@ -601,7 +606,7 @@
     </div>
   </div>
   {{-- modal Akun--}}
-  <div class="modal fade " id="pilihAkun" tabindex="-1"  role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  {{-- <div class="modal fade " id="pilihAkun" tabindex="-1"  role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
       <div class="modal-content">
         <div class="modal-header">
@@ -647,7 +652,7 @@
         </div>
       </div>
     </div>
-  </div>
+  </div> --}}
   <script>
     function hitung(){
     var harga = parseInt((document.getElementById('harga').value).replace(/,/g, ''));

@@ -87,7 +87,14 @@
         @foreach($transaksiMasuk as $transaksi)
         <tr>
           <td dat-order="{{$transaksi->tanggal}}" >{{formatTanggal($transaksi->tanggal)}}</td>
-          <td>{{$transaksi->akun->kodeAkun}}</td>
+          <td>
+            @if($transaksi->rab)
+            {{$transaksi->rab->kodeRAB}}
+            @elseif($transaksi->rabUnit)
+            {{$transaksi->rabUnit->kodeRAB}}
+            @endif
+            {{$transaksi->kategori}}
+          </td>
           <td>{{$transaksi->uraian}}</td>
           <td>Rp.{{number_format($transaksi->kredit)}}</td>
           <td>{{$transaksi->sumber}}</td>

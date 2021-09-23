@@ -61,9 +61,9 @@ class TransaksiController extends Controller
         $perJudulUnit=$semuaRABUnit;
 
         /* Akun */
-        $semuaAkun=akun::where('proyek_id',proyekId())->get();
-        $kategoriAkun=akun::where('proyek_id',proyekId())->get()->groupBy('kategori');
-        $perKategori = $kategoriAkun;
+        // $semuaAkun=akun::where('proyek_id',proyekId())->get();
+        // $kategoriAkun=akun::where('proyek_id',proyekId())->get()->groupBy('kategori');
+        // $perKategori = $kategoriAkun;
         
         if($request->get('filter')){
             $start = Carbon::parse($request->start)->isoFormat('YYYY-MM-DD');
@@ -76,16 +76,16 @@ class TransaksiController extends Controller
             $transaksiKeluar=transaksi::whereBetween('tanggal',[$start,$end])
                             ->whereNotNull('debet')->where('proyek_id',proyekId())->orderBy('tanggal')->get();
         }
-        return view ('transaksi/keluarIndex',compact('semuaAkun','perKategori','kategoriAkun','transaksiKeluar','perHeader','semuaRAB','perJudul','perHeaderUnit','semuaRABUnit','perJudulUnit','start','end'));
+        return view ('transaksi/keluarIndex',compact('transaksiKeluar','perHeader','semuaRAB','perJudul','perHeaderUnit','semuaRABUnit','perJudulUnit','start','end'));
     }
-    public function cariAkunTransaksi(Request $request){
-        if($request->has('q')){
-            $cari = $request->q;
-            $data = akun::select('id','kodeAkun')->where('kodeAkun', 'LIKE', '%'.$cari.'%')
-                                                ->where('proyek_id',proyekId())->distinct()->get();
-            return response()->json($data);
-        }
-    }
+    // public function cariAkunTransaksi(Request $request){
+    //     if($request->has('q')){
+    //         $cari = $request->q;
+    //         $data = akun::select('id','kodeAkun')->where('kodeAkun', 'LIKE', '%'.$cari.'%')
+    //                                             ->where('proyek_id',proyekId())->distinct()->get();
+    //         return response()->json($data);
+    //     }
+    // }
     public function cariRAB(Request $request){
         if($request->has('q')){
             $cari = $request->q;
@@ -136,7 +136,7 @@ class TransaksiController extends Controller
         if($request->sumberKas=='kasBesar'){
             /* cek transaksi sesudah input */
             $cekTransaksi=transaksi::where('tanggal','>',$request->tanggal)->orderBy('no')->where('proyek_id',proyekId())->get();
-            if($cekTransaksi != null){
+            if($cekTransaksi->first() != null){
                 /* jika ada, update transaksi sesudah sesuai perubahan input*/
                 foreach($cekTransaksi as $updateTransaksi){
                     $updateTransaksi['no'] = $updateTransaksi->no +1;
@@ -150,7 +150,7 @@ class TransaksiController extends Controller
         }elseif($request->sumberKas=='kasKecilLapangan'){
             /* cek transaksi sesudah input */
             $cekTransaksi=transaksi::where('tanggal','>',$request->tanggal)->orderBy('no')->where('proyek_id',proyekId())->get();
-            if($cekTransaksi != null){
+            if($cekTransaksi->first() != null){
                 /* jika ada, update transaksi sesudah sesuai perubahan input*/
                 foreach($cekTransaksi as $updateTransaksi){
                     $updateTransaksi['no'] = $updateTransaksi->no +1;
@@ -163,14 +163,14 @@ class TransaksiController extends Controller
             /* cek apakah ada transaksi sebelumnya */
             $cekKasLapangan=kasKecilLapangan::where('tanggal','<=',$request->tanggal)->orderBy('no')->where('proyek_id',proyekId())->get();
             /* jika transaksi sebelumnya ada value */
-            if($cekKasLapangan != null){
+            if($cekKasLapangan->first() != null){
                 $sebelum = $cekKasLapangan->last();
                 $requestData['no']=$sebelum->no+1;
                 $requestData['saldo']=$sebelum->saldo-$jumlah;
                 $requestData['keterangan']='Kas Besar';
                 /* cek transaksi sesudah input */
                 $cekTransaksi=kasKecilLapangan::where('tanggal','>',$request->tanggal)->orderBy('no')->where('proyek_id',proyekId())->get();
-                if($cekTransaksi != null){
+                if($cekTransaksi->first() != null){
                     /* jika ada, update transaksi sesudah sesuai perubahan input*/
                     foreach($cekTransaksi as $updateTransaksi){
                         $updateTransaksi['no'] = $updateTransaksi->no +1;
@@ -180,27 +180,10 @@ class TransaksiController extends Controller
                 }
                 kasLapanganKeluar($requestData);
             }
-            // else{
-            //     /* jika tidak ada value simpan ke akhir transaksi */
-            //     $requestData['no']=noPettyCashTerakhir()+1;
-            //     $requestData['saldo']=saldoTerakhirPettyCash()-$jumlah;
-            //     $requestData['keterangan']='Kas Besar';
-            //     kasLapanganKeluar($requestData);
-            //     /* cek transaksi sesudah input */
-            //     $cekTransaksi=kasKecilLapangan::where('tanggal','>',$request->tanggal)->orderBy('no')->where('proyek_id',proyekId())->get();
-            //     if($cekTransaksi != null){
-            //         /* jika ada, update transaksi sesudah sesuai perubahan input*/
-            //         foreach($cekTransaksi as $updateTransaksi){
-            //             $updateTransaksi['no'] = $updateTransaksi->no +1;
-            //             $updateTransaksi['saldo'] = $updateTransaksi->saldo - $jumlah;
-            //             $updateTransaksi->save();
-            //         }
-            //     }
-            // }
         }else{
             /* cek transaksi sesudah input */
             $cekTransaksi=transaksi::where('tanggal','>',$request->tanggal)->orderBy('no')->where('proyek_id',proyekId())->get();
-            if($cekTransaksi != null){
+            if($cekTransaksi->first() != null){
                 /* jika ada, update transaksi sesudah sesuai perubahan input*/
                 foreach($cekTransaksi as $updateTransaksi){
                     $updateTransaksi['no'] = $updateTransaksi->no +1;
@@ -213,14 +196,14 @@ class TransaksiController extends Controller
             /* cek apakah ada transaksi sebelumnya */
             $cekPettyCashSebelum=pettycash::where('tanggal','<=',$request->tanggal)->orderBy('no')->where('proyek_id',proyekId())->get();
             /* jika transaksi sebelumnya ada value */
-            if($cekPettyCashSebelum != null){
+            if($cekPettyCashSebelum->first() != null){
                 $sebelum = $cekPettyCashSebelum->last();
                 $requestData['no']=$sebelum->no+1;
                 $requestData['saldo']=$sebelum->saldo-$jumlah;
                 $requestData['keterangan']='Kas Besar';
                 /* cek transaksi sesudah input */
                 $cekTransaksi=pettycash::where('tanggal','>',$request->tanggal)->orderBy('no')->where('proyek_id',proyekId())->get();
-                if($cekTransaksi != null){
+                if($cekTransaksi->first() != null){
                     /* jika ada, update transaksi sesudah sesuai perubahan input*/
                     foreach($cekTransaksi as $updateTransaksi){
                         $updateTransaksi['no'] = $updateTransaksi->no +1;
@@ -237,7 +220,7 @@ class TransaksiController extends Controller
                 pettyCashKeluar($requestData);
                 /* cek transaksi sesudah input */
                 $cekTransaksi=pettycash::where('tanggal','>',$request->tanggal)->orderBy('no')->where('proyek_id',proyekId())->get();
-                if($cekTransaksi != null){
+                if($cekTransaksi->first() != null){
                     /* jika ada, update transaksi sesudah sesuai perubahan input*/
                     foreach($cekTransaksi as $updateTransaksi){
                         $updateTransaksi['no'] = $updateTransaksi->no +1;
@@ -295,7 +278,7 @@ class TransaksiController extends Controller
         if($cekPettyCash != null){
             /* cek transaksi sesudah input */
             $cekTransaksi=pettyCash::where('tanggal','>=',$cekPettyCash->tanggal)->where('no','>',$cekPettyCash->no)->orderBy('no')->get();
-            if($cekTransaksi != null){
+            if($cekTransaksi->first() != null){
                 /* jika ada, update transaksi sesudah sesuai perubahan input*/
                 foreach($cekTransaksi as $updateTransaksi){
                     $updateTransaksi['no'] = $updateTransaksi->no -1;
@@ -309,7 +292,7 @@ class TransaksiController extends Controller
         // $hapusKasBesar=transaksi::find($id->id);
         $cekKasBesar=transaksi::where('tanggal','>=',$id->tanggal)->where('no','>',$id->no)->orderBy('no')->get();
         // dd($cekKasBesar);
-        if($cekKasBesar != null){
+        if($cekKasBesar->first() != null){
             /* jika ada, update transaksi sesudah sesuai perubahan input*/
             foreach($cekKasBesar as $updateKasBesar){
                 $updateKasBesar['no'] = $updateKasBesar->no -1;
@@ -325,7 +308,7 @@ class TransaksiController extends Controller
         // dd($id);
         $cekKasBesar=transaksi::where('tanggal','>=',$id->tanggal)->where('no','>',$id->no)->orderBy('no')->get();
         // dd($cekKasBesar);
-        if($cekKasBesar != null){
+        if($cekKasBesar->first() != null){
             /* jika ada, update transaksi sesudah sesuai perubahan input*/
             foreach($cekKasBesar as $updateKasBesar){
                 $updateKasBesar['no'] = $updateKasBesar->no -1;

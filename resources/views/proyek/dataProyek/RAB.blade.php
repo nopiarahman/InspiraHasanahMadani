@@ -226,7 +226,15 @@
               }
             </script>
 
-
+            <div class="form-group row mb-4">
+              <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Kode RAB</label>
+              <div class="col-sm-12 col-md-7">
+                <input type="text" class="form-control @error('isi') is-invalid @enderror" name="kodeRAB" value="{{old('kodeRAB')}}">
+                @error('kodeRAB')
+                  <div class="invalid-feedback">{{$message}}</div>
+                @enderror
+              </div>
+            </div>
             <div class="form-group row mb-4">
               <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Isi Biaya</label>
               <div class="col-sm-12 col-md-7">
@@ -463,6 +471,15 @@
               </div>
             </div>
             <div class="form-group row mb-4">
+              <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Kode RAB</label>
+              <div class="col-sm-12 col-md-7">
+                <input type="text" class="form-control @error('isi') is-invalid @enderror" name="kodeRAB" value="{{old('kodeRAB')}}">
+                @error('kodeRAB')
+                  <div class="invalid-feedback">{{$message}}</div>
+                @enderror
+              </div>
+            </div>
+            <div class="form-group row mb-4">
               <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Jenis</label>
               <div class="col-sm-12 col-md-7">
                 <label class="selectgroup-item">
@@ -524,6 +541,7 @@
         <thead>
           <tr>
             <th scope="col">No</th>
+            <th scope="col"></th>
             <th scope="col">Biaya</th>
             <th scope="col">Volume</th>
             <th scope="col">Satuan</th>
@@ -545,15 +563,16 @@
           @endphp
           @foreach($perHeader as $header=>$semuaRAB)
           <tr>
-            <th colspan="9" class="bg-primary text-white">{{$header}}</th>
+            <th colspan="10" class="bg-primary text-white">{{$header}}</th>
           </tr>
           @foreach($perJudul[$header] as $judul=>$semuaRAB)
           <tr>
-            <th colspan="9" class="">{{$loop->iteration}}. {{$judul}}</th>
+            <th colspan="10" class="">{{$loop->iteration}}. {{$judul}}</th>
           </tr>
             @foreach($semuaRAB as $rab)
             <tr>
               <td>{{$loop->iteration}}</td>
+              <td>{{$rab->kodeRAB}}</td>
               <td>{{$rab->isi}}</td>
               <td>{{$rab->volume}}</td>
               <td>{{$rab->satuan}}</td>
@@ -579,6 +598,7 @@
                   data-volume="{{$rab->volume}}"
                   data-satuan="{{$rab->satuan}}"
                   data-harga="{{$rab->hargaSatuan}}"
+                  data-kode="{{$rab->kodeRAB}}"
                   data-total="{{$rab->total}}"
                   >
                   <i class="fa fa-pen" aria-hidden="true" ></i> Edit</button>
@@ -595,7 +615,7 @@
             @endforeach
             <tr class="border-top border-success">
               <th colspan="5" class="text-right" >Sub Total {{$judul}}</th>
-              <th colspan="4" class="" >Rp. {{number_format($semuaRAB->sum('total'))}}</th>
+              <th colspan="5" class="" >Rp. {{number_format($semuaRAB->sum('total'))}}</th>
             </tr>
             @php
                 $a[]=$semuaRAB->sum('total'); /* menghitung per total judul */
@@ -606,7 +626,7 @@
               @php
                   $bRAB[$header]=array_sum($a)-array_sum($bRAB); /* menghitung total header */
                   @endphp
-              <th colspan="4" class="bg-secondary" >Rp. {{number_format($bRAB[$header])}}</th>
+              <th colspan="5" class="bg-secondary" >Rp. {{number_format($bRAB[$header])}}</th>
             </tr>
             @endforeach
           </tbody>
@@ -623,6 +643,7 @@
         <thead>
           <tr>
             <th scope="col">No</th>
+            <th scope="col"></th>
             <th scope="col">Biaya</th>
             <th scope="col">Jenis</th>
             <th scope="col">Volume</th>
@@ -645,7 +666,7 @@
           @endphp
           @foreach($perHeaderUnit as $header=>$semuaUnit)
           <tr>
-            <th colspan="10" class="bg-primary text-white"> {{$header}}</th>
+            <th colspan="11" class="bg-primary text-white"> {{$header}}</th>
           </tr>
           @foreach($perJudulUnit[$header] as $judul=>$semuaUnit)
           @php
@@ -654,11 +675,12 @@
               $totalIsi[$judul]=0;
           @endphp
           <tr>
-            <th colspan="10" class="">{{$loop->iteration}}. {{$judul}}</th>
+            <th colspan="11" class="">{{$loop->iteration}}. {{$judul}}</th>
           </tr>
             @foreach($semuaUnit as $rab)
             <tr>
               <td>{{$loop->iteration}}</td>
+              <td>{{$rab->kodeRAB}}</td>
               <td>{{$rab->isi}}</td>
               <td>{{$rab->jenisUnit}}</td>
               <td>{{hitungUnit($rab->isi,$rab->judul,$rab->jenisUnit)}}</td>
@@ -713,7 +735,7 @@
             @endphp
             <tr  class="border-top border-success">
               <th colspan="6" class="text-right " >Sub Total {{$judul}}</th>
-              <th colspan="4" class="" >Rp. {{number_format($c[$judul])}}</th>
+              <th colspan="5" class="" >Rp. {{number_format($c[$judul])}}</th>
             </tr>
             @endforeach
               @php
@@ -721,14 +743,14 @@
               @endphp
             <tr>
               <th colspan="6" class=" bg-secondary text-right">TOTAL {{$header}}</th>
-              <th colspan="4" class="bg-secondary " >Rp. {{number_format($b[$header])}}</th>
+              <th colspan="5" class="bg-secondary " >Rp. {{number_format($b[$header])}}</th>
             </tr>
             @endforeach
           </tbody>
           <tfoot>
             <tr>
               <th colspan="6" class="text-white bg-warning text-right">TOTAL RAB</th>
-              <th colspan="4" class="bg-warning text-white" >Rp. {{number_format(array_sum($b)+array_sum($bRAB))}}</th>
+              <th colspan="5" class="bg-warning text-white" >Rp. {{number_format(array_sum($b)+array_sum($bRAB))}}</th>
           </tr>
         </tfoot>
       </table>
@@ -771,6 +793,15 @@
         <form action="" method="POST" enctype="multipart/form-data" id="formEdit" onchange="hitung2()">
           @method('patch')
           @csrf
+          <div class="form-group row mb-4">
+            <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Kode RAB</label>
+            <div class="col-sm-12 col-md-7">
+              <input type="text" class="form-control @error('isi') is-invalid @enderror" name="kodeRAB" value="{{old('kodeRAB')}}" id="kodeRABEdit">
+              @error('kodeRAB')
+                <div class="invalid-feedback">{{$message}}</div>
+              @enderror
+            </div>
+          </div>
           <div class="form-group row mb-4">
             <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Isi Biaya</label>
             <div class="col-sm-12 col-md-7">
@@ -877,6 +908,15 @@
         <form action="" method="POST" enctype="multipart/form-data" id="formEditUnit" onchange="hitung2()">
           @method('patch')
           @csrf
+          <div class="form-group row mb-4">
+            <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Kode RAB</label>
+            <div class="col-sm-12 col-md-7">
+              <input type="text" class="form-control @error('isi') is-invalid @enderror" name="kodeRAB" value="{{old('kodeRAB')}}" id="kodeRABEditUnit">
+              @error('kodeRAB')
+                <div class="invalid-feedback">{{$message}}</div>
+              @enderror
+            </div>
+          </div>
           <div class="form-group row mb-4">
             <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Isi Biaya</label>
             <div class="col-sm-12 col-md-7">
@@ -1019,6 +1059,7 @@
     var button = $(event.relatedTarget) // Button that triggered the modal
     var id = button.data('id') // Extract info from data-* attributes
     var isi = button.data('isi') 
+    var kode = button.data('kode') 
     var volume = button.data('volume') 
     var satuan = button.data('satuan') 
     var hargaSatuan = button.data('harga')
@@ -1028,6 +1069,7 @@
     $('#volumeEdit').val(volume);
     $('#satuanEdit').val(satuan);
     $('#hargaSatuanEdit').val(hargaSatuan);
+    $('#kodeRABEdit').val(kode);
     $('#totalEdit').val(total);
     })
   });

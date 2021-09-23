@@ -9,4 +9,14 @@ class rabUnit extends Model
 {
     protected $table = 'rabUnit';
     protected $guarded = ['id','created_at','updated_at'];
+
+    /**
+     * Get the transaksi associated with the rabUnit
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function transaksi()
+    {
+        return $this->hasOne(transaksi::class);
+    }    
 }
