@@ -91,7 +91,7 @@
                 <select class="form-control" tabindex="-1" name="kategori" >
                 <option value="Modal">Modal</option>                  
                 <option value="Aset">Aset</option>                  
-                <option value="Pendapatan">Pendapatan Lain-lain</option>                  
+                <option value="Pendapatan Lain">Pendapatan Lain-lain</option>                  
               </select>
                 @error('uraian')
                   <div class="invalid-feedback">{{$message}}</div>
@@ -247,8 +247,7 @@
           <td>{{$transaksi->sumber}}</td>
           <td>
               @if(auth()->user()->role=="admin")
-                @if( $transaksi->kategori == 'Modal' || $transaksi->kategori == 'Pendapatan')
-                  @if($transaksi->kategori != 'Pendapatan')
+                  @if($transaksi->kategori ==='Modal' || $transaksi->kategori ==='Aset' || $transaksi->kategori ==='Pendapatan Lain')
                   <button type="button" class="btn btn-sm btn-white text-danger border-danger" 
                   data-toggle="modal" 
                   data-target="#hapusTransaksi" 
@@ -256,7 +255,6 @@
                   data-uraian="{{$transaksi->uraian}}">
                   <i class="fa fa-trash" aria-hidden="true" ></i> Hapus</button>    
                   @endif
-                @endif  
               @endif
           </td>
         </tr>

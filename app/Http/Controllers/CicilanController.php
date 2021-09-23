@@ -150,7 +150,7 @@ class CicilanController extends Controller
         /* cek apakah ada transaksi sebelumnya */
         $cekTransaksiSebelum=transaksi::where('tanggal','<=',$request->tanggal)->orderBy('no')->where('proyek_id',proyekId())->get();
         /* jika transaksi sebelumnya ada value */
-        if($cekTransaksiSebelum != null){
+        if($cekTransaksiSebelum->first() != null){
             $sebelum = $cekTransaksiSebelum->last();
             $requestData['no']=$sebelum->no+1;
             $requestData['saldo']=$sebelum->saldo+$jumlah;
@@ -164,7 +164,7 @@ class CicilanController extends Controller
         // dd($requestData);
         if($cekTransaksi != null){
             /* jika ada, update transaksi sesudah sesuai perubahan input*/
-            foreach($cekTransaksi as $updateTransaksi){
+            foreach($cekTransaksi->first() as $updateTransaksi){
                 $updateTransaksi['no'] = $updateTransaksi->no +1;
                 $updateTransaksi['saldo'] = $updateTransaksi->saldo + $jumlah;
                 $updateTransaksi->save();
@@ -204,7 +204,7 @@ class CicilanController extends Controller
         $totalTerbayar = $terbayar->sum('jumlah');
         /* cek transaksi sesudah input */
         $cekTransaksi=transaksi::where('tanggal','>=',$id->tanggal)->where('no','>',$hapusKasBesar->no)->orderBy('no')->get();
-        if($cekTransaksi != null){
+        if($cekTransaksi->first() != null){
             /* jika ada, update transaksi sesudah sesuai perubahan input*/
             foreach($cekTransaksi as $updateTransaksi){
                 $updateTransaksi['no'] = $updateTransaksi->no -1;

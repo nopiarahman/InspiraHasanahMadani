@@ -91,7 +91,7 @@ class KasPendaftaranController extends Controller
         }
         /* cek transaksi sesudah input */
         $cekTransaksi=kasPendaftaran::where('tanggal','>',$request->tanggal)->orderBy('no')->where('proyek_id',proyekId())->get();
-        if($cekTransaksi != null){
+        if($cekTransaksi->first() != null){
             /* jika ada, update transaksi sesudah sesuai perubahan input*/
             foreach($cekTransaksi as $updateTransaksi){
                 $updateTransaksi['no'] = $updateTransaksi->no +1;
@@ -121,7 +121,7 @@ class KasPendaftaranController extends Controller
         /* cek apakah ada transaksi sebelumnya */
         $cekTransaksiSebelum=kasPendaftaran::where('tanggal','<=',$request->tanggal)->orderBy('no')->where('proyek_id',proyekId())->get();
         /* jika transaksi sebelumnya ada value */
-        if($cekTransaksiSebelum != null){
+        if($cekTransaksiSebelum->first() != null){
             $sebelum = $cekTransaksiSebelum->last();
             // dd($cekTransaksiSebelum);
             $requestData['no']=$sebelum->no+1;
@@ -134,7 +134,7 @@ class KasPendaftaranController extends Controller
         /* cek transaksi sesudah input */
         $cekTransaksi=kasPendaftaran::where('tanggal','>',$request->tanggal)->orderBy('no')->where('proyek_id',proyekId())->get();
         // dd($cekTransaksi);
-        if($cekTransaksi != null){
+        if($cekTransaksi->first() != null){
             /* jika ada, update transaksi sesudah sesuai perubahan input*/
             foreach($cekTransaksi as $updateTransaksi){
                 $updateTransaksi['no'] = $updateTransaksi->no +1;
@@ -161,7 +161,7 @@ class KasPendaftaranController extends Controller
         // dd($id);
         $cekKas=kasPendaftaran::where('tanggal','>=',$id->tanggal)->where('no','>',$id->no)->orderBy('no')->get();
         if($id->kredit != null){
-            if($cekKas != null){
+            if($cekKas->first() != null){
                 /* jika ada, update transaksi sesudah sesuai perubahan input*/
                 foreach($cekKas as $updateKasBesar){
                     $updateKasBesar['no'] = $updateKasBesar->no -1;
@@ -170,7 +170,7 @@ class KasPendaftaranController extends Controller
                 }
             }
         }elseif($id->debet !=null){
-            if($cekKas != null){
+            if($cekKas->first() != null){
                 /* jika ada, update transaksi sesudah sesuai perubahan input*/
                 foreach($cekKas as $updateKasBesar){
                     $updateKasBesar['no'] = $updateKasBesar->no -1;
