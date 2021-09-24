@@ -162,9 +162,9 @@ class CicilanController extends Controller
         /* cek transaksi sesudah input */
         $cekTransaksi=transaksi::where('tanggal','>',$request->tanggal)->orderBy('no')->where('proyek_id',proyekId())->get();
         // dd($requestData);
-        if($cekTransaksi != null){
+        if($cekTransaksi->first() != null){
             /* jika ada, update transaksi sesudah sesuai perubahan input*/
-            foreach($cekTransaksi->first() as $updateTransaksi){
+            foreach($cekTransaksi as $updateTransaksi){
                 $updateTransaksi['no'] = $updateTransaksi->no +1;
                 $updateTransaksi['saldo'] = $updateTransaksi->saldo + $jumlah;
                 $updateTransaksi->save();
