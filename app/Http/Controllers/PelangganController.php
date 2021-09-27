@@ -46,6 +46,7 @@ class PelangganController extends Controller
             return $value->kavling == null;
         });
         // dd($aktif->paginate());
+        // dd($pelangganNonAktif);
         return view ('pelanggan/nonAktif',compact('pelangganNonAktif'));
     }
 
@@ -484,10 +485,16 @@ class PelangganController extends Controller
     public function destroyNonAktif(Pelanggan $id){
         // dd($id->kavling);
         $id->delete();
+        $user=user::find($id->user_id);
+        $user->delete();
         return redirect()->back()->with('status','Pelanggan Dihapus!');
     }
     public function batalAkad(Pelanggan $id){
         // dd($id->kavling->id);
+        $user = $id->user;
+        // dd($id->kavling->blok);
+        $user->update(['username'=>'batalakad'.strtolower($id->kavling->blok)]);
+        // dd($user);
         $cekKavling = kavling::where('pelanggan_id',$id->id)->first();
         $cekKavling->pembelian->update(['statusPembelian'=>'Ready']);
         $updateKavling = kavling::find($id->kavling->id)->update(['pelanggan_id'=>0]);
@@ -511,6 +518,7 @@ class PelangganController extends Controller
     	}
     }
     public function detail(Pelanggan $id){
+        // dd($id->user);
         $dataKavling=kavling::where('pelanggan_id',$id->id)->first();
         // dd($dataKavling);
         $dataPembelian=pembelian::where('pelanggan_id',$id->id)->first();
