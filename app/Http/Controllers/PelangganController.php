@@ -67,8 +67,7 @@ class PelangganController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request){
-        // dd($request);
-        
+        // dd($request);;
         /* Membuat Akun User */
         $kavlingPelanggan=kavling::where('id',$request->kavling_id)->first();
         // dd($kavlingPelanggan->blok);
@@ -160,7 +159,7 @@ class PelangganController extends Controller
                 'proyek_id'=>proyekId(),
                 'header'=>'BIAYA PRODUKSI RUMAH',
                 'judul'=>'Biaya Produksi Rumah',
-                'kodeRAB'=>'IH-5-'.$blok->b.'-'.$blok->nr,
+                'kodeRAB'=>'IH-5-'.$cariKavling->b.'-'.$cariKavling->nr,
                 'isi'=>$cariKavling->blok,
                 'jenisUnit'=>'rumah',
                 'hargaSatuan'=>hargaSatuanRumah(),
@@ -195,7 +194,7 @@ class PelangganController extends Controller
                 'proyek_id'=>proyekId(),
                 'header'=>'BIAYA PRODUKSI RUMAH',
                 'judul'=>'Biaya Produksi Rumah',
-                'kodeRAB'=>'IH-5-'.$blok->b.'-'.$blok->nr,
+                'kodeRAB'=>'IH-5-'.$cariKavling->b.'-'.$cariKavling->nr,
                 'isi'=>$cariKavling->blok,
                 'jenisUnit'=>'kios',
                 'hargaSatuan'=>hargaSatuanRumah(),
