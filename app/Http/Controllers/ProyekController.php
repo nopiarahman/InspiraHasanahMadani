@@ -180,8 +180,6 @@ class ProyekController extends Controller
         }
         $total=str_replace(',','',$request->total);
         $rules=[
-            'header'=>'required',
-            'judul'=>'required',
             'isi'=>'required',
             'kodeRAB'=>'required'
         ];
@@ -226,8 +224,6 @@ class ProyekController extends Controller
         }
         $total=str_replace(',',' ',$request->hargaSatuan);
         $rules=[
-            'header'=>'required',
-            'judul'=>'required',
             'isi'=>'required'
         ];
         $costumMessages = [
