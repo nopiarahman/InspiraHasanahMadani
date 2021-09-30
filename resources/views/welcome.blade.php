@@ -10,7 +10,7 @@
 
 <meta name="description" content="Glax">
 <meta name="author" content="Marketify">
-
+<link rel="shortcut icon" href="{{asset('assets/img/logo-color.png')}}">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
 <title>Inspira Property</title>
