@@ -16,6 +16,7 @@
 <title>Inspira Property</title>
 
 <!-- STYLES -->
+<link rel="stylesheet" type="text/css" href="{{asset('splide/css/splide.min.css')}}" />
 <link rel="stylesheet" type="text/css" href="{{asset('frontPage/css/fontello.css')}}" />
 <link rel="stylesheet" type="text/css" href="{{asset('frontPage/css/skeleton.css')}}" />
 <link rel="stylesheet" type="text/css" href="{{asset('frontPage/css/plugins.css')}}" />
@@ -407,7 +408,7 @@
 		<!-- /SIDEBAR WIDGET -->
 		
 		<!-- HERO HEADER -->
-		<div class="glax_tm_hero_header_wrap">
+		{{-- <div class="glax_tm_hero_header_wrap">
 			<div class="slider_total_wrap">
 				<div class="swiper-container">
 					<div class="swiper-wrapper">
@@ -512,7 +513,35 @@
 				</div>
 			</div>
 			<div class="swiper_overlay"></div>
+		</div> --}}
+		{{-- SPLIDE --}}
+		{{-- https://splidejs.com/ --}}
+		<div id="image-slider" class="splide">
+			<div class="splide__track">
+				<ul class="splide__list">
+					<li class="splide__slide">
+						<img src="{{asset('frontPage/img/slider/1.jpg')}}">
+					</li>
+					<li class="splide__slide">
+						<img src="{{asset('frontPage/img/slider/2.jpg')}}">
+					</li>
+					<li class="splide__slide">
+						<img src="{{asset('frontPage/img/slider/3.jpg')}}">
+					</li>
+				</ul>
+			</div>
 		</div>
+
+		<script>
+			document.addEventListener( 'DOMContentLoaded', function () {
+				new Splide( '#image-slider',{
+					'type':'loop',
+					'cover'      : true,
+					'heightRatio': 0.5,
+					'autoplay':true,
+				} ).mount();
+			} );
+		</script>
 		<!-- /HERO HEADER -->
 		
 		<!-- HOME INTRODUCE -->
@@ -1197,6 +1226,7 @@
 <script src="{{asset('frontPage/js/plugins.js')}}"></script>
 <!--[if lt IE 10]> <script type="text/javascript" src="js/ie8.js"></script> <![endif]-->	
 <script src="{{asset('frontPage/js/init.js')}}"></script>
+<script src="{{asset('splide/js/splide.js')}}"></script>
 <!-- /SCRIPTS -->
 
 
