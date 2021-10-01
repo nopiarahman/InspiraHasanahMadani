@@ -115,6 +115,7 @@ class TransaksiController extends Controller
         ];
         $this->validate($request,$rules,$costumMessages);
         $requestData=$request->all();
+        // dd($requestData);
         if($request->pengembalian != null){
             $requestData['jumlah']=$jumlah;
             $requestData['hargaSatuan']=1;
@@ -271,8 +272,8 @@ class TransaksiController extends Controller
     }
     public function hapusKeluar(Transaksi $id){
         // dd($id);
-        $dari = Carbon::parse($id->created_at)->subSeconds(5);
-        $sampai = Carbon::parse($id->created_at)->addSeconds(5);
+        $dari = Carbon::parse($id->created_at)->subSeconds(15);
+        $sampai = Carbon::parse($id->created_at)->addSeconds(15);
         $cekPettyCash = pettyCash::where('uraian',$id->uraian)->whereBetween('created_at',[$dari,$sampai])->where('debet',$id->debet)->first();
         // dd($cekPettyCash);
         if($cekPettyCash != null){

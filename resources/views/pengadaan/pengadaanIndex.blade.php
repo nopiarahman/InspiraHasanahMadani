@@ -208,7 +208,13 @@
                 </td>
                 <td>
                   @if(auth()->user()->role=="admin")
-                  <a href="{{route('isiPengadaan',['id'=>$pengadaan->id])}}" class="btn btn-white border-success text-primary"> <i class="fas fa-pen    "></i> Isi Pengadaan </a>
+                  <a href="{{route('isiPengadaan',['id'=>$pengadaan->id])}}" class="btn btn-sm btn-white border-success text-primary"> <i class="fas fa-pen    "></i> Isi Pengadaan </a>
+                  <button type="button" class="btn btn-sm btn-white text-danger border-danger" 
+                  data-toggle="modal" 
+                  data-target="#exampleModalCenter" 
+                  data-id="{{$pengadaan->id}}" 
+                  data-nama="{{$pengadaan->deskripsi}}">
+                  <i class="fa fa-trash" aria-hidden="true" ></i> Hapus</button>
                   @elseif(auth()->user()->role=='projectmanager')
                   <a href="{{route('isiPengadaan',['id'=>$pengadaan->id])}}" class="btn btn-white border-success text-primary"> <i class="fas fa-pen    "></i> Periksa </a>
                   @endif
@@ -271,31 +277,6 @@
     </div>
   </div>
 </div>
-<!-- Modal Hapus-->
-<div class="modal fade exampleModalCenter" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLongTitle">Hapus Akun</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <form action="" method="post" id="formHapus">
-          @method('delete')
-          @csrf
-          <p class="modal-text"></p>
-        </div>
-        <div class="modal-footer">
-          <button type="submit" class="btn btn-primary">Hapus</button>
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
-        </form>
-      </div>
-    </div>
-  </div>
-</div>
-
 {{-- modal Edit --}}
 <div class="modal fade modalEdit bd-example-modal-lg ml-5" id="modalEdit" tabindex="-1" role="dialog" aria-labelledby="modalEditTitle" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
@@ -340,19 +321,43 @@
     </div>
   </div>
 </div>
-
+<!-- Modal Hapus-->
+<div class="modal fade exampleModalCenter" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Hapus Pengadaan</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form action="" method="post" id="formHapus">
+          @method('delete')
+          @csrf
+          <p class="modal-text"></p>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary">Hapus</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{{-- hapus pengadaan --}}
 <script type="text/javascript">
-$(document).ready(function () {
-  $('#exampleModalCenter').on('show.bs.modal', function (event) {
-  var button = $(event.relatedTarget) // Button that triggered the modal
-  var id = button.data('id') // Extract info from data-* attributes
-  var nama = button.data('nama') 
-  var modal = $(this)
-  modal.find('.modal-text').text('Hapus Akun ' + nama+' ?')
-  document.getElementById('formHapus').action='hapusAkun/'+id;
-  })
-});
-</script>
+  $(document).ready(function () {
+    $('#exampleModalCenter').on('show.bs.modal', function (event) {
+    var button = $(event.relatedTarget) // Button that triggered the modal
+    var id = button.data('id') // Extract info from data-* attributes
+    var nama = button.data('nama') 
+    var modal = $(this)
+    modal.find('.modal-text').text('Hapus Pengadaan ' + nama+' ?')
+    document.getElementById('formHapus').action='hapusPengadaan/'+id;
+    })
+  });
+  </script>
 <script type="text/javascript">
 $(document).ready(function () {
   $('#modalEdit').on('show.bs.modal', function (event) {

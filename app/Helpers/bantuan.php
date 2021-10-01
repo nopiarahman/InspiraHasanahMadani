@@ -201,7 +201,7 @@ function kasBesarKeluar($dataArray)
     $dataTransaksi['tanggal'] = $data->get('tanggal');
     $dataTransaksi['satuan'] = $data->get('satuan');
     $dataTransaksi['rab_id'] = $data->get('rab_id');
-    $dataTransaksi['rabUnit_id'] = $data->get('rabUnit_id');
+    $dataTransaksi['rabunit_id'] = $data->get('rabunit_id');
     $dataTransaksi['akun_id'] = $data->get('akun_id');
     $dataTransaksi['uraian'] = $data->get('uraian');
     $dataTransaksi['sumber'] = $data->get('sumber');
@@ -335,7 +335,7 @@ function hitungTransaksiRABRange($idRAB,$start,$end){
     }
 }
 function hitungTransaksiRABUnit($idRAB){
-    $total = transaksi::where('rabUnit_id',$idRAB)->where('proyek_id',proyekId())->get();
+    $total = transaksi::where('rabunit_id',$idRAB)->where('proyek_id',proyekId())->get();
     if($total != null){
         $totalRAB = $total->sum('debet');
         // dd($total);
@@ -345,7 +345,7 @@ function hitungTransaksiRABUnit($idRAB){
     }
 }
 function hitungTransaksiRABUnitRange($idRAB,$start,$end){
-    $total = transaksi::where('rabUnit_id',$idRAB)->where('proyek_id',proyekId())->whereBetween('tanggal',[$start,$end])->get();
+    $total = transaksi::where('rabunit_id',$idRAB)->where('proyek_id',proyekId())->whereBetween('tanggal',[$start,$end])->get();
     if($total != null){
         $totalRAB = $total->sum('debet');
         // dd($total);

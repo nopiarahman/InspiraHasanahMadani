@@ -22,6 +22,7 @@
 <link rel="stylesheet" type="text/css" href="{{asset('frontPage/css/plugins.css')}}" />
 <link rel="stylesheet" type="text/css" href="{{asset('frontPage/css/base.css')}}" />
 <link rel="stylesheet" type="text/css" href="{{asset('frontPage/css/style.css')}}" />
+<link rel="stylesheet" href="{{asset('assets/css/custom.css')}}">
 <link href="https://fonts.googleapis.com/css?family=Montserrat:300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i,800,800i" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css?family=Rubik:300,300i,400,400i,500,500i,700,700i,900" rel="stylesheet">
@@ -39,13 +40,13 @@
 <div class="glax_tm_wrapper_all">
 	
 	<!-- LANG BOX -->
-	<div class="lang_box">
+	{{-- <div class="lang_box">
 		<ul>
 			<li><span>Eng</span></li>
 			<li><a href="#">Spa</a></li>
 			<li><a href="#">Rus</a></li>
 		</ul>
-	</div>
+	</div> --}}
 	<!-- /LANG BOX -->
 	
 	<!-- BORDERS -->
@@ -70,15 +71,13 @@
 				<div class="left_part_wrap">
 					<div class="share_wrap">
 						<ul>
-							<li><a href="#"><i class="xcon-facebook"></i></a></li>
-							<li><a href="#"><i class="xcon-twitter"></i></a></li>
-							<li><a href="#"><i class="xcon-instagram"></i></a></li>
-							<li><a href="#"><i class="xcon-pinterest"></i></a></li>
-							<li><a href="#"><i class="xcon-behance"></i></a></li>
+							<li><a href="https://web.facebook.com/rumahsyariahjambi" target="_blank"><i class="xcon-facebook"></i></a></li>
+							<li><a href="https://www.instagram.com/rumahsyariahjambi/" target="_blank"><i class="xcon-instagram"></i></a></li>
+							<li><a href="https://www.youtube.com/channel/UCK7yv-ba5yqGmn6OkngGf4A"><i class="xcon-youtube"></i></a></li>
 						</ul>
 					</div>
 					<div class="language">
-						<a class="selected" href="#">Eng</a>
+						<a class="selected" href="#">IDN</a>
 					</div>
 				</div>
 				<div class="right_part_wrap">
@@ -408,127 +407,41 @@
 		<!-- /SIDEBAR WIDGET -->
 		
 		<!-- HERO HEADER -->
-		{{-- <div class="glax_tm_hero_header_wrap">
-			<div class="slider_total_wrap">
-				<div class="swiper-container">
-					<div class="swiper-wrapper">
-						<div class="image_wrap swiper-slide">
-							<div class="bg_img" data-img-url="{{asset('frontPage/img/slider/1.jpg')}}"></div>
-							<div class="swiper_content">
-								<div class="texts_wrap">
-									<h3>Inspira Group</h3>
-									<p>The foundations and aspirations of our business remain true to those established by our visionary founders, and their innovation and energy continue to be our inspiration. Our passion and entrepreneurial culture will ensure that we deliver for our customers in safety, quality and assurance – today and in the future.</p>
-								</div>
-								<div class="switches">
-									<div class="prev_next">
-										<div class="tm_next_button"></div>
-										<div class="tm_prev_button"></div>
-									</div>
-									<div class="swiper-pagination my_swiper_pagination"></div>
-								</div>
-							</div>
-						</div>
-						<div class="image_wrap swiper-slide">
-							<div class="bg_img" data-img-url="{{asset('frontPage/img/slider/2.jpg')}}"></div>
-							<div class="swiper_content">
-								<div class="texts_wrap">
-									<h3>Dapatkan Rumah Tanpa Riba</h3>
-									<p>The foundations and aspirations of our business remain true to those established by our visionary founders, and their innovation and energy continue to be our inspiration. Our passion and entrepreneurial culture will ensure that we deliver for our customers in safety, quality and assurance – today and in the future.</p>
-								</div>
-								<div class="switches">
-									<div class="prev_next">
-										<div class="tm_next_button"></div>
-										<div class="tm_prev_button"></div>
-									</div>
-									<div class="swiper-pagination my_swiper_pagination"></div>
-								</div>
-							</div>
-						</div>
-						<div class="image_wrap swiper-slide">
-							<div class="bg_img" data-img-url="{{asset('frontPage/img/slider/3.jpg')}}"></div>
-							<div class="swiper_content">
-								<div class="texts_wrap">
-									<h3>We are more than industrial company</h3>
-									<p>The foundations and aspirations of our business remain true to those established by our visionary founders, and their innovation and energy continue to be our inspiration. Our passion and entrepreneurial culture will ensure that we deliver for our customers in safety, quality and assurance – today and in the future.</p>
-								</div>
-								<div class="switches">
-									<div class="prev_next">
-										<div class="tm_next_button"></div>
-										<div class="tm_prev_button"></div>
-									</div>
-									<div class="swiper-pagination my_swiper_pagination"></div>
-								</div>
-							</div>
-						</div>
-						<div class="image_wrap swiper-slide">
-							<div class="bg_img" data-img-url="{{asset('frontPage/img/slider/4.jpg')}}"></div>
-							<div class="swiper_content">
-								<div class="texts_wrap">
-									<h3>We are more than industrial company</h3>
-									<p>The foundations and aspirations of our business remain true to those established by our visionary founders, and their innovation and energy continue to be our inspiration. Our passion and entrepreneurial culture will ensure that we deliver for our customers in safety, quality and assurance – today and in the future.</p>
-								</div>
-								<div class="switches">
-									<div class="prev_next">
-										<div class="tm_next_button"></div>
-										<div class="tm_prev_button"></div>
-									</div>
-									<div class="swiper-pagination my_swiper_pagination"></div>
-								</div>
-							</div>
-						</div>
-						<div class="image_wrap swiper-slide">
-							<div class="bg_img" data-img-url="{{asset('frontPage/img/slider/5.jpg')}}"></div>
-							<div class="swiper_content">
-								<div class="texts_wrap">
-									<h3>We are more than industrial company</h3>
-									<p>The foundations and aspirations of our business remain true to those established by our visionary founders, and their innovation and energy continue to be our inspiration. Our passion and entrepreneurial culture will ensure that we deliver for our customers in safety, quality and assurance – today and in the future.</p>
-								</div>
-								<div class="switches">
-									<div class="prev_next">
-										<div class="tm_next_button"></div>
-										<div class="tm_prev_button"></div>
-									</div>
-									<div class="swiper-pagination my_swiper_pagination"></div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="glax_tm_swiper_content">
-				<div class="container swiper">
-					<div class="swiper_content">
-						<div class="texts_wrap">
-							<h3>Dapatkan Property Syariah Tanpa Riba</h3>
-							<p>The foundations and aspirations of our business remain true to those established by our visionary founders, and their innovation and energy continue to be our inspiration. Our passion and entrepreneurial culture will ensure that we deliver for our customers in safety, quality and assurance – today and in the future.</p>
-						</div>
-						<div class="switches">
-							<div class="prev_next">
-								<div class="tm_next_button"></div>
-								<div class="tm_prev_button"></div>
-							</div>
-							<div class="swiper-pagination my_swiper_pagination"></div>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="swiper_overlay"></div>
-		</div> --}}
 		{{-- SPLIDE --}}
 		{{-- https://splidejs.com/ --}}
-		<div id="image-slider" class="splide">
-			<div class="splide__track">
-				<ul class="splide__list">
-					<li class="splide__slide">
-						<img src="{{asset('frontPage/img/slider/1.jpg')}}">
-					</li>
-					<li class="splide__slide">
-						<img src="{{asset('frontPage/img/slider/2.jpg')}}">
-					</li>
-					<li class="splide__slide">
-						<img src="{{asset('frontPage/img/slider/3.jpg')}}">
-					</li>
-				</ul>
+		<div style="background-color: black">
+			<div id="image-slider" class="splide " >
+				<div class="splide__track">
+					<ul class="splide__list">
+						<li class="splide__slide">
+							<div  style="opacity: 0.5">
+								<img src="{{asset('frontPage/img/slider/1.jpg')}}">
+							</div>
+							<div class="slider_text">
+								<h2>INSPIRA GROUP</h2>
+								<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quo reiciendis ipsam dignissimos explicabo rerum est ea quis blanditiis enim, nulla modi perspiciatis voluptates, qui corporis! Quaerat deleniti voluptatum et quod.</p>
+							</div>
+						</li>
+						<li class="splide__slide">
+							<div  style="opacity: 0.5">
+								<img src="{{asset('frontPage/img/slider/2.jpg')}}">
+							</div>
+							<div class="slider_text">
+								<h2>Properti Syariah Tanpa Riba</h2>
+								<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quo reiciendis ipsam dignissimos explicabo rerum est ea quis blanditiis enim, nulla modi perspiciatis voluptates, qui corporis! Quaerat deleniti voluptatum et quod.</p>
+							</div>
+						</li>
+						<li class="splide__slide">
+							<div  style="opacity: 0.5">
+								<img src="{{asset('frontPage/img/slider/3.jpg')}}">
+							</div>
+							<div class="slider_text">
+								<h2>Tanpa Denda, Tanpa Sita</h2>
+								<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quo reiciendis ipsam dignissimos explicabo rerum est ea quis blanditiis enim, nulla modi perspiciatis voluptates, qui corporis! Quaerat deleniti voluptatum et quod.</p>
+							</div>
+						</li>
+					</ul>
+				</div>
 			</div>
 		</div>
 
@@ -539,6 +452,7 @@
 					'cover'      : true,
 					'heightRatio': 0.5,
 					'autoplay':true,
+					'interval':3000,
 				} ).mount();
 			} );
 		</script>

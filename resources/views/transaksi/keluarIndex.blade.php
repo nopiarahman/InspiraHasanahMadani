@@ -92,7 +92,7 @@
             <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Kategori</label>
             <div class="col-sm-12 col-md-7">
               <input type="text" hidden class="form-control" name="rab_id" id="idRAB" >
-              <input type="text" hidden class="form-control" name="rabUnit_id" id="idRABUnit" >
+              <input type="text" hidden class="form-control" name="rabunit_id" id="idRABUnit" >
               <input type="text" hidden class="form-control" name="akun_id" id="idAkunCari" >
               <input type="text" readonly class="form-control" name="" id="isiRAB" value="{{old('isi')}}">
             </div>
@@ -258,7 +258,7 @@
               });
           </script>
           {{-- end filter --}}
-      <table class="table table-sm table-hover table-striped mt-3" id="table">
+      <table class="table table-sm  table-striped mt-3" id="table">
         <thead>
           <tr>
             <th scope="col">Tanggal</th>

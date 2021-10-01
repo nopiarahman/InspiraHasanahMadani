@@ -30,6 +30,12 @@ class PelangganController extends Controller
      */
     public function index()
     {
+
+        // $users = User::all();
+        // $usersUnique = $users->unique('username');
+        // $usersDupes = $users->diff($usersUnique);
+        // dd($users, $usersUnique, $usersDupes);
+
         $semuaPelanggan = pelanggan::where('proyek_id',proyekId())->orderBy('nama')->get();
         // $pelanggan=collect($semuaPelanggan);
         $pelangganAktif = $semuaPelanggan->filter(function ($value, $key) {
@@ -464,6 +470,9 @@ class PelangganController extends Controller
      */
     public function destroy(pelanggan $id)
     {
+        if($id->dp->first() || $id->cicilan->first() != null){
+            return redirect()->back()->with('error','Gagal Hapus Pelanggan, Pelanggan Mempunyai transaksi');
+        }
         $pelanggan = pelanggan::find($id->id);
         $cekKavling = kavling::where('pelanggan_id',$id->id)->first();
         $cekKavling->pembelian->update(['statusPembelian'=>'Ready']);

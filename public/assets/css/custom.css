@@ -55,3 +55,19 @@ input[type=number] {
 .sepia { filter: sepia(100%); }
 .huerotate { filter: hue-rotate(180deg); }
 .rss.opacity { filter: opacity(50%); }
+
+.slider_text{
+  position: absolute;
+  top: 30%;
+  left: 10%;
+
+}
+.slider_text h2 {
+  color: white;
+  font-weight: bolder;
+}
+.slider_text p {
+  color: white;
+  width: 70%;
+  margin-top: 1rem;
+}

@@ -246,8 +246,8 @@
           <td>Rp.{{number_format($transaksi->saldo)}}</td>
           <td>{{$transaksi->sumber}}</td>
           <td>
+            @if($transaksi->kategori ==='Modal' || $transaksi->kategori ==='Aset' || $transaksi->kategori ==='Pendapatan Lain')
               @if(auth()->user()->role=="admin")
-                  @if($transaksi->kategori ==='Modal' || $transaksi->kategori ==='Aset' || $transaksi->kategori ==='Pendapatan Lain')
                   <button type="button" class="btn btn-sm btn-white text-danger border-danger" 
                   data-toggle="modal" 
                   data-target="#hapusTransaksi" 

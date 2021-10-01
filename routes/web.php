@@ -155,6 +155,7 @@ Route::group(['middleware'=>['auth','role:admin,projectmanager']],function(){
     Route::post('/pengadaanSimpan', 'PengadaanController@pengadaanSimpan')->name('pengadaanSimpan');
     Route::patch('/editBarang/{id}', 'PengadaanController@editBarang')->name('editBarang');
     Route::delete('/hapusBarang/{id}', 'PengadaanController@hapusBarang')->name('hapusBarang');
+    Route::delete('/hapusPengadaan/{id}', 'PengadaanController@hapusPengadaan')->name('hapusPengadaan');
     Route::delete('/hapusIsiPengadaan/{id}', 'PengadaanController@hapusIsiPengadaan')->name('hapusIsiPengadaan');
     Route::get('/terimaPengadaan/{id}', 'PengadaanController@terimaPengadaan')->name('terimaPengadaan');
     Route::get('/tolakPengadaan/{id}', 'PengadaanController@tolakPengadaan')->name('tolakPengadaan');

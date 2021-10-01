@@ -57,7 +57,8 @@ class PengadaanController extends Controller
         return redirect()->back()->with('status','Pengadaan berhasil ditambahkan');
     }
     public function hapusBarang(Barang $id){
-        dd($id);
+        $id->delete();
+        return redirect()->back()->with('status','Barang Berhasil dihapus');
     }
     public function editBarang(Barang $id, Request $request){
         $jumlah = str_replace(',', '', $request->harga);
@@ -164,5 +165,9 @@ class PengadaanController extends Controller
                             ->whereNotNull('debet')->where('proyek_id',proyekId())->orderBy('no')->get();
         }
         return view ('pengadaan/buatTransaksi',compact('id','semuaAkun','perKategori','kategoriAkun','transaksiKeluar','perHeader','semuaRAB','perJudul','perHeaderUnit','semuaRABUnit','perJudulUnit','start','end'));
+    }
+    public function hapusPengadaan(Pengadaan $id){
+        $id->delete();
+        return redirect()->back()->with('status','Pengadaan Berhasil dihapus');
     }
 }
