@@ -93,7 +93,7 @@
                 <h1 class="mb-2 display-4 font-weight-bold">Rumahku Ladang Surgaku</h1>
                 <h5 class="font-weight-normal text-muted-transparent">Jambi, Indonesia</h5>
               </div>
-              Photo by <a class="text-light bb" target="_blank" href="https://unsplash.com/photos/a8lTjWJJgLA">Justin Kauffman</a> on <a class="text-light bb" target="_blank" href="https://unsplash.com">Unsplash</a>
+              {{-- Photo by <a class="text-light bb" target="_blank" href="https://unsplash.com/photos/a8lTjWJJgLA">Justin Kauffman</a> on <a class="text-light bb" target="_blank" href="https://unsplash.com">Unsplash</a> --}}
             </div>
           </div>
         </div>

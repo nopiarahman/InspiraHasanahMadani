@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
+use App\kabarBerita;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -14,8 +14,16 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    $kabarBerita = kabarBerita::latest()->take(3)->get();
+    // dd($kabarBerita);
+    return view('welcome',compact('kabarBerita'));
 });
+/* WEB */
+Route::get('/blog', 'WebController@blog')->name('blog');
+Route::get('/kabar_berita/{id}', 'WebController@kabar_berita')->name('kabar_berita');
+Route::get('/proyekWeb', 'WebController@proyek')->name('proyekWeb');
+Route::get('/tentang', 'WebController@tentang')->name('tentang');
+Route::get('/kontak', 'WebController@kontak')->name('kontak');
 
 Auth::routes();
 Route::group(['middleware'=>['auth','role:admin,projectmanager']],function(){
@@ -172,7 +180,15 @@ Route::group(['middleware'=>['auth','role:projectmanager']],function(){
     Route::patch('/userEdit/{id}', 'ProjectManagerController@userEdit')->name('userEdit');
     Route::delete('/hapusUser/{id}', 'ProjectManagerController@hapusUser')->name('hapusUser');
 });
-
+Route::group(['middleware'=>['auth','role:adminWeb']],function(){
+    
+    Route::get('/kabarBerita', 'KabarBeritaController@index')->name('kabarBerita');
+    Route::get('/kabarBeritaTambah', 'KabarBeritaController@create')->name('kabarBeritaTambah');
+    Route::post('/kabarBeritaSimpan', 'KabarBeritaController@store')->name('kabarBeritaSimpan');
+    Route::get('/lihatBerita/{id}', 'KabarBeritaController@edit')->name('lihatBerita');
+    Route::post('/updateBerita/{id}', 'KabarBeritaController@update')->name('kabarBeritaUpdate');
+    Route::delete('/hapusBerita/{id}', 'KabarBeritaController@destroy')->name('hapusBerita');
+});
 Route::group(['middleware'=>['auth','role:pelanggan']],function(){
     Route::get('/dataDiri', 'PelangganController@dataDiri')->name('dataDiri');
     Route::get('/pembelianPelanggan', 'PelangganController@pembelianPelanggan')->name('pembelianPelanggan');

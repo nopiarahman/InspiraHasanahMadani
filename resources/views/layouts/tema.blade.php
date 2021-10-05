@@ -220,6 +220,11 @@
               <li class=" @yield('menuPembelianPelanggan')"><a class="nav-link" href="{{route('pembelianPelanggan')}}"><i class="fas fa-handshake    "></i><span> Pembelian</span></a></li>
               <li class=" @yield('menuDPPelanggan')"><a class="nav-link" href="{{route('DPPelanggan')}}"><i class="fas fa-coins    "></i> <span> Cicilan DP</span></a></li>
               <li class=" @yield('menuUnitPelanggan')"><a class="nav-link" href="{{route('unitPelanggan')}}"><i class="fas fa-money-bill    "></i> <span> Cicilan Unit</span></a></li>
+              @endif
+          @if(auth()->user()->role=='adminWeb')
+              <li class="menu-header">Menu Website</li>
+              <li class=" @yield('menuKabarBerita')"><a class="nav-link" href="{{route('kabarBerita')}}"><i class="fas fa-book-open"></i> <span> Kabar Berita</span></a></li>
+
           @endif
               <div class="mt-4 mb-4 p-3 hide-sidebar-mini">
                 {{-- <a href="https://getstisla.com" class="btn btn-primary btn-lg btn-block btn-icon-split">

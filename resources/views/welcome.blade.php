@@ -85,9 +85,9 @@
 						<li data-style="home">
 							<a href="#"><img class="svg" src="{{asset('frontPage/img/svg/home.svg')}}" alt="" /></a>
 						</li>
-						<li data-style="message">
+						{{-- <li data-style="message">
 							<a href="#"><img class="svg" src="{{asset('frontPage/img/svg/message2.svg')}}" alt="" /></a>
-						</li>
+						</li> --}}
 						<li data-style="phone">
 							<a href="#"><img class="svg" src="{{asset('frontPage/img/svg/old_phone.svg')}}" alt="" /></a>
 						</li>
@@ -109,27 +109,15 @@
 				<div class="header_inner_wrap">
 					<div class="menu_wrap">
 						<ul>
-							<li><a href="index.html">Beranda</a></li>
-							<li class="shape">
-								<a href="project.html">Proyek</a>
-								<div class="submenu_wrap">
-									<ul>
-										<li><a href="project.html">Project</a></li>
-										<li><a href="project-single.html">Project Single</a></li>
-									</ul>
-								</div>
+							<li><a href="/">Beranda</a></li>
+							<li>
+								<a href="{{route('proyekWeb')}}">Proyek</a>
 							</li>
-							<li class="shape">
-								<a href="#">Kabar Berita</a>
-								<div class="submenu_wrap">
-									<ul>
-										<li><a href="blog.html">News</a></li>
-										<li><a href="blog-single.html">News Single</a></li>
-									</ul>
-								</div>
+							<li>
+								<a href="{{route('blog')}}">Kabar Berita</a>
 							</li>
-							<li><a href="about.html">Tentang Kami</a></li>
-							<li><a href="contact.html">Kontak</a></li>
+							<li><a href="{{route('tentang')}}">Tentang Kami</a></li>
+							<li><a href="{{route('kontak')}}">Kontak</a></li>
 						</ul>
 					</div>
 					<div class="purchase_button">
@@ -151,7 +139,7 @@
 						<span class="right"></span>
 						<span class="extra_first"></span>
 						<span class="extra_second"></span>
-						<a class="full_link" href="index.html"></a>
+						<a class="full_link" href="/"></a>
 					</div>
 				</div>
 			</div>
@@ -166,18 +154,16 @@
 						<div class="short_info_wrap">
 							<ul>
 								<li data-type="home"><a href="#"><img class="svg" src="{{asset('frontPage/img/svg/home.svg')}}" alt="" /></a></li>
-								<li data-type="message"><a href="#"><img class="svg" src="{{asset('frontPage/img/svg/message2.svg')}}" alt="" /></a></li>
+								{{-- <li data-type="message"><a href="#"><img class="svg" src="{{asset('frontPage/img/svg/message2.svg')}}" alt="" /></a></li> --}}
 								<li data-type="phone"><a href="#"><img class="svg" src="{{asset('frontPage/img/svg/old-phone.svg')}}" alt="" /></a></li>
 								<li data-type="clock"><a href="#"><img class="svg" src="{{asset('frontPage/img/svg/clock.svg')}}" alt="" /></a></li>
 							</ul>
 						</div>
 						<div class="mobile_socials_wrap">
 							<ul>
-								<li><a href="#"><i class="xcon-facebook"></i></a></li>
-								<li><a href="#"><i class="xcon-twitter"></i></a></li>
-								<li><a href="#"><i class="xcon-instagram"></i></a></li>
-								<li><a href="#"><i class="xcon-pinterest"></i></a></li>
-								<li><a href="#"><i class="xcon-behance"></i></a></li>
+								<li><a href="https://web.facebook.com/rumahsyariahjambi" target="_blank"><i class="xcon-facebook"></i></a></li>
+								<li><a href="https://www.instagram.com/rumahsyariahjambi/" target="_blank"><i class="xcon-instagram"></i></a></li>
+								<li><a href="https://www.youtube.com/channel/UCK7yv-ba5yqGmn6OkngGf4A"><i class="xcon-youtube"></i></a></li>
 							</ul>
 						</div>
 					</div>
@@ -187,7 +173,7 @@
 				<div class="container">
 					<div class="inner_wrap">
 						<div class="logo_wrap " style="align-content: center">
-							<a href="index.html"><img src="{{asset('frontPage/img/mobile-logo.png')}}" alt="" /></a>
+							<a href="/"><img src="{{asset('frontPage/img/mobile-logo.png')}}" alt="" /></a>
 						</div>
 						<div class="trigger_wrap">
 							<div class="hamburger hamburger--collapse-r">
@@ -203,24 +189,15 @@
 			<!-- MENU LIST -->
 			<div class="menu_list_wrap">
 				<ul class="nav">
-					<li><a href="index.html">Homepage</a></li>
-					<li>
-						<a href="#">Projects</a>
-						<ul class="sub_menu">
-							<li><a href="project.html">Project</a></li>
-							<li><a href="project-single.html">Project Single</a></li>
-						</ul>
-					</li>
-					<li>
-						<a href="#">Our Services</a>
-						<ul class="sub_menu">
-							<li><a href="service.html">Service</a></li>
-							<li><a href="service-single.html">Service Single</a></li>
-						</ul>
-					</li>
-					<li><a href="blog.html">Blog</a></li>
-					<li><a href="about.html">About Us</a></li>
-					<li><a href="contact.html">Contact</a></li>
+					<li><a href="/">Beranda</a></li>
+							<li>
+								<a href="{{route('proyekWeb')}}">Proyek</a>
+							</li>
+							<li>
+								<a href="{{route('blog')}}">Kabar Berita</a>
+							</li>
+							<li><a href="{{route('tentang')}}">Tentang Kami</a></li>
+							<li><a href="{{route('kontak')}}">Kontak</a></li>
 				</ul>
 			</div>
 			<!-- /MENU LIST -->
@@ -231,17 +208,17 @@
 					<div class="drop_list home">
 						<div class="adress_wrap">
 							<div class="office_image">
-								<img src="{{asset('frontPage/img/contact/1.jpg')}}" alt="" />
+								<img src="{{asset('assets/img/logo-color.png')}}" alt="" />
 							</div>
 							<div class="definitions_wrap">
-								<h3>Head Office in New-York</h3>
-								<p>775 New York Ave, Brooklyn, NY 11203</p>
-								<p>Phone: +1 202-415-7234</p>
-								<p><span>Email:</span><a href="#">w.constructify@gmail.com</a></p>
+								<h3>Kantor Graha Inspira</h3>
+								<p>Jl. Mayjen. A. Thalib No.12-Telanaipura Kota Jambi</p>
+								<p>Google Maps: <a href="https://goo.gl/maps/bEox4wYEJH3WpcBu5">Graha Inspira</a></p>
+								<p><span>Email:</span><a href="#">insprahasanahmadani@gmail.com</a></p>
 							</div>
 						</div>
 					</div>
-					<div class="drop_list message">
+					{{-- <div class="drop_list message">
 						<div class="short_contact">
 							<h3 class="title">Request a Quote</h3>
 							<p class="subtitle">Looking for a quality and affordable builder for your next project?</p>
@@ -267,33 +244,35 @@
 								</form>
 							</div>
 						</div>
-					</div>
+					</div> --}}
 					<div class="drop_list phone">
 						<div class="call_wrap">
 							<div class="image">
 								<img src="{{asset('frontPage/img/estimate/call.png')}}" alt="" />
 							</div>
-							<h3>Toll Free</h3>
-							<p>1-800-987-6543</p>
+							<h3>Telp</h3>
+							<p>0741-000000</p>
+							<h3>Whatsapp</h3>
+							<p>0823-0000-0000</p>
 						</div>
 					</div>
 					<div class="drop_list clock">
 						<div class="working_hours_wrap_short">
-							<h3>Working Hours</h3>
-							<p class="subtitle">We are happy to meet you during our working hours. Please make an appointment.</p>
+							<h3>Jam Operasional</h3>
+							<p class="subtitle">Insyaa Allah Kantor akan selalu buka di jam berikut:</p>
 							<div class="hour_list">
 								<ul>
 									<li>
-										<span class="left">Monday-Friday:</span>
-										<span class="right">9am to 5pm</span>
+										<span class="left">Senin-Jumat:</span>
+										<span class="right">8.00 - 5.00</span>
 									</li>
 									<li>
-										<span class="left">Saturday:</span>
-										<span class="right">10am to 3pm</span>
+										<span class="left">Sabtu:</span>
+										<span class="right">08.00 - 12.00</span>
 									</li>
 									<li>
-										<span class="left">Sunday:</span>
-										<span class="right">Closed</span>
+										<span class="left">Ahad:</span>
+										<span class="right">Tutup</span>
 									</li>
 								</ul>
 							</div>
@@ -314,9 +293,9 @@
 						<li class="home" data-style="home">
 							<a href="#"><img class="svg" src="{{asset('frontPage/img/svg/home.svg')}}" alt="" /></a>
 						</li>
-						<li class="message" data-style="message">
+						{{-- <li class="message" data-style="message">
 							<a href="#"><img class="svg" src="{{asset('frontPage/img/svg/message2.svg')}}" alt="" /></a>
-						</li>
+						</li> --}}
 						<li class="phone" data-style="phone">
 							<a href="#"><img class="svg" src="{{asset('frontPage/img/svg/old_phone.svg')}}" alt="" /></a>
 						</li>
@@ -331,17 +310,17 @@
 					<div class="drop_list home">
 						<div class="adress_wrap">
 							<div class="office_image">
-								<img src="{{asset('frontPage/img/contact/1.jpg')}}" alt="" />
+								<img src="{{asset('assets/img/logo-color.png')}}" alt="" />
 							</div>
 							<div class="definitions_wrap">
-								<h3>Head Office in New-York</h3>
-								<p>775 New York Ave, Brooklyn, NY 11203</p>
-								<p>Phone: +1 202-415-7234</p>
-								<p><span>Email:</span><a href="#">w.constructify@gmail.com</a></p>
+								<h3>Kantor Graha Inspira</h3>
+								<p>Jl. Mayjen. A. Thalib No.12-Telanaipura Kota Jambi</p>
+								<p>Google Maps: <a href="https://goo.gl/maps/bEox4wYEJH3WpcBu5">Graha Inspira</a></p>
+								<p><span>Email:</span><a href="#">insprahasanahmadani@gmail.com</a></p>
 							</div>
 						</div>
 					</div>
-					<div class="drop_list message">
+					{{-- <div class="drop_list message">
 						<div class="short_contact">
 							<h3 class="title">Request a Quote</h3>
 							<p class="subtitle">Looking for a quality and affordable builder for your next project?</p>
@@ -367,33 +346,35 @@
 								</form>
 							</div>
 						</div>
-					</div>
+					</div> --}}
 					<div class="drop_list phone">
 						<div class="call_wrap">
 							<div class="image">
 								<img src="{{asset('frontPage/img/estimate/call.png')}}" alt="" />
 							</div>
-							<h3>Toll Free</h3>
-							<p>1-800-987-6543</p>
+							<h3>Telp</h3>
+							<p>0741-000000</p>
+							<h3>Whatsapp</h3>
+							<p>0823-0000-0000</p>
 						</div>
 					</div>
 					<div class="drop_list clock">
 						<div class="working_hours_wrap_short">
-							<h3>Working Hours</h3>
-							<p class="subtitle">We are happy to meet you during our working hours. Please make an appointment.</p>
+							<h3>Jam Operasional</h3>
+							<p class="subtitle">Insyaa Allah Kantor akan selalu buka di jam berikut:</p>
 							<div class="hour_list">
 								<ul>
 									<li>
-										<span class="left">Monday-Friday:</span>
-										<span class="right">9am to 5pm</span>
+										<span class="left">Senin-Jumat:</span>
+										<span class="right">8.00 - 5.00</span>
 									</li>
 									<li>
-										<span class="left">Saturday:</span>
-										<span class="right">10am to 3pm</span>
+										<span class="left">Sabtu:</span>
+										<span class="right">08.00 - 12.00</span>
 									</li>
 									<li>
-										<span class="left">Sunday:</span>
-										<span class="right">Closed</span>
+										<span class="left">Ahad:</span>
+										<span class="right">Tutup</span>
 									</li>
 								</ul>
 							</div>
@@ -484,7 +465,7 @@
 							</div>
 						</div>
 						<div class="play_video">
-							<a class="popup-youtube" href="https://www.youtube.com/watch?v=se4yc09w7Ic"></a>
+							<a class="popup-youtube" href="https://www.youtube.com/watch?v=ya7OKUSmAug"></a>
 						</div>
 					</div>
 					<div class="shape_top">
@@ -508,22 +489,22 @@
 						<li>
 							<div class="inner_list glax_tm_minibox">
 								<div class="icon_wrap">
-									<img class="svg" src="{{asset('frontPage/img/svg/service-flasks.svg')}}" alt="" />
+									<img class="svg" src="{{asset('frontPage/img/svg/moon-svgrepo-com.svg')}}" alt="" />
 								</div>
 								<div class="title_holder">
-									<h3>Basic &amp; Industrial Chemicals</h3>
+									<h3>Lingkungan Islami dan Nyaman</h3>
 								</div>
 								<div class="description">
 									<p>During this phase, we will work to provide a detailed analysis of the project and we will establish project expectations along...</p>
 								</div>
 								<div class="glax_tm_button_more_wrap">
-									<a href="#">
+									{{-- <a href="#">
 										More Details
 										<span class="arrow_wrap">
 											<span class="first"><img class="svg" src="{{asset('frontPage/img/svg/arrow-right.svg')}}" alt="" /></span>
 											<span class="second"><img class="svg" src="{{asset('frontPage/img/svg/arrow-right.svg')}}" alt="" /></span>
 										</span>
-									</a>
+									</a> --}}
 								</div>
 								<a class="service_link" href="service-single.html"></a>
 							</div>
@@ -531,22 +512,22 @@
 						<li>
 							<div class="inner_list glax_tm_minibox">
 								<div class="icon_wrap">
-									<img class="svg" src="{{asset('frontPage/img/svg/service-tower.svg')}}" alt="" />
+									<img class="svg" src="{{asset('frontPage/img/svg/badge-svgrepo-com.svg')}}" alt="" />
 								</div>
 								<div class="title_holder">
-									<h3>Construction &amp; Engineering</h3>
+									<h3>Dipercaya Oleh Ratusan Pelanggan</h3>
 								</div>
 								<div class="description">
 									<p>The client retains an architect or engineer to design the project and to prepare the necessary drawings and specifications for...</p>
 								</div>
 								<div class="glax_tm_button_more_wrap">
-									<a href="#">
+									{{-- <a href="#">
 										More Details
 										<span class="arrow_wrap">
 											<span class="first"><img class="svg" src="img/svg/arrow-right.svg" alt="" /></span>
 											<span class="second"><img class="svg" src="img/svg/arrow-right.svg" alt="" /></span>
 										</span>
-									</a>
+									</a> --}}
 								</div>
 								<a class="service_link" href="service-single.html"></a>
 							</div>
@@ -554,22 +535,22 @@
 						<li>
 							<div class="inner_list glax_tm_minibox">
 								<div class="icon_wrap">
-									<img class="svg" src="{{asset('frontPage/img/svg/service-transformer.svg')}}" alt="" />
+									<img class="svg" src="{{asset('frontPage/img/svg/money-svgrepo-com.svg')}}" alt="" />
 								</div>
 								<div class="title_holder">
-									<h3>Energy and Commodities Industry</h3>
+									<h3>Tanpa Akad Riba</h3>
 								</div>
 								<div class="description">
 									<p>Under a Construction Management contract, the client secures the services of a construction manager to work with the design...</p>
 								</div>
 								<div class="glax_tm_button_more_wrap">
-									<a href="#">
+									{{-- <a href="#">
 										More Details
 										<span class="arrow_wrap">
 											<span class="first"><img class="svg" src="img/svg/arrow-right.svg" alt="" /></span>
 											<span class="second"><img class="svg" src="img/svg/arrow-right.svg" alt="" /></span>
 										</span>
-									</a>
+									</a> --}}
 								</div>
 								<a class="service_link" href="service-single.html"></a>
 							</div>
@@ -577,22 +558,22 @@
 						<li>
 							<div class="inner_list glax_tm_minibox">
 								<div class="icon_wrap">
-									<img class="svg" src="{{asset('frontPage/img/svg/service-oil.svg')}}" alt="" />
+									<img class="svg" src="{{asset('frontPage/img/svg/mosque-svgrepo-com.svg')}}" alt="" />
 								</div>
 								<div class="title_holder">
-									<h3>The Shale Oil &amp; Gas Revolution</h3>
+									<h3>Fasilitas Lengkap</h3>
 								</div>
 								<div class="description">
 									<p>In this section, we let clients select a design-build arrangement when they want to work with one contract entity...</p>
 								</div>
 								<div class="glax_tm_button_more_wrap">
-									<a href="#">
+									{{-- <a href="#">
 										More Details
 										<span class="arrow_wrap">
 											<span class="first"><img class="svg" src="img/svg/arrow-right.svg" alt="" /></span>
 											<span class="second"><img class="svg" src="img/svg/arrow-right.svg" alt="" /></span>
 										</span>
-									</a>
+									</a> --}}
 								</div>
 								<a class="service_link" href="service-single.html"></a>
 							</div>
@@ -609,108 +590,60 @@
 					<div class="inner_wrap">
 						<div class="blog_title_holder">
 							<h3>Kabar &amp; Berita</h3>
+							<h5 class="blog_link first"> <a href="{{route('blog')}}" style="text-decoration: none; color:black">Selengkapnya..</a> 
+								<span class="arrow_wrap">
+									<span class="first"><img class="svg" src="{{asset('frontPage/img/svg/arrow-right.svg')}}" alt="" /></span>
+								</span>
+							</h5>
+						</div>
+						<div>
 						</div>
 						<div class="blog_list">
 							<ul>
+								@foreach($kabarBerita as $kb)
 								<li>
 									<div class="inner">
 										<div class="image_holder">
-											<img src="{{asset('frontPage/img/blog/370x250.jpg')}}" alt="" />
-											<div class="main_image" data-img-url="{{asset('frontPage/img/blog/1.jpg')}}"></div>
+											@if($kb->thumbnail)
+											<img src="{{Storage::url($kb->thumbnail)}}" alt="" height="250px"/>
+											<div class="main_image" data-img-url="{{Storage::url($kb->thumbnail)}}"></div>
+											@else
+											<img src="{{asset('assets/img/logo-color.png')}}" alt="" height="250px" />
+											<div class="main_image" data-img-url="{{asset('assets/img/logo-color.png')}}"></div>
+											@endif
 											<div class="overlay"></div>
 											<div class="date_wrap">
-												<h3><span>08</span></h3>
-												<h5>Aug</h5>
-												<h5>2020</h5>
+												<h3><span>{{Carbon\Carbon::parse($kb->tanggal)->isoformat('DD')}}</span></h3>
+												<h5>{{Carbon\Carbon::parse($kb->tanggal)->isoformat('MMM')}}</h5>
+												<h5>{{Carbon\Carbon::parse($kb->tanggal)->isoformat('YYYY')}}</h5>
 											</div>
-											<a class="full_link" href="blog-single.html"></a>
+											<a class="full_link" href="{{route('kabar_berita',['id'=>$kb->id])}}"></a>
 										</div>
 										<div class="descriptions_wrap">
 											<p class="category">
-												<span class="author">By <a href="#">Admin</a></span>
-												<span class="city">Di <a href="#">Kampung Tahfidz Al Kausar</a></span>
+												<span class="author">By <a href="#">{{$kb->author}}</a></span>
+												<span class="city">Di <a href="#">{{$kb->proyek->nama}}</a></span>
 											</p>
 										</div>
 										<div class="title_holder">
-											<h3><a href="blog-single.html">Peletakan Batu Pertama Kampung Tahfidz Al Kausar</a></h3>
+											<h3><a href="{{route('kabar_berita',['id'=>$kb->id])}}">{{$kb->judul}}</a></h3>
+											<p>
+												{{-- {!! $kb->isi!!} --}}
+												{!! \Illuminate\Support\Str::limit($kb->isi, 150, $end='...') !!}
+											</p>
 										</div>
 										<div class="glax_tm_button_more_wrap">
-											<a href="blog-single.html">
+											<a href="{{route('kabar_berita',['id'=>$kb->id])}}">
 												Read More
 												<span class="arrow_wrap">
-													<span class="first"><img class="svg" src="img/svg/arrow-right.svg" alt="" /></span>
-													<span class="second"><img class="svg" src="img/svg/arrow-right.svg" alt="" /></span>
+													<span class="first"><img class="svg" src="{{asset('frontPage/img/svg/arrow-right.svg')}}" alt="" /></span>
+													<span class="second"><img class="svg" src="{{asset('frontPage/img/svg/arrow-right.svg')}}" alt="" /></span>
 												</span>
 											</a>
 										</div>
 									</div>
 								</li>
-								<li>
-									<div class="inner">
-										<div class="image_holder">
-											<img src="{{asset('frontPage/img/blog/370x250.jpg')}}" alt="" />
-											<div class="main_image" data-img-url="{{asset('frontPage/img/blog/2.jpg')}}"></div>
-											<div class="overlay"></div>
-											<div class="date_wrap">
-												<h3><span>07</span></h3>
-												<h5>Aug</h5>
-												<h5>2018</h5>
-											</div>
-											<a class="full_link" href="blog-single.html"></a>
-										</div>
-										<div class="descriptions_wrap">
-											<p class="category">
-												<span class="author">By <a href="#">Admin</a></span>
-												<span class="city">In <a href="#">Kampung Tahfidz Al Kausar</a></span>
-											</p>
-										</div>
-										<div class="title_holder">
-											<h3><a href="blog-single.html">Pembukaan Lahan</a></h3>
-										</div>
-										<div class="glax_tm_button_more_wrap">
-											<a href="blog-single.html">
-												Read More
-												<span class="arrow_wrap">
-													<span class="first"><img class="svg" src="img/svg/arrow-right.svg" alt="" /></span>
-													<span class="second"><img class="svg" src="img/svg/arrow-right.svg" alt="" /></span>
-												</span>
-											</a>
-										</div>
-									</div>
-								</li>
-								<li>
-									<div class="inner">
-										<div class="image_holder">
-											<img src="{{asset('frontPage/img/blog/370x250.jpg')}}" alt="" />
-											<div class="main_image" data-img-url="{{asset('frontPage/img/blog/3.jpg')}}"></div>
-											<div class="overlay"></div>
-											<div class="date_wrap">
-												<h3><span>06</span></h3>
-												<h5>Aug</h5>
-												<h5>2018</h5>
-											</div>
-											<a class="full_link" href="blog-single.html"></a>
-										</div>
-										<div class="descriptions_wrap">
-											<p class="category">
-												<span class="author">By <a href="#">Admin</a></span>
-												<span class="city">In <a href="#">Kampung Tahfidz Al Kausar</a></span>
-											</p>
-										</div>
-										<div class="title_holder">
-											<h3><a href="blog-single.html">Proses Penimbunan Jalan dan Pemasangan Gorong-gorong</a></h3>
-										</div>
-										<div class="glax_tm_button_more_wrap">
-											<a href="blog-single.html">
-												Read More
-												<span class="arrow_wrap">
-													<span class="first"><img class="svg" src="img/svg/arrow-right.svg" alt="" /></span>
-													<span class="second"><img class="svg" src="img/svg/arrow-right.svg" alt="" /></span>
-												</span>
-											</a>
-										</div>
-									</div>
-								</li>
+								@endforeach
 							</ul>
 						</div>
 					</div>
@@ -725,42 +658,40 @@
 					<div class="inner">
 						<div class="leftbox">
 							<div class="title">
-								<h3>World's Leading Building Corporation</h3>
+								<h3>Alasan Mengapa anda memilih kami</h3>
 							</div>
 							<div class="text">
 								<p>To further develop our corporate strengths we have established a corporate mandate to maintain strong core values that truly reflect the companys philosophy.</p>
 							</div>
 							<div class="glax_tm_project_video">
 								<span>
-									<img class="svg" src="img/svg/play.svg" alt="" />
+									<img class="svg" src="{{asset('frontPage/img/svg/play.svg')}}" alt="" />
 								</span>
 								<a class="project_time" href="#">View Company Promo Video</a>
-								<a class="project_video_button popup-youtube" href="https://www.youtube.com/watch?v=se4yc09w7Ic"></a>
+								<a class="project_video_button popup-youtube" href="https://www.youtube.com/watch?v=RyDaPkFNfUE"></a>
 							</div>
 						</div>
 						<div class="ratingbox">
 							<div class="rating_wrap">
 								<div class="inner_wrap">
 									<div class="star">
-										<img src="img/rating/rate.png" alt="" />
+										<img src="{{asset('img/rating/rate.png')}}" alt="" />
 									</div>
 									<div class="number">
-										<span>9.7</span>
+										<span>500+</span>
 									</div>
 									<div class="title">
-										<p>Customer Rating</p>
+										<p>Pelanggan</p>
 									</div>
 								</div>
 							</div>
 							<div class="rating_text">
 								<div class="inner">
-									<span>Full reviews at Trustpilot</span>
+									<span>Telah membeli property syariah</span>
 								</div>
 							</div>
 						</div>
-						<div class="rightbox">
-							<div class="bg_image"></div>
-						</div>
+								<img src="{{asset('assets/img/logo-color.png')}}" alt="" height="45%" style="margin-top:5%">
 					</div>
 				</div>
 			</div>
@@ -775,7 +706,7 @@
 						<div class="inner_box">
 							<div class="leftbox">
 								<div class="title_holder">
-									<h3>Our Guiding Principles</h3>
+									<h3>Visi Misi Perusahaan</h3>
 								</div>
 								<div class="description">
 									<p>For over 35 years, the Glax family has been building relationships and projects that last. As a diversified construction management, design-build, and general contracting firm, Glax is recognized as one of Upstate New York's largest construction companies.</p>
@@ -878,33 +809,33 @@
 							<div class="content_inner_wrap">
 								<div class="glax_tm_experience_box">
 									<div class="top">
-										<p>World's Leading Industry Corporation</p>
+										<p>Developer Property Syariah</p>
 									</div>
 									<div class="bottom">
 										<div class="number">
-											<span>47</span>
+											<span>5</span>
 										</div>
 										<div class="definition">
-											<p>Years of experience</p>
+											<p>Tahun Pengalaman</p>
 										</div>
 									</div>
 								</div>
 								<div class="experience_list">
 									<ul>
-										<li><span>Unrivalled workmanship</span></li>
-										<li><span>Professional and Qualified</span></li>
-										<li><span>Competitive prices</span></li>
-										<li><span>Performance Measures</span></li>
-										<li><span>Environmental Sensitivity</span></li>
-										<li><span>Core Placement</span></li>
-										<li><span>Communication skills</span></li>
+										<li><span>Tanpa Bunga</span></li>
+										<li><span>Tanpa Denda</span></li>
+										<li><span>Tanpa Sita</span></li>
+										<li><span>Tanpa BI Checking</span></li>
+										<li><span>Tanpa Asuransi</span></li>
+										<li><span>Tanpa Akad Bathil</span></li>
+										{{-- <li><span>Communication skills</span></li>
 										<li><span>Responsive and Respectful</span></li>
 										<li><span>Personalised solutions</span></li>
 										<li><span>Functional Objectives</span></li>
 										<li><span>Integrated Design</span></li>
 										<li><span>Urban Context</span></li>
 										<li><span>Critical thinking</span></li>
-										<li><span>Problem solving</span></li>
+										<li><span>Problem solving</span></li> --}}
 									</ul>
 								</div>
 							</div>
@@ -1146,94 +1077,3 @@
 
 </body>
 </html>
-
-{{-- <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-
-        <title>PT Inspira Hasanah Madani</title>
-        <link rel="shortcut icon" href="{{asset('assets/img/favicon.png')}}">
-        <!-- Fonts -->
-        <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@200;600&display=swap" rel="stylesheet">
-
-        <!-- Styles -->
-        <style>
-            html, body {
-                background-color: #fff;
-                color: #636b6f;
-                font-family: 'Nunito', sans-serif;
-                font-weight: 200;
-                height: 100vh;
-                margin: 0;
-            }
-
-            .full-height {
-                height: 100vh;
-            }
-
-            .flex-center {
-                align-items: center;
-                display: flex;
-                justify-content: center;
-            }
-
-            .position-ref {
-                position: relative;
-            }
-
-            .top-right {
-                position: absolute;
-                right: 10px;
-                top: 18px;
-            }
-
-            .content {
-                text-align: center;
-            }
-
-            .title {
-                font-size: 84px;
-            }
-
-            .links > a {
-                color: #636b6f;
-                padding: 0 25px;
-                font-size: 13px;
-                font-weight: 600;
-                letter-spacing: .1rem;
-                text-decoration: none;
-                text-transform: uppercase;
-            }
-
-            .m-b-md {
-                margin-bottom: 30px;
-            }
-        </style>
-    </head>
-    <body>
-        <div class="flex-center position-ref full-height">
-            @if (Route::has('login'))
-                <div class="top-right links">
-                    @auth
-                        <a href="{{ url('/home') }}">Home</a>
-                    @else
-                        <a href="{{ route('login') }}">Login</a>
-
-                        @if (Route::has('register'))
-                            <a href="{{ route('register') }}">Register</a>
-                        @endif
-                    @endauth
-                </div>
-            @endif
-
-            <div class="content">
-                <img src="{{asset('assets/img/logo-mini.png')}}" alt="">
-                <div class="title m-b-md">
-                    <span style="font-size:xx-large"> PT. Inspira Hasanah Madani</span>
-                </div>
-            </div>
-        </div>
-    </body>
-</html> --}}

@@ -52,7 +52,7 @@
           <div class="col-sm-12 col-md-7">
             <select class="form-control selectric" tabindex="-1" name="jabatan" >
               <option value="admin">Admin</option>
-              <option value="marketing">Marketing</option>
+              <option value="adminWeb">Admin Website</option>
             </select>
           </div>
         </div>
