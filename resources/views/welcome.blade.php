@@ -253,7 +253,7 @@
 							<h3>Telp</h3>
 							<p>0741-000000</p>
 							<h3>Whatsapp</h3>
-							<p>0823-0000-0000</p>
+							<p>0821-8307-9255</p>
 						</div>
 					</div>
 					<div class="drop_list clock">
@@ -355,7 +355,8 @@
 							<h3>Telp</h3>
 							<p>0741-000000</p>
 							<h3>Whatsapp</h3>
-							<p>0823-0000-0000</p>
+							<p>0821-8307-9255</p>
+
 						</div>
 					</div>
 					<div class="drop_list clock">
@@ -822,6 +823,7 @@
 								</div>
 								<div class="experience_list">
 									<ul>
+										<li><span>Tanpa Bank</span></li>
 										<li><span>Tanpa Bunga</span></li>
 										<li><span>Tanpa Denda</span></li>
 										<li><span>Tanpa Sita</span></li>
