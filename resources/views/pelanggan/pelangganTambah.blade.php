@@ -472,13 +472,13 @@
       numeral: true,
       numeralThousandsGroupStyle: 'thousand'
     });
-    var kewajiban = harga-dp-totalDiskon-potonganDp;
+    var kewajiban = harga-dp-totalDiskon;
     }
-    console.log(kewajiban-potonganDp);
+    console.log(kewajiban);
     if(isNaN(kewajiban)){
       document.getElementById("sisaKewajiban").value =0;
     }else{
-    document.getElementById("sisaKewajiban").value = kewajiban-potonganDp; 
+    document.getElementById("sisaKewajiban").value = kewajiban; 
     var cleave = new Cleave('.sisaKewajiban', {
       numeral: true,
       numeralThousandsGroupStyle: 'thousand'

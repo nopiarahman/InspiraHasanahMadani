@@ -601,7 +601,7 @@
 						</div>
 						<div class="blog_list">
 							<ul>
-								@foreach($kabarBerita as $kb)
+								@forelse($kabarBerita as $kb)
 								<li>
 									<div class="inner">
 										<div class="image_holder">
@@ -644,7 +644,9 @@
 										</div>
 									</div>
 								</li>
-								@endforeach
+								@empty
+									tidak ada kabar berita
+								@endforelse
 							</ul>
 						</div>
 					</div>
