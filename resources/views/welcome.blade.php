@@ -10,7 +10,7 @@
 
 <meta name="description" content="Glax">
 <meta name="author" content="Marketify">
-<link rel="shortcut icon" href="{{asset('assets/img/logo-color.png')}}">
+<link rel="shortcut icon" href="{{asset('assets/img/favicon.png')}}">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
 <title>Inspira Property</title>
@@ -134,7 +134,7 @@
                     @endif
 					</div>
 					<div class="logo_wrap">
-						<img src="{{asset('frontPage/img/desktop-logo.png')}}" alt="" />
+						<img src="{{asset('frontPage/img/desktop-logo.png')}}" alt=""/>
 						<span class="left"></span>
 						<span class="right"></span>
 						<span class="extra_first"></span>
@@ -464,9 +464,9 @@
 								</div>
 							</div>
 						</div>
-						<div class="play_video">
+						{{-- <div class="play_video">
 							<a class="popup-youtube" href="https://www.youtube.com/watch?v=ya7OKUSmAug"></a>
-						</div>
+						</div> --}}
 					</div>
 					<div class="shape_top">
 						<span class="first"></span>
@@ -664,11 +664,11 @@
 								<p>To further develop our corporate strengths we have established a corporate mandate to maintain strong core values that truly reflect the companys philosophy.</p>
 							</div>
 							<div class="glax_tm_project_video">
-								<span>
+								{{-- <span>
 									<img class="svg" src="{{asset('frontPage/img/svg/play.svg')}}" alt="" />
-								</span>
-								<a class="project_time" href="#">View Company Promo Video</a>
-								<a class="project_video_button popup-youtube" href="https://www.youtube.com/watch?v=RyDaPkFNfUE"></a>
+								</span> --}}
+								{{-- <a class="project_time" href="#">View Company Promo Video</a>
+								<a class="project_video_button popup-youtube" href="https://www.youtube.com/watch?v=RyDaPkFNfUE"></a> --}}
 							</div>
 						</div>
 						<div class="ratingbox">
@@ -686,12 +686,15 @@
 								</div>
 							</div>
 							<div class="rating_text">
-								<div class="inner">
-									<span>Telah membeli property syariah</span>
+								<div class="inner" style="text-align: center;">
+									<span style="color: #1f664b">Telah membeli <br> property syariah</span>
 								</div>
 							</div>
 						</div>
-								<img src="{{asset('assets/img/logo-color.png')}}" alt="" height="45%" style="margin-top:5%">
+						<div style="margin: 0px -40px 0px 0px">
+							<iframe width="800" height="350" src="https://www.youtube.com/embed/of3hZxzXK2s" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+							{{-- <img src="{{asset('assets/img/logo-color.png')}}" alt="" height="45%" style="margin-top:5%"> --}}
+						</div>
 					</div>
 				</div>
 			</div>
@@ -822,6 +825,7 @@
 								</div>
 								<div class="experience_list">
 									<ul>
+										<li><span>Tanpa Bank</span></li>
 										<li><span>Tanpa Bunga</span></li>
 										<li><span>Tanpa Denda</span></li>
 										<li><span>Tanpa Sita</span></li>
@@ -953,7 +957,7 @@
 					<div class="overlay_color footer"></div>
 				</div>
 				<div class="main_content footer">
-					<div class="glax_tm_subscribe_wrap">
+					{{-- <div class="glax_tm_subscribe_wrap">
 						<div class="container">
 							<div class="inner_wrap">
 								<div class="left_wrap">
@@ -970,7 +974,7 @@
 								</div>
 							</div>
 						</div>
-					</div>
+					</div> --}}
 					<div class="glax_tm_footer_wrap">
 						<div class="container">
 							<div class="glax_tm_list_wrap footer" data-column="3" data-space="40">

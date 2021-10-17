@@ -12,7 +12,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" ></script>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet" />
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
-  <link rel="shortcut icon" href="{{asset('assets/img/logo-color.png')}}">
+  <link rel="shortcut icon" href="{{asset('assets/img/favicon.png')}}">
   <!-- Template CSS -->
   <link rel="stylesheet" href="{{asset('assets/css/style.css')}}">
   <link rel="stylesheet" href="{{asset('assets/css/chocolat.css')}}" type="text/css" media="screen" >
@@ -116,7 +116,7 @@
         <aside id="sidebar-wrapper">
           <div class="sidebar-brand">
             <a href="{{route('home')}}">
-              <img src="{{asset('assets/img/logo-color.png')}}" alt="" width="200px" style="padding-top: 3em">
+              <img src="{{asset('assets/img/logo-color.png')}}" alt="" width="150px" style="padding-top: 3em;">
             </a>
           </div>
           <div class="sidebar-brand sidebar-brand-sm">
