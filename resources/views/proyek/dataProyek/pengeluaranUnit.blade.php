@@ -60,8 +60,11 @@
     </div>
     <div class="card-body">
       {{-- filter --}}
+      @if($id->getTable() =='rab')
+      <form action="{{route('transaksiRAB',['id'=>$id->id])}}" method="get" enctype="multipart/form-data">
+      @elseif($id->getTable()=='rabUnit')
       <form action="{{route('transaksiRABUnit',['id'=>$id->id])}}" method="get" enctype="multipart/form-data">
-
+        @endif
         <div class="form-group row mb-4">
           <label class="col-form-label text-md-right col-12 col-md-6 col-lg-6 mt-1 mr-n3" > <span style="font-size:small">Pilih Tanggal: </span> </label>
           <div class="input-group col-sm-12 col-md-6">

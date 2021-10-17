@@ -253,7 +253,7 @@
 							<h3>Telp</h3>
 							<p>0741-000000</p>
 							<h3>Whatsapp</h3>
-							<p>0823-0000-0000</p>
+							<p>0821-8307-9255</p>
 						</div>
 					</div>
 					<div class="drop_list clock">
@@ -355,7 +355,8 @@
 							<h3>Telp</h3>
 							<p>0741-000000</p>
 							<h3>Whatsapp</h3>
-							<p>0823-0000-0000</p>
+							<p>0821-8307-9255</p>
+
 						</div>
 					</div>
 					<div class="drop_list clock">
@@ -600,7 +601,7 @@
 						</div>
 						<div class="blog_list">
 							<ul>
-								@foreach($kabarBerita as $kb)
+								@forelse($kabarBerita as $kb)
 								<li>
 									<div class="inner">
 										<div class="image_holder">
@@ -643,7 +644,9 @@
 										</div>
 									</div>
 								</li>
-								@endforeach
+								@empty
+									tidak ada kabar berita
+								@endforelse
 							</ul>
 						</div>
 					</div>

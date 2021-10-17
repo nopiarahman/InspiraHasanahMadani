@@ -241,7 +241,7 @@ class ProyekController extends Controller
         return redirect()->route('biayaUnit')->with('status','Biaya Unit Berhasil Disimpan');
     }
     public function transaksiRABUnit(RabUnit $id, Request $request){
-        // dd($id);
+        // dd($id->getTable());
         $totalRAB=hitungUnit($id->isi,$id->judul,$id->jenisUnit)*(int)$id->hargaSatuan;
         if($request->get('filter')){
             // dd($request);
@@ -260,7 +260,7 @@ class ProyekController extends Controller
         return view('proyek/DataProyek/pengeluaranUnit',compact('transaksiKeluar','id','totalRAB','total'));        
     }
     public function transaksiRAB(rab $id, Request $request){
-        // dd($id);
+        // dd($id->getTable());
         $totalRAB=$id->total;
         // dd($id);
         if($request->get('filter')){

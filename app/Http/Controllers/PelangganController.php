@@ -501,8 +501,8 @@ class PelangganController extends Controller
         // dd($id->kavling->id);
         $user = $id->user;
         // dd($id->kavling->blok);
-        $user->update(['username'=>'batalakad'.strtolower($id->kavling->blok)]);
         // dd($user);
+        $user->update(['username'=>'batalakad'.strtolower($id->kavling->blok)]);
         $cekKavling = kavling::where('pelanggan_id',$id->id)->first();
         $cekKavling->pembelian->update(['statusPembelian'=>'Ready']);
         $updateKavling = kavling::find($id->kavling->id)->update(['pelanggan_id'=>0]);
