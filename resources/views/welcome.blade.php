@@ -8,12 +8,12 @@
 
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 
-<meta name="description" content="Glax">
-<meta name="author" content="Marketify">
+<meta name="description" content="Nopi Arahman">
+<meta name="author" content="Khadijah IT Solutionn">
 <link rel="shortcut icon" href="{{asset('assets/img/favicon.png')}}">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-<title>Inspira Property</title>
+<title>Inspira Kreasindo</title>
 
 <!-- STYLES -->
 <link rel="stylesheet" type="text/css" href="{{asset('splide/css/splide.min.css')}}" />
@@ -264,7 +264,7 @@
 								<ul>
 									<li>
 										<span class="left">Senin-Jumat:</span>
-										<span class="right">8.00 - 5.00</span>
+										<span class="right">08.00 - 05.00</span>
 									</li>
 									<li>
 										<span class="left">Sabtu:</span>
@@ -272,7 +272,7 @@
 									</li>
 									<li>
 										<span class="left">Ahad:</span>
-										<span class="right">Tutup</span>
+										<span class="right">Tidak Melayani</span>
 									</li>
 								</ul>
 							</div>
@@ -367,7 +367,7 @@
 								<ul>
 									<li>
 										<span class="left">Senin-Jumat:</span>
-										<span class="right">8.00 - 5.00</span>
+										<span class="right">08.00 - 05.00</span>
 									</li>
 									<li>
 										<span class="left">Sabtu:</span>
@@ -375,7 +375,7 @@
 									</li>
 									<li>
 										<span class="left">Ahad:</span>
-										<span class="right">Tutup</span>
+										<span class="right">Tidak Melayani</span>
 									</li>
 								</ul>
 							</div>
@@ -448,8 +448,11 @@
 						<div class="inner_wrap">
 							<div class="main_info_wrap">
 								<span class="top_title">Perkenalkan</span>
-								<h3 class="title">Inspira Group</h3>
-								<p class="text">For over 47 years, the Glax family has been building relationships and projects that last. We build safe environments and eco-friendly solutions in the communities in which we work. Most importantly, we build strong relationships that allow us to build anything, anywhere. No matter the job, we go beyond building.</p>
+								<h3 class="title">Inspira Kreasindo</h3>
+								<p class="text">
+									Inspira Kreasindo menjadi penyelenggara  pembangunan perumahan dengan konsep syariah  dan pengembangan di bidang konstruksi Oleh sebab  itu, kami senantiasa melihat jauh kedepan, dimana hal  ini memerlukan niat dan tekad yang kuat dalam hal  pelaksanaan di lapangan.
+
+								</p>
 							</div>
 							<div class="experience_box">
 								<div class="top">
@@ -664,7 +667,9 @@
 								<h3>Alasan Mengapa anda memilih kami</h3>
 							</div>
 							<div class="text">
-								<p>To further develop our corporate strengths we have established a corporate mandate to maintain strong core values that truly reflect the companys philosophy.</p>
+								<p>
+									Inspira Kreasindo membangun lingkungan islami dengan proses akad 100% tanpa Riba, dengan pengalaman lebih dari 5 tahun serta telah dipercaya oleh ratusan pelanggan kami siap untuk mewujudkan property impian untuk anda.
+								</p>
 							</div>
 							<div class="glax_tm_project_video">
 								{{-- <span>
@@ -715,8 +720,11 @@
 									<h3>Visi Misi Perusahaan</h3>
 								</div>
 								<div class="description">
-									<p>For over 35 years, the Glax family has been building relationships and projects that last. As a diversified construction management, design-build, and general contracting firm, Glax is recognized as one of Upstate New York's largest construction companies.</p>
-									<p>Serving an impressive list of long-term clients, we are an organization of seasoned professionals with a tremendous breadth of construction experience and expertise across multiple industries.</p>
+									<h5>“Menjadi Developer dan Kontraktor terkemuka di  Indonesia yang memberi nilai tambah pada stake  holder yang peduli dengan Mu'amalah yang dihalalkan
+										sesuai dengan Syariat Agama.”
+									</h5>
+									{{-- <p>For over 35 years, the Glax family has been building relationships and projects that last. As a diversified construction management, design-build, and general contracting firm, Glax is recognized as one of Upstate New York's largest construction companies.</p> --}}
+									{{-- <p>Serving an impressive list of long-term clients, we are an organization of seasoned professionals with a tremendous breadth of construction experience and expertise across multiple industries.</p> --}}
 								</div>
 							</div>
 							<div class="rightbox">
@@ -729,10 +737,12 @@
 															<span class="topshape"></span>
 														<div class="in">
 														<div class="title">
-															<h3>Humility</h3>
+															<h3>Mengembangkan</h3>
 														</div>
 														<div class="definition">
-															<p>Be humble in all dealings with our partners, clients and team members. True wisdom and understanding belong to the humble.</p>
+															<p>Mengembangkan produk dan layanan Property  Syariah yang Unggul yang menjadikan penghuninya  berkembang sesuai dengan prinsip - Prinsip  keislaman .
+															</p>
+															{{-- <p>Be humble in all dealings with our partners, clients and team members. True wisdom and understanding belong to the humble.</p> --}}
 														</div>
 														<div class="number">
 															<span>01</span>
@@ -746,10 +756,12 @@
 															<span class="topshape"></span>
 														<div class="in">
 														<div class="title">
-															<h3>Honesty</h3>
+															<h3>Meningkatkan</h3>
 														</div>
 														<div class="definition">
-															<p>Be sure of our facts and be honest and straightforward in all of our dealings with each other and good our clients.</p>
+															<p>Meningkatkan kompetensi, profesionalisme dan  kesejahteraan karyawan
+															</p>
+															{{-- <p>Be sure of our facts and be honest and straightforward in all of our dealings with each other and good our clients.</p> --}}
 														</div>
 														<div class="number">
 															<span>02</span>
@@ -763,10 +775,12 @@
 															<span class="topshape"></span>
 														<div class="in">
 														<div class="title">
-															<h3>Integrity</h3>
+															<h3>Mendakwahkan</h3>
 														</div>
 														<div class="definition">
-															<p>Over the years, we have gained a reputation for integrity and trust from our customers who continue to use our services.</p>
+															<p>Mendakwahkan Membantu Umat Muslim khususnya dan  Masyarakat pada umumnya untuk memiliki rumah dengan  cara yang halal, baik, adil dan Barokah dengan meninggalkan  Riba.
+															</p>
+															{{-- <p>Over the years, we have gained a reputation for integrity and trust from our customers who continue to use our services.</p> --}}
 														</div>
 														<div class="number">
 															<span>03</span>
@@ -774,23 +788,7 @@
 													</div>
 												</div>
 											</li>
-											<li class="item">
-												<div class="inner">
-														<span class="leftshape"></span>
-															<span class="topshape"></span>
-														<div class="in">
-														<div class="title">
-															<h3>Quality Work</h3>
-														</div>
-														<div class="definition">
-															<p>We ensure that all projects are done with professionalism using quality materials while offering clients the support and accessibility.</p>
-														</div>
-														<div class="number">
-															<span>04</span>
-														</div>
-													</div>
-												</div>
-											</li>
+										
 										</ul>
 									</div>
 								</div>
@@ -815,19 +813,19 @@
 							<div class="content_inner_wrap">
 								<div class="glax_tm_experience_box">
 									<div class="top">
-										<p>Developer Property Syariah</p>
+										<p>Menggunakan Sistem Transaksi Syariah</p>
 									</div>
 									<div class="bottom">
 										<div class="number">
-											<span>5</span>
+											<span>7T</span>
 										</div>
 										<div class="definition">
-											<p>Tahun Pengalaman</p>
+											{{-- <p>T</p> --}}
 										</div>
 									</div>
 								</div>
-								<div class="experience_list">
-									<ul>
+								<div class="experience_list ">
+									<ol>
 										<li><span>Tanpa Bank</span></li>
 										<li><span>Tanpa Bunga</span></li>
 										<li><span>Tanpa Denda</span></li>
@@ -835,15 +833,7 @@
 										<li><span>Tanpa BI Checking</span></li>
 										<li><span>Tanpa Asuransi</span></li>
 										<li><span>Tanpa Akad Bathil</span></li>
-										{{-- <li><span>Communication skills</span></li>
-										<li><span>Responsive and Respectful</span></li>
-										<li><span>Personalised solutions</span></li>
-										<li><span>Functional Objectives</span></li>
-										<li><span>Integrated Design</span></li>
-										<li><span>Urban Context</span></li>
-										<li><span>Critical thinking</span></li>
-										<li><span>Problem solving</span></li> --}}
-									</ul>
+									</ol>
 								</div>
 							</div>
 						</div>
@@ -862,7 +852,7 @@
 							<div class="leftbox project fn_w_sminibox">
 								<div class="constructify_fn_sticky_section">
 									<div class="title_holder">
-										<h3>Our Latest Projects</h3>
+										<h3>Proyek Terbaru Kami</h3>
 									</div>
 									<div class="description">
 										<p>For over 35 years, the Glax family has been building relationships and projects that last. As a diversified construction management, design-build, and general contracting firm, Glax is recognized as one of Upstate New York's largest construction companies.</p>
@@ -901,46 +891,7 @@
 												</div>
 											</div>
 										</li>
-										<li>
-											<div class="inner">
-												<div class="image_wrap">
-													<img src="{{asset('frontPage/img/portfolio/750x500.jpg')}}" alt="" />
-													<div class="image" data-img-url="{{asset('frontPage/img/portfolio/2.jpg')}}"></div>
-													<div class="overlay_color"></div>
-													<span class="plus"></span>
-													<div class="title_holder">
-														<h3>Odeon Industry Machinery</h3>
-														<div class="glax_tm_view_more_wrap">
-															<a href="#">
-																<span class="text">View More</span>
-																<span class="arrow"><img class="svg" src="img/svg/arrow-right.svg" alt="" /></span>
-															</a>
-														</div>
-													</div>
-													<a class="link" href="project-single.html"></a>
-												</div>
-											</div>
-										</li>
-										<li>
-											<div class="inner">
-												<div class="image_wrap">
-													<img src="{{asset('frontPage/img/portfolio/750x500.jpg')}}" alt="" />
-													<div class="image" data-img-url="{{asset('frontPage/img/portfolio/3.jpg')}}"></div>
-													<div class="overlay_color"></div>
-													<span class="plus"></span>
-													<div class="title_holder">
-														<h3>Chaban Car Industry</h3>
-														<div class="glax_tm_view_more_wrap">
-															<a href="#">
-																<span class="text">View More</span>
-																<span class="arrow"><img class="svg" src="img/svg/arrow-right.svg" alt="" /></span>
-															</a>
-														</div>
-													</div>
-													<a class="link" href="project-single.html"></a>
-												</div>
-											</div>
-										</li>
+										
 									</ul>
 								</div>
 							</div>
@@ -985,36 +936,39 @@
 									<li>
 										<div class="inner">
 											<div class="footer_section_title">
-												<h3>About Company</h3>
+												<h3>Tentang Kami</h3>
 											</div>
 											<div class="definition">
-												<p>We are an award winning construction company focused on user-driven outcomes. We strive to create meaningful connections for users through considered.</p>
+												<p>
+													Inspira Kreasindo membentuk kompetensi yang dimiliki dan mengembangkan  landasan usaha yang berkesinambungan untuk  membantu umat
+
+												</p>
 											</div>
 										</div>
 									</li>
 									<li>
 										<div class="inner">
 											<div class="footer_section_title">
-												<h3>Business Hours</h3>
+												<h3>Jam Kerja</h3>
 											</div>
 											<div class="inner_list">
 												<ul>
 													<li>
 														<div class="wrap">
-															<span class="left">Monday-Friday:</span>
-															<span class="right">9am to 5pm</span>
+															<span class="left">Senin - Jumat:</span>
+															<span class="right">08.00 - 17.00</span>
 														</div>
 													</li>
 													<li>
 														<div class="wrap">
-															<span class="left">Saturday:</span>
-															<span class="right">10am to 3pm</span>
+															<span class="left">Sabtu:</span>
+															<span class="right">08.00 - 12.00</span>
 														</div>
 													</li>
 													<li>
 														<div class="wrap">
-															<span class="left">Sunday:</span>
-															<span class="right">Closed</span>
+															<span class="left">Ahad:</span>
+															<span class="right">Tidak Melayani</span>
 														</div>
 													</li>
 												</ul>
@@ -1024,17 +978,12 @@
 									<li>
 										<div class="inner">
 											<div class="footer_section_title">
-												<h3>Helpful Links</h3>
+												<h3>Bergabung Bersama Kami</h3>
 											</div>
 											<div class="helpful_links">
 												<div class="inner_list">
-													<ul>
-														<li><a href="#">Our services</a></li>
-														<li><a href="#">Diclaimer</a></li>
-														<li><a href="#">Showcase</a></li>
-														<li><a href="#">Privacy Policy</a></li>
-														<li><a href="#">Affliates</a></li>
-													</ul>
+													<p style="color: #ccc;">Ayo bergabung bersama team kami sebagai Marketing Freelance, informasi lebih lanjut silahkan klik link dibawah ini</p>
+													<a href="#" style="color: #fe7e00; text-decoration:none; font-weight:bold; "> >> Daftar Marketing Freelance</a>
 												</div>
 											</div>
 										</div>
@@ -1047,7 +996,7 @@
 			</div>
 			<div class="bottom_wrap">
 				<div class="container">
-					<div class="links_wrap">
+					{{-- <div class="links_wrap">
 						<ul>
 							<li><a href="#">Services</a></li>
 							<li><a href="#">Affliates</a></li>
@@ -1055,9 +1004,9 @@
 							<li><a href="#">Privacy Policy</a></li>
 							<li><a href="#">Career</a></li>
 						</ul>
-					</div>
+					</div> --}}
 					<div class="copyright">
-						<p>&copy; 1934 - 2018 <a class="constructify" href="#">Glax, LCC</a>. All rights reserved. Template has been designed by <a class="marketify" href="https://themeforest.net/user/marketify">Marketify</a></p>
+						<p>&copy; 2021 <a class="constructify" href="#">Inspira Kreasindo</a>. All rights reserved. </p>
 						<a class="glax_tm_totop" href="#">
 							 <span class="shape"></span>
 							 <span class="name">To Top</span>
