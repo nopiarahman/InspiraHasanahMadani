@@ -16,9 +16,10 @@
 	<title>Inspira Property</title>
 	
 	<!-- STYLES -->
+	<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
-	<link rel="stylesheet" type="text/css" href="{{asset('splide/css/splide.min.css')}}" />
 	<link rel="stylesheet" type="text/css" href="{{asset('frontPage/css/fontello.css')}}" />
+<link rel="stylesheet" type="text/css" href="{{asset('splide/css/splide.min.css')}}" />
 	<link rel="stylesheet" type="text/css" href="{{asset('frontPage/css/skeleton.css')}}" />
 	<link rel="stylesheet" type="text/css" href="{{asset('frontPage/css/plugins.css')}}" />
 	<link rel="stylesheet" type="text/css" href="{{asset('frontPage/css/base.css')}}" />
@@ -378,407 +379,245 @@
 		<div class="glax_tm_widget_window_overlay"></div>
 		<!-- /SIDEBAR WIDGET -->
 		
-		<!-- SERVICE SINGLE -->
-		<div class="glax_tm_section">
-			<div class="glax_tm_main_title_holder">
-				<div class="container">
-					<div class="title_holder">
-						<h3>{{$id->judul}}</h3>
-					</div>
-					<div class="builify_tm_breadcrumbs">
-						<ul>
-							<li><a href="/">Beranda</a></li>
-							<li class="shape"><span></span></li>
-							<li><a href="{{route('blog')}}">Kabar Berita</a></li>
-							<li class="shape"><span></span></li>
-							<li><span>{{$id->judul}}</span></li>
-						</ul>
-					</div>
+		<!-- PROJECTS SINGLE -->
+		<div class="container mt-5">
+			<div class="splide">
+				<div class="splide__track">
+					<ul class="splide__list">
+						@forelse($id->galeri as $photo)
+						<li class="splide__slide">
+							<a data-fslightbox="gallery" href="{{Storage::url($photo->path)}}">
+								<img src="{{Storage::url($photo->path)}}" alt="">
+							</a>
+						</li>
+						@empty
+						@endforelse
+					</ul>
 				</div>
 			</div>
-		</div>
-		<div class="glax_tm_section">
+    </div>
+		<div class="glax_tm_section mt-5">
 			<div class="container">
-				<div class="mb-3" style="color: grey">
-					<span >Tanggal: {{Carbon\Carbon::parse($id->tanggal)->isoformat('DD MMMM YYYY')}}</span>
-					<span >Oleh {{$id->author}}</span>
-					<span >in {{$id->proyek->nama}}</span>
+				<div class="glax_tm_justified_content">
+					<div class="leftpart">
+						<div class="title_holder">
+							<h3>{{$id->nama}}</h3>
+						</div>
+						<div class="definition">
+							{!! $id->detail !!}
+						</div>
+						<div class="glax_tm_share_wrap">
+							<label>Share:</label>
+							<ul>
+								<li><a href="#"><i class="xcon-facebook"></i></a></li>
+								<li><a href="#"><i class="xcon-twitter"></i></a></li>
+								<li><a href="#"><i class="xcon-instagram"></i></a></li>
+							</ul>
+						</div>
+						<div class="glax_tm_project_video">
+							<span>
+								<img class="svg" src="img/svg/play.svg" alt="" />
+							</span>
+							<a class="project_time" href="#">View Project Time Lapse</a>
+							<a class="project_video_button popup-youtube" href="https://www.youtube.com/watch?v=se4yc09w7Ic"></a>
+						</div>
+					</div>
+					<div class="rightpart">
+						<div class="infobox">
+							<ul>
+								<li>
+									<img src="{{Storage::url($id->logo)}}" alt="" style="max-width: 100px">
+								</li>
+								<li>
+									<label>Lokasi</label>
+									<span>{{$id->lokasi}}</span>
+								</li>
+								<li>
+									<label>Mulai Proyek</label>
+									<span>{{formatTanggal($id->proyekStart)}}</span>
+								</li>
+								{{-- <li>
+									<label>Architect</label>
+									<span>Vinci Company</span>
+								</li>
+								<li>
+									<label>Location</label>
+									<span>Germany-Denmark</span>
+								</li>
+								<li>
+									<label>Completion Date</label>
+									<span>02.05.2005</span>
+								</li>
+								<li>
+									<label>Square Footage</label>
+									<span>2,200,000</span>
+								</li> --}}
+							</ul>
+							<div class="first_square"></div>
+							<div class="second_square"></div>
+						</div>
+					</div>
 				</div>
-				<div class="glax_tm_service_single_wrap">
-					<div class="glax_tm_twicebox_wrap">
-						<div class="leftbox">
-							<div class="main_image_wrap">
-								<div class="image_wrap">
-									<img src="{{Storage::url($id->thumbnail)}}" alt="" width=""/>
-								</div>
-								<div class="image_definition" style="text-indent: 5em; text-align:justify" >
-									<p>
-										{!!$id->isi!!}
-									</p>
-								</div>
+				<div class="glax_tm_pagination">
+					<ul>
+						<li><span>Prev</span></li>
+						<li class="active"><a href="#">Next</a></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<!-- /PROJECTS SINGLE -->
+<!-- FOOTER -->
+<footer class="glax_tm_footer_wrap">
+	<div class="glax_tm_universal_parallax_wrap">
+		<div class="main_bg">
+			<div class="overlay_image footer jarallax" data-speed="0"></div>
+			<div class="overlay_video"></div>								
+			<div class="overlay_color footer"></div>
+		</div>
+		<div class="main_content footer">
+			{{-- <div class="glax_tm_subscribe_wrap">
+				<div class="container">
+					<div class="inner_wrap">
+						<div class="left_wrap">
+							<div class="book">
+								<img class="svg" src="img/svg/open-book.svg" alt="" />
 							</div>
-							{{-- <div class="service_features">
-								<h3>Service Features</h3>
-								<ul>
-									<li>
-										<div class="inner">
-											<div class="definition">
-												<p>We Have ISO Certificate</p>
-											</div>
-											<div class="icon">
-												<img class="svg" src="img/svg/check.svg" alt="" />
-											</div>
-										</div>
-									</li>
-									<li>
-										<div class="inner">
-											<div class="definition">
-												<p>We Provide High Services</p>
-											</div>
-											<div class="icon">
-												<img class="svg" src="img/svg/check.svg" alt="" />
-											</div>
-										</div>
-									</li>
-									<li>
-										<div class="inner">
-											<div class="definition">
-												<p>Most Expirienced Company</p>
-											</div>
-											<div class="icon">
-												<img class="svg" src="img/svg/check.svg" alt="" />
-											</div>
-										</div>
-									</li>
-									<li>
-										<div class="inner">
-											<div class="definition">
-												<p>Responsive and Respectful</p>
-											</div>
-											<div class="icon">
-												<img class="svg" src="img/svg/check.svg" alt="" />
-											</div>
-										</div>
-									</li>
-									<li>
-										<div class="inner">
-											<div class="definition">
-												<p>Environmental Sensitivity</p>
-											</div>
-											<div class="icon">
-												<img class="svg" src="img/svg/check.svg" alt="" />
-											</div>
-										</div>
-									</li>
-								</ul>
-							</div>
-							<div class="accordion_wrap_all">
-								<div class="title">
-									<h3>How We Do It</h3>
-								</div>
-								<div class="accordion_wrap">
-									<div class="glax_tm_accordion">
-										<div class="accordion_in">
-											<div class="acc_head">We are guided by the same basic precepts<div class="wow_shape"><span class="wow_effect"></span></div></div>
-											<div class="acc_content">
-												Provide quality workmanship and exemplary client service. Employ people of the highest integrity and skill. Provide a safe work environment for our employees and subcontractors.
-											</div>
-										</div>
-										<div class="accordion_in">
-											<div class="acc_head">Glax's work ethic runs deep<div class="wow_shape"><span class="wow_effect"></span></div></div>
-											<div class="acc_content">
-												From the beginning, honesty and clear vision along with hard work and imagination have been integral parts of our steady and diversified growth.
-											</div>
-										</div>
-										<div class="accordion_in">
-											<div class="acc_head">We have created a culture<div class="wow_shape"><span class="wow_effect"></span></div></div>
-											<div class="acc_content">
-												We have created a culture that promotes Trust and we are extremely proud of that. This culture has produced a team that likes what they are doing and that is why we do what we do so well.
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-							<div class="glax_tm_short_contact">
-								<div class="text">
-									<h3>Glax</h3>
-									<p>We build your dream house. Contact us for detailed information.</p>
-								</div>
-								<div class="glax_tm_button_wrap">
-									<a href="contact.html">Our Resposibility</a>
-								</div>
-							</div> --}}
-							{{-- <div class="glax_tm_line"></div>
-							<div class="glax_tm_other_services_wrap">
-								<h3>Other Services</h3>
-									<div class="services_list_wrap">
-									<ul>
-										<li>
-											<div class="inner">
-												<div class="title_holder">
-													<h3><a href="service-single.html">New Construction</a></h3>
-												</div>
-												<div class="description">
-													<p>It's the details that count. Because when they are given a backseat, they inevitably move up front and can overtake the</p>
-												</div>
-												<div class="read_more_wrap">
-													<div class="read_more_in">
-														<a href="#">Read More</a>
-													</div>
-												</div>
-											</div>
-										</li>
-										<li>
-											<div class="inner">
-												<div class="title_holder">
-													<h3><a href="service-single.html">Adaptive Reuse</a></h3>
-												</div>
-												<div class="description">
-													<p>Achieving this successfully calls for a vision of what can be and a distinct ability to identify opportunities for salvaging elements</p>
-												</div>
-												<div class="read_more_wrap">
-													<div class="read_more_in">
-														<a href="#">Read More</a>
-													</div>
-												</div>
-											</div>
-										</li>
-									</ul>
-								</div>
-							</div> --}}
-						</div>
-						<div class="rightbox">
-							<div class="glax_tm_categories">
-								<div class="title_holder_wrap">
-									<h3>Full list of services</h3>
-								</div>
-								<div class="list_wrap">
-									<ul>
-										<li><a href="#">Energy &amp; Commodities</a></li>
-										<li><a href="#">Medical Devices</a></li>
-										<li><a href="#">Housewares &amp; Home Decor</a></li>
-										<li><a href="#">The Shale Oil and Gas Revolution</a></li>
-										<li><a href="#">Textiles &amp; Apparel</a></li>
-										<li><a href="#">Construction &amp; Engineering</a></li>
-										<li><a href="#">Basic &amp; Industrial Chemicals</a></li>
-									</ul>
-								</div>
-							</div>
-							<div class="glax_tm_request_estimate_wrap">
-								<div class="image_wrap">
-									<img src="img/services/300x460.jpg" alt="" />
-									<div class="image"></div>
-								</div>
-								<div class="definition">
-									<div class="text">
-										<p>Lets get started! Contact us for a free quote on your next home improvement project.</p>
-									</div>
-									<div class="button">
-										<a href="contact.html">Request an estimate</a>
-									</div>
-									<div class="first_shape">
-										<span class="first"></span>
-										<span class="second"></span>
-										<span class="third"></span>
-									</div>
-									<div class="second_shape">
-										<span class="first"></span>
-										<span class="second"></span>
-										<span class="third"></span>
-									</div>
-								</div>
-							</div>
-							<div class="glax_tm_brochures_wrap">
-								<div class="title_holder">
-									<span>Company Presentation</span>
-								</div>
-								<ul>
-									<li>
-										<div class="inner">
-											<div class="icon">
-												<img class="svg" src="img/svg/file-pdf.svg" alt="" />
-											</div>
-											<span class="text">Download .PDF</span>
-											<span class="arrow"></span>
-										</div>
-									</li>
-									<li>
-										<div class="inner">
-											<div class="icon">
-												<img class="svg" src="img/svg/file-zip.svg" alt="" />
-											</div>
-											<span class="text">Download .ZIP</span>
-											<span class="arrow"></span>
-										</div>
-									</li>
-									<li>
-										<div class="inner">
-											<div class="icon">
-												<img class="svg" src="img/svg/file-doc.svg" alt="" />
-											</div>
-											<span class="text">Download .DOC</span>
-											<span class="arrow"></span>
-										</div>
-									</li>
-								</ul>
+							<div class="text">
+								<p>Newsletter<span></span> get updates with latest topics</p>
 							</div>
 						</div>
+						<div class="right_wrap">
+							<input class="email" type="email" placeholder="Your e-mail address">
+							<input class="button" type="button" value="subscribe">
+						</div>
+					</div>
+				</div>
+			</div> --}}
+			<div class="glax_tm_footer_wrap">
+				<div class="container">
+					<div class="glax_tm_list_wrap footer" data-column="3" data-space="40">
+						<ul class="glax_list">
+							<li>
+								<div class="inner">
+									<div class="footer_section_title">
+										<h3>Tentang Kami</h3>
+									</div>
+									<div class="definition">
+										<p>
+											Inspira Kreasindo membentuk kompetensi yang dimiliki dan mengembangkan  landasan usaha yang berkesinambungan untuk  membantu umat
+
+										</p>
+									</div>
+								</div>
+							</li>
+							<li>
+								<div class="inner">
+									<div class="footer_section_title">
+										<h3>Jam Kerja</h3>
+									</div>
+									<div class="inner_list">
+										<ul>
+											<li>
+												<div class="wrap">
+													<span class="left">Senin - Jumat:</span>
+													<span class="right">08.00 - 17.00</span>
+												</div>
+											</li>
+											<li>
+												<div class="wrap">
+													<span class="left">Sabtu:</span>
+													<span class="right">08.00 - 12.00</span>
+												</div>
+											</li>
+											<li>
+												<div class="wrap">
+													<span class="left">Ahad:</span>
+													<span class="right">Tidak Melayani</span>
+												</div>
+											</li>
+										</ul>
+									</div>
+								</div>
+							</li>
+							<li>
+								<div class="inner">
+									<div class="footer_section_title">
+										<h3>Bergabung Bersama Kami</h3>
+									</div>
+									<div class="helpful_links">
+										<div class="inner_list">
+											<p style="color: #ccc;">Ayo bergabung bersama team kami sebagai Marketing Freelance, informasi lebih lanjut silahkan klik link dibawah ini</p>
+											<a href="#" style="color: #fe7e00; text-decoration:none; font-weight:bold; "> >> Daftar Marketing Freelance</a>
+										</div>
+									</div>
+								</div>
+							</li>
+						</ul>
 					</div>
 				</div>
 			</div>
 		</div>
-		<!-- /SERVICE SINGLE -->
-		<!-- FOOTER -->
-		<footer class="glax_tm_footer_wrap">
-			<div class="glax_tm_universal_parallax_wrap">
-				<div class="main_bg">
-					<div class="overlay_image footer jarallax" data-speed="0"></div>
-					<div class="overlay_video"></div>								
-					<div class="overlay_color footer"></div>
-				</div>
-				<div class="main_content footer">
-					{{-- <div class="glax_tm_subscribe_wrap">
-						<div class="container">
-							<div class="inner_wrap">
-								<div class="left_wrap">
-									<div class="book">
-										<img class="svg" src="img/svg/open-book.svg" alt="" />
-									</div>
-									<div class="text">
-										<p>Newsletter<span></span> get updates with latest topics</p>
-									</div>
-								</div>
-								<div class="right_wrap">
-									<input class="email" type="email" placeholder="Your e-mail address">
-									<input class="button" type="button" value="subscribe">
-								</div>
-							</div>
-						</div>
-					</div> --}}
-					<div class="glax_tm_footer_wrap">
-						<div class="container">
-							<div class="glax_tm_list_wrap footer" data-column="3" data-space="40">
-								<ul class="glax_list">
-									<li>
-										<div class="inner">
-											<div class="footer_section_title">
-												<h3>Tentang Kami</h3>
-											</div>
-											<div class="definition">
-												<p>
-													Inspira Kreasindo membentuk kompetensi yang dimiliki dan mengembangkan  landasan usaha yang berkesinambungan untuk  membantu umat
-
-												</p>
-											</div>
-										</div>
-									</li>
-									<li>
-										<div class="inner">
-											<div class="footer_section_title">
-												<h3>Jam Kerja</h3>
-											</div>
-											<div class="inner_list">
-												<ul>
-													<li>
-														<div class="wrap">
-															<span class="left">Senin - Jumat:</span>
-															<span class="right">08.00 - 17.00</span>
-														</div>
-													</li>
-													<li>
-														<div class="wrap">
-															<span class="left">Sabtu:</span>
-															<span class="right">08.00 - 12.00</span>
-														</div>
-													</li>
-													<li>
-														<div class="wrap">
-															<span class="left">Ahad:</span>
-															<span class="right">Tidak Melayani</span>
-														</div>
-													</li>
-												</ul>
-											</div>
-										</div>
-									</li>
-									<li>
-										<div class="inner">
-											<div class="footer_section_title">
-												<h3>Bergabung Bersama Kami</h3>
-											</div>
-											<div class="helpful_links">
-												<div class="inner_list">
-													<p style="color: #ccc;">Ayo bergabung bersama team kami sebagai Marketing Freelance, informasi lebih lanjut silahkan klik link dibawah ini</p>
-													<a href="#" style="color: #fe7e00; text-decoration:none; font-weight:bold; "> >> Daftar Marketing Freelance</a>
-												</div>
-											</div>
-										</div>
-									</li>
-								</ul>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="bottom_wrap">
-				<div class="container">
-					{{-- <div class="links_wrap">
-						<ul>
-							<li><a href="#">Services</a></li>
-							<li><a href="#">Affliates</a></li>
-							<li><a href="#">Disclaimer</a></li>
-							<li><a href="#">Privacy Policy</a></li>
-							<li><a href="#">Career</a></li>
-						</ul>
-					</div> --}}
-					<div class="copyright">
-						<p>&copy; 2021 <a class="constructify" href="#">Inspira Kreasindo</a>. All rights reserved. </p>
-						<a class="glax_tm_totop" href="#">
-							 <span class="shape"></span>
-							 <span class="name">To Top</span>
-						 </a>
-					</div>
-				</div>
-			</div>
-		</footer>
-		<!-- /FOOTER -->
-		
 	</div>
+	<div class="bottom_wrap">
+		<div class="container">
+			{{-- <div class="links_wrap">
+				<ul>
+					<li><a href="#">Services</a></li>
+					<li><a href="#">Affliates</a></li>
+					<li><a href="#">Disclaimer</a></li>
+					<li><a href="#">Privacy Policy</a></li>
+					<li><a href="#">Career</a></li>
+				</ul>
+			</div> --}}
+			<div class="copyright">
+				<p>&copy; 2021 <a class="constructify" href="#">Inspira Kreasindo</a>. All rights reserved. </p>
+				<a class="glax_tm_totop" href="#">
+					 <span class="shape"></span>
+					 <span class="name">To Top</span>
+				 </a>
+			</div>
+		</div>
+	</div>
+</footer>
+<!-- /FOOTER -->
+
+</div>
 </div>
 <!-- / WRAPPER ALL -->
 
 <!-- Modal -->
 <div class="modal fade   "  id="myModal"  tabindex="-1" role="dialog"
-     aria-labelledby="myModal" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered  modal-lg  " role="document">
-			<div class="modal-content">
-					<div class="container-fluid">
-                <div class="row">
-                    <div class="col-md-6 bg-img rounded-left m-h-60 d-none d-sm-block" style="background-image: url('https://images.unsplash.com/photo-1507679799987-c73779587ccf?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1742&q=80')">
-                    </div>
-                    <div class="col-md-6 py-5 px-sm-5 my-auto ">
-                        <h2 class="pt-sm-3">Bergabung Bersama Kami </h2>
-                        <p class="text-muted">
-													Sebagai Marketing Freelance
-                        </p>
-                        <form>
-                            {{-- <div class="form-group">
-                                <label for="exampleInputEmail1">Email address</label>
-                                <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
-                                <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
-                            </div> --}}
+ aria-labelledby="myModal" aria-hidden="true">
+<div class="modal-dialog modal-dialog-centered  modal-lg  " role="document">
+	<div class="modal-content">
+			<div class="container-fluid">
+						<div class="row">
+								<div class="col-md-6 bg-img rounded-left m-h-60 d-none d-sm-block" style="background-image: url('https://images.unsplash.com/photo-1507679799987-c73779587ccf?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1742&q=80')">
+								</div>
+								<div class="col-md-6 py-5 px-sm-5 my-auto ">
+										<h2 class="pt-sm-3">Bergabung Bersama Kami </h2>
+										<p class="text-muted">
+											Sebagai Marketing Freelance
+										</p>
+										<form>
+												{{-- <div class="form-group">
+														<label for="exampleInputEmail1">Email address</label>
+														<input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
+														<small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+												</div> --}}
 
-                            <button type="submit" class="btn btn-cstm-dark btn-block btn-cta mt-5" data-dismiss="modal" aria-label="Close">Subscribe</button>
-														
-													</form>
-													<div class="pt-3 ">
-														<small><a href="#" data-bs-dismiss="modal" aria-label="Close" class="text-muted">Tutup</a></small>
-												</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+												<button type="submit" class="btn btn-cstm-dark btn-block btn-cta mt-5" data-dismiss="modal" aria-label="Close">Subscribe</button>
+												
+											</form>
+											<div class="pt-3 ">
+												<small><a href="#" data-bs-dismiss="modal" aria-label="Close" class="text-muted">Tutup</a></small>
+										</div>
+								</div>
+						</div>
+				</div>
+		</div>
+</div>
 </div>
 <!-- Modal Ends -->
 <!-- SCRIPTS -->
@@ -788,6 +627,18 @@
 <!--[if lt IE 10]> <script type="text/javascript" src="js/ie8.js"></script> <![endif]-->	
 <script src="{{asset('frontPage/js/init.js')}}"></script>
 <script src="{{asset('splide/js/splide.js')}}"></script>
+<script src="{{asset('js/fslightbox.js')}}"></script>
+<script>
+	var splide = new Splide( '.splide', {
+  type    : 'loop',
+  perPage : 3,
+  autoplay: true,
+	cover:true,
+	heightRatio:0.2,
+} );
+
+splide.mount();
+</script>
 
 <!-- /SCRIPTS -->
 

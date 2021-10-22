@@ -510,7 +510,6 @@
 			</div>
 		</div>
 		<!-- /BLOG -->
-		
 		<!-- FOOTER -->
 		<footer class="glax_tm_footer_wrap">
 			<div class="glax_tm_universal_parallax_wrap">
@@ -520,7 +519,7 @@
 					<div class="overlay_color footer"></div>
 				</div>
 				<div class="main_content footer">
-					<div class="glax_tm_subscribe_wrap">
+					{{-- <div class="glax_tm_subscribe_wrap">
 						<div class="container">
 							<div class="inner_wrap">
 								<div class="left_wrap">
@@ -537,7 +536,7 @@
 								</div>
 							</div>
 						</div>
-					</div>
+					</div> --}}
 					<div class="glax_tm_footer_wrap">
 						<div class="container">
 							<div class="glax_tm_list_wrap footer" data-column="3" data-space="40">
@@ -545,36 +544,39 @@
 									<li>
 										<div class="inner">
 											<div class="footer_section_title">
-												<h3>About Company</h3>
+												<h3>Tentang Kami</h3>
 											</div>
 											<div class="definition">
-												<p>We are an award winning construction company focused on user-driven outcomes. We strive to create meaningful connections for users through considered.</p>
+												<p>
+													Inspira Kreasindo membentuk kompetensi yang dimiliki dan mengembangkan  landasan usaha yang berkesinambungan untuk  membantu umat
+
+												</p>
 											</div>
 										</div>
 									</li>
 									<li>
 										<div class="inner">
 											<div class="footer_section_title">
-												<h3>Business Hours</h3>
+												<h3>Jam Kerja</h3>
 											</div>
 											<div class="inner_list">
 												<ul>
 													<li>
 														<div class="wrap">
-															<span class="left">Monday-Friday:</span>
-															<span class="right">9am to 5pm</span>
+															<span class="left">Senin - Jumat:</span>
+															<span class="right">08.00 - 17.00</span>
 														</div>
 													</li>
 													<li>
 														<div class="wrap">
-															<span class="left">Saturday:</span>
-															<span class="right">10am to 3pm</span>
+															<span class="left">Sabtu:</span>
+															<span class="right">08.00 - 12.00</span>
 														</div>
 													</li>
 													<li>
 														<div class="wrap">
-															<span class="left">Sunday:</span>
-															<span class="right">Closed</span>
+															<span class="left">Ahad:</span>
+															<span class="right">Tidak Melayani</span>
 														</div>
 													</li>
 												</ul>
@@ -584,17 +586,12 @@
 									<li>
 										<div class="inner">
 											<div class="footer_section_title">
-												<h3>Helpful Links</h3>
+												<h3>Bergabung Bersama Kami</h3>
 											</div>
 											<div class="helpful_links">
 												<div class="inner_list">
-													<ul>
-														<li><a href="#">Our services</a></li>
-														<li><a href="#">Diclaimer</a></li>
-														<li><a href="#">Showcase</a></li>
-														<li><a href="#">Privacy Policy</a></li>
-														<li><a href="#">Affliates</a></li>
-													</ul>
+													<p style="color: #ccc;">Ayo bergabung bersama team kami sebagai Marketing Freelance, informasi lebih lanjut silahkan klik link dibawah ini</p>
+													<a href="#" style="color: #fe7e00; text-decoration:none; font-weight:bold; "> >> Daftar Marketing Freelance</a>
 												</div>
 											</div>
 										</div>
@@ -607,7 +604,7 @@
 			</div>
 			<div class="bottom_wrap">
 				<div class="container">
-					<div class="links_wrap">
+					{{-- <div class="links_wrap">
 						<ul>
 							<li><a href="#">Services</a></li>
 							<li><a href="#">Affliates</a></li>
@@ -615,9 +612,9 @@
 							<li><a href="#">Privacy Policy</a></li>
 							<li><a href="#">Career</a></li>
 						</ul>
-					</div>
+					</div> --}}
 					<div class="copyright">
-						<p>&copy; 1934 - 2018 <a class="constructify" href="#">Glax, LCC</a>. All rights reserved. Template has been designed by <a class="marketify" href="https://themeforest.net/user/marketify">Marketify</a></p>
+						<p>&copy; 2021 <a class="constructify" href="#">Inspira Kreasindo</a>. All rights reserved. </p>
 						<a class="glax_tm_totop" href="#">
 							 <span class="shape"></span>
 							 <span class="name">To Top</span>
@@ -632,14 +629,51 @@
 </div>
 <!-- / WRAPPER ALL -->
 
+<!-- Modal -->
+<div class="modal fade   "  id="myModal"  tabindex="-1" role="dialog"
+     aria-labelledby="myModal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered  modal-lg  " role="document">
+			<div class="modal-content">
+					<div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-6 bg-img rounded-left m-h-60 d-none d-sm-block" style="background-image: url('https://images.unsplash.com/photo-1507679799987-c73779587ccf?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1742&q=80')">
+                    </div>
+                    <div class="col-md-6 py-5 px-sm-5 my-auto ">
+                        <h2 class="pt-sm-3">Bergabung Bersama Kami </h2>
+                        <p class="text-muted">
+													Sebagai Marketing Freelance
+                        </p>
+                        <form>
+                            {{-- <div class="form-group">
+                                <label for="exampleInputEmail1">Email address</label>
+                                <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
+                                <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+                            </div> --}}
 
+                            <button type="submit" class="btn btn-cstm-dark btn-block btn-cta mt-5" data-dismiss="modal" aria-label="Close">Subscribe</button>
+														
+													</form>
+													<div class="pt-3 ">
+														<small><a href="#" data-bs-dismiss="modal" aria-label="Close" class="text-muted">Tutup</a></small>
+												</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal Ends -->
 <!-- SCRIPTS -->
 <script src="{{asset('frontPage/js/jquery.js')}}"></script>
 <script src="{{asset('frontPage/js/plugins.js')}}"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+
 <!--[if lt IE 10]> <script type="text/javascript" src="js/ie8.js"></script> <![endif]-->	
 <script src="{{asset('frontPage/js/init.js')}}"></script>
 <script src="{{asset('splide/js/splide.js')}}"></script>
+
 <!-- /SCRIPTS -->
+
 
 </body>
 </html>

@@ -16,13 +16,15 @@
 <title>Inspira Kreasindo</title>
 
 <!-- STYLES -->
+<link rel="stylesheet" href="{{asset('assets/css/custom.css')}}">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+<link rel="stylesheet" type="text/css" href="{{asset('css/lunar.css')}}" />
 <link rel="stylesheet" type="text/css" href="{{asset('splide/css/splide.min.css')}}" />
 <link rel="stylesheet" type="text/css" href="{{asset('frontPage/css/fontello.css')}}" />
 <link rel="stylesheet" type="text/css" href="{{asset('frontPage/css/skeleton.css')}}" />
 <link rel="stylesheet" type="text/css" href="{{asset('frontPage/css/plugins.css')}}" />
 <link rel="stylesheet" type="text/css" href="{{asset('frontPage/css/base.css')}}" />
 <link rel="stylesheet" type="text/css" href="{{asset('frontPage/css/style.css')}}" />
-<link rel="stylesheet" href="{{asset('assets/css/custom.css')}}">
 <link href="https://fonts.googleapis.com/css?family=Montserrat:300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i,800,800i" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css?family=Rubik:300,300i,400,400i,500,500i,700,700i,900" rel="stylesheet">
@@ -320,33 +322,6 @@
 							</div>
 						</div>
 					</div>
-					{{-- <div class="drop_list message">
-						<div class="short_contact">
-							<h3 class="title">Request a Quote</h3>
-							<p class="subtitle">Looking for a quality and affordable builder for your next project?</p>
-							<div class="inputs_wrap">
-								<form action="/" method="post">
-									<div class="input_list_wrap">
-										<ul>
-											<li>
-												<input type="text" placeholder="Your Name" />
-											</li>
-											<li>
-												<input type="text" placeholder="E-mail Address" />
-											</li>
-											<li>
-												<input type="text" placeholder="Main Subject" />
-											</li>
-										</ul>
-									</div>
-									<textarea placeholder="Message"></textarea>
-									<div class="button">
-										<a href="#">Send Message</a>
-									</div>
-								</form>
-							</div>
-						</div>
-					</div> --}}
 					<div class="drop_list phone">
 						<div class="call_wrap">
 							<div class="image">
@@ -468,9 +443,6 @@
 								</div>
 							</div>
 						</div>
-						{{-- <div class="play_video">
-							<a class="popup-youtube" href="https://www.youtube.com/watch?v=ya7OKUSmAug"></a>
-						</div> --}}
 					</div>
 					<div class="shape_top">
 						<span class="first"></span>
@@ -502,13 +474,6 @@
 									<p>During this phase, we will work to provide a detailed analysis of the project and we will establish project expectations along...</p>
 								</div>
 								<div class="glax_tm_button_more_wrap">
-									{{-- <a href="#">
-										More Details
-										<span class="arrow_wrap">
-											<span class="first"><img class="svg" src="{{asset('frontPage/img/svg/arrow-right.svg')}}" alt="" /></span>
-											<span class="second"><img class="svg" src="{{asset('frontPage/img/svg/arrow-right.svg')}}" alt="" /></span>
-										</span>
-									</a> --}}
 								</div>
 								<a class="service_link" href="service-single.html"></a>
 							</div>
@@ -525,13 +490,6 @@
 									<p>The client retains an architect or engineer to design the project and to prepare the necessary drawings and specifications for...</p>
 								</div>
 								<div class="glax_tm_button_more_wrap">
-									{{-- <a href="#">
-										More Details
-										<span class="arrow_wrap">
-											<span class="first"><img class="svg" src="img/svg/arrow-right.svg" alt="" /></span>
-											<span class="second"><img class="svg" src="img/svg/arrow-right.svg" alt="" /></span>
-										</span>
-									</a> --}}
 								</div>
 								<a class="service_link" href="service-single.html"></a>
 							</div>
@@ -871,27 +829,30 @@
 							<div class="rightbox fn_w_sminibox">
 								<div class="constructify_fn_sticky_section">
 									<ul>
+										@forelse($proyek as $p)
 										<li>
 											<div class="inner">
 												<div class="image_wrap">
 													<img src="{{asset('frontPage/img/portfolio/750x500.jpg')}}" alt="" />
-													<div class="image" data-img-url="{{asset('frontPage/img/portfolio/1.jpg')}}"></div>
+													<div class="image" data-img-url="{{storage::url($p->cover)}}"></div>
 													<div class="overlay_color"></div>
 													<span class="plus"></span>
 													<div class="title_holder">
-														<h3>Matao Gas and Oil Organization</h3>
+														<h3>{{$p->nama}}</h3>
 														<div class="glax_tm_view_more_wrap">
-															<a href="project-single.html">
-																<span class="text">View More</span>
+															<a href="{{route('detailProyek',['id'=>$p->id])}}">
+																<span class="text">Selengkapnya</span>
 																<span class="arrow"><img class="svg" src="img/svg/arrow-right.svg" alt="" /></span>
 															</a>
 														</div>
 													</div>
-													<a class="link" href="project-single.html"></a>
+													<a class="link" href="{{route('detailProyek',['id'=>$p->id])}}"></a>
 												</div>
 											</div>
 										</li>
-										
+										@empty
+										tidak ada proyek
+										@endforelse
 									</ul>
 								</div>
 							</div>
@@ -1021,13 +982,69 @@
 </div>
 <!-- / WRAPPER ALL -->
 
+<!-- Modal -->
+<div class="modal fade   "  id="myModal"  tabindex="-1" role="dialog"
+     aria-labelledby="myModal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered  modal-lg  " role="document">
+			<div class="modal-content">
+					<div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-6 bg-img rounded-left m-h-60 d-none d-sm-block" style="background-image: url('https://images.unsplash.com/photo-1507679799987-c73779587ccf?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1742&q=80')">
+                    </div>
+                    <div class="col-md-6 py-5 px-sm-5 my-auto ">
+                        <h2 class="pt-sm-3">Bergabung Bersama Kami </h2>
+                        <p class="text-muted">
+													Sebagai Marketing Freelance
+                        </p>
+                        <form>
+                            {{-- <div class="form-group">
+                                <label for="exampleInputEmail1">Email address</label>
+                                <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
+                                <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+                            </div> --}}
 
+                            <button type="submit" class="btn btn-cstm-dark btn-block btn-cta mt-5" data-dismiss="modal" aria-label="Close">Subscribe</button>
+														
+													</form>
+													<div class="pt-3 ">
+														<small><a href="#" data-bs-dismiss="modal" aria-label="Close" class="text-muted">Tutup</a></small>
+												</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal Ends -->
 <!-- SCRIPTS -->
 <script src="{{asset('frontPage/js/jquery.js')}}"></script>
 <script src="{{asset('frontPage/js/plugins.js')}}"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+<script src="{{asset('js/lunar.js')}}"></script>
+<script>
+	var count=-1; // initially -1 as we are having a delay of 1000ms
+	var counter=setInterval(timer, 1000); //1000 will  run it every 1 second
+	function timer()
+	{
+		count=count+1;
+		if (count >=1) //+1 than the req time as we have a delay of 1000ms
+		{
+			clearInterval(counter);
+			/////////////what code should go here for the modal to pop up??///////////////////////
+				// $("#exampleModal").modal();
+				var myModal = new bootstrap.Modal(document.getElementById('myModal'), {
+					keyboard: false
+				});
+				myModal.show();
+			return;
+		}
+		console.log(count);
+	}
+</script>
 <!--[if lt IE 10]> <script type="text/javascript" src="js/ie8.js"></script> <![endif]-->	
 <script src="{{asset('frontPage/js/init.js')}}"></script>
 <script src="{{asset('splide/js/splide.js')}}"></script>
+
 <!-- /SCRIPTS -->
 
 

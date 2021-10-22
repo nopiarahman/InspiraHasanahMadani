@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\kabarBerita;
+use App\proyekweb;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -16,12 +17,14 @@ use App\kabarBerita;
 Route::get('/', function () {
     $kabarBerita = kabarBerita::latest()->take(3)->get();
     // dd($kabarBerita);
-    return view('welcome',compact('kabarBerita'));
+    $proyek = proyekweb::where('status','publik')->latest()->take(4)->get();
+    return view('welcome',compact('kabarBerita','proyek'));
 });
 /* WEB */
 Route::get('/blog', 'WebController@blog')->name('blog');
 Route::get('/kabar_berita/{id}', 'WebController@kabar_berita')->name('kabar_berita');
-Route::get('/proyekWeb', 'WebController@proyek')->name('proyekWeb');
+
+Route::get('/detailProyek/{id}', 'WebController@proyekdetail')->name('detailProyek');
 Route::get('/tentang', 'WebController@tentang')->name('tentang');
 Route::get('/kontak', 'WebController@kontak')->name('kontak');
 
@@ -188,6 +191,15 @@ Route::group(['middleware'=>['auth','role:adminWeb']],function(){
     Route::get('/lihatBerita/{id}', 'KabarBeritaController@edit')->name('lihatBerita');
     Route::post('/updateBerita/{id}', 'KabarBeritaController@update')->name('kabarBeritaUpdate');
     Route::delete('/hapusBerita/{id}', 'KabarBeritaController@destroy')->name('hapusBerita');
+    
+    Route::get('/proyekWeb', 'ProyekWebController@proyek')->name('proyekWeb');
+    Route::get('/proyekWebTambah', 'ProyekWebController@proyekTambah')->name('proyekWebTambah');
+    Route::get('/proyekWebDetail/{id}', 'ProyekWebController@proyekDetail')->name('proyekWebDetail');
+    Route::patch('/proyekWebUpdate/{id}', 'ProyekWebController@proyekUpdate')->name('proyekWebUpdate');
+    Route::post('/proyekWebSimpan', 'ProyekWebController@proyekSimpan')->name('proyekWebSimpan');
+    Route::delete('/proyekWebDelete/{id}', 'ProyekWebController@destroy')->name('proyekWebDelete');
+    Route::post('/galeriProyek/{id}', 'ProyekWebController@galeriProyek')->name('galeriProyek');
+    Route::delete('/hapusGaleriProyek/{id}', 'ProyekWebController@hapusGaleriProyek')->name('hapusGaleriProyek');
 });
 Route::group(['middleware'=>['auth','role:pelanggan']],function(){
     Route::get('/dataDiri', 'PelangganController@dataDiri')->name('dataDiri');

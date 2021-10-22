@@ -1,4 +1,4 @@
-@extends('layouts.tema')\
+@extends('layouts.tema')
 @section('head')
 <script src="https://cdn.ckeditor.com/ckeditor5/30.0.0/classic/ckeditor.js"></script>
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.css">
