@@ -33,7 +33,7 @@ class CicilanController extends Controller
         return view ('cicilanUnit/kavling',compact('semuaCicilanUnit','transferUnit'));
     }
     public function unitKavlingDetail(Pembelian $id){
-        $daftarCicilanUnit = cicilan::where('pembelian_id',$id->id)->get();
+        $daftarCicilanUnit = cicilan::where('pembelian_id',$id->id)->orderBy('tanggal')->get();
         
         $cicilanPerBulan = $id->sisaKewajiban/$id->tenor;
         $terbayar=cicilan::where('pembelian_id',$id->id)->get();

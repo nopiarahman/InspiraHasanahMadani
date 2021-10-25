@@ -22,7 +22,7 @@ class DPController extends Controller
     }
     public function DPKavlingTambah(Pembelian $id){
         // dd($id);
-        $daftarCicilanDp = dp::where('pembelian_id',$id->id)->get();
+        $daftarCicilanDp = dp::where('pembelian_id',$id->id)->orderBy('tanggal')->get();
         $rekening = rekening::where('proyek_id',proyekId())->get();
         // dd($rekening);
         $DpPertama = Dp::where('pembelian_id',$id->id)->first();

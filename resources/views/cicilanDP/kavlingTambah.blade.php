@@ -1,4 +1,7 @@
 @extends('layouts.tema')
+@section('head')
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.css">
+@endsection
 @section ('menuCicilanDP','active')
 @section('content')
 <div class="section-header sticky-top">
@@ -163,7 +166,7 @@ function cash(){
     <h4>History Pembayaran Cicilan DP {{jenisKepemilikan($id->pelanggan_id)}} {{$id->pelanggan->nama}}</h4>
   </div>
   <div class="card-body">
-    <table class="table table-hover table-responsive-sm">
+    <table class="table table-hover table-responsive-sm" id="table">
       <thead>
         <tr>
           <th scope="col">No</th>
@@ -177,8 +180,8 @@ function cash(){
       <tbody>
         @foreach($daftarCicilanDp as $cicilanDp)
         <tr>
-          <th scope="row">{{$loop->iteration}}</th>
-          <td>{{formatTanggal($cicilanDp->tanggal)}}</td>
+          <th>{{$loop->iteration}}</th>
+          <td data-order="{{$cicilanDp->tanggal}}">{{formatTanggal($cicilanDp->tanggal)}}</td>
           <td>Rp.{{number_format($cicilanDp->jumlah)}}</td>
           {{-- <td>Rp.{{number_format($cicilanDp->sisaDp)}}</td> --}}
           <td>
@@ -205,7 +208,6 @@ function cash(){
         <tr >
           <th style="text-align: right" colspan="2">Total Terbayar</th>
           <th>Rp.{{number_format($daftarCicilanDp->sum('jumlah'))}}</th>
-          <td></td>
           <td></td>
           <td></td>
         </tr>
@@ -265,5 +267,30 @@ function cash(){
  @endsection
  @section('script')
  <script src="{{ mix("js/jquery.min.js") }}"></script>
-
+ <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.js"></script>
+ <script type="text/javascript" >
+     $('#table').DataTable({
+       "pageLength":     25,
+       "language": {
+         "decimal":        "",
+         "emptyTable":     "Tidak ada data tersedia",
+         "info":           "Menampilkan _START_ sampai _END_ dari _TOTAL_ data",
+         "infoEmpty":      "Menampilkan 0 sampai 0 dari 0 data",
+         "infoFiltered":   "(difilter dari _MAX_ total data)",
+         "infoPostFix":    "",
+         "thousands":      ",",
+         "lengthMenu":     "Menampilkan _MENU_ data",
+         "loadingRecords": "Loading...",
+         "processing":     "Processing...",
+         "search":         "Cari:",
+         "zeroRecords":    "Tidak ada data ditemukan",
+         "paginate": {
+             "first":      "Awal",
+             "last":       "Akhir",
+             "next":       "Selanjutnya",
+             "previous":   "Sebelumnya"
+         },
+         }
+     });
+ </script>
 @endsection
