@@ -138,14 +138,14 @@ class GudangController extends Controller
     }
     public function hapusAlokasi(alokasiGudang $id){
         // dd($id);
-        $dari = Carbon::parse($id->created_at)->subSeconds(20);
-        $sampai = Carbon::parse($id->created_at)->addSeconds(20);
+        $dari = Carbon::parse($id->created_at)->subSeconds(30);
+        $sampai = Carbon::parse($id->created_at)->addSeconds(30);
         $cekPettyCash = pettyCash::where('uraian',$id->uraian)->whereBetween('created_at',[$dari,$sampai])->where('debet',$id->debet)->first();
         // dd($cekPettyCash);
         if($cekPettyCash != null){
             /* cek transaksi sesudah input */
             $cekTransaksi=pettyCash::where('tanggal','>=',$cekPettyCash->tanggal)->where('no','>',$cekPettyCash->no)->orderBy('no')->get();
-            if($cekTransaksi != null){
+            if($cekTransaksi->first() != null){
                 /* jika ada, update transaksi sesudah sesuai perubahan input*/
                 foreach($cekTransaksi as $updateTransaksi){
                     $updateTransaksi['no'] = $updateTransaksi->no -1;
@@ -160,7 +160,7 @@ class GudangController extends Controller
         if($hapusTransaksi != null){
             /* cek transaksi sesudah input */
             $cekTransaksi=transaksi::where('tanggal','>=',$hapusTransaksi->tanggal)->where('no','>',$hapusTransaksi->no)->orderBy('no')->get();
-            if($cekTransaksi != null){
+            if($cekTransaksi->first() != null){
                 /* jika ada, update transaksi sesudah sesuai perubahan input*/
                 foreach($cekTransaksi as $updateTransaksi){
                     $updateTransaksi['no'] = $updateTransaksi->no -1;
