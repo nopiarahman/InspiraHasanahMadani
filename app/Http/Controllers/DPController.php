@@ -57,11 +57,13 @@ class DPController extends Controller
         $akadDp=$cekDp->dp;
         /* Jatuh Tempo */
         $tempo=Carbon::parse($request->tanggal)->addMonth(1)->isoFormat('YYYY-MM-DD');
-        $urut = dp::where('pembelian_id',$id)->orderBy('urut','desc')->first();
+        $urut = dp::where('pembelian_id',$id)->where('tanggal','>=',$request->tanggal)->first();
         if($urut != null){
-            $urutan = $urut->urut;
+            $urutan = $urut->urut-1;
+            // $urutan=0;
         }else{
-            $urutan=0;
+            $urut = cicilan::where('pembelian_id',$id)->orderBy('urut','desc')->first();
+            $urutan = $urut->urut+1;
         }
         /* Cek DP per bulan */
         $awal = Carbon::parse($request->tanggal)->firstOfMonth()->isoFormat('YYYY-MM-DD');
@@ -81,7 +83,7 @@ class DPController extends Controller
             'pembelian_id'=>$request->pembelian_id,
             'pelanggan_id'=>$request->pelanggan_id,
             'proyek_id'=>proyekId(),
-            'urut'=>$urutan+1,
+            'urut'=>$urutan,
             'ke'=>$cekBulan+1,
             'tanggal'=>$request->tanggal,
             'jumlah'=>str_replace(',', '', $request->jumlah),
@@ -95,7 +97,7 @@ class DPController extends Controller
         dp::create($requestDp);
         $requestData=$request->all();
         $requestData=[
-            'urut'=>$urutan+1,
+            'urut'=>$urutan,
             'ke'=>$cekBulan+1,
             'tanggal'=>$request->tanggal,
             'sisaDp'=>$akadDp-$totalTerbayar-$terbayarSekarang,
