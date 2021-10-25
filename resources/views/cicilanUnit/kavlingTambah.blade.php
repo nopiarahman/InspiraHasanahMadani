@@ -214,7 +214,7 @@
         @foreach($daftarCicilanUnit as $cicilanUnit)
         <tr>
           <th scope="row">{{$cicilanUnit->urut}}</th>
-          <td>{{formatTanggal($cicilanUnit->tanggal)}}</td>
+          <td data-order="{{$cicilanUnit->tanggal}}" >{{formatTanggal($cicilanUnit->tanggal)}}</td>
           <td>Rp.{{number_format($cicilanUnit->jumlah)}}</td>
           <td>Rp.{{number_format($cicilanUnit->sisaKewajiban)}}</td>
           <td>
