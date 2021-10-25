@@ -49,6 +49,7 @@ class CicilanController extends Controller
     public function cicilanKavlingSimpan(Request $request){
         // dd($request);
         
+        // dd($urutan);
         $jumlah = str_replace(',', '', $request->jumlah);
         $rekening=rekening::find($request->rekening_id);
         if($request->has('rekening_id')){
@@ -107,11 +108,13 @@ class CicilanController extends Controller
         $awal = Carbon::parse($request->tanggal)->firstOfMonth()->isoFormat('YYYY-MM-DD');
         $akhir = Carbon::parse($request->tanggal)->endOfMonth()->isoFormat('YYYY-MM-DD');
         $cekBulan = cicilan::whereBetween('tanggal',[$awal,$akhir])->count();
-        $urut = cicilan::where('pembelian_id',$id)->orderBy('urut','desc')->first();
+        $urut = cicilan::where('pembelian_id',$id)->where('tanggal','>=',$request->tanggal)->first();
         if($urut != null){
-            $urutan = $urut->urut;
+            $urutan = $urut->urut-1;
+            // $urutan=0;
         }else{
-            $urutan=0;
+            $urut = cicilan::where('pembelian_id',$id)->orderBy('urut','desc')->first();
+            $urutan = $urut->urut+1;
         }
         $terbayar=cicilan::where('pembelian_id',$id)->get();
         $totalTerbayar=0;
@@ -122,7 +125,7 @@ class CicilanController extends Controller
         $requestCicilan=[
             'pembelian_id'=>$request->pembelian_id,
             'pelanggan_id'=>$request->pelanggan_id,
-            'urut'=>$urutan+1,
+            'urut'=>$urutan,
             'ke'=>$cekBulan+1,
             'tanggal'=>$request->tanggal,
             'jumlah'=>str_replace(',', '', $request->jumlah),
@@ -137,7 +140,7 @@ class CicilanController extends Controller
         $requestData=$request->all();
         $requestData=[
             'pembelian_id'=>$request->pembelian_id,
-            'urut'=>$urutan+1,
+            'urut'=>$urutan,
             'ke'=>$cekBulan+1,
             'tanggal'=>$request->tanggal,
             'sisaKewajiban'=>$cicilan-$totalTerbayar-$terbayarSekarang,
