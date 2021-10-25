@@ -265,7 +265,7 @@ function cash(){
   });
  </script>
  @endsection
- @section('script')
+ {{-- @section('script')
  <script src="{{ mix("js/jquery.min.js") }}"></script>
  <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.js"></script>
  <script type="text/javascript" >
@@ -293,4 +293,4 @@ function cash(){
          }
      });
  </script>
-@endsection
+@endsection --}}
