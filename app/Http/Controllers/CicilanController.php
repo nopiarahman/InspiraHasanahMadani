@@ -198,8 +198,8 @@ class CicilanController extends Controller
         $cicilan=$cekCicilan->sisaKewajiban;
         /* UPDATE KAS BESAR */
         /* hapus Kas besar */
-        $dari = Carbon::parse($id->created_at)->subSeconds(20);
-        $sampai = Carbon::parse($id->created_at)->addSeconds(20);
+        $dari = Carbon::parse($id->created_at)->subSeconds(60);
+        $sampai = Carbon::parse($id->created_at)->addSeconds(60);
         $hapusKasBesar = transaksi::whereBetween('created_at',[$dari,$sampai])
                                     ->where('kredit',$id->jumlah)->where('tanggal',$id->tanggal)->first();
         // dd($hapusKasBesar);
