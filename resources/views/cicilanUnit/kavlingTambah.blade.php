@@ -296,7 +296,7 @@
   });
  </script>
 @endsection
-@section('script')
+{{-- @section('script')
 <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.js"></script>
 <script type="text/javascript" >
     $('#table').DataTable({
@@ -323,4 +323,4 @@
         }
     });
 </script>
-@endsection
+@endsection --}}
