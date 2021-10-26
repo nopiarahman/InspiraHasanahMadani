@@ -108,6 +108,9 @@
 							<li>
 								<a href="{{route('blog')}}">Kabar Berita</a>
 							</li>
+							<li>
+								<a href="{{route('galeri')}}">Galeri</a>
+							</li>
 							<li><a href="{{route('tentang')}}">Tentang Kami</a></li>
 							<li><a href="{{route('kontak')}}">Kontak</a></li>
 						</ul>
@@ -187,6 +190,9 @@
 							</li>
 							<li>
 								<a href="{{route('blog')}}">Kabar Berita</a>
+							</li>
+							<li>
+								<a href="{{route('galeri')}}">Galeri</a>
 							</li>
 							<li><a href="{{route('tentang')}}">Tentang Kami</a></li>
 							<li><a href="{{route('kontak')}}">Kontak</a></li>
@@ -445,8 +451,9 @@
 			<div class="container">
 				<div class="glax_tm_pagination">
 					<ul>
-						<li><span>Prev</span></li>
-						<li class="active"><a href="#">Next</a></li>
+						{{$daftarProyek->links()}}
+							{{-- <li><span>Prev</span></li> --}}
+						{{-- <li class="active"><a href="#">Next</a></li> --}}
 					</ul>
 				</div>
 			</div>

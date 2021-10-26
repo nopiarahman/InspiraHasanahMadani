@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\kabarBerita;
 use App\proyekweb;
+use App\galeri;
 class WebController extends Controller
 {
     public function blog(){
@@ -23,7 +24,14 @@ class WebController extends Controller
         return view('web/project-single',compact('id'));
     }
     public function daftarProyek(){
-        $daftarProyek = proyekweb::latest()->paginate(5);
+        $daftarProyek = proyekweb::latest()->paginate(6);
         return view('web/project',compact('daftarProyek'));
+    }
+    public function galeri(){
+        $semuaGaleri = galeri::latest()->paginate(2);
+        $kategori = galeri::all()->unique('kategori');
+        // dd($kategori);
+
+        return view('web/galeri',compact('semuaGaleri','kategori'));
     }
 }

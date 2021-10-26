@@ -118,6 +118,9 @@
 							<li>
 								<a href="{{route('blog')}}">Kabar Berita</a>
 							</li>
+							<li>
+								<a href="{{route('galeri')}}">Galeri</a>
+							</li>
 							<li><a href="{{route('tentang')}}">Tentang Kami</a></li>
 							<li><a href="{{route('kontak')}}">Kontak</a></li>
 						</ul>
@@ -192,14 +195,17 @@
 			<div class="menu_list_wrap">
 				<ul class="nav">
 					<li><a href="/">Beranda</a></li>
-							<li>
-								<a href="{{route('daftarProyek')}}">Proyek</a>
-							</li>
-							<li>
-								<a href="{{route('blog')}}">Kabar Berita</a>
-							</li>
-							<li><a href="{{route('tentang')}}">Tentang Kami</a></li>
-							<li><a href="{{route('kontak')}}">Kontak</a></li>
+					<li>
+						<a href="{{route('daftarProyek')}}">Proyek</a>
+					</li>
+					<li>
+						<a href="{{route('blog')}}">Kabar Berita</a>
+					</li>
+					<li>
+						<a href="{{route('galeri')}}">Galeri</a>
+					</li>
+					<li><a href="{{route('tentang')}}">Tentang Kami</a></li>
+					<li><a href="{{route('kontak')}}">Kontak</a></li>]
 				</ul>
 			</div>
 			<!-- /MENU LIST -->

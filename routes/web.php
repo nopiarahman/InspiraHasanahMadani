@@ -28,6 +28,7 @@ Route::get('/detailProyek/{id}', 'WebController@proyekdetail')->name('detailProy
 Route::get('/tentang', 'WebController@tentang')->name('tentang');
 Route::get('/daftarProyek', 'WebController@daftarProyek')->name('daftarProyek');
 Route::get('/kontak', 'WebController@kontak')->name('kontak');
+Route::get('/galeri', 'WebController@galeri')->name('galeri');
 
 Auth::routes();
 Route::group(['middleware'=>['auth','role:admin,projectmanager']],function(){
