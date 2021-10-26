@@ -75,6 +75,7 @@ class ProyekWebController extends Controller
         $requestData = $request->all();
         if($request->hasFile('file')){
             $file_nama            = $request->file('file')->store('public/proyekWeb/galeriProyek');
+            $requestData['kategori']=$id->kategori;
             $requestData['path'] = $file_nama;
             $id->galeri()->create($requestData);
         }

@@ -54,7 +54,18 @@
           <div class="card-body">
           <form action="{{route('proyekWebSimpan')}}" method="POST" enctype="multipart/form-data">
             @csrf
-            
+            <div class="form-group row mb-4">
+              <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Kategori Proyek</label>
+              <div class="col-sm-12 col-md-7">
+                <select class="form-control selectric" tabindex="-1" name="kategori" >
+                  <option value="Perumahan" selected>Perumahan Syar'i</option>                  
+                  <option value="Konstruksi">Konstruksi</option>                  
+                  <option value="Konsultasi">Konsultasi</option>                  
+                  <option value="Desain">Desain Arsitektur</option>                  
+                  <option value="Lainnya">Lainnya</option>                  
+                </select>
+              </div>
+            </div>
             <div class="form-group row mb-4">
               <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Nama Proyek</label>
               <div class="col-sm-12 col-md-7">

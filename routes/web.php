@@ -26,6 +26,7 @@ Route::get('/kabar_berita/{id}', 'WebController@kabar_berita')->name('kabar_beri
 
 Route::get('/detailProyek/{id}', 'WebController@proyekdetail')->name('detailProyek');
 Route::get('/tentang', 'WebController@tentang')->name('tentang');
+Route::get('/daftarProyek', 'WebController@daftarProyek')->name('daftarProyek');
 Route::get('/kontak', 'WebController@kontak')->name('kontak');
 
 Auth::routes();

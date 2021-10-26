@@ -102,7 +102,7 @@
 						<ul>
 							<li><a href="/">Beranda</a></li>
 							<li>
-								<a href="{{route('proyekWeb')}}">Proyek</a>
+								<a href="{{route('daftarProyek')}}">Proyek</a>
 							</li>
 							<li>
 								<a href="{{route('blog')}}">Kabar Berita</a>
@@ -182,7 +182,7 @@
 				<ul class="nav">
 					<li><a href="/">Beranda</a></li>
 							<li>
-								<a href="{{route('proyekWeb')}}">Proyek</a>
+								<a href="{{route('daftarProyek')}}">Proyek</a>
 							</li>
 							<li>
 								<a href="{{route('blog')}}">Kabar Berita</a>

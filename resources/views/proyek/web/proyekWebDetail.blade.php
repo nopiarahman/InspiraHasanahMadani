@@ -69,6 +69,18 @@
             @method('patch')
             @csrf
             <div class="form-group row mb-4">
+              <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Kategori Proyek</label>
+              <div class="col-sm-12 col-md-7">
+                <select class="form-control selectric" tabindex="-1" name="kategori" >
+                  <option value="Perumahan Syar'i" @if($id->kategori==="Perumahan Syar'i")selected @endif>Perumahan Syar'i</option>                  
+                  <option value="Konstruksi" @if($id->kategori==="Konstruksi")selected @endif>Konstruksi</option>                  
+                  <option value="Konsultasi" @if($id->kategori==="Konsultasi")selected @endif>Konsultasi</option>                  
+                  <option value="Desain Arsitektur" @if($id->kategori==="Desain Arsitektur")selected @endif>Desain Arsitektur</option>                  
+                  <option value="Lainnya" @if($id->kategori==="Lainnya")selected @endif>Lainnya</option>                  
+                </select>
+              </div>
+            </div>
+            <div class="form-group row mb-4">
               <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Nama Proyek</label>
               <div class="col-sm-12 col-md-7">
                 <input type="text" class="form-control @error('nama') is-invalid @enderror" name="nama" value="{{$id->nama}}" id="nama">

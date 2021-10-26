@@ -11,15 +11,19 @@ class WebController extends Controller
         $blog = kabarBerita::latest()->paginate(5);
         
         return view('web/blog',compact('blog'));
-
+        
     }
     public function kabar_berita(kabarBerita $id){
         // dd($id);
         return view('web/kabar_berita',compact('id'));
     }
-
+    
     public function proyekdetail(proyekweb $id){
         // dd($id);
         return view('web/project-single',compact('id'));
+    }
+    public function daftarProyek(){
+        $daftarProyek = proyekweb::latest()->paginate(5);
+        return view('web/project',compact('daftarProyek'));
     }
 }
