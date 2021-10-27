@@ -37,4 +37,7 @@ class WebController extends Controller
     public function kontak(){
         return view('web/kontak');
     }
+    public function tentang(){
+        return view('web/tentang');
+    }
 }
