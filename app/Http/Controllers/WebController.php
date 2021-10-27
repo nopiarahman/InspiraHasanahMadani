@@ -34,4 +34,7 @@ class WebController extends Controller
 
         return view('web/galeri',compact('semuaGaleri','kategori'));
     }
+    public function kontak(){
+        return view('web/kontak');
+    }
 }

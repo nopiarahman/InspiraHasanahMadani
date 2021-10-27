@@ -226,33 +226,6 @@
 							</div>
 						</div>
 					</div>
-					{{-- <div class="drop_list message">
-						<div class="short_contact">
-							<h3 class="title">Request a Quote</h3>
-							<p class="subtitle">Looking for a quality and affordable builder for your next project?</p>
-							<div class="inputs_wrap">
-								<form action="/" method="post">
-									<div class="input_list_wrap">
-										<ul>
-											<li>
-												<input type="text" placeholder="Your Name" />
-											</li>
-											<li>
-												<input type="text" placeholder="E-mail Address" />
-											</li>
-											<li>
-												<input type="text" placeholder="Main Subject" />
-											</li>
-										</ul>
-									</div>
-									<textarea placeholder="Message"></textarea>
-									<div class="button">
-										<a href="#">Send Message</a>
-									</div>
-								</form>
-							</div>
-						</div>
-					</div> --}}
 					<div class="drop_list phone">
 						<div class="call_wrap">
 							<div class="image">

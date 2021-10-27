@@ -19,7 +19,6 @@
 	<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
 	<link rel="stylesheet" type="text/css" href="{{asset('frontPage/css/fontello.css')}}" />
-<link rel="stylesheet" type="text/css" href="{{asset('splide/css/splide.min.css')}}" />
 	<link rel="stylesheet" type="text/css" href="{{asset('frontPage/css/skeleton.css')}}" />
 	<link rel="stylesheet" type="text/css" href="{{asset('frontPage/css/plugins.css')}}" />
 	<link rel="stylesheet" type="text/css" href="{{asset('frontPage/css/base.css')}}" />
@@ -385,18 +384,18 @@
 		<div class="glax_tm_widget_window_overlay"></div>
 		<!-- /SIDEBAR WIDGET -->
 		
-		<!-- PROJECTS -->
+		<!-- CONTACT -->
 		<div class="glax_tm_section">
 			<div class="glax_tm_main_title_holder">
 				<div class="container">
 					<div class="title_holder">
-						<h3>Galeri</h3>
+						<h3>Kontak</h3>
 					</div>
 					<div class="builify_tm_breadcrumbs">
 						<ul>
 							<li><a href="/">Beranda</a></li>
 							<li class="shape"><span></span></li>
-							<li><span>Galeri</span></li>
+							<li><span>Kontak</span></li>
 						</ul>
 					</div>
 				</div>
@@ -404,48 +403,82 @@
 		</div>
 		<div class="glax_tm_section">
 			<div class="container">
-				<div class="glax_tm_projects_wrap">
-					<div class="filter_wrap">
-						<div class="all_projects">
-							<span><a href="#">Semua</a></span>
-						</div>
-						<div class="filter_list">
-							<ul class="glax_tm_portfolio_filter">
-								<li><a href="#" class="current" data-filter="*">Semua</a></li>
-								@foreach($kategori as $k)
-								<li><a href="#" data-filter=".{{$k->kategori}}">{{$k->kategori}}</a></li>
-								@endforeach
-							</ul>
-						</div>
+				<div class="glax_tm_main_contact_wrap">
+					<div class="office_list">
+						<ul>
+							<li style="width:33%;">
+								<div class="inner">
+									<div class="image_wrap">
+										<img src="{{asset('frontPage/img/slider/1.jpg')}}" alt="" />
+										{{-- <div class="image"></div> --}}
+									</div>
+									<div class="definitions_wrap">
+										<div class="office">
+											<h3>Kantor Graha Inspira</h3>
+											<div class="icon">
+												<img class="svg" src="{{asset('frontPage/img/svg/location.svg')}}" alt="" />
+											</div>
+										</div>
+										<div class="short_info_wrap">
+											<div class="row">
+												<p>Jl. Mayjen. A. Thalib No.12-Telanaipura Kota Jambi</p>
+											</div>
+											<div class="row">
+												<label>Whatsapp:</label>
+												<span style=" color:#fe7e00">0821-8307-9255</span>
+											</div>
+											<div class="row">
+												<label>Email:</label>
+												<span><a href="#">insprahasanahmadani@gmail.com</a></span>
+											</div>
+										</div>
+									</div>
+								</div>
+							</li>
+							<li style="width: 66%">
+								<div>
+									<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3988.245967477541!2d103.57317051468019!3d-1.608608436516212!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e258943a5cf653f%3A0x143962fbf3fab2ef!2sgraha%20inspira!5e0!3m2!1sid!2sid!4v1635345423733!5m2!1sid!2sid" width="100%" height="490px" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+								</div>
+							</li>
+						</ul>
 					</div>
-					<ul class=" galeri gallery_zoom">
-						@forelse($semuaGaleri as $photo)
-						<li class="{{$photo->kategori}}">
-							<div class="inner">
-							<a data-fslightbox="gallery" href="{{Storage::url($photo->path)}}">
-								<img src="{{Storage::url($photo->path)}}" alt="" />
-							</a>
-							</div>
-						</li>
-						@empty
-						tidak ada foto
-						@endforelse
-					</ul>
+					<div class="contact_text">
+						<p>Glax is a privately owned, internationally focussed engineering enterprise with world-class capabilities spanning the entire client value chain. We operate an integrated business model comprising the full range of engineering, construction and asset management services delivering single-source solutions for some of the world's most prestigious public and private organisations.</p>
+					</div>
+					{{-- <div class="glax_tm_contact_wrap">
+						<div class="get_in_touch">
+							<h3>Get in Touch With Us</h3>
+						</div>
+						<div class="inner_wrap">
+							<form action="/" method="post" class="contact_form" id="contact_form">
+								<div class="returnmessage" data-success="Your message has been received, We will contact you soon."></div>
+								<div class="empty_notice"><span>Please Fill Required Fields</span></div>
+								<div class="row">
+									<label>Full Name<span></span></label>
+									<input id="name" type="text" />
+								</div>
+								<div class="row">
+									<label>Your E-mail<span></span></label>
+									<input id="email" type="text" />
+								</div>
+								<div class="row">
+									<label>Your Subject<span></span></label>
+									<input id="subject" type="text" />
+								</div>
+								<div class="row">
+									<label>Your Message<span></span></label>
+									<textarea id="message"></textarea>
+								</div>
+								<div class="row">
+									<a id="send_message" href="#">Send Message</a>
+								</div>
+							</form>
+						</div>
+					</div> --}}
 				</div>
 			</div>
 		</div>
-		<div class="glax_tm_section">
-			<div class="container">
-				<div class="glax_tm_pagination">
-					<ul>
-						{{$semuaGaleri->links()}}
-						{{-- <li><span>Prev</span></li>
-						<li class="active"><a href="#">Next</a></li> --}}
-					</ul>
-				</div>
-			</div>
-		</div>
-		<!-- /PROJECTS -->
+		<!-- /CONTACT -->
 		
 <!-- FOOTER -->
 <footer class="glax_tm_footer_wrap">
@@ -573,45 +606,6 @@
 <!--[if lt IE 10]> <script type="text/javascript" src="js/ie8.js"></script> <![endif]-->	
 <script src="{{asset('frontPage/js/init.js')}}"></script>
 <script src="{{asset('splide/js/splide.js')}}"></script>
-<script src="{{asset('js/fslightbox.js')}}"></script>
-<script>
-jQuery(document).ready(function(){
-
-	"use strict";
-
-	if(jQuery().isotope) {
-
-		// Needed variables
-		var list 		 = jQuery('.galeri');
-		var filter		 = jQuery('.glax_tm_portfolio_filter');
-
-		if(filter.length){
-			// Isotope Filter 
-			filter.find('a').on('click', function(){
-				var selector = jQuery(this).attr('data-filter');
-				list.isotope({ 
-					filter				: selector,
-					animationOptions	: {
-						duration			: 750,
-						easing				: 'linear',
-						queue				: false
-					}
-				});
-				return false;
-			});	
-
-			// Change active element class
-			filter.find('a').on('click', function() {
-				filter.find('a').removeClass('current');
-				jQuery(this).addClass('current');
-				return false;
-			});	
-		}
-	}
-
-});
-</script>
-<script src="{{asset('js/fslightbox.js')}}"></script>
 <!-- /SCRIPTS -->
 
 
