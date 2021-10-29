@@ -62,7 +62,7 @@ class DPController extends Controller
             $urutan = $urut->urut-1;
             // $urutan=0;
         }else{
-            $urut = cicilan::where('pembelian_id',$id)->orderBy('urut','desc')->first();
+            $urut = dp::where('pembelian_id',$id)->orderBy('urut','desc')->first();
             $urutan = $urut->urut+1;
         }
         /* Cek DP per bulan */
