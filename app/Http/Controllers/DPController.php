@@ -63,7 +63,12 @@ class DPController extends Controller
             // $urutan=0;
         }else{
             $urut = dp::where('pembelian_id',$id)->orderBy('urut','desc')->first();
-            $urutan = $urut->urut+1;
+            // dd($urut);
+            if($urut != null){
+                $urutan = $urut->urut+1;
+            }else{
+                $urutan=1;
+            }
         }
         /* Cek DP per bulan */
         $awal = Carbon::parse($request->tanggal)->firstOfMonth()->isoFormat('YYYY-MM-DD');

@@ -114,7 +114,11 @@ class CicilanController extends Controller
             // $urutan=0;
         }else{
             $urut = cicilan::where('pembelian_id',$id)->orderBy('urut','desc')->first();
-            $urutan = $urut->urut+1;
+            if($urut != null){
+                $urutan = $urut->urut+1;
+            }else{
+                $urutan = 1;
+            }
         }
         $terbayar=cicilan::where('pembelian_id',$id)->get();
         $totalTerbayar=0;
