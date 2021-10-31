@@ -492,6 +492,9 @@ class PelangganController extends Controller
     }
     public function destroyNonAktif(Pelanggan $id){
         // dd($id->kavling);
+        if($id->dp->first() || $id->cicilan->first() != null){
+            return redirect()->back()->with('error','Gagal Hapus Pelanggan, Pelanggan Mempunyai transaksi');
+        }
         $id->delete();
         $user=user::find($id->user_id);
         $user->delete();
