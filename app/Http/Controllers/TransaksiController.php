@@ -272,8 +272,8 @@ class TransaksiController extends Controller
     }
     public function hapusKeluar(Transaksi $id){
         // dd($id);
-        $dari = Carbon::parse($id->created_at)->subSeconds(20);
-        $sampai = Carbon::parse($id->created_at)->addSeconds(20);
+        $dari = Carbon::parse($id->created_at)->subSeconds(120);
+        $sampai = Carbon::parse($id->created_at)->addSeconds(120);
         $cekPettyCash = pettyCash::where('uraian',$id->uraian)->whereBetween('created_at',[$dari,$sampai])->where('debet',$id->debet)->first();
         // dd($cekPettyCash);
         if($cekPettyCash != null){
