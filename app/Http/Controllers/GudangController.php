@@ -138,8 +138,8 @@ class GudangController extends Controller
     }
     public function hapusAlokasi(alokasiGudang $id){
         // dd($id);
-        $dari = Carbon::parse($id->created_at)->subSeconds(120);
-        $sampai = Carbon::parse($id->created_at)->addSeconds(120);
+        $dari = Carbon::parse($id->created_at)->subSeconds(240);
+        $sampai = Carbon::parse($id->created_at)->addSeconds(240);
         $cekPettyCash = pettyCash::where('uraian',$id->uraian)->whereBetween('created_at',[$dari,$sampai])->where('debet',$id->debet)->first();
         // dd($cekPettyCash);
         if($cekPettyCash != null){

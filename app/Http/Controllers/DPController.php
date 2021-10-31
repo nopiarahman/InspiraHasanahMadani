@@ -152,8 +152,8 @@ class DPController extends Controller
         $akadDp=$cekDp->dp;
         /* UPDATE KAS BESAR */
         /* hapus Kas besar */
-        $dari = Carbon::parse($id->created_at)->subSeconds(120);
-        $sampai = Carbon::parse($id->created_at)->addSeconds(120);
+        $dari = Carbon::parse($id->created_at)->subSeconds(240);
+        $sampai = Carbon::parse($id->created_at)->addSeconds(240);
         $hapusKasBesar = transaksi::whereBetween('created_at',[$dari,$sampai])
                                     ->where('kredit',$id->jumlah)->where('tanggal',$id->tanggal)->first();
         /* cek transaksi sesudah input */
