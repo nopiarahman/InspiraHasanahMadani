@@ -52,8 +52,8 @@ class HomeController extends Controller
 
         $kavling = kavling::where('proyek_id',proyekId())->get();
         $pelanggan = pelanggan::where('proyek_id',proyekId())->get();
-        $transferDp = transferDp::where('proyek_id',proyekId())->get();
-        $transferUnit = transferUnit::where('proyek_id',proyekId())->get();
+        // $transferDp = transferDp::where('proyek_id',proyekId())->get();
+        // $transferUnit = transferUnit::where('proyek_id',proyekId())->get();
     
         /* pelanggan */
         if(auth()->user()->role=='pelanggan'){
@@ -75,7 +75,7 @@ class HomeController extends Controller
             $cicilanPelanggan=[];
         }
 
-        return view('home',compact('dpPelanggan','cicilanPelanggan','chartKasBesar','kavling','pelanggan','transferDp','transferUnit','dataKavling','dataPembelian','persenDiskon','id'));
+        return view('home',compact('dpPelanggan','cicilanPelanggan','chartKasBesar','kavling','pelanggan','dataKavling','dataPembelian','persenDiskon','id'));
     }
 
     public function cariPelangganHome(Request $request){
