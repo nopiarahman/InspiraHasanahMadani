@@ -12,7 +12,7 @@ class KavlingController extends Controller
     public function index (){
         $semuaKavling = kavling::where('proyek_id',proyekId())->orderBy('b')->orderBy('nr')->get()->groupBy('b');
         $perBlok = $semuaKavling;
-        return view ('proyek/DataProyek/kavlingIndex',compact('semuaKavling','perBlok'));
+        return view ('proyek/dataProyek/kavlingIndex',compact('semuaKavling','perBlok'));
     }
 
     public function kavlingSimpan(Request $request){
