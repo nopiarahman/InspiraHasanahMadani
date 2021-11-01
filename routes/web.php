@@ -120,15 +120,15 @@ Route::group(['middleware'=>['auth','role:admin,projectmanager']],function(){
     Route::post('/kasKecilLapanganKeluarSimpan', 'KasController@kasKecilLapanganKeluarSimpan')->name('kasKecilLapanganKeluarSimpan');
     Route::post('/kasKecilLapanganMasukSimpan', 'KasController@kasKecilLapanganMasukSimpan')->name('kasKecilLapanganMasukSimpan');
     Route::get('/kasBesar', 'KasController@kasBesar')->name('kasBesar');
-    Route::get('/kasPendaftaranMasuk', 'kasPendaftaranController@index')->name('kasPendaftaranMasuk');
-    Route::get('/kasPendaftaranKeluar', 'kasPendaftaranController@keluar')->name('kasPendaftaranKeluar');
-    Route::post('/kasPendaftaranMasukSimpan', 'kasPendaftaranController@store')->name('kasPendaftaranMasukSimpan');
-    Route::post('/kasPendaftaranKeluarSimpan', 'kasPendaftaranController@storeKeluar')->name('kasPendaftaranKeluarSimpan');
+    Route::get('/kasPendaftaranMasuk', 'KasPendaftaranController@index')->name('kasPendaftaranMasuk');
+    Route::get('/kasPendaftaranKeluar', 'KasPendaftaranController@keluar')->name('kasPendaftaranKeluar');
+    Route::post('/kasPendaftaranMasukSimpan', 'KasPendaftaranController@store')->name('kasPendaftaranMasukSimpan');
+    Route::post('/kasPendaftaranKeluarSimpan', 'KasPendaftaranController@storeKeluar')->name('kasPendaftaranKeluarSimpan');
     Route::post('/kasBesarSimpan', 'KasController@kasBesarSimpan')->name('kasBesarSimpan');
     Route::get('/pettyCash', 'KasController@pettyCash')->name('pettyCash');
     Route::post('/pettyCashSimpan', 'KasController@pettyCashSimpan')->name('pettyCashSimpan');
     Route::delete('/hapusPettyCash/{id}', 'KasController@pettyCashHapus')->name('hapusPettyCash');
-    Route::delete('/hapusKasPendaftaran/{id}', 'kasPendaftaranController@hapusPendaftaran')->name('hapusKasPendaftaran');
+    Route::delete('/hapusKasPendaftaran/{id}', 'KasPendaftaranController@hapusPendaftaran')->name('hapusKasPendaftaran');
     Route::delete('/hapusKasKecilLapangan/{id}', 'KasController@hapusKasLapangan')->name('hapusKasLapangan');
     
     Route::get('/laporanBulanan', 'LaporanController@laporanBulananRAB')->name('laporanBulanan');
@@ -154,7 +154,7 @@ Route::group(['middleware'=>['auth','role:admin,projectmanager']],function(){
     Route::get('/cetakRAB', 'ProyekController@cetakRAB')->name('cetakRAB');
     Route::get('/cetakRABUnit', 'ProyekController@cetakRABUnit')->name('cetakRABUnit');
     Route::get('/exportKasBesar', 'TransaksiController@exportKasBesar')->name('exportKasBesar');
-    Route::get('/exportKasPendaftaran', 'kasPendaftaranController@exportKasPendaftaran')->name('exportKasPendaftaran');
+    Route::get('/exportKasPendaftaran', 'KasPendaftaranController@exportKasPendaftaran')->name('exportKasPendaftaran');
     Route::get('/exportKasLapangan', 'KasController@exportKasLapangan')->name('exportKasLapangan');
     Route::get('/exportPettyCash', 'KasController@exportPettyCash')->name('exportPettyCash');
     Route::get('/exportBulanan', 'LaporanController@exportBulanan')->name('exportBulanan');
