@@ -148,7 +148,7 @@ class ProyekController extends Controller
         $perHeaderUnit=$semuaUnit->sortBy('kodeRAB');
         $perJudulUnit=$semuaUnit->sortBy('kodeRAB');
         
-        return view ('proyek/DataProyek/RAB',compact('perHeader','semuaRAB','semuaUnit','perJudul','perHeaderUnit','perJudulUnit'));
+        return view ('proyek/dataProyek/RAB',compact('perHeader','semuaRAB','semuaUnit','perJudul','perHeaderUnit','perJudulUnit'));
     }
     public function cariHeader(Request $request){
         if($request->has('q')){
@@ -209,7 +209,7 @@ class ProyekController extends Controller
         $perHeader=$semuaRAB;
         $perJudul=$semuaRAB;
         $semuaRumah=rumah::where('proyek_id',proyekId())->get();
-        return view ('proyek/DataProyek/rabUnit',compact('perHeader','semuaRAB','perJudul','semuaRumah'));
+        return view ('proyek/dataProyek/rabUnit',compact('perHeader','semuaRAB','perJudul','semuaRumah'));
     }
     public function rabUnitSimpan(Request $request){
         if($request->headerLama != null){
@@ -257,7 +257,7 @@ class ProyekController extends Controller
             $total=transaksi::where('rabUnit_id',$id->id)->get();
             $transaksiKeluar=transaksi::where('rabUnit_id',$id->id)->get();
         }
-        return view('proyek/DataProyek/pengeluaranUnit',compact('transaksiKeluar','id','totalRAB','total'));        
+        return view('proyek/dataProyek/pengeluaranUnit',compact('transaksiKeluar','id','totalRAB','total'));        
     }
     public function transaksiRAB(rab $id, Request $request){
         // dd($id->getTable());
@@ -277,7 +277,7 @@ class ProyekController extends Controller
             $total=transaksi::where('rab_id',$id->id)->get();
             $transaksiKeluar=transaksi::where('rab_id',$id->id)->get();
         }
-        return view('proyek/DataProyek/pengeluaranUnit',compact('transaksiKeluar','id','totalRAB','total'));  
+        return view('proyek/dataProyek/pengeluaranUnit',compact('transaksiKeluar','id','totalRAB','total'));  
     }
     public function cetakRAB(){
 
