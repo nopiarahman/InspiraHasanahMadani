@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class transferUnit extends Model
 {
     use SoftDeletes;
-    protected $table = 'transferUnit';
+    protected $table = 'transferunit';
     protected $guarded = ['id','created_at','updated_at','deleted_at'];
 
     /**

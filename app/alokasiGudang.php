@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class alokasiGudang extends Model
 {
     use HasFactory;
-    protected $table = 'alokasiGudang';
+    protected $table = 'alokasigudang';
     protected $guarded = ['id','created_at','updated_at']; /* melindungi field yang tidak boleh diisi manual, lihat mass assignment */
 
     /**
