@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class rabUnit extends Model
 {
-    protected $table = 'rabUnit';
+    protected $table = 'rabunit';
     protected $guarded = ['id','created_at','updated_at'];
 
     /**
