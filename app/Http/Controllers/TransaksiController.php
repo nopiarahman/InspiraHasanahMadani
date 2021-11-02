@@ -10,7 +10,7 @@ use App\pelanggan;
 use App\pengembalian;
 use App\gudang;
 use App\isiPengadaan;
-use App\pettycash;
+use App\pettyCash;
 use App\kasKecilLapangan;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
