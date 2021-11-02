@@ -202,11 +202,11 @@ class CicilanController extends Controller
         $cicilan=$cekCicilan->sisaKewajiban;
         /* UPDATE KAS BESAR */
         /* hapus Kas besar */
-        $dari = Carbon::parse($id->created_at)->subSeconds(240);
+        $dari = Carbon::parse($id->created_at);
         $sampai = Carbon::parse($id->created_at)->addSeconds(240);
         $hapusKasBesar = transaksi::whereBetween('created_at',[$dari,$sampai])
                                     ->where('kredit',$id->jumlah)->where('tanggal',$id->tanggal)->first();
-        // dd($hapusKasBesar);
+        dd($hapusKasBesar);
         $terbayar=cicilan::where('pembelian_id',$id->pembelian_id)->get();
         $totalTerbayar = $terbayar->sum('jumlah');
         /* cek transaksi sesudah input */

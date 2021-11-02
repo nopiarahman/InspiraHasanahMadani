@@ -181,7 +181,7 @@ class KasController extends Controller
     public function pettyCashHapus(pettyCash $id){
         // dd($id);
         if($id->debet !=null){
-            $dari = Carbon::parse($id->created_at)->subSeconds(240);
+            $dari = Carbon::parse($id->created_at);
             $sampai = Carbon::parse($id->created_at)->addSeconds(240);
             $KasBesar = transaksi::where('uraian',$id->uraian)->whereBetween('created_at',[$dari,$sampai])->first();
             // dd($KasBesar);
@@ -318,8 +318,8 @@ class KasController extends Controller
     }
     public function hapusKasLapangan(kasKecilLapangan $id){
         if($id->debet !=null){
-            $dari = Carbon::parse($id->created_at)->subSeconds(15);
-            $sampai = Carbon::parse($id->created_at)->addSeconds(15);
+            $dari = Carbon::parse($id->created_at);
+            $sampai = Carbon::parse($id->created_at)->addSeconds(240);
             $KasBesar = transaksi::where('uraian',$id->uraian)->whereBetween('created_at',[$dari,$sampai])->first();
             // dd($KasBesar);
             /* cek transaksi sesudah input */
