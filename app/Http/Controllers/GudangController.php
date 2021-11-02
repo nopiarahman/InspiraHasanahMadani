@@ -9,6 +9,7 @@ use App\gudang;
 use App\pettyCash;
 use Carbon\Carbon;
 use App\alokasiGudang;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 
 class GudangController extends Controller
@@ -66,7 +67,9 @@ class GudangController extends Controller
         return view('gudang/alokasiIndex',compact('id','semuaAkun','perKategori','kategoriAkun','perHeader','semuaRAB','perJudul','perHeaderUnit','semuaRABUnit','perJudulUnit'));
     }
     public function alokasiSimpan(Request $request){
-        // dd($request);
+        DB::beginTransaction();
+        try {
+            // dd($request);
         $jumlah = str_replace(',', '', $request->total);
         $hargaSatuan = str_replace(',', '', $request->hargaSatuan);
         $rules=[
@@ -134,57 +137,71 @@ class GudangController extends Controller
                 }
             }
         }
+        DB::commit();
         return redirect()->back()->with('status','Alokasi Berhasil Disimpan');
+        } catch (\Exception $ex) {
+            DB::rollback();
+            return redirect()->back()->with('error','Gagal. Pesan Error: '.$ex->getMessage());
+        }
+        
     }
     public function hapusAlokasi(alokasiGudang $id){
         // dd($id);
-        $dari = Carbon::parse($id->created_at);
-        $sampai = Carbon::parse($id->created_at)->addSeconds(240);
-        $cekPettyCash = pettyCash::where('uraian',$id->uraian)->whereBetween('created_at',[$dari,$sampai])->where('debet',$id->debet)->first();
-        // dd($cekPettyCash);
-        if($cekPettyCash != null){
-            /* cek transaksi sesudah input */
-            $cekTransaksi=pettyCash::where('tanggal','>=',$cekPettyCash->tanggal)->where('no','>',$cekPettyCash->no)->orderBy('no')->get();
-            if($cekTransaksi->first() != null){
-                /* jika ada, update transaksi sesudah sesuai perubahan input*/
-                foreach($cekTransaksi as $updateTransaksi){
-                    $updateTransaksi['no'] = $updateTransaksi->no -1;
-                    $updateTransaksi['saldo'] = $updateTransaksi->saldo + $id->debet;
-                    $updateTransaksi->save();
+        DB::beginTransaction();
+        try {
+            $dari = Carbon::parse($id->created_at);
+            $sampai = Carbon::parse($id->created_at)->addSeconds(240);
+            $cekPettyCash = pettyCash::where('uraian',$id->uraian)->whereBetween('created_at',[$dari,$sampai])->where('debet',$id->debet)->first();
+            // dd($cekPettyCash);
+            if($cekPettyCash != null){
+                /* cek transaksi sesudah input */
+                $cekTransaksi=pettyCash::where('tanggal','>=',$cekPettyCash->tanggal)->where('no','>',$cekPettyCash->no)->orderBy('no')->get();
+                if($cekTransaksi->first() != null){
+                    /* jika ada, update transaksi sesudah sesuai perubahan input*/
+                    foreach($cekTransaksi as $updateTransaksi){
+                        $updateTransaksi['no'] = $updateTransaksi->no -1;
+                        $updateTransaksi['saldo'] = $updateTransaksi->saldo + $id->debet;
+                        $updateTransaksi->save();
+                    }
                 }
+                $cekPettyCash->delete();
             }
-            $cekPettyCash->delete();
-        }
-        $hapusTransaksi = transaksi::where('uraian',$id->uraian)->whereBetween('created_at',[$dari,$sampai])->where('debet',$id->debet)->first();
-        // dd($hapusTransaksi);
-        if($hapusTransaksi != null){
-            /* cek transaksi sesudah input */
-            $cekTransaksi=transaksi::where('tanggal','>=',$hapusTransaksi->tanggal)->where('no','>',$hapusTransaksi->no)->orderBy('no')->get();
-            if($cekTransaksi->first() != null){
-                /* jika ada, update transaksi sesudah sesuai perubahan input*/
-                foreach($cekTransaksi as $updateTransaksi){
-                    $updateTransaksi['no'] = $updateTransaksi->no -1;
-                    $updateTransaksi['saldo'] = $updateTransaksi->saldo + $id->debet;
-                    $updateTransaksi->save();
+            $hapusTransaksi = transaksi::where('uraian',$id->uraian)->whereBetween('created_at',[$dari,$sampai])->where('debet',$id->debet)->first();
+            // dd($hapusTransaksi);
+            if($hapusTransaksi != null){
+                /* cek transaksi sesudah input */
+                $cekTransaksi=transaksi::where('tanggal','>=',$hapusTransaksi->tanggal)->where('no','>',$hapusTransaksi->no)->orderBy('no')->get();
+                if($cekTransaksi->first() != null){
+                    /* jika ada, update transaksi sesudah sesuai perubahan input*/
+                    foreach($cekTransaksi as $updateTransaksi){
+                        $updateTransaksi['no'] = $updateTransaksi->no -1;
+                        $updateTransaksi['saldo'] = $updateTransaksi->saldo + $id->debet;
+                        $updateTransaksi->save();
+                    }
                 }
+                $hapusTransaksi->delete();
             }
-            $hapusTransaksi->delete();
+            /* cek transaksi sesudah input */
+            // $hapusKasBesar=transaksi::find($id->id);
+            /* split transaksi sebelumnya */
+            $transaksi = transaksi::find($id->gudang->transaksi_id);
+            // dd($transaksi);
+            if($transaksi != null){
+                $transaksi->update([
+                    'jumlah'=>$transaksi->jumlah + $id->jumlah,
+                    'debet'=>$transaksi->debet + $id->debet,
+                ]);
+            }
+            $id->delete();
+            $gudang=gudang::find($id->gudang_id);
+            $updateStok = $gudang->sisa + $id->jumlah;
+            $gudang->update(['sisa'=>$updateStok]);
+            DB::commit();
+            return redirect()->back()->with('status','Transaksi berhasil dihapus');
+        } catch (\Exception $ex) {
+            DB::rollback();
+            return redirect()->back()->with('error','Gagal. Pesan Error: '.$ex->getMessage());
         }
-        /* cek transaksi sesudah input */
-        // $hapusKasBesar=transaksi::find($id->id);
-        /* split transaksi sebelumnya */
-        $transaksi = transaksi::find($id->gudang->transaksi_id);
-        // dd($transaksi);
-        if($transaksi != null){
-            $transaksi->update([
-                'jumlah'=>$transaksi->jumlah + $id->jumlah,
-                'debet'=>$transaksi->debet + $id->debet,
-            ]);
-        }
-        $id->delete();
-        $gudang=gudang::find($id->gudang_id);
-        $updateStok = $gudang->sisa + $id->jumlah;
-        $gudang->update(['sisa'=>$updateStok]);
-        return redirect()->back()->with('status','Transaksi berhasil dihapus');
+        
     }
 }

@@ -19,7 +19,27 @@
     </div>
   </div>
 </div>
-
+{{-- Alert --}}
+<div class="row">
+  <div class="col-12">
+    @if (session('status'))
+      <div class="alert alert-success alert-dismissible show fade">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        {{session ('status')}}
+      </div>
+    @endif
+    @if (session('error'))
+      <div class="alert alert-warning alert-dismissible show fade">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        {{session ('error')}}
+      </div>
+    @endif
+  </div>
+</div>
 <div class="row">
   <div class="col-12">
     <div class="card">

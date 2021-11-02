@@ -30,6 +30,14 @@
             {{session ('status')}}
           </div>
         @endif
+        @if (session('error'))
+          <div class="alert alert-warning alert-dismissible show fade">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+            {{session ('error')}}
+          </div>
+        @endif
       </div>
     </div>
     @if(auth()->user()->role=="admin")
