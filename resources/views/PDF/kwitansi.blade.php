@@ -28,7 +28,7 @@
 	<tbody>
 		<tr>
 			{{-- <td rowspan="4" valign="top" align="center"><br><img src="{{url($logoPT)}}" alt=""></td> --}}
-			<td rowspan="4" valign="top" align="center"><br><img src="{{public_path(Storage::url($proyek->logoPT))}}" alt="" width="60px"></td>
+			<td rowspan="4" valign="top" align="center"><br><img src="{{Storage::url($proyek->logoPT)}}" alt="" width="60px"></td>
 			<td align="left" colspan="3"><b><font size="4">{{$proyek->namaPT}}</b></td>
 		</tr>
 		<tr>
