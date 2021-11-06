@@ -22,10 +22,10 @@
               <img src="{{asset('assets/img/favicon.png')}}" alt="" class="pl-4">
             </div>
             <div class="col-7">
-              <h4 style="font-weight:900">PT. INSPIRA HASANAH MADANI</h4>
-              <small style="font-size: medium">Jl. Jenderal A. Thalib no 12 Telanaipura. Jambi</small> <br>
-              <small style="font-size: medium"> <i class="fa fa-phone" aria-hidden="true"></i> : 0741-3071990</small><br>
-              <small style="font-size: medium"> <i class="fas fa-envelope    "></i> : inspirahasanahmadani@gmail.com</small>
+              <h4 style="font-weight:900">{{$proyek->namaPT}}</h4>
+              <small style="font-size: medium">{{$proyek->alamatPT}}</small> <br>
+              <small style="font-size: medium"> <i class="fa fa-phone" aria-hidden="true"></i> : {{$proyek->telpPT}}</small><br>
+              <small style="font-size: medium"> <i class="fas fa-envelope    "></i> : {{$proyek->emailPT}}</small>
             </div>
             <div class="col-3 ">
                 <small style="font-size: medium">Nomor Faktur:            
