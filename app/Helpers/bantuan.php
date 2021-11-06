@@ -195,7 +195,7 @@ function saldoSebelumnya($tanggalSekarang){
 function kasBesarKeluar($dataArray)
 {
     $data = collect($dataArray);
-    $jumlah= str_replace(',', '', $data->get('jumlah'));
+    $jumlah= $data->get('jumlah');
     $hargaSatuan= str_replace(',', '', $data->get('hargaSatuan'));
     $total= str_replace(',', '', $data->get('total'));
     $dataTransaksi['tanggal'] = $data->get('tanggal');
@@ -217,7 +217,7 @@ function kasBesarKeluar($dataArray)
 function pettyCashKeluar($dataArray)
 {
     $data = collect($dataArray);
-    $jumlah= str_replace(',', '', $data->get('jumlah'));
+    $jumlah= $data->get('jumlah');
     $hargaSatuan= str_replace(',', '', $data->get('hargaSatuan'));
     $total= str_replace(',', '', $data->get('total'));
     $dataTransaksi['tanggal'] = $data->get('tanggal');
@@ -237,7 +237,7 @@ function pettyCashKeluar($dataArray)
 function kasLapanganKeluar($dataArray)
 {
     $data = collect($dataArray);
-    $jumlah= str_replace(',', '', $data->get('jumlah'));
+    $jumlah= $data->get('jumlah');
     $hargaSatuan= str_replace(',', '', $data->get('hargaSatuan'));
     $total= str_replace(',', '', $data->get('total'));
     $dataTransaksi['tanggal'] = $data->get('tanggal');
