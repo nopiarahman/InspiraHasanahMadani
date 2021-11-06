@@ -201,8 +201,8 @@
       </form>
       <script>
         function hitung2(){
-        var harga = parseInt((document.getElementById('hargaSatuan').value).replace(/,/g, ''));
-        var banyaknya = parseInt((document.getElementById('jumlahBarang').value).replace(/,/g, ''));
+        var harga = parseFloat((document.getElementById('hargaSatuan').value).replace(/,/g, ''));
+        var banyaknya = parseFloat((document.getElementById('jumlahBarang').value).replace(/,/g, ''));
         var total = harga*banyaknya;
         $('#totalHarga').val(total);
         var cleave = new Cleave('.totalHarga', {

@@ -108,6 +108,7 @@ class TransaksiController extends Controller
         DB::beginTransaction();
         try {
             $jumlah = str_replace(',', '', $request->total);
+            // dd($jumlah);
             $rules=[
                 'total'=>'required',
                 'tanggal'=>'required',
@@ -182,8 +183,8 @@ class TransaksiController extends Controller
                             $updateTransaksi->save();
                         }
                     }
-                    kasLapanganKeluar($requestData);
                 }
+                kasLapanganKeluar($requestData);
             }else{
                 /* cek transaksi sesudah input */
                 $cekTransaksi=transaksi::where('tanggal','>',$request->tanggal)->orderBy('no')->where('proyek_id',proyekId())->get();
