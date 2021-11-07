@@ -79,14 +79,6 @@ class TransaksiController extends Controller
         }
         return view ('transaksi/keluarIndex',compact('transaksiKeluar','perHeader','semuaRAB','perJudul','perHeaderUnit','semuaRABUnit','perJudulUnit','start','end'));
     }
-    // public function cariAkunTransaksi(Request $request){
-    //     if($request->has('q')){
-    //         $cari = $request->q;
-    //         $data = akun::select('id','kodeAkun')->where('kodeAkun', 'LIKE', '%'.$cari.'%')
-    //                                             ->where('proyek_id',proyekId())->distinct()->get();
-    //         return response()->json($data);
-    //     }
-    // }
     public function cariRAB(Request $request){
         if($request->has('q')){
             $cari = $request->q;
@@ -183,8 +175,27 @@ class TransaksiController extends Controller
                             $updateTransaksi->save();
                         }
                     }
+                    kasLapanganKeluar($requestData);
                 }
-                kasLapanganKeluar($requestData);
+                else{
+                    /* jika tidak ada value simpan ke akhir transaksi */
+                    $requestData['no']=noKasKecilLapanganTerakhir()+1;
+                    $requestData['saldo']=saldoTerakhirKasKecilLapangan()-$jumlah;
+                    $requestData['keterangan']='Kas Besar';
+                    kasLapanganKeluar($requestData);
+                    /* cek transaksi sesudah input */
+                    $cekTransaksi=kasKecilLapangan::where('tanggal','>',$request->tanggal)->orderBy('no')->where('proyek_id',proyekId())->get();
+                    if($cekTransaksi->first() != null){
+                        /* jika ada, update transaksi sesudah sesuai perubahan input*/
+                        foreach($cekTransaksi as $updateTransaksi){
+                            $updateTransaksi['no'] = $updateTransaksi->no +1;
+                            $updateTransaksi['saldo'] = $updateTransaksi->saldo - $jumlah;
+                            $updateTransaksi->save();
+                        }
+                    }
+                }
+                // DB::rollback();
+                // dd($requestData);
             }else{
                 /* cek transaksi sesudah input */
                 $cekTransaksi=transaksi::where('tanggal','>',$request->tanggal)->orderBy('no')->where('proyek_id',proyekId())->get();
@@ -216,6 +227,7 @@ class TransaksiController extends Controller
                             $updateTransaksi->save();
                         }
                     }
+
                     pettyCashKeluar($requestData);
                 }else{
                     /* jika tidak ada value simpan ke akhir transaksi */
@@ -300,6 +312,22 @@ class TransaksiController extends Controller
                     }
                 }
                 $cekPettyCash->delete();
+            }elseif($cekPettyCash == null){
+                /* cek transaksi sesudah input */
+                $cekKasLapangan = kasKecilLapangan::where('uraian',$id->uraian)->whereBetween('created_at',[$dari,$sampai])->where('debet',$id->debet)->first();
+                // dd($cekKasLapangan);
+                if($cekKasLapangan != null){
+                    $cekTransaksi=kasKecilLapangan::where('tanggal','>=',$cekKasLapangan->tanggal)->where('no','>',$cekKasLapangan->no)->orderBy('no')->get();
+                    if($cekTransaksi->first() != null){
+                        /* jika ada, update transaksi sesudah sesuai perubahan input*/
+                        foreach($cekTransaksi as $updateTransaksi){
+                            $updateTransaksi['no'] = $updateTransaksi->no -1;
+                            $updateTransaksi['saldo'] = $updateTransaksi->saldo + $id->debet;
+                            $updateTransaksi->save();
+                        }
+                    }
+                    $cekKasLapangan->delete();
+                }
             }
             /* cek transaksi sesudah input */
             // $hapusKasBesar=transaksi::find($id->id);

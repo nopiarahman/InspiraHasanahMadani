@@ -213,8 +213,9 @@
               @foreach($pettyCash as $kas)
               <tr>
                 <td>{{$loop->iteration}}</td>
-                <td>{{formatTanggal($kas->tanggal)}}</td>
-                <td>{{$kas->uraian}}</td>
+                
+                <td data-order="{{$kas->tanggal}}">{{formatTanggal($kas->tanggal)}}</td>
+                <td>{{$kas->uraian}} {{$kas->jumlah}} {{$kas->satuan}}</td>
                 <td>
                   @if($kas->kredit != null)
                   Rp.{{number_format($kas->kredit)}}

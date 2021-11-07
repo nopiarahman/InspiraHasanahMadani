@@ -212,7 +212,7 @@
               <tr>
                 <td>{{$loop->iteration}}</td>
                 <td>{{formatTanggal($kas->tanggal)}}</td>
-                <td>{{$kas->uraian}}</td>
+                <td>{{$kas->uraian}} {{$kas->jumlah}} {{$kas->satuan}}</td>
                 <td>
                   @if($kas->kredit != null)
                   Rp.{{number_format($kas->kredit)}}
@@ -282,7 +282,7 @@
               var uraian = button.data('uraian') 
               var modal = $(this)
               modal.find('.modal-text').text('Yakin ingin menghapus transaksi ' + uraian+' ?')
-              document.getElementById('formHapus').action='/hapusKasPendaftaran/'+id;
+              document.getElementById('formHapus').action='/hapusKasKecilLapangan/'+id;
               })
             });
           </script>

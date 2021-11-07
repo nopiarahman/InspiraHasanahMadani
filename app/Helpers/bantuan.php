@@ -148,7 +148,7 @@ function saldoTerakhirKasPendaftaran(){
     }
     return $saldoTerakhir;
 }
-function saldoTerakhirkasKecilLapangan(){
+function saldoTerakhirKasKecilLapangan(){
     $saldo = kasKecilLapangan::orderBy('no','desc')->where('proyek_id',proyekId())->first();
     $saldoTerakhir=0;
     if($saldo != null){
