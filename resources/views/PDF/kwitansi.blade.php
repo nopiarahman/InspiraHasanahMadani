@@ -19,9 +19,9 @@
 	table {
 		width: 100%;
 	}
-	img#stempel{
+	/* img#stempel{
 		filter: grayscale(100%);
-	}
+	} */
 </style>
 <body>
 <table cellspacing="0" border="">
