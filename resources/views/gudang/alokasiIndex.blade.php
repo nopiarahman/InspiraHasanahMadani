@@ -114,7 +114,7 @@
           <div class="form-group row mb-4">
             <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Jumlah Alokasi</label>
             <div class="col-sm-12 col-md-7">
-              <input type="number" class="form-control jumlah @error('uraian') is-invalid @enderror" name="jumlah" value="{{old('jumlah')}}" id="jumlahBarang" max="{{$id->sisa}}">
+              <input type="text" class="form-control jumlah @error('uraian') is-invalid @enderror" name="jumlah" value="{{old('jumlah')}}" id="jumlahBarang" max="{{$id->sisa}}">
               @error('jumlah')
                 <div class="invalid-feedback">{{$message}}</div>
               @enderror
@@ -171,7 +171,7 @@
       <script>
         function hitung2(){
         var harga = parseInt((document.getElementById('hargaSatuan').value).replace(/,/g, ''));
-        var banyaknya = parseInt((document.getElementById('jumlahBarang').value).replace(/,/g, ''));
+        var banyaknya = parseFloat((document.getElementById('jumlahBarang').value).replace(/,/g, ''));
         var total = harga*banyaknya;
         $('#totalHarga').val(total);
         var cleave = new Cleave('.totalHarga', {

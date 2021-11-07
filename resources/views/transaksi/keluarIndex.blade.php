@@ -294,10 +294,13 @@
             <td>{{$transaksi->sumber}}</td>
             <td>
               @if($transaksi->sumber != "Gudang")
-              @if (cekGudang($transaksi->id) == true)
+              @if (cekGudang($transaksi->id) == 0)
               
               <a href="{{route('gudang')}}" type="button" class="btn btn-sm btn-white text-primary border-success">
-              <i class="fas fa-warehouse "></i> Ada Stok Gudang</a>
+                <i class="fas fa-warehouse "></i> Ada Stok Gudang</a>
+                @elseif(cekGudang($transaksi->id) == 1)
+                <a href="{{route('gudang')}}" type="button"  class=" disabled btn btn-sm btn-white text-primary border-success">
+              <i class="fas fa-warehouse "></i> Stok Gudang Habis </a>
               @else
               <button type="button" class="btn btn-sm btn-white text-primary border-success" 
               data-toggle="modal" 
@@ -424,7 +427,7 @@
           <div class="form-group row mb-4">
             <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Jumlah Terpakai</label>
             <div class="col-sm-12 col-md-7">
-              <input type="number" class="form-control @error('terpakai') is-invalid @enderror" max="" name="terpakai" value="" id="terpakai">
+              <input type="text" class="form-control @error('terpakai') is-invalid @enderror" max="" name="terpakai" value="" id="terpakai">
               @error('terpakai')
                 <div class="invalid-feedback">{{$message}}</div>
               @enderror

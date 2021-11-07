@@ -19,6 +19,7 @@ class GudangController extends Controller
         return view('gudang/gudangIndex',compact('daftarGudang'));
     }
     public function transferGudang(Transaksi $id, Request $request){
+        // dd($request);
         // $cekAkun= akun::find($request->akun_id);
         // dd($cekAkun);
         $sisa = $request->banyaknya - $request->terpakai;
@@ -140,10 +141,10 @@ class GudangController extends Controller
         DB::commit();
         return redirect()->back()->with('status','Alokasi Berhasil Disimpan');
         } catch (\Exception $ex) {
+            // throw $ex;
             DB::rollback();
             return redirect()->back()->with('error','Gagal. Pesan Error: '.$ex->getMessage());
         }
-        
     }
     public function hapusAlokasi(alokasiGudang $id){
         // dd($id);
