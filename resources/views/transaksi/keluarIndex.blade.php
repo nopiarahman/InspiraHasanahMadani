@@ -140,7 +140,7 @@
                   Rp
                 </div>
               </div>
-              <input type="text" class="form-control hargaSatuan @error('hargaSatuan') is-invalid @enderror" name="hargaSatuan" value="{{old('hargaSatuan')}}" id="hargaSatuan">
+              <input type="text" readonly class="form-control hargaSatuan @error('hargaSatuan') is-invalid @enderror" name="hargaSatuan" value="{{old('hargaSatuan')}}" id="hargaSatuan">
               @error('hargaSatuan')
                 <div class="invalid-feedback">{{$message}}</div>
               @enderror
@@ -154,7 +154,7 @@
                   Rp
                 </div>
               </div>
-              <input type="text" readonly class="form-control totalHarga @error('total') is-invalid @enderror" name="total" value="{{old('total')}}" id="totalHarga">
+              <input type="text" class="form-control totalHarga @error('total') is-invalid @enderror" name="total" value="{{old('total')}}" id="totalHarga">
               @error('total')
                 <div class="invalid-feedback">{{$message}}</div>
               @enderror
@@ -201,11 +201,11 @@
       </form>
       <script>
         function hitung2(){
-        var harga = parseFloat((document.getElementById('hargaSatuan').value).replace(/,/g, ''));
+        var total = parseFloat((document.getElementById('totalHarga').value).replace(/,/g, ''));
         var banyaknya = parseFloat((document.getElementById('jumlahBarang').value).replace(/,/g, ''));
-        var total = harga*banyaknya;
-        $('#totalHarga').val(total);
-        var cleave = new Cleave('.totalHarga', {
+        var hargaSatuan = total/banyaknya;
+        $('#hargaSatuan').val(hargaSatuan);
+        var cleave = new Cleave('.hargaSatuan', {
           numeral: true,
           numeralThousandsGroupStyle: 'thousand'
           });
@@ -703,7 +703,7 @@
       numeral: true,
       numeralThousandsGroupStyle: 'thousand'
   });
-  var cleave = new Cleave('.hargaSatuan', {
+  var cleave = new Cleave('.totalHarga', {
       numeral: true,
       numeralThousandsGroupStyle: 'thousand'
   });
