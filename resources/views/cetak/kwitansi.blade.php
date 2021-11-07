@@ -19,7 +19,7 @@
         <div class="page-header">
           <div class="row">
             <div class="col-2">
-              <img src="{{asset('assets/img/favicon.png')}}" alt="" class="pl-4">
+              <img src="{{Storage::url($proyek->logoPT)}}" alt="" class="pl-4">
             </div>
             <div class="col-7">
               <h4 style="font-weight:900">{{$proyek->namaPT}}</h4>
