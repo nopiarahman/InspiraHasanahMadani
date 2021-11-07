@@ -15,7 +15,7 @@ use App\kasKecilLapangan;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use App\Exports\KasBEsarExport;
+use App\Exports\KasBesarExport;
 use Maatwebsite\Excel\Facades\Excel;
 
 class TransaksiController extends Controller
