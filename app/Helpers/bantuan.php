@@ -565,10 +565,10 @@ function romawi($number) {
 
 function cekGudang($transaksiId){
     $cek = gudang::where('transaksi_id',$transaksiId)->where('proyek_id',proyekId())->first();
-    if($cek->sisa >0){
+    if($cek != null && $cek->sisa >0){
         // $this
         return 0;
-    }elseif($cek->sisa >=0){
+    }elseif($cek != null && $cek->sisa >=0){
         return 1;
     }
     return false;
