@@ -570,8 +570,9 @@ function cekGudang($transaksiId){
         return 0;
     }elseif($cek != null && $cek->sisa >=0){
         return 1;
+    }else{
+        return false;
     }
-    return false;
 }
 function cekStatusKavling($id){
     $cek = pembelian::where("kavling_id",$id)->get()->last();
