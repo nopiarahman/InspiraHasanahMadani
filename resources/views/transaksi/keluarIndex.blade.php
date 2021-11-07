@@ -294,13 +294,12 @@
             <td>{{$transaksi->sumber}}</td>
             <td>
               @if($transaksi->sumber != "Gudang")
-              @if (cekGudang($transaksi->id) == 0)
-              
-              <a href="{{route('gudang')}}" type="button" class="btn btn-sm btn-white text-primary border-success">
+              @if (cekGudang($transaksi->id) == "ada")
+                <a href="{{route('gudang')}}" type="button" class="btn btn-sm btn-white text-primary border-success">
                 <i class="fas fa-warehouse "></i> Ada Stok Gudang</a>
-                @elseif(cekGudang($transaksi->id) == 1)
+              @elseif(cekGudang($transaksi->id) == "habis")
                 <a href="{{route('gudang')}}" type="button"  class=" disabled btn btn-sm btn-white text-primary border-success">
-              <i class="fas fa-warehouse "></i> Stok Gudang Habis </a>
+                <i class="fas fa-warehouse "></i> Stok Gudang Habis </a>
               @else
               <button type="button" class="btn btn-sm btn-white text-primary border-success" 
               data-toggle="modal" 
