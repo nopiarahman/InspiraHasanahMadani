@@ -358,6 +358,6 @@ class TransaksiController extends Controller
             $cashFlow=transaksi::whereBetween('tanggal',[$start,$end])->orderBy('no')->where('proyek_id',proyekId())->get();
             $awal=$cashFlow->first();
         }
-        return Excel::download(new KasBEsarExport($cashFlow,$start,$end), 'Kas Besar.xlsx');
+        return Excel::download(new KasBesarExport($cashFlow,$start,$end), 'Kas Besar.xlsx');
     }
 }
