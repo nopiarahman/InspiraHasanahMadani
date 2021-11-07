@@ -29,8 +29,15 @@
     @foreach($cashFlow as $transaksi)
     <tr>
       <td style="width: 20px">{{formatTanggal($transaksi->tanggal)}}</td>
-      <td style="width: 20px">{{$transaksi->akun->kodeAkun}}</td>
-      <td style="width: 20px">{{$transaksi->uraian}}</td>
+      <td style="width: 20px">
+        @if($transaksi->rab)
+        {{$transaksi->rab->kodeRAB}}
+        @elseif($transaksi->rabUnit)
+        {{$transaksi->rabUnit->kodeRAB}}
+        @endif
+        {{$transaksi->kategori}}
+      </td>
+      <td style="width: 20px">{{$transaksi->uraian}} {{$transaksi->jumlah}} {{$transaksi->satuan}}</td>
       <td style="width: 20px">
         @if($transaksi->kredit != null)
         Rp.{{number_format($transaksi->kredit)}}
