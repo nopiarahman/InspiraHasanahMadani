@@ -118,16 +118,8 @@
             <td>: {{$id->urut}} ( {{terbilang($id->urut)}} )</td>
           </tr>
           <tr>
-            <th>Nilai Angsuran</th>
-            <td>: Rp. {{number_format($pembelian->sisaKewajiban/$pembelian->tenor)}}</td>
-          </tr>
-          <tr>
             <th>Total Angsuran Dibayarkan</th>
             <td>: Rp. {{number_format($sampaiSekarang->sum('jumlah'))}}</td>
-          </tr>
-          <tr>
-            <th>Diskon</th>
-            <td>: <span class="text-success"> Rp. {{number_format($pembelian->diskon)}}</span></td>
           </tr>
           <tr>
             <th>Sisa Hutang</th>
@@ -291,16 +283,8 @@
             <td>: {{$id->urut}} ( {{terbilang($id->urut)}} )</td>
           </tr>
           <tr>
-            <th>Nilai Angsuran</th>
-            <td>: Rp. {{number_format($pembelian->sisaKewajiban/$pembelian->tenor)}}</td>
-          </tr>
-          <tr>
             <th>Total Angsuran Dibayarkan</th>
             <td>: Rp. {{number_format($sampaiSekarang->sum('jumlah'))}}</td>
-          </tr>
-          <tr>
-            <th>Diskon</th>
-            <td>: <span class="text-success"> Rp. {{number_format($pembelian->diskon)}}</span></td>
           </tr>
           <tr>
             <th>Sisa Hutang</th>

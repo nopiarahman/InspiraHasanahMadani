@@ -85,20 +85,12 @@
 		<td rowspan="5" colspan="2" align="center"> <img src="{{public_path(Storage::url($proyek->logoPT))}}" id="stempel" width="100px"></td>
 	</tr>
 	<tr>
-		<td>Angsuran DP Ke</td>
+		<td>Angsuran Ke</td>
 		<td>: {{$id->urut}} ( {{terbilang($id->urut)}} )</td>
-	</tr>
-	<tr>
-		<td>Nilai Angsuran</td>
-		<td>: Rp. {{number_format($pembelian->sisaKewajiban/$pembelian->tenor)}}</td>
 	</tr>
 	<tr>
 		<td>Total Angsuran Dibayarkan</td>
 		<td>: Rp. {{number_format($sampaiSekarang->sum('jumlah'))}}</td>
-	</tr>
-	<tr>
-		<td>Diskon</td>
-		<td>:<span class="text-success"> Rp. {{number_format($pembelian->diskon)}}</span></td>
 	</tr>
 	<tr>
 		<td>Sisa Hutang</td>
