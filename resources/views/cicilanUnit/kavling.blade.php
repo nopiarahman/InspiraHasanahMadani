@@ -64,6 +64,7 @@
             <td>
               <a href="{{route('pelangganDetail',['id'=>$cicilanUnit->pelanggan->id])}}" class="text-primary">
               {{$cicilanUnit->pelanggan->nama}}
+              {{-- {{$cicilanUnit->pelanggan->id}} --}}
               </a>
             </td>
             @if($cicilanUnit->pelanggan->kavling==null)
@@ -73,7 +74,7 @@
             @endif
             <td>{{jenisKepemilikan($cicilanUnit->pelanggan_id)}}</td>
             <td>
-              @if($cicilanUnit->sisaCicilan != null)
+              @if($cicilanUnit->sisaCicilan != null ||$cicilanUnit->sisaCicilan <=0)
               Rp.{{number_format($cicilanUnit->sisaCicilan)}}
               @else
               Rp.{{number_format($cicilanUnit->sisaKewajiban)}}
