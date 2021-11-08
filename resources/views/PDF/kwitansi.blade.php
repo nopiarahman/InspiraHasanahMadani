@@ -84,10 +84,6 @@
 		<td>: {{$id->urut}} ( {{terbilang($id->urut)}} )</td>
 	</tr>
 	<tr>
-		<td>Nilai Angsuran</td>
-		<td>: Rp. {{number_format($pembelian->sisaKewajiban/$pembelian->tenor)}}</td>
-	</tr>
-	<tr>
 		<td>Total Angsuran Dibayarkan</td>
 		<td>: Rp. {{number_format($sampaiSekarang->sum('jumlah'))}}</td>
 	</tr>
