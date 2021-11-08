@@ -648,3 +648,18 @@ function cekTotalDp($pembelianId){
     $total = dp::where('pembelian_id',$pembelianId)->get();
     return $total->sum('jumlah');
 }
+function cicilanTerbayar($id,$tanggal){
+    $terbayar = cicilan::where('pembelian_id',$id)->where('tanggal','<=',$tanggal)->get();
+    if($terbayar){
+        $total = $terbayar->sum('jumlah');
+        return $total;
+    }
+    return 0;
+}
+function cicilanKe($id,$tanggal){
+    $ke = cicilan::where('pembelian_id',$id)->where('tanggal','<=',$tanggal)->count();
+    if($ke){
+        return $ke;
+    }
+    return 0;
+}

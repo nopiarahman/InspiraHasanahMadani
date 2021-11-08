@@ -86,7 +86,7 @@
 	</tr>
 	<tr>
 		<td>Angsuran Ke</td>
-		<td>: {{$id->urut}} ( {{terbilang($id->urut)}} )</td>
+		<td>: {{cicilanKe($id->pembelian_id,$id->tanggal)}} ( {{terbilang(cicilanKe($id->pembelian_id,$id->tanggal))}} )</td>
 	</tr>
 	<tr>
 		<td>Total Angsuran Dibayarkan</td>
@@ -94,7 +94,7 @@
 	</tr>
 	<tr>
 		<td>Sisa Hutang</td>
-		<td>: Rp. {{number_format($pembelian->sisaKewajiban-$sampaiSekarang->sum('jumlah'))}}</td>
+		<td>: <span class="text-warning">Rp.{{number_format($id->pembelian->sisaKewajiban-cicilanTerbayar($id->pembelian_id,$id->tanggal))}}</td>
 		</tr>
 	<tr>
 		<td>Status</td>

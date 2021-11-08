@@ -219,12 +219,16 @@
         </tr>
       </thead>
       <tbody>
+        @php
+            $terbayar = 0;
+        @endphp
         @foreach($daftarCicilanUnit as $cicilanUnit)
         <tr>
-          <th scope="row">{{$cicilanUnit->urut}}</th>
+          <th scope="row">{{cicilanKe($cicilanUnit->pembelian->id,$cicilanUnit->tanggal)}}</th>
           <td data-order="{{$cicilanUnit->tanggal}}" >{{formatTanggal($cicilanUnit->tanggal)}}</td>
           <td>Rp.{{number_format($cicilanUnit->jumlah)}}</td>
-          <td>Rp.{{number_format($cicilanUnit->sisaKewajiban)}}</td>
+          
+          <td>Rp.{{number_format($cicilanUnit->pembelian->sisaKewajiban-cicilanTerbayar($cicilanUnit->pembelian->id,$cicilanUnit->tanggal))}}</td>
           <td>
             @if(jenisKepemilikan($id->pelanggan_id)=='Kavling')
             CK
