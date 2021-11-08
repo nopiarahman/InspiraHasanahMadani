@@ -80,12 +80,7 @@
 		</span></b></td>
 		</tr>
 	<tr>
-		<td>Total Hutang</td>
-		<td>: Rp {{number_format($pembelian->sisaKewajiban)}}</td>
-		<td rowspan="5" colspan="2" align="center"> <img src="{{public_path(Storage::url($proyek->logoPT))}}" id="stempel" width="100px"></td>
-	</tr>
-	<tr>
-		<td>Angsuran DP Ke</td>
+		<td>Angsuran Ke</td>
 		<td>: {{$id->urut}} ( {{terbilang($id->urut)}} )</td>
 	</tr>
 	<tr>
