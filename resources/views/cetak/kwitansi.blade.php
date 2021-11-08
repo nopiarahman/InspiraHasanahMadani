@@ -122,10 +122,6 @@
             <td>: Rp. {{number_format($sampaiSekarang->sum('jumlah'))}}</td>
           </tr>
           <tr>
-            <th>Diskon</th>
-            <td>: <span class="text-success"> Rp. {{number_format($pembelian->diskon)}}</span></td>
-          </tr>
-          <tr>
             <th>Sisa Hutang</th>
             <td>: <span class="text-warning">Rp. {{number_format($pembelian->sisaKewajiban-$sampaiSekarang->sum('jumlah'))}}</span> </td>
           </tr>
@@ -289,10 +285,6 @@
           <tr>
             <th>Total Angsuran Dibayarkan</th>
             <td>: Rp. {{number_format($sampaiSekarang->sum('jumlah'))}}</td>
-          </tr>
-          <tr>
-            <th>Diskon</th>
-            <td>: <span class="text-success"> Rp. {{number_format($pembelian->diskon)}}</span></td>
           </tr>
           <tr>
             <th>Sisa Hutang</th>

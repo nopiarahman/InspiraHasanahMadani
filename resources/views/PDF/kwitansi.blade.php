@@ -93,10 +93,6 @@
 		<td>: Rp. {{number_format($sampaiSekarang->sum('jumlah'))}}</td>
 	</tr>
 	<tr>
-		<td>Diskon</td>
-		<td>:<span class="text-success"> Rp. {{number_format($pembelian->diskon)}}</span></td>
-	</tr>
-	<tr>
 		<td>Sisa Hutang</td>
 		<td>: Rp. {{number_format($pembelian->sisaKewajiban-$sampaiSekarang->sum('jumlah'))}}</td>
 		</tr>
