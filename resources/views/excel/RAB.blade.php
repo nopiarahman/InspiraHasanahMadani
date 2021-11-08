@@ -122,7 +122,7 @@
           <tr>
             <th style="font-weight: bold; height:20pt" colspan="9" >{{$loop->iteration}}. {{$judul}}</th>
           </tr>
-            @foreach($semuaUnit as $rab)
+            @foreach($semuaUnit->sortBy('isi',SORT_NATURAL) as $rab)
             <tr>
               <td style="height:20pt">{{$loop->iteration}}</td>
               <td style="height:20pt">{{$rab->isi}}</td>

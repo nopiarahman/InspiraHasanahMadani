@@ -242,42 +242,90 @@ class ProyekController extends Controller
     }
     public function transaksiRABUnit(RabUnit $id, Request $request){
         // dd($id->getTable());
+        $transaksiRAB = transaksi::where('rabUnit_id',$id->id)->get('tanggal');
+        if($transaksiRAB){
+            $bulan = [];
+            foreach($transaksiRAB as $t){
+                $bulan [] = Carbon::parse($t->tanggal)->isoFormat('MM/YYYY');
+            }      
+            $periode = collect($bulan)->unique();
+        }else{
+            $periode = null;
+        }
         $totalRAB=hitungUnit($id->isi,$id->judul,$id->jenisUnit)*(int)$id->hargaSatuan;
+        $bulanTerpilih=0;
         if($request->get('filter')){
-            // dd($request);
             $mulai = Carbon::parse($request->start)->isoFormat('YYYY-MM-DD');
-            // dd($mulai);
             $akhir = Carbon::parse($request->end)->isoFormat('YYYY-MM-DD');
-            // dd($mulai);
             $transaksiKeluar=transaksi::whereBetween('tanggal',[$mulai,$akhir])
                             ->where('rabUnit_id',$id->id)->get();
-            // dd($transaksiKeluar);
             $total=transaksi::where('rabUnit_id',$id->id)->get();
+            $totalFilter = $transaksiKeluar->sum('debet');
+
+        }elseif($request->get('bulan')){
+            $dateMonthArray = explode('/', $request->bulan);
+            $month = $dateMonthArray[0];
+            $year = $dateMonthArray[1];
+            $mulai = Carbon::createFromDate($year,$month)->startOfMonth()->isoFormat('YYYY-MM-DD');
+            // dd($mulai);
+            $akhir = Carbon::createFromDate($year,$month)->endOfMonth()->isoFormat('YYYY-MM-DD');
+            $transaksiKeluar=transaksi::whereBetween('tanggal',[$mulai,$akhir])
+                            ->where('rabUnit_id',$id->id)->get();
+            $total=transaksi::where('rabUnit_id',$id->id)->get();
+            $totalFilter = $transaksiKeluar->sum('debet');
+            /* opsi select */
+            $bulanTerpilih = $request->bulan;
         }else{
             $total=transaksi::where('rabUnit_id',$id->id)->get();
             $transaksiKeluar=transaksi::where('rabUnit_id',$id->id)->get();
+            $totalFilter = $transaksiKeluar->sum('debet');
+
         }
-        return view('proyek/dataProyek/pengeluaranUnit',compact('transaksiKeluar','id','totalRAB','total'));        
+        return view('proyek/dataProyek/pengeluaranUnit',compact('totalFilter','bulanTerpilih','periode','transaksiKeluar','id','totalRAB','total'));        
     }
     public function transaksiRAB(rab $id, Request $request){
         // dd($id->getTable());
         $totalRAB=$id->total;
-        // dd($id);
+        $transaksiRAB = transaksi::where('rab_id',$id->id)->get('tanggal');
+        if($transaksiRAB){
+            $bulan = [];
+            foreach($transaksiRAB as $t){
+                $bulan [] = Carbon::parse($t->tanggal)->isoFormat('MM/YYYY');
+                // $bulan [] = date('F Y',strtotime($t->tanggal));
+
+            }      
+            $periode = collect($bulan)->unique();
+        }else{
+            $periode = null;
+        }
+        $bulanTerpilih=0;
+        /* Proses */
         if($request->get('filter')){
-            // dd($request);
             $mulai = Carbon::parse($request->start)->isoFormat('YYYY-MM-DD');
-            // dd($mulai);
             $akhir = Carbon::parse($request->end)->isoFormat('YYYY-MM-DD');
-            // dd($mulai);
             $transaksiKeluar=transaksi::whereBetween('tanggal',[$mulai,$akhir])
                             ->where('rab_id',$id->id)->get();
-            // dd($transaksiKeluar);
             $total=transaksi::where('rab_id',$id->id)->get();
+            $totalFilter = $transaksiKeluar->sum('debet');
+        }elseif($request->get('bulan')){
+            $dateMonthArray = explode('/', $request->bulan);
+            $month = $dateMonthArray[0];
+            $year = $dateMonthArray[1];
+            $mulai = Carbon::createFromDate($year,$month)->startOfMonth()->isoFormat('YYYY-MM-DD');
+            // dd($mulai);
+            $akhir = Carbon::createFromDate($year,$month)->endOfMonth()->isoFormat('YYYY-MM-DD');
+            $transaksiKeluar=transaksi::whereBetween('tanggal',[$mulai,$akhir])
+                            ->where('rab_id',$id->id)->get();
+            $total=transaksi::where('rab_id',$id->id)->get();
+            $totalFilter = $transaksiKeluar->sum('debet');
+            /* opsi select */
+            $bulanTerpilih = $request->bulan;
         }else{
             $total=transaksi::where('rab_id',$id->id)->get();
             $transaksiKeluar=transaksi::where('rab_id',$id->id)->get();
+            $totalFilter = $transaksiKeluar->sum('debet');
         }
-        return view('proyek/dataProyek/pengeluaranUnit',compact('transaksiKeluar','id','totalRAB','total'));  
+        return view('proyek/dataProyek/pengeluaranUnit',compact('totalFilter','bulanTerpilih','transaksiKeluar','id','totalRAB','total','periode'));  
     }
     public function cetakRAB(){
 

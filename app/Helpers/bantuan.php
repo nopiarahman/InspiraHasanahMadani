@@ -663,3 +663,11 @@ function cicilanKe($id,$tanggal){
     }
     return 0;
 }
+function filterBulan($tanggal){
+    $dateMonthArray = explode('/', $tanggal);
+    $month = $dateMonthArray[0];
+    $year = $dateMonthArray[1];
+    $tanggal = Carbon::createFromDate($year,$month)->startOfMonth()->isoFormat('MMMM YYYY');
+    return $tanggal;
+
+}

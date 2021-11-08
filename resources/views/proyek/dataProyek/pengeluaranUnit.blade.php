@@ -60,26 +60,49 @@
     </div>
     <div class="card-body">
       {{-- filter --}}
-      @if($id->getTable() =='rab')
-      <form action="{{route('transaksiRAB',['id'=>$id->id])}}" method="get" enctype="multipart/form-data">
-      @elseif($id->getTable()=='rabUnit')
-      <form action="{{route('transaksiRABUnit',['id'=>$id->id])}}" method="get" enctype="multipart/form-data">
+      <div class="row form-group">
+        <div class="col">
+          @if($id->getTable() =='rab')
+          <form action="{{route('transaksiRAB',['id'=>$id->id])}}" method="get" enctype="multipart/form-data">
+          @elseif($id->getTable()=='rabunit')
+          <form action="{{route('transaksiRABUnit',['id'=>$id->id])}}" method="get" enctype="multipart/form-data">
+          @endif
+            <select class="form-control col-md-8" name="bulan" id=""  onchange="this.form.submit()">
+              <option value="" @if ($bulanTerpilih ===0)
+                  selected
+              @endif>Semua Pengeluaran</option>
+              @forelse ($periode as $p)
+                  <option value="{{$p}}" @if ($bulanTerpilih ===$p)
+                      selected
+                  @endif>{{filterBulan($p)}}</option>
+              @empty
+              @endforelse
+            </select> 
+          </form> 
+        </div>
+        <div class="col-md-8 col-sm-12">
+        @if($id->getTable() =='rab')
+        <form action="{{route('transaksiRAB',['id'=>$id->id])}}" method="get" enctype="multipart/form-data">
+        @elseif($id->getTable()=='rabUnit')
+        <form action="{{route('transaksiRABUnit',['id'=>$id->id])}}" method="get" enctype="multipart/form-data">
         @endif
-        <div class="form-group row mb-4">
-          <label class="col-form-label text-md-right col-12 col-md-6 col-lg-6 mt-1 mr-n3" > <span style="font-size:small">Pilih Tanggal: </span> </label>
-          <div class="input-group col-sm-12 col-md-6">
-            <div class="input-group-prepend">
-              <div class="input-group-text">
-                <i class="fa fa-calendar" aria-hidden="true"></i>
+            <div class="form-group row mb-4">
+              <label class="col-form-label text-md-right col-sm-12 col-md-6 col-lg-6 mt-1 mr-n3" > <span style="font-size:small">Pilih Tanggal: </span> </label>
+              <div class="input-group col-sm-12 col-md-6">
+                <div class="input-group-prepend">
+                  <div class="input-group-text">
+                    <i class="fa fa-calendar" aria-hidden="true"></i>
+                  </div>
+                </div>
+                <input type="text" id="reportrange" class="form-control filter @error('filter') is-invalid @enderror" name="filter" value="{{ request('filter') }}" id="filter">
+                <input type="hidden" name="start" id="mulai">
+                <input type="hidden" name="end" id="akhir">
+                <button type="submit" class="btn btn-primary btn-icon icon-right">Filter
+                <i class="fa fa-filter"></i>
+                </button>
               </div>
-            </div>
-            <input type="text" id="reportrange" class="form-control filter @error('filter') is-invalid @enderror" name="filter" value="{{ request('filter') }}" id="filter">
-            <input type="hidden" name="start" id="mulai">
-            <input type="hidden" name="end" id="akhir">
-            <button type="submit" class="btn btn-primary btn-icon icon-right">Filter
-            <i class="fa fa-filter"></i>
-            </button>
           </div>
+        </div>
         </form>
         <script type="text/javascript">
           $(function() {
@@ -134,6 +157,11 @@
             <td>{{$transaksi->sumber}}</td>
           @endforeach
         </tbody>
+        <tfoot>
+          <tr>
+            <td colspan="4" style="text-align: right; font-weight:bold;" class="text-primary"> <h5> Total: {{number_format($totalFilter)}}</h5></td>
+          </tr>
+        </tfoot>
       </table>
       {{-- {{$transaksiKeluar->links()}} --}}
     </div>
