@@ -28,7 +28,7 @@
           </tr>
         </thead>
         <tbody>
-          @foreach($transaksiKeluar as $transaksi)
+          @foreach($transaksiKeluar->sortBy('tanggal',SORT_NATURAL) as $transaksi)
           <tr>
             <td>{{$loop->iteration}}</td>
             <td data-order="{{$transaksi->tanggal}}" >{{formatTanggal($transaksi->tanggal)}}</td>
