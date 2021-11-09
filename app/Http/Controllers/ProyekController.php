@@ -14,6 +14,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 
 use App\Exports\RABExport;
+use App\Exports\PengeluaranRABExport;
+use App\Exports\PengeluaranUnitExport;
 use App\Exports\UnitExport;
 use Maatwebsite\Excel\Facades\Excel;
 class ProyekController extends Controller
@@ -291,8 +293,6 @@ class ProyekController extends Controller
             $bulan = [];
             foreach($transaksiRAB as $t){
                 $bulan [] = Carbon::parse($t->tanggal)->isoFormat('MM/YYYY');
-                // $bulan [] = date('F Y',strtotime($t->tanggal));
-
             }      
             $periode = collect($bulan)->unique();
         }else{
@@ -345,6 +345,66 @@ class ProyekController extends Controller
         }],$preserveKeys=true);
         // return view ('excel.rab',compact('semuaRAB'));
         return Excel::download(new UnitExport($semuaRAB), 'Biaya Unit.xlsx');
+    }
+    public function cetakPengeluaranRAB(rab $id, Request $request){
+        // dd($request);
+        $bulanTerpilih = 0;
+        if($request->has('filter')){
+            $mulai = Carbon::parse($request->start)->isoFormat('YYYY-MM-DD');
+            $akhir = Carbon::parse($request->end)->isoFormat('YYYY-MM-DD');
+            $transaksiKeluar=transaksi::whereBetween('tanggal',[$mulai,$akhir])
+                            ->where('rab_id',$id->id)->get();
+            $total=transaksi::where('rab_id',$id->id)->get();
+            $totalFilter = $transaksiKeluar->sum('debet');
+        }elseif($request->has('bulan')){
+            $dateMonthArray = explode('/', $request->bulan);
+            $month = $dateMonthArray[0];
+            $year = $dateMonthArray[1];
+            $mulai = Carbon::createFromDate($year,$month)->startOfMonth()->isoFormat('YYYY-MM-DD');
+            // dd($mulai);
+            $akhir = Carbon::createFromDate($year,$month)->endOfMonth()->isoFormat('YYYY-MM-DD');
+            $transaksiKeluar=transaksi::whereBetween('tanggal',[$mulai,$akhir])
+                            ->where('rab_id',$id->id)->get();
+            $total=transaksi::where('rab_id',$id->id)->get();
+            $totalFilter = $transaksiKeluar->sum('debet');
+            /* opsi select */
+            $bulanTerpilih = $request->bulan;
+        }else{
+            $total=transaksi::where('rab_id',$id->id)->get();
+            $transaksiKeluar=transaksi::where('rab_id',$id->id)->get();
+            $totalFilter = $transaksiKeluar->sum('debet');
+        }
+        return Excel::download(new PengeluaranRABExport($transaksiKeluar,$totalFilter,$id,$bulanTerpilih), 'Pengeluaran RAB '.$id->isi.'.xlsx');
+    }
+    public function cetakPengeluaranUnit(rabUnit $id, Request $request){
+        // dd($request);
+        $bulanTerpilih = 0;
+        if($request->has('filter')){
+            $mulai = Carbon::parse($request->start)->isoFormat('YYYY-MM-DD');
+            $akhir = Carbon::parse($request->end)->isoFormat('YYYY-MM-DD');
+            $transaksiKeluar=transaksi::whereBetween('tanggal',[$mulai,$akhir])
+                            ->where('rabUnit_id',$id->id)->get();
+            $total=transaksi::where('rabUnit_id',$id->id)->get();
+            $totalFilter = $transaksiKeluar->sum('debet');
+        }elseif($request->has('bulan')){
+            $dateMonthArray = explode('/', $request->bulan);
+            $month = $dateMonthArray[0];
+            $year = $dateMonthArray[1];
+            $mulai = Carbon::createFromDate($year,$month)->startOfMonth()->isoFormat('YYYY-MM-DD');
+            // dd($mulai);
+            $akhir = Carbon::createFromDate($year,$month)->endOfMonth()->isoFormat('YYYY-MM-DD');
+            $transaksiKeluar=transaksi::whereBetween('tanggal',[$mulai,$akhir])
+                            ->where('rabUnit_id',$id->id)->get();
+            $total=transaksi::where('rabUnit_id',$id->id)->get();
+            $totalFilter = $transaksiKeluar->sum('debet');
+            /* opsi select */
+            $bulanTerpilih = $request->bulan;
+        }else{
+            $total=transaksi::where('rabUnit_id',$id->id)->get();
+            $transaksiKeluar=transaksi::where('rabUnit_id',$id->id)->get();
+            $totalFilter = $transaksiKeluar->sum('debet');
+        }
+        return Excel::download(new PengeluaranUnitExport($transaksiKeluar,$totalFilter,$id,$bulanTerpilih), 'Pengeluaran Unit '.$id->isi.'.xlsx');
     }
     public function rekening(){
         $rekening = rekening::where('proyek_id',proyekId())->get();

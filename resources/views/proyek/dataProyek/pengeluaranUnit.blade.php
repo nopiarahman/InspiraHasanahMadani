@@ -11,12 +11,33 @@
       <div class="col">
         <h1>Pengeluaran {{$id->isi}}</h1>
       </div>
+      <div class="kanan">
+        @if($id->getTable() =='rab')
+        <form action="{{route('cetakPengeluaranRAB',['id'=>$id->id])}}" method="get">
+          @csrf
+          @if ($bulanTerpilih == 0)
+          @else
+          <input type="hidden" name="bulan" value="{{$bulanTerpilih}}">
+          @endif
+          <button type="submit" class="btn btn-primary"> <i class="fas fa-file-excel"></i> Export Excel</button>
+        </form>
+        @elseif($id->getTable()=='rabunit')
+        <form action="{{route('cetakPengeluaranUnit',['id'=>$id->id])}}" method="get">
+          @csrf
+          @if ($bulanTerpilih == 0)
+          @else
+          <input type="hidden" name="bulan" value="{{$bulanTerpilih}}">
+          @endif
+          <button type="submit" class="btn btn-primary"> <i class="fas fa-file-excel"></i> Export Excel</button>
+        </form>
+        @endif
+      </div>
     </div>
     <div class="row">
       <nav aria-label="breadcrumb">
         <ol class="breadcrumb  bg-white mb-n2">
           <li class="breadcrumb-item"> <a href="{{route('RAB')}}"> RAB </a></li>
-          <li class="breadcrumb-item"> <a href="{{route('biayaUnit')}}"> Biaya Unit </a></li>
+          {{-- <li class="breadcrumb-item"> <a href="{{route('biayaUnit')}}"> Biaya Unit </a></li> --}}
           <li class="breadcrumb-item" aria-current="page"> Pengeluaran </li>
         </ol>
       </nav>

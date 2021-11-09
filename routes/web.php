@@ -152,6 +152,8 @@ Route::group(['middleware'=>['auth','role:admin,projectmanager']],function(){
     Route::delete('/hapusRekening/{id}', 'ProyekController@hapusRekening')->name('hapusRekening');
     /* cetak */
     Route::get('/cetakRAB', 'ProyekController@cetakRAB')->name('cetakRAB');
+    Route::get('/cetakPengeluaranRAB/{id}', 'ProyekController@cetakPengeluaranRAB')->name('cetakPengeluaranRAB');
+    Route::get('/cetakPengeluaranUnit/{id}', 'ProyekController@cetakPengeluaranUnit')->name('cetakPengeluaranUnit');
     Route::get('/cetakRABUnit', 'ProyekController@cetakRABUnit')->name('cetakRABUnit');
     Route::get('/exportKasBesar', 'TransaksiController@exportKasBesar')->name('exportKasBesar');
     Route::get('/exportKasPendaftaran', 'KasPendaftaranController@exportKasPendaftaran')->name('exportKasPendaftaran');
