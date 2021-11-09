@@ -211,7 +211,7 @@ function kasBesarKeluar($dataArray)
     $dataTransaksi['no'] = $data->get('no');
     $dataTransaksi['saldo'] = $data->get('saldo');
     $dataTransaksi['proyek_id'] = proyekId();
-    dd($dataTransaksi);
+    // dd($dataTransaksi);
     transaksi::create($dataTransaksi);
 }
 function pettyCashKeluar($dataArray)
