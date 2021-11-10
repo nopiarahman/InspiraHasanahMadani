@@ -115,15 +115,15 @@
           </tr>
           <tr>
             <th>Angsuran DP Ke</th>
-            <td>: {{$id->urut}} ( {{terbilang($id->urut)}} )</td>
+            <td>: {{dpKe($id->pembelian->id,$id->tanggal)}} ( {{terbilang(dpKe($id->pembelian->id,$id->tanggal))}} )</td>
           </tr>
           <tr>
             <th>Total Angsuran Dibayarkan</th>
-            <td>: Rp. {{number_format($sampaiSekarang->sum('jumlah'))}}</td>
+            <td>: Rp. {{number_format(dpTerbayar($id->pembelian_id,$id->tanggal))}}</td>
           </tr>
           <tr>
             <th>Sisa Hutang</th>
-            <td>: <span class="text-warning">Rp. {{number_format($pembelian->dp-$sampaiSekarang->sum('jumlah'))}}</span> </td>
+            <td>: <span class="text-warning">Rp. {{number_format($id->pembelian->dp - dpTerbayar($id->pembelian->id,$id->tanggal))}}</span> </td>
           </tr>
           <tr>
             <th>Status</th>
@@ -282,15 +282,15 @@
           </tr>
           <tr>
             <th>Angsuran DP Ke</th>
-            <td>: {{$id->urut}} ( {{terbilang($id->urut)}} )</td>
+            <td>: {{dpKe($id->pembelian->id,$id->tanggal)}} ( {{terbilang(dpKe($id->pembelian->id,$id->tanggal))}} )</td>
           </tr>
           <tr>
             <th>Total Angsuran Dibayarkan</th>
-            <td>: Rp. {{number_format($sampaiSekarang->sum('jumlah'))}}</td>
+            <td>: Rp. {{number_format(dpTerbayar($id->pembelian_id,$id->tanggal))}}</td>
           </tr>
           <tr>
             <th>Sisa Hutang</th>
-            <td>: <span class="text-warning">Rp. {{number_format($pembelian->dp-$sampaiSekarang->sum('jumlah'))}}</span> </td>
+            <td>: <span class="text-warning">Rp. {{number_format($id->pembelian->dp - dpTerbayar($id->pembelian->id,$id->tanggal))}}</span> </td>
           </tr>
           <tr>
             <th>Status</th>

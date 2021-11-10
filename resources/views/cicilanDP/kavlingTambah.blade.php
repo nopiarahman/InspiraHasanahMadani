@@ -188,11 +188,11 @@ function cash(){
       <tbody>
         @foreach($daftarCicilanDp as $cicilanDp)
         <tr>
-          {{updateTempo($cicilanDp)}}
-          <th>{{$loop->iteration}}</th>
+          {{-- {{updateTempo($cicilanDp)}} --}}
+          <th>{{dpKe($cicilanDp->pembelian->id,$cicilanDp->tanggal)}}</th>
           <td data-order="{{$cicilanDp->tanggal}}">{{formatTanggal($cicilanDp->tanggal)}}</td>
           <td>Rp.{{number_format($cicilanDp->jumlah)}}</td>
-          {{-- <td>Rp.{{number_format($cicilanDp->sisaDp)}}</td> --}}
+          <td>Rp.{{number_format($cicilanDp->pembelian->dp - dpTerbayar($cicilanDp->pembelian->id,$cicilanDp->tanggal))}}</td>
           <td>
             @if(jenisKepemilikan($id->pelanggan_id)=='Kavling')
             DK
@@ -217,6 +217,7 @@ function cash(){
         <tr >
           <th style="text-align: right" colspan="2">Total Terbayar</th>
           <th>Rp.{{number_format($daftarCicilanDp->sum('jumlah'))}}</th>
+          <td></td>
           <td></td>
           <td></td>
         </tr>

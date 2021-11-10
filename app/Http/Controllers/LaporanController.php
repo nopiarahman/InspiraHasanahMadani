@@ -89,12 +89,11 @@ class LaporanController extends Controller
         return view('cetak/kwitansi',compact('id','pembelian','uraian','sampaiSekarang','rekening','proyek'));
     }
     public function cetakKwitansiDp(Dp $id){
-        $pembayaranPertama = dp::where('id',$id->id)->first();
+        $pembayaranPertama= dp::where('pembelian_id',$id->pembelian_id)->orderBy('tanggal')->first();
         $pembayaranDP = dp::where('pembelian_id',$id->pembelian_id)->where('tanggal','<=',$id->tanggal)->get();
         $nilai=$id->pembelian->dp/$id->pembelian->tenorDP;
         $bulanTerbayar= intVal($pembayaranDP->sum('jumlah')/$nilai) ;
         $tempo = Carbon::parse($pembayaranPertama->tanggal)->firstOfMonth()->addMonth($bulanTerbayar)->isoFormat('YYYY-MM-DD');
-        // dd($tempo);
         $proyek=proyek::find(proyekId());       
         $pembelian= pembelian::where('id',$id->pembelian_id)->first();
         $rekening=rekening::where('proyek_id',proyekId())->get();
@@ -139,7 +138,7 @@ class LaporanController extends Controller
         $proyek=proyek::find(proyekId()); 
         // $logoPT = Storage::url($proyek->logoPT);
         // dd($logoPT);
-        $pembayaranPertama = dp::where('id',$id->id)->first();
+        $pembayaranPertama= dp::where('pembelian_id',$id->pembelian_id)->orderBy('tanggal')->first();
         $pembayaranDP = dp::where('pembelian_id',$id->pembelian_id)->where('tanggal','<=',$id->tanggal)->get();
         $nilai=$id->pembelian->dp/$id->pembelian->tenorDP;
         $bulanTerbayar= intVal($pembayaranDP->sum('jumlah')/$nilai) ;

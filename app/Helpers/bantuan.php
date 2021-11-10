@@ -663,6 +663,21 @@ function cicilanKe($id,$tanggal){
     }
     return 0;
 }
+function dpTerbayar($id,$tanggal){
+    $terbayar = dp::where('pembelian_id',$id)->where('tanggal','<=',$tanggal)->get();
+    if($terbayar){
+        $total = $terbayar->sum('jumlah');
+        return $total;
+    }
+    return 0;
+}
+function dpKe($id,$tanggal){
+    $ke = dp::where('pembelian_id',$id)->where('tanggal','<=',$tanggal)->count();
+    if($ke){
+        return $ke;
+    }
+    return 0;
+}
 function filterBulan($tanggal){
     $dateMonthArray = explode('/', $tanggal);
     $month = $dateMonthArray[0];
@@ -671,8 +686,16 @@ function filterBulan($tanggal){
     return $tanggal;
 
 }
+function updateDPPelanggan(pembelian $dp){
+    $semuaDp = $dp->dp()->get();
+    foreach ($semuaDp as $a ) {
+        updateTempo($a);
+    }
+    return $dp->pelanggan->nama.'sudah';
+}
 function updateTempo(dp $id){
-    $pembayaranPertama = dp::where('id',$id->id)->first();
+    $pembayaranPertama= dp::where('pembelian_id',$id->pembelian_id)->orderBy('tanggal')->first();
+    // $pembayaranPertama = dp::where('id',$id->id)->first();
     $pembayaranDP = dp::where('pembelian_id',$id->pembelian_id)->where('tanggal','<=',$id->tanggal)->get();
     $nilai=$id->pembelian->dp/$id->pembelian->tenorDP;
     $bulanTerbayar= intVal($pembayaranDP->sum('jumlah')/$nilai) ;
