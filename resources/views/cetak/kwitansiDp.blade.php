@@ -142,6 +142,11 @@
             <td>: 1-10 {{Carbon\Carbon::parse($tempo)->isoFormat('MMMM YYYY')}}
             </td>
           </tr>
+          <tr>
+            <th>Jatuh Tempo</th>
+            <td>: 1-10 {{Carbon\Carbon::parse($id->tempo)->isoFormat('MMMM YYYY')}}
+            </td>
+          </tr>
           @endif
         </table>
       </div>
@@ -304,6 +309,7 @@
             <td>: 1-10 {{Carbon\Carbon::parse($tempo)->isoFormat('MMMM YYYY')}}
             </td>
           </tr>
+          
           @endif
         </table>
       </div>

@@ -671,3 +671,13 @@ function filterBulan($tanggal){
     return $tanggal;
 
 }
+function updateTempo(dp $id){
+    $pembayaranPertama = dp::where('id',$id->id)->first();
+    $pembayaranDP = dp::where('pembelian_id',$id->pembelian_id)->where('tanggal','<=',$id->tanggal)->get();
+    $nilai=$id->pembelian->dp/$id->pembelian->tenorDP;
+    $bulanTerbayar= intVal($pembayaranDP->sum('jumlah')/$nilai) ;
+    $tempo = Carbon::parse($pembayaranPertama->tanggal)->firstOfMonth()->addMonth($bulanTerbayar)->isoFormat('YYYY-MM-DD');
+    // dd($tempo);
+    $id->update(['tempo'=>$tempo]);
+    return true;
+}
