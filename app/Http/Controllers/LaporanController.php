@@ -135,13 +135,18 @@ class LaporanController extends Controller
         // dd($logoPT);
         $rekening=rekening::where('proyek_id',proyekId())->get();
         $pembelian= pembelian::where('id',$id->pembelian_id)->first();
-        // dd($pembelian->pelanggan->nama);
+        $kavling = $pembelian->pelanggan->kavling;
+        if($kavling){
+            $blok = $kavling->blok;
+        }else{
+            $blok = "Batal Akad";
+        }
         $uraian = 'Pembayaran Dp Ke '.$id->urut.' '.jenisKepemilikan($pembelian->pelanggan_id).' '.$pembelian->kavling->blok;   
         $DpPertama = Dp::where('pembelian_id',$pembelian->id)->first();
         $sampaiSekarang = dp::whereBetween('created_at',[$DpPertama->created_at,$id->created_at])->where('pembelian_id',$id->pembelian_id)->get();
         // return view('PDF/kwitansiDp2',compact('id','pembelian','uraian','sampaiSekarang','rekening','proyek'));
         $pdf=PDF::loadview('PDF/kwitansiDP2',compact('id','pembelian','uraian','sampaiSekarang','rekening','proyek'))->setPaper('A5','landscape');
-        return $pdf->download('Kwitansi DP '.$pembelian->pelanggan->nama.' Ke '.$id->urut.'.pdf');
+        return $pdf->download('Kwitansi DP '.$pembelian->pelanggan->nama .' '. $blok .' Ke '.$id->urut.'.pdf');
     }
     public function cetakKwitansiPDF(Cicilan $id){
         $proyek=proyek::find(proyekId());
@@ -149,10 +154,16 @@ class LaporanController extends Controller
         // dd($logoPT); 
         $rekening=rekening::where('proyek_id',proyekId())->get();
         $pembelian= pembelian::where('id',$id->pembelian_id)->first();
+        $kavling = $pembelian->pelanggan->kavling;
+        if($kavling){
+            $blok = $kavling->blok;
+        }else{
+            $blok = "Batal Akad";
+        }
         $uraian = 'Pembayaran Cicilan Ke '.$id->urut.' '.jenisKepemilikan($pembelian->pelanggan_id).' '.$pembelian->kavling->blok;   
         $cicilanPertama = cicilan::where('pembelian_id',$pembelian->id)->first();
         $sampaiSekarang = cicilan::whereBetween('created_at',[$cicilanPertama->created_at,$id->created_at])->where('pembelian_id',$id->pembelian_id)->get();
         $pdf=PDF::loadview('PDF/kwitansi',compact('id','pembelian','uraian','sampaiSekarang','rekening','proyek','logoPT'))->setPaper('A5','landscape');
-        return $pdf->download('Kwitansi Cicilan '.$pembelian->pelanggan->nama.' Ke '.$id->urut.'.pdf');
+        return $pdf->download('Kwitansi Cicilan '.$pembelian->pelanggan->nama.' '.$blok.' Ke '.$id->urut.'.pdf');
     }
 }
