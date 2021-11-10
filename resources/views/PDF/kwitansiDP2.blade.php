@@ -101,7 +101,7 @@
 	</tr>
 	<tr>
 		<td>Jatuh Tempo</td>
-		<td>: 1-10 {{Carbon\Carbon::parse($id->tempo)->isoFormat('MMMM YYYY')}}</td>
+		<td>: 1-10 {{Carbon\Carbon::parse($tempo)->isoFormat('MMMM YYYY')}}</td>
 		<td colspan="2" style="border-top: 1px solid #000000" align="center" valign="bottom">Kasir</td>
 		</tr>
 	<tr>

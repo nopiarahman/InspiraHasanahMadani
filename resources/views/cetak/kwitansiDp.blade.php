@@ -53,9 +53,9 @@
     <table class="table table-sm table-responsive" style="font-size: medium">
       <tr style="font-size: medium">
         <td style="width: 20%"> Telah Diterima Dari</td>
-        <td style="width: 15%">: <span class="font-weight-bold">{{$pembelian->pelanggan->nama}}</span></td>
+        <td style="width: 30%">: <span class="font-weight-bold">{{$pembelian->pelanggan->nama}}</span></td>
         <td></td>
-        <th rowspan="2" style="width: 65%;vertical-align:middle" class="border border-success"> 
+        <th rowspan="2" style="width: 50%;vertical-align:middle" class="border border-success"> 
           <h5 class="text-center align-middle mb-n1" style="font-style: italic">{{terbilang($id->jumlah)}} Rupiah</h5> 
         </th>
       </tr>
@@ -110,7 +110,7 @@
         </span>
         <table class="" style="border-collapse: collapse">
           <tr class="px-n1">
-            <th style="width: 70%">Total Hutang</th>
+            <th style="width: 60%">Total Hutang</th>
             <td>: <span class="text-warning"> Rp {{number_format($pembelian->dp)}}</span></td>
           </tr>
           <tr>
@@ -137,7 +137,7 @@
           </tr>
           <tr>
             <th>Jatuh Tempo</th>
-            <td>: 1-10 {{Carbon\Carbon::parse($id->tempo)->isoFormat('MMMM YYYY')}}
+            <td>: 1-10 {{Carbon\Carbon::parse($tempo)->isoFormat('MMMM YYYY')}}
             </td>
           </tr>
         </table>
@@ -212,9 +212,9 @@
     <table class="table table-sm table-responsive" style="font-size: medium">
       <tr style="font-size: medium">
         <td style="width: 20%"> Telah Diterima Dari</td>
-        <td style="width: 15%">: <span class="font-weight-bold">{{$pembelian->pelanggan->nama}}</span></td>
+        <td style="width: 30%">: <span class="font-weight-bold">{{$pembelian->pelanggan->nama}}</span></td>
         <td></td>
-        <th rowspan="2" style="width: 65%;vertical-align:middle" class="border border-success"> 
+        <th rowspan="2" style="width: 50%;vertical-align:middle" class="border border-success"> 
           <h5 class="text-center align-middle mb-n1" style="font-style: italic">{{terbilang($id->jumlah)}} Rupiah</h5> 
         </th>
       </tr>
@@ -269,7 +269,7 @@
         </span>
         <table class="" style="border-collapse: collapse">
           <tr class="px-n1">
-            <th style="width: 70%">Total Hutang</th>
+            <th style="width: 60%">Total Hutang</th>
             <td>: <span class="text-warning"> Rp {{number_format($pembelian->dp)}}</span></td>
           </tr>
           <tr>
@@ -296,7 +296,7 @@
           </tr>
           <tr>
             <th>Jatuh Tempo</th>
-            <td>: 1-10 {{Carbon\Carbon::parse($id->tempo)->isoFormat('MMMM YYYY')}}
+            <td>: 1-10 {{Carbon\Carbon::parse($tempo)->isoFormat('MMMM YYYY')}}
             </td>
           </tr>
         </table>
