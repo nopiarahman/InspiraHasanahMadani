@@ -140,7 +140,7 @@ class LaporanController extends Controller
         $DpPertama = Dp::where('pembelian_id',$pembelian->id)->first();
         $sampaiSekarang = dp::whereBetween('created_at',[$DpPertama->created_at,$id->created_at])->where('pembelian_id',$id->pembelian_id)->get();
         // return view('PDF/kwitansiDp2',compact('id','pembelian','uraian','sampaiSekarang','rekening','proyek'));
-        $pdf=PDF::loadview('PDF/kwitansiDp2',compact('id','pembelian','uraian','sampaiSekarang','rekening','proyek'))->setPaper('A5','landscape');
+        $pdf=PDF::loadview('PDF/kwitansiDP2',compact('id','pembelian','uraian','sampaiSekarang','rekening','proyek'))->setPaper('A5','landscape');
         return $pdf->download('Kwitansi DP '.$pembelian->pelanggan->nama.' Ke '.$id->urut.'.pdf');
     }
     public function cetakKwitansiPDF(Cicilan $id){
