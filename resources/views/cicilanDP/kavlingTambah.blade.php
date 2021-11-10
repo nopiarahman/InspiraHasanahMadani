@@ -188,7 +188,7 @@ function cash(){
       <tbody>
         @foreach($daftarCicilanDp as $cicilanDp)
         <tr>
-          {{-- {{updateTempo($cicilanDp)}} --}}
+          {{updateTempo($cicilanDp)}}
           <th>{{$loop->iteration}}</th>
           <td data-order="{{$cicilanDp->tanggal}}">{{formatTanggal($cicilanDp->tanggal)}}</td>
           <td>Rp.{{number_format($cicilanDp->jumlah)}}</td>
