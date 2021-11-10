@@ -99,12 +99,15 @@
 			<span class="text-warning"> Belum Lunas </span>
 			@endif</td>
 	</tr>
+	@if($pembelian->dp-$sampaiSekarang->sum('jumlah') <=0)
+	@else
 	<tr>
 		<td>Jatuh Tempo</td>
 		<td>: 1-10 {{Carbon\Carbon::parse($tempo)->isoFormat('MMMM YYYY')}}</td>
 		<td colspan="2" style="border-top: 1px solid #000000" align="center" valign="bottom">Kasir</td>
 		</tr>
 	<tr>
+	@endif
 		<td align="center" colspan="4" valign="bottom" style="height: 25px">Kwitansi ini sah tanpa tanda tangan</td>
 		</tr>
 </tbody>
