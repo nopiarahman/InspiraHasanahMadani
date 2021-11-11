@@ -79,6 +79,35 @@ class LaporanController extends Controller
 
     public function cetakKwitansi(Cicilan $id){
         // dd($id);
+        $pembayaranPertama= cicilan::where('pembelian_id',$id->pembelian_id)->orderBy('tanggal')->first();
+        $pembayaranSebelum = cicilan::where('pembelian_id',$id->pembelian_id)->where('tanggal','<',$id->tanggal)->orderBy('tanggal','desc')->first();
+        if($pembayaranSebelum){
+            $tanggalSebelum = $pembayaranSebelum->tanggal;
+        }else{
+            $tanggalSebelum = $id->tanggal;
+        }
+        $semuaPembayaran = cicilan::where('pembelian_id',$id->pembelian_id)->where('tanggal','<=',$id->tanggal)->get();
+        $nilai=$id->pembelian->sisaKewajiban/$id->pembelian->tenor;
+        $bulanTerbayar= intVal($semuaPembayaran->sum('jumlah')/$nilai) ;
+        $bulanBerjalan = Carbon::parse($id->tanggal)->firstOfMonth()->addMonth(1)->diffInMonths(Carbon::parse($pembayaranPertama->tanggal)->firstOfMonth(),true);
+
+        $cek=Carbon::parse($id->tanggal)->firstOfMonth()->diffInMonths(Carbon::parse($tanggalSebelum)->firstOfMonth(),false);
+        if($cek>=0){
+            /* lancar */
+            if($bulanTerbayar>=$bulanBerjalan){
+                $tempo = Carbon::parse($pembayaranPertama->tanggal)->firstOfMonth()->addMonth($bulanTerbayar)->isoFormat('YYYY-MM-DD');
+            }else{
+                $tempo = Carbon::parse($id->tanggal)->firstOfMonth()->addMonth(1)->isoFormat('YYYY-MM-DD');
+            }
+        }else{
+            /* nunggak */
+            if($bulanTerbayar>=$bulanBerjalan){
+                $tempo = Carbon::parse($pembayaranPertama->tanggal)->firstOfMonth()->addMonth($bulanTerbayar)->isoFormat('YYYY-MM-DD');
+            }else{
+                $tempo = Carbon::parse($id->tanggal)->firstOfMonth()->addMonth(1)->isoFormat('YYYY-MM-DD');
+            }
+            // $tempo = Carbon::parse($id->tanggal)->firstOfMonth()->addMonth(1)->isoFormat('YYYY-MM-DD');
+        }
         $proyek=proyek::find(proyekId());
         $rekening=rekening::where('proyek_id',proyekId())->get();
         $pembelian= pembelian::where('id',$id->pembelian_id)->first();
@@ -86,17 +115,22 @@ class LaporanController extends Controller
         $cicilanPertama = cicilan::where('pembelian_id',$pembelian->id)->first();
         $sampaiSekarang = cicilan::whereBetween('created_at',[$cicilanPertama->created_at,$id->created_at])->where('pembelian_id',$id->pembelian_id)->get();
         // dd($sampaiSekarang);
-        return view('cetak/kwitansi',compact('id','pembelian','uraian','sampaiSekarang','rekening','proyek'));
+        return view('cetak/kwitansi',compact('tempo','id','pembelian','uraian','sampaiSekarang','rekening','proyek'));
     }
     public function cetakKwitansiDp(Dp $id){
         $pembayaranPertama= dp::where('pembelian_id',$id->pembelian_id)->orderBy('tanggal')->first();
         $pembayaranSebelum = dp::where('pembelian_id',$id->pembelian_id)->where('tanggal','<',$id->tanggal)->orderBy('tanggal','desc')->first();
+        if($pembayaranSebelum){
+            $tanggalSebelum = $pembayaranSebelum->tanggal;
+        }else{
+            $tanggalSebelum = $id->tanggal;
+        }
         $semuaPembayaran = dp::where('pembelian_id',$id->pembelian_id)->where('tanggal','<=',$id->tanggal)->get();
         $nilai=$id->pembelian->dp/$id->pembelian->tenorDP;
         $bulanTerbayar= intVal($semuaPembayaran->sum('jumlah')/$nilai) ;
         $bulanBerjalan = Carbon::parse($id->tanggal)->firstOfMonth()->addMonth(1)->diffInMonths(Carbon::parse($pembayaranPertama->tanggal)->firstOfMonth(),true);
 
-        $cek=Carbon::parse($id->tanggal)->firstOfMonth()->diffInMonths(Carbon::parse($pembayaranSebelum->tanggal)->firstOfMonth(),false);
+        $cek=Carbon::parse($id->tanggal)->firstOfMonth()->diffInMonths(Carbon::parse($tanggalSebelum)->firstOfMonth(),false);
         if($cek>=0){
             /* lancar */
             if($bulanTerbayar>=$bulanBerjalan){
@@ -159,12 +193,17 @@ class LaporanController extends Controller
         // dd($logoPT);
         $pembayaranPertama= dp::where('pembelian_id',$id->pembelian_id)->orderBy('tanggal')->first();
         $pembayaranSebelum = dp::where('pembelian_id',$id->pembelian_id)->where('tanggal','<',$id->tanggal)->orderBy('tanggal','desc')->first();
+        if($pembayaranSebelum){
+            $tanggalSebelum = $pembayaranSebelum->tanggal;
+        }else{
+            $tanggalSebelum = $id->tanggal;
+        }
         $semuaPembayaran = dp::where('pembelian_id',$id->pembelian_id)->where('tanggal','<=',$id->tanggal)->get();
         $nilai=$id->pembelian->dp/$id->pembelian->tenorDP;
         $bulanTerbayar= intVal($semuaPembayaran->sum('jumlah')/$nilai) ;
         $bulanBerjalan = Carbon::parse($id->tanggal)->firstOfMonth()->addMonth(1)->diffInMonths(Carbon::parse($pembayaranPertama->tanggal)->firstOfMonth(),true);
 
-        $cek=Carbon::parse($id->tanggal)->firstOfMonth()->diffInMonths(Carbon::parse($pembayaranSebelum->tanggal)->firstOfMonth(),false);
+        $cek=Carbon::parse($id->tanggal)->firstOfMonth()->diffInMonths(Carbon::parse($tanggalSebelum)->firstOfMonth(),false);
         if($cek>=0){
             /* lancar */
             if($bulanTerbayar>=$bulanBerjalan){
@@ -197,6 +236,35 @@ class LaporanController extends Controller
         return $pdf->download('Kwitansi DP '.$pembelian->pelanggan->nama .' '. $blok .' Ke '.$id->urut.'.pdf');
     }
     public function cetakKwitansiPDF(Cicilan $id){
+        $pembayaranPertama= cicilan::where('pembelian_id',$id->pembelian_id)->orderBy('tanggal')->first();
+        $pembayaranSebelum = cicilan::where('pembelian_id',$id->pembelian_id)->where('tanggal','<',$id->tanggal)->orderBy('tanggal','desc')->first();
+        if($pembayaranSebelum){
+            $tanggalSebelum = $pembayaranSebelum->tanggal;
+        }else{
+            $tanggalSebelum = $id->tanggal;
+        }
+        $semuaPembayaran = cicilan::where('pembelian_id',$id->pembelian_id)->where('tanggal','<=',$id->tanggal)->get();
+        $nilai=$id->pembelian->sisaKewajiban/$id->pembelian->tenor;
+        $bulanTerbayar= intVal($semuaPembayaran->sum('jumlah')/$nilai) ;
+        $bulanBerjalan = Carbon::parse($id->tanggal)->firstOfMonth()->addMonth(1)->diffInMonths(Carbon::parse($pembayaranPertama->tanggal)->firstOfMonth(),true);
+
+        $cek=Carbon::parse($id->tanggal)->firstOfMonth()->diffInMonths(Carbon::parse($tanggalSebelum)->firstOfMonth(),false);
+        if($cek>=0){
+            /* lancar */
+            if($bulanTerbayar>=$bulanBerjalan){
+                $tempo = Carbon::parse($pembayaranPertama->tanggal)->firstOfMonth()->addMonth($bulanTerbayar)->isoFormat('YYYY-MM-DD');
+            }else{
+                $tempo = Carbon::parse($id->tanggal)->firstOfMonth()->addMonth(1)->isoFormat('YYYY-MM-DD');
+            }
+        }else{
+            /* nunggak */
+            if($bulanTerbayar>=$bulanBerjalan){
+                $tempo = Carbon::parse($pembayaranPertama->tanggal)->firstOfMonth()->addMonth($bulanTerbayar)->isoFormat('YYYY-MM-DD');
+            }else{
+                $tempo = Carbon::parse($id->tanggal)->firstOfMonth()->addMonth(1)->isoFormat('YYYY-MM-DD');
+            }
+            // $tempo = Carbon::parse($id->tanggal)->firstOfMonth()->addMonth(1)->isoFormat('YYYY-MM-DD');
+        }
         $proyek=proyek::find(proyekId());
         $logoPT = Storage::url($proyek->logoPT);
         // dd($logoPT); 
@@ -211,7 +279,7 @@ class LaporanController extends Controller
         $uraian = 'Pembayaran Cicilan Ke '.$id->urut.' '.jenisKepemilikan($pembelian->pelanggan_id).' '.$pembelian->kavling->blok;   
         $cicilanPertama = cicilan::where('pembelian_id',$pembelian->id)->first();
         $sampaiSekarang = cicilan::whereBetween('created_at',[$cicilanPertama->created_at,$id->created_at])->where('pembelian_id',$id->pembelian_id)->get();
-        $pdf=PDF::loadview('PDF/kwitansi',compact('id','pembelian','uraian','sampaiSekarang','rekening','proyek','logoPT'))->setPaper('A5','landscape');
+        $pdf=PDF::loadview('PDF/kwitansi',compact('tempo','id','pembelian','uraian','sampaiSekarang','rekening','proyek','logoPT'))->setPaper('A5','landscape');
         return $pdf->download('Kwitansi Cicilan '.$pembelian->pelanggan->nama.' '.$blok.' Ke '.$id->urut.'.pdf');
     }
 }

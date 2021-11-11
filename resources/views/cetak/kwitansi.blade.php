@@ -142,7 +142,7 @@
               @if($pembelian->sisaCicilan <=0)
               -
               @else
-              1-10 {{Carbon\Carbon::parse($id->tempo)->isoFormat('MMMM YYYY')}}
+              1-10 {{Carbon\Carbon::parse($tempo)->isoFormat('MMMM YYYY')}}
               @endif
             </td>
           </tr>
@@ -307,7 +307,7 @@
               @if($pembelian->sisaCicilan <=0)
               -
               @else
-              1-10 {{Carbon\Carbon::parse($id->tempo)->isoFormat('MMMM YYYY')}}
+              1-10 {{Carbon\Carbon::parse($tempo)->isoFormat('MMMM YYYY')}}
               @endif
             </td>
           </tr>
