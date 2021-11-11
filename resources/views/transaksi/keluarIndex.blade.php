@@ -203,6 +203,7 @@
         function hitung2(){
         var total = parseFloat((document.getElementById('totalHarga').value).replace(/,/g, ''));
         var banyaknya = parseFloat((document.getElementById('jumlahBarang').value).replace(/,/g, ''));
+        // console.log(banyaknya);
         var hargaSatuan = total/banyaknya;
         $('#hargaSatuan').val(hargaSatuan);
         var cleave = new Cleave('.hargaSatuan', {
@@ -699,10 +700,10 @@
 </script>
 <script src="{{ mix("js/cleave.min.js") }}"></script>
 <script>
-  var cleave = new Cleave('.jumlah', {
-      numeral: true,
-      numeralThousandsGroupStyle: 'thousand'
-  });
+  // var cleave = new Cleave('.jumlah', {
+  //     numeral: true,
+  //     numeralThousandsGroupStyle: 'thousand'
+  // });
   var cleave = new Cleave('.totalHarga', {
       numeral: true,
       numeralThousandsGroupStyle: 'thousand'

@@ -60,6 +60,7 @@ class DPController extends Controller
             $akadDp=$cekDp->dp;
             /* Jatuh Tempo */
             $tempo=Carbon::parse($request->tanggal)->addMonth(1)->isoFormat('YYYY-MM-DD');
+            
             $urut = dp::where('pembelian_id',$id)->where('tanggal','>=',$request->tanggal)->first();
             if($urut != null){
                 $urutan = $urut->urut-1;

@@ -702,5 +702,5 @@ function updateTempo(dp $id){
     $tempo = Carbon::parse($pembayaranPertama->tanggal)->firstOfMonth()->addMonth($bulanTerbayar)->isoFormat('YYYY-MM-DD');
     // dd($tempo);
     $id->update(['tempo'=>$tempo]);
-    return true;
+    // return true;
 }
