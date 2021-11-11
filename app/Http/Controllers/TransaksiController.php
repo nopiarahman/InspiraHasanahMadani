@@ -31,7 +31,7 @@ class TransaksiController extends Controller
     }
 
     public function masuk(Request $request){
-        $cek = transaksi::whereNull('kategori')->whereNotNull('kredit')->get();
+        $cek = transaksi::where('akun_id',47)->whereNotNull('kredit')->get();
         foreach($cek as $c){
             $c->update(['kategori'=>'Modal']);
         }
