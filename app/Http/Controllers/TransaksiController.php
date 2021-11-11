@@ -31,9 +31,9 @@ class TransaksiController extends Controller
     }
 
     public function masuk(Request $request){
-        $cek = transaksi::where('akun_id',47)->whereNotNull('kredit')->get();
+        $cek = transaksi::where('akun_id',46)->whereNotNull('kredit')->get();
         foreach($cek as $c){
-            $c->update(['kategori'=>'Modal']);
+            $c->update(['kategori'=>'Pendapatan Lain']);
         }
         // dd($cek);
         if($request->get('filter')){
