@@ -353,9 +353,76 @@
       @endif
     </div>
   </div>
+  <div class="row">
+    <div class="col-lg-12 col-md-12 col-12 col-sm-12">
+      <div class="card">
+        <div class="card-header">
+          <h4>Presentase Proyek</h4>
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-lg-4 col-md-4 col-sm-12">
+              {!! $chartDPKavling->container() !!}
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-12">
+              {!! $chartDPRumah->container() !!}
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-12">
+              {!! $chartDPKios->container() !!}
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-lg-4 col-md-4 col-sm-12" style="text-align: center">
+              <p class="text-primary font-weight-bold">DP Kavling Terbayar: Rp.{{number_format($totalDpTerbayar)}}</p>
+              <p class="mt-n3 font-weight-bold" style="color: #ffa426">Sisa DP: Rp.{{number_format($sisaDp)}}</p>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-12" style="text-align: center">
+              <p class="text-primary font-weight-bold">DP Rumah Terbayar: Rp.{{number_format($totalDpRumahTerbayar)}}</p>
+              <p class="mt-n3 font-weight-bold" style="color: #ffa426">Sisa DP: Rp.{{number_format($sisaDpRumah)}}</p>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-12" style="text-align: center">
+              <p class="text-primary font-weight-bold">DP Kios Terbayar: Rp.{{number_format($totalDpKiosTerbayar)}}</p>
+              <p class="mt-n3 font-weight-bold" style="color: #ffa426">Sisa DP: Rp.{{number_format($sisaDpKios)}}</p>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-lg-4 col-md-4 col-sm-12">
+              {!! $chartCicilanKavling->container() !!}
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-12">
+              {!! $chartCicilanRumah->container() !!}
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-12">
+              {!! $chartCicilanKios->container() !!}
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-lg-4 col-md-4 col-sm-12" style="text-align: center">
+              <p class="text-primary font-weight-bold">Cicilan Kavling Terbayar: Rp.{{number_format($totalCicilanTerbayar)}}</p>
+              <p class="mt-n3 font-weight-bold" style="color: #ffa426">Sisa Cicilan: Rp.{{number_format($sisaCicilan)}}</p>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-12" style="text-align: center">
+              <p class="text-primary font-weight-bold">Cicilan Rumah Terbayar: Rp.{{number_format($totalCicilanRumahTerbayar)}}</p>
+              <p class="mt-n3 font-weight-bold" style="color: #ffa426">Sisa Cicilan: Rp.{{number_format($sisaCicilanRumah)}}</p>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-12" style="text-align: center">
+              <p class="text-primary font-weight-bold">Cicilan Kios Terbayar: Rp.{{number_format($totalCicilanKiosTerbayar)}}</p>
+              <p class="mt-n3 font-weight-bold" style="color: #ffa426">Sisa Cicilan: Rp.{{number_format($sisaCicilanKios)}}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 @endsection
 
 @section('script')
 {!! $chartKasBesar->script() !!} 
+{!! $chartDPKavling->script() !!} 
+{!! $chartDPRumah->script() !!} 
+{!! $chartDPKios->script() !!} 
+{!! $chartCicilanKavling->script() !!} 
+{!! $chartCicilanRumah->script() !!} 
+{!! $chartCicilanKios->script() !!} 
 {{-- <script src="{{asset('assets/js/index.js')}}"></script> --}}
 @endsection

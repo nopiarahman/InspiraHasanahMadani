@@ -75,7 +75,98 @@ class HomeController extends Controller
             $cicilanPelanggan=[];
         }
 
-        return view('home',compact('dpPelanggan','cicilanPelanggan','chartKasBesar','kavling','pelanggan','dataKavling','dataPembelian','persenDiskon','id'));
+        /* Detail Proyek */
+        $semuaPembelian = pembelian::where('proyek_id',proyekId())->where('statusCicilan','Credit')->get();
+        $totalDp = 0;
+        $totalDpTerbayar = 0;
+        $totalDpRumah = 0;
+        $totalDpKios = 0;
+        $totalDpRumahTerbayar = 0;
+        $totalDpKiosTerbayar = 0;
+        $totalCicilan = 0;
+        $totalCicilanRumah = 0;
+        $totalCicilanKios = 0;
+        $totalCicilanTerbayar = 0;
+        $totalCicilanRumahTerbayar = 0;
+        $totalCicilanKiosTerbayar = 0;
+        /* kavling */
+        foreach($semuaPembelian->where('rumah_id',null)->where('kios_id',null) as $a){
+            if($a->pelanggan !=null && $a->pelanggan->kavling !=null){
+            $totalDp += $a->dp;
+            $totalDpTerbayar += $a->dp()->sum('jumlah');
+            $totalCicilan += $a->sisaKewajiban;
+            $totalCicilanTerbayar += $a->cicilan()->sum('jumlah');
+            }
+        }
+        $sisaDp = $totalDp-$totalDpTerbayar;
+        $sisaCicilan = $totalCicilan-$totalCicilanTerbayar;
+        /* rumah */
+        foreach($semuaPembelian->whereNotNull('rumah_id') as $a){
+            if($a->pelanggan !=null && $a->pelanggan->kavling !=null){
+                $totalDpRumah += $a->dp;
+                $totalDpRumahTerbayar += $a->dp()->sum('jumlah');
+                $totalCicilanRumah += $a->sisaKewajiban;
+                $totalCicilanRumahTerbayar += $a->cicilan()->sum('jumlah');
+            }
+        }
+        $sisaDpRumah = $totalDpRumah-$totalDpRumahTerbayar;
+        $sisaCicilanRumah = $totalCicilanRumah-$totalCicilanRumahTerbayar;
+        /* kios */
+        foreach($semuaPembelian->whereNotNull('kios_id') as $a){
+            if($a->pelanggan !=null && $a->pelanggan->kavling !=null){
+                $totalDpKios += $a->dp;
+                $totalDpKiosTerbayar += $a->dp()->sum('jumlah');
+                $totalCicilanKios += $a->sisaKewajiban;
+                $totalCicilanKiosTerbayar += $a->cicilan()->sum('jumlah');
+            }
+        }
+        $sisaDpKios = $totalDpKios-$totalDpKiosTerbayar;
+        $sisaCicilanKios = $totalCicilanKios-$totalCicilanKiosTerbayar;
+
+        $chartDPKavling = new chartAdmin;
+        $chartDPKavling->labels(['Total Terbayar','Sisa DP']);
+        $chartDPKavling->dataset('Total Terbayar Kavling','doughnut',[$totalDpTerbayar,$sisaDp])->options([
+            'backgroundColor'=>['#169948','#ffa426']
+        ]);
+        $chartDPKavling->title("DP Kavling");
+        $chartDPRumah = new chartAdmin;
+        $chartDPRumah->labels(['Total Terbayar','Sisa DP']);
+        $chartDPRumah->dataset('Total Terbayar Rumah','doughnut',[$totalDpRumahTerbayar,$sisaDpRumah])->options([
+            'backgroundColor'=>['#169948','#ffa426']
+        ]);
+        $chartDPRumah->title("DP Rumah");
+        $chartDPKios = new chartAdmin;
+        $chartDPKios->labels(['Total Terbayar','Sisa DP']);
+        $chartDPKios->dataset('Total Terbayar Kios','doughnut',[$totalDpKiosTerbayar,$sisaDpKios])->options([
+            'backgroundColor'=>['#169948','#ffa426']
+        ]);
+        $chartDPKios->title("DP Kios");
+
+        $chartCicilanKavling = new chartAdmin;
+        $chartCicilanKavling->labels(['Total Terbayar','Sisa Cicilan']);
+        $chartCicilanKavling->dataset('Total Terbayar Kavling','doughnut',[$totalCicilanTerbayar,$sisaCicilan])->options([
+            'backgroundColor'=>['#169948','#ffa426']
+        ]);
+        $chartCicilanKavling->title("Cicilan Kavling");
+        $chartCicilanRumah = new chartAdmin;
+        $chartCicilanRumah->labels(['Total Terbayar','Sisa Cicilan']);
+        $chartCicilanRumah->dataset('Total Terbayar Rumah','doughnut',[$totalCicilanRumahTerbayar,$sisaCicilanRumah])->options([
+            'backgroundColor'=>['#169948','#ffa426']
+        ]);
+        $chartCicilanRumah->title("Cicilan Rumah");
+        $chartCicilanKios = new chartAdmin;
+        $chartCicilanKios->labels(['Total Terbayar','Sisa Cicilan']);
+        $chartCicilanKios->dataset('Total Terbayar Kios','doughnut',[$totalCicilanKiosTerbayar,$sisaCicilanKios])->options([
+            'backgroundColor'=>['#169948','#ffa426']
+        ]);
+        $chartCicilanKios->title("Cicilan Kios");
+        return view('home',compact(
+            'totalDpTerbayar','sisaDp','dpPelanggan','cicilanPelanggan','chartKasBesar','kavling','pelanggan','dataKavling','dataPembelian','persenDiskon','id',
+            'totalCicilanTerbayar','sisaCicilan','sisaDpRumah','sisaCicilanRumah','totalDpRumahTerbayar','totalCicilanRumahTerbayar',
+            'totalDpKiosTerbayar','sisaDpKios','totalCicilanKiosTerbayar','sisaCicilanKios',
+
+            'chartDPKavling','chartDPRumah','chartDPKios','chartCicilanKavling','chartCicilanRumah','chartCicilanKios'
+        ));
     }
 
     public function cariPelangganHome(Request $request){

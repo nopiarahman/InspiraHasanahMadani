@@ -766,3 +766,21 @@ function updateTempoCicilan(cicilan $id){
     }
     $id->update(['tempo'=>$tempo]);
 }
+
+function totalDpKavling (){
+    $pembelianKavling = pembelian::whereNull('rumah_id')->whereNull('kios_id')->get();
+    $totalTerbayar = 0;
+    foreach ($pembelianKavling as $p){
+        $totalTerbayar += $p->dp()->sum('jumlah');
+    }
+    return $totalTerbayar;
+    // $totalDP = $pembelianKavling->sum('dp');
+    // $totalTerbayar = $totalDP - 
+    // dd($pembelianKavling->sum('dp'));
+}
+function sisaDpKavling(){
+    $pembelianKavling = pembelian::whereNull('rumah_id')->whereNull('kios_id')->get();
+    $sisa = $pembelianKavling->sum('dp')-totalDpKavling();
+    // dd($sisa);
+    return $sisa;
+}

@@ -30,6 +30,7 @@ class CicilanController extends Controller
     public function cicilanKavling()
     {
         $semuaCicilanUnit = pembelian::where('statusCicilan','Credit')->where('proyek_id',proyekId())->orderBy('kavling_id')->get();
+        // dd($semuaCicilanUnit->count());
         $transferUnit = transferUnit::where('proyek_id',proyekId())->get();
         return view ('cicilanUnit/kavling',compact('semuaCicilanUnit','transferUnit'));
     }
