@@ -31,11 +31,11 @@ class TransaksiController extends Controller
     }
 
     public function masuk(Request $request){
-        $cek = transaksi::whereNull('kategori')->whereNull('rab_id')->whereNull('rabunit_id')->get()->toArray();
+        // $cek = transaksi::whereNull('kategori')->whereNull('rab_id')->whereNull('rabunit_id')->get()->toArray();
         // foreach($cek as $c){
         //     $c->update(['kategori'=>'Pendapatan Lain']);
         // }
-        dd($cek);
+        // dd($cek);
         if($request->get('filter')){
             $start = Carbon::parse($request->start)->isoFormat('YYYY-MM-DD');
             $end = Carbon::parse($request->end)->isoFormat('YYYY-MM-DD');
