@@ -31,6 +31,11 @@ class TransaksiController extends Controller
     }
 
     public function masuk(Request $request){
+        $cek = transaksi::whereNull('kategori')->whereNotNull('kredit')->get();
+        foreach($cek as $c){
+            $c->update(['kategori'=>'Modal']);
+        }
+        // dd($cek);
         if($request->get('filter')){
             $start = Carbon::parse($request->start)->isoFormat('YYYY-MM-DD');
             $end = Carbon::parse($request->end)->isoFormat('YYYY-MM-DD');
