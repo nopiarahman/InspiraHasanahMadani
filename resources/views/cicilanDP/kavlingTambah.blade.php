@@ -188,7 +188,8 @@ function cash(){
       <tbody>
         @foreach($daftarCicilanDp as $cicilanDp)
         <tr>
-          {{-- {{updateTempo($cicilanDp)}} --}}
+          {{-- update semua tempo setelah input transaksi baru,  yes it sucks!!--}}
+          {{updateTempo($cicilanDp)}}
           <th>{{dpKe($cicilanDp->pembelian->id,$cicilanDp->tanggal)}}</th>
           <td data-order="{{$cicilanDp->tanggal}}">{{formatTanggal($cicilanDp->tanggal)}}</td>
           <td>Rp.{{number_format($cicilanDp->jumlah)}}</td>

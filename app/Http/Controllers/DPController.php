@@ -142,6 +142,7 @@ class DPController extends Controller
             }
             kasBesarMasuk($requestData);
             $update=pembelian::find($id)->update(['sisaDp'=>$akadDp-$totalTerbayar-$terbayarSekarang]);
+            
             DB::commit();
             return redirect()->route('DPKavlingTambah',['id'=>$id])->with('status','Cicilan DP Berhasil ditambahkan');
     

@@ -56,7 +56,7 @@
             @endphp
             @foreach($semuaCicilanDp as $cicilanDp)
             @if($cicilanDp->pelanggan !=null && $cicilanDp->pelanggan->kavling !=null)
-            {{-- {{updateDPPelanggan($cicilanDp)}} --}}
+            {{updateDPPelanggan($cicilanDp)}}
             <tr>
               @php
                   $n++

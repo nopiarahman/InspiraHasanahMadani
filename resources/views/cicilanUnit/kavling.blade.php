@@ -56,6 +56,7 @@
             @endphp
           @foreach($semuaCicilanUnit as $cicilanUnit)
           @if($cicilanUnit->pelanggan !=null && $cicilanUnit->pelanggan->kavling !=null)
+          {{updateCicilanPelanggan($cicilanUnit)}}
           @php
                   $n++
               @endphp

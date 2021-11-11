@@ -223,6 +223,8 @@
             $terbayar = 0;
         @endphp
         @foreach($daftarCicilanUnit as $cicilanUnit)
+        {{-- update semua tempo setelah input --}}
+        {{updateTempoCicilan($cicilanUnit)}}
         <tr>
           <th scope="row">{{cicilanKe($cicilanUnit->pembelian->id,$cicilanUnit->tanggal)}}</th>
           <td data-order="{{$cicilanUnit->tanggal}}" >{{formatTanggal($cicilanUnit->tanggal)}}</td>
