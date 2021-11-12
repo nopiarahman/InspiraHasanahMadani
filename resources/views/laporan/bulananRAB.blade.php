@@ -136,7 +136,7 @@
               @endif
             </tr>
             <tr>
-              <th colspan=3" class="text-right " >Sisa Saldo Bulan {{\Carbon\carbon::parse($start)->subMonths(1)->isoFormat('MMMM')}}</th>
+              <th colspan=3" class="text-right " >Sisa Saldo Bulan {{\Carbon\carbon::parse($start)->firstOfMonth()->subMonths(1)->isoFormat('MMMM')}}</th>
               <th class="">Rp.{{number_format(saldoBulanSebelumnya($start))}}</th>
             </tr>
             <tr>

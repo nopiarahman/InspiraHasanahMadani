@@ -32,23 +32,37 @@ class LaporanController extends Controller
     }
     
     public function laporanBulananRAB(Request $request){
-        $akunId=akun::where('proyek_id',proyekId())->where('namaAkun','pendapatan')->first();
+        // dd($request);
+        // $akunId=akun::where('proyek_id',proyekId())->where('namaAkun','pendapatan')->first();
         $start = Carbon::now()->firstOfMonth()->isoFormat('YYYY-MM-DD');
         $end = Carbon::now()->endOfMonth()->isoFormat('YYYY-MM-DD');
-        if($akunId != null){
-            if($request->get('filter')){
-                $start = Carbon::parse($request->start)->isoFormat('YYYY-MM-DD');
-                $end = Carbon::parse($request->end)->isoFormat('YYYY-MM-DD');
-                $pendapatan = transaksi::where('akun_id',$akunId->id)->whereBetween('tanggal',[$start,$end])->get();
-                // dd($request);
+        $tahunSebelumStart = Carbon::now()->subYears(1)->firstOfYear()->isoFormat('YYYY-MM-DD');
+        $tahunSebelumEnd = Carbon::now()->subYears(1)->endOfYear()->isoFormat('YYYY-MM-DD');
+        
+        if($request->get('filter')){
+            $start = Carbon::parse($request->start)->isoFormat('YYYY-MM-DD');
+            $end = Carbon::parse($request->end)->isoFormat('YYYY-MM-DD');
+            $tahunSebelumStart = Carbon::parse($request->start)->subYears(1)->firstOfYear()->isoFormat('YYYY-MM-DD');
+            $tahunSebelumEnd = Carbon::parse($request->end)->subYears(1)->endOfYear()->isoFormat('YYYY-MM-DD');
+            $pendapatan = transaksi::where('kategori','Pendapatan')->whereBetween('tanggal',[$start,$end])->get();
+            $modal = transaksi::where('kategori','Modal')->whereBetween('tanggal',[$start,$end])->get();
+            $modalTahunSebelum = transaksi::where('kategori','Modal')->whereBetween('tanggal',[$tahunSebelumStart,$tahunSebelumEnd])->first();
+            if($modalTahunSebelum){
+                $mts = $modalTahunSebelum->sum('kredit');
             }else{
-                $pendapatan = transaksi::where('akun_id',$akunId->id)->whereBetween('tanggal',[$start,$end])->get();
+                $mts = 0;
             }
+            // dd($request);
         }else{
-            $pendapatan=[];
+            $pendapatan = transaksi::where('kategori','Pendapatan')->whereBetween('tanggal',[$start,$end])->get();
+            $modal = transaksi::where('kategori','Modal')->whereBetween('tanggal',[$start,$end])->get();
+            $modalTahunSebelum = transaksi::where('kategori','Modal')->whereBetween('tanggal',[$tahunSebelumStart,$tahunSebelumEnd])->first();
+            if($modalTahunSebelum){
+                $mts = $modalTahunSebelum->sum('kredit');
+            }else{
+                $mts = 0;
+            }
         }
-        $kategoriAkun=akun::where('proyek_id',proyekId())->get()->groupBy('kategori')->forget('Pendapatan');
-        $perKategori = $kategoriAkun;
 
         /* RAB */
         $semuaRAB = rab::all()->where('proyek_id',proyekId())->groupBy(['header',function($item){
@@ -58,7 +72,7 @@ class LaporanController extends Controller
             return $item['judul'];
         }],$preserveKeys=true);
 
-        return view ('laporan/bulananRAB',compact('pendapatan','start','end','kategoriAkun','perKategori','semuaRAB','semuaUnit'));
+        return view ('laporan/bulananRAB',compact('pendapatan','start','end','semuaRAB','semuaUnit','mts'));
     }
 
     public function laporanTahunan(Request $request){
