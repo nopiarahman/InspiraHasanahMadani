@@ -64,6 +64,7 @@ Route::group(['middleware'=>['auth','role:admin,projectmanager']],function(){
 
     Route::get('/pelanggan', 'PelangganController@index')->name('pelangganIndex');
     Route::get('/pelangganNonAktif', 'PelangganController@nonAktif')->name('pelangganNonAktif');
+    Route::get('/pelangganTerhapus', 'PelangganController@terhapus')->name('pelangganTerhapus');
     Route::get('/pelangganTambah', 'PelangganController@create')->name('pelangganTambah');
     Route::get('/pelangganDetail/{id}', 'PelangganController@detail')->name('pelangganDetail');
     Route::post('/pelangganSimpan', 'PelangganController@store')->name('pelangganSimpan');
@@ -75,6 +76,7 @@ Route::group(['middleware'=>['auth','role:admin,projectmanager']],function(){
     Route::patch('/batalAkad/{id}', 'PelangganController@batalAkad')->name('batalAkad');
     Route::delete('/hapusPelanggan/{id}', 'PelangganController@destroy')->name('hapusPelanggan');
     Route::delete('/hapusPelangganNonAktif/{id}', 'PelangganController@destroyNonAktif')->name('hapusPelangganNonAktif');
+    Route::patch('/restoreTerhapus/{id}', 'PelangganController@restoreTerhapus')->name('rsetoreTerhapus');
     
     Route::get('/estimasi', 'EstimasiController@estimasi')->name('estimasi');
     

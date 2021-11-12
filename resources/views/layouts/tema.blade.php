@@ -145,6 +145,7 @@
                 <ul class="dropdown-menu">
                   <li class=" @yield('menupelangganIndex')"><a class="nav-link" href="{{route('pelangganIndex')}}">Aktif</a></li>
                   <li class=" @yield('menupelangganNonAktif')"><a class="nav-link" href="{{route('pelangganNonAktif')}}">Tidak Aktif</a></li>
+                  <li class=" @yield('menupelangganTerhapus')"><a class="nav-link" href="{{route('pelangganTerhapus')}}">Terhapus</a></li>
                 </ul>
               </li>
               {{-- <li class="@yield('menuPelanggan')"><a class="nav-link" href="{{route('pelangganIndex')}}"><i class="fas fa-user-friends"></i> <span>Pelanggan</span></a></li> --}}

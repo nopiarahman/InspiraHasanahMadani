@@ -56,6 +56,25 @@ class PelangganController extends Controller
         // dd($pelangganNonAktif);
         return view ('pelanggan/nonAktif',compact('pelangganNonAktif'));
     }
+    public function terhapus()
+    {
+        $terhapus = pelanggan::onlyTrashed()->where('proyek_id',proyekId())->orderBy('nama')->get();
+        
+        return view ('pelanggan/terhapus',compact('terhapus'));
+    }
+    public function restoreTerhapus($id, Request $request){
+        $terhapus = Pelanggan::onlyTrashed()->where('id',$id)->first();
+        // dd($terhapus);
+        try {
+            DB::beginTransaction();
+            $terhapus->restore();
+            DB::commit();
+            return redirect()->back()->with('pesan','Pelanggan berhasil di restore.');
+        } catch (\Throwable $th) {
+            DB::rollback();
+            return redirect()->back()->with('error','Gagal. Pesan Error: '.$ex->getMessage());
+        }
+    }
 
     /**
      * Show the form for creating a new resource.
