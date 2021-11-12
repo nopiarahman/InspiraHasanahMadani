@@ -8,7 +8,7 @@ use App\proyek;
 use App\detailUser;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
-class ProJectManagerController extends Controller
+class ProjectManagerController extends Controller
 {
     public function kelolaUser(){
         $semuaUser = User::all()->whereNotIn('role',['projectmanager','pelanggan']);
