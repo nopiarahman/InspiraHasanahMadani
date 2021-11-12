@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\user;
+use App\User;
 use App\proyek;
 use App\detailUser;
 use Illuminate\Support\Facades\DB;
@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Hash;
 class ProJectManagerController extends Controller
 {
     public function kelolaUser(){
-        $semuaUser = user::all()->whereNotIn('role',['projectmanager','pelanggan']);
+        $semuaUser = User::all()->whereNotIn('role',['projectmanager','pelanggan']);
         $semuaProyek = proyek::all();
         return view('user/userIndex',compact('semuaUser','semuaProyek'));
     }
@@ -31,9 +31,9 @@ class ProJectManagerController extends Controller
             $requestData['password']=Hash::make($request->sandi);
             $requestData['role'] = $request->jabatan;
             $requestData['proyek_id']=$request->proyek;
-            $user = user::create($requestData);
+            $user = User::create($requestData);
             $user->save();
-            $cekUser = user::where('email',$request->email)->first();
+            $cekUser = User::where('email',$request->email)->first();
             $detail = detailUser::create([
                 'user_id'=>$cekUser->id
             ]);
@@ -63,7 +63,7 @@ class ProJectManagerController extends Controller
     public function hapusUser(User $id){
         DB::beginTransaction();
         try {
-            user::destroy($id->id);
+            User::destroy($id->id);
             $hapusDetail = detailUser::where('user_id',$id->id)->delete();
             DB::commit();
             return redirect()->route('kelolaUser')->with('status','User berhasil dihapus');
