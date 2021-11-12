@@ -317,6 +317,7 @@
               >
               Sisa Barang</button>
               @endif
+              @endif
               <button type="button" class="btn btn-sm btn-white text-danger border-danger" 
               data-toggle="modal" 
               data-target="#hapusTransaksi" 
@@ -324,7 +325,6 @@
               data-uraian="{{$transaksi->uraian}}">
               <i class="fa fa-trash" aria-hidden="true" ></i> Hapus</button>
             </td>
-            @endif
           @endforeach
         </tbody>
         <tfoot>
