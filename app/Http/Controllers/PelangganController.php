@@ -455,6 +455,7 @@ class PelangganController extends Controller
                 $updatePembelian=pembelian::where('kavling_id',$kavlingBaru)->update(['kios_id'=>$kavlingsebelum->kios->id]);
             }
         }
+
         DB::commit();
         return redirect()->back()->with('startus','Data Unit Pelanggan berhasil diedit');
         } catch (\Exception $ex) {
@@ -537,7 +538,6 @@ class PelangganController extends Controller
             DB::rollback();
             return redirect()->back()->with('error','Gagal. Pesan Error: '.$ex->getMessage());
         }
-        
     }
     public function cariKavling(Request $request){
         // dd($request);

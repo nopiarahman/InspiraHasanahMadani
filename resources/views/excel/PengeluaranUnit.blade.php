@@ -41,14 +41,14 @@
             {{$transaksi->kategori}}
             </td>
             <td>{{$transaksi->uraian}}</td>
-            <td>Rp.{{number_format($transaksi->debet)}}</td>
+            <td>{{$transaksi->debet}}</td>
             <td>{{$transaksi->sumber}}</td>
           @endforeach
         </tbody>
         <tfoot>
           <tr>
             <td colspan="4" style="text-align: right; font-weight:bold;" class="text-primary"> <h5> Total:</h5></td>
-            <td style="font-weight:bold;" class="text-primary"> <h5> {{number_format($totalFilter)}}</h5></td>
+            <td style="font-weight:bold;" class="text-primary"> <h5> {{$totalFilter}}</h5></td>
           </tr>
         </tfoot>
       </table>

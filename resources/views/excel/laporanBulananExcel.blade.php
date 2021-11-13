@@ -19,22 +19,22 @@
     <tr>
       <td>{{$loop->iteration}}</td>
       <td colspan="2">{{$pd->uraian}}</td>
-      <td>Rp.{{number_format($pd->kredit)}}</td>
+      <td>{{$pd->kredit}}</td>
     </tr>
     @endforeach
   {{-- </tbody> --}}
 
     <tr >
       <th style="width: 20pt;font-weight:bold;" colspan="3">Pendapatan Bulan {{\Carbon\carbon::parse($start)->isoFormat('MMMM')}}</th>
-      <th style="width: 20pt;font-weight:bold;" >Rp.{{number_format($pendapatan->sum('kredit'))}}</th>
+      <th style="width: 20pt;font-weight:bold;" >{{$pendapatan->sum('kredit')}}</th>
     </tr>
     <tr>
       <th style="width: 20pt;font-weight:bold;" colspan="3"  >Sisa Saldo Bulan {{\Carbon\carbon::parse($start)->subMonths(1)->isoFormat('MMMM')}}</th>
-      <th style="width: 20pt;font-weight:bold;">Rp.{{number_format(saldoBulanSebelumnya($start))}}</th>
+      <th style="width: 20pt;font-weight:bold;">{{saldoBulanSebelumnya($start)}}</th>
     </tr>
     <tr>
       <th style="width: 20pt;font-weight:bold;" colspan="3">Total Pendapatan</th>
-      <th style="width: 20pt;font-weight:bold;" >Rp.{{number_format(saldoBulanSebelumnya($start)+$pendapatan->sum('kredit'))}}</th>
+      <th style="width: 20pt;font-weight:bold;" >{{saldoBulanSebelumnya($start)+$pendapatan->sum('kredit')}}</th>
     </tr>
     @php
     $a=[];
@@ -57,7 +57,7 @@
         <td>{{$loop->iteration}}</td>
         <td>{{$kategori->kodeAkun}}</td>
         <td>{{$kategori->namaAkun}}</td>
-        <td>Rp. {{number_format(transaksiAkun($kategori->id,$start,$end))}}</td>
+        <td>{{transaksiAkun($kategori->id,$start,$end)}}</td>
       </tr>
       @php
           $totalIsi[$judul]+=transaksiAkun($kategori->id,$start,$end);
@@ -71,18 +71,18 @@
       @endphp
       <tr>
         <th style="width: 20pt;font-weight:bold;" colspan="3">Sub Total {{$judul}}</th>
-        <th style="width: 20pt;font-weight:bold;">Rp. {{number_format($a[$judul])}}</th>
+        <th style="width: 20pt;font-weight:bold;">{{$a[$judul]}}</th>
       </tr>
     @endforeach
   </tbody>
   <tfoot>
     <tr>
       <th style="width: 20pt;font-weight:bold;" colspan="3">Total Biaya Operasional Bulanan</th>
-        <th style="width: 20pt;font-weight:bold;" >Rp. {{number_format(array_sum($c))}}</th>
+        <th style="width: 20pt;font-weight:bold;" >{{array_sum($c)}}</th>
     </tr>
     <tr>
       <th style="width: 20pt;font-weight:bold;" colspan="3">Total Laba/Rugi Berjalan</th>
-        <th style="width: 20pt;font-weight:bold;" >Rp. {{number_format($pendapatan->sum('kredit')+saldoBulanSebelumnya($start)-array_sum($c))}}</th>
+        <th style="width: 20pt;font-weight:bold;" >{{$pendapatan->sum('kredit')+saldoBulanSebelumnya($start)-array_sum($c)}}</th>
     </tr>
   </tfoot>
 </table>

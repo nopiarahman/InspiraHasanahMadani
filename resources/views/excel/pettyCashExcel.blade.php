@@ -24,7 +24,7 @@
       <tr>
         <td style="width: 20pt" colspan="2"></td>
         <th style="width: 20pt; font-weight:bold;text-align:right" class="text-primary " colspan="3" >Sisa Saldo Sebelumnya</th>
-        <th style="width: 20pt; font-weight:bold;" class="text-primary">Rp.{{number_format(saldoPettyCashBulanSebelumnya($start))}}</th>
+        <th style="width: 20pt; font-weight:bold;" class="text-primary">{{saldoPettyCashBulanSebelumnya($start)}}</th>
       </tr>
       @foreach($pettyCash as $kas)
       <tr>
@@ -33,15 +33,15 @@
         <td style="width: 20pt">{{$kas->uraian}}</td>
         <td style="width: 20pt">
           @if($kas->kredit != null)
-          Rp.{{number_format($kas->kredit)}}
+          {{$kas->kredit}}
           @endif
         </td>
         <td style="width: 20pt">
           @if($kas->debet != null)
-          Rp.{{number_format($kas->debet)}}
+          {{$kas->debet}}
           @endif
         </td>
-        <td style="width: 20pt">Rp. {{number_format($kas->saldo)}}</td>
+        <td style="width: 20pt">{{$kas->saldo}}</td>
         <td style="width: 20pt">{{$kas->sumber}}</td>
       </tr>
       @endforeach
@@ -49,9 +49,9 @@
   <tfoot>
     <tr class="bg-light">
       <th style="width: 20pt; font-weight:bold;text-align:right" colspan="3" class="text-right text-primary">Total</th>
-      <th style="width: 20pt; font-weight:bold;" class="text-primary">Rp. {{number_format($pettyCash->sum('kredit'))}}</th>
-      <th style="width: 20pt; font-weight:bold;" class="text-primary">Rp. {{number_format($pettyCash->sum('debet'))}}</th>
-      <th style="width: 20pt; font-weight:bold;" colspan="2" class="text-primary">Rp. {{number_format(totalPettyCash($start,$end))}}</th>
+      <th style="width: 20pt; font-weight:bold;" class="text-primary">{{$pettyCash->sum('kredit')}}</th>
+      <th style="width: 20pt; font-weight:bold;" class="text-primary">{{$pettyCash->sum('debet')}}</th>
+      <th style="width: 20pt; font-weight:bold;" colspan="2" class="text-primary">{{totalPettyCash($start,$end)}}</th>
       <td style="width: 20pt"></td>
     </tr>
   </tfoot>
