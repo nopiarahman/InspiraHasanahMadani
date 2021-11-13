@@ -8,6 +8,9 @@
         <div class="col">
           <h1>RAB</h1>
         </div>
+        <div class="kanan">
+          <a href="{{route('cetakRAB')}}" class="btn btn-primary"> <i class="fas fa-file-excel"></i> Export Excel</a>
+        </div>
       </div>
       <div class="row">
         <nav aria-label="breadcrumb">

@@ -328,7 +328,7 @@
             <div class="modal-dialog modal-dialog-centered" role="document">
               <div class="modal-content">
                 <div class="modal-header">
-                  <h5 class="modal-title" id="exampleModalLongTitle">Hapus Pelanggan</h5>
+                  <h5 class="modal-title" id="exampleModalLongTitle">BATAL AKAD!</h5>
                   <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                   </button>
@@ -354,7 +354,7 @@
               var id = button.data('id') // Extract info from data-* attributes
               var nama = button.data('nama') 
               var modal = $(this)
-              modal.find('.modal-text').text('Yakin ingin Membatalkan akad ' + nama+' ?')
+              modal.find('.modal-text').text('Perhatian!, Pelanggan yang telah dibatalkan akad tidak bisa dikembalikan kembali ke Aktif!, Yakin ingin Membatalkan akad ' + nama+' ?, ')
               document.getElementById('formHapus').action='/batalAkad/'+id;
               })
             });
@@ -559,7 +559,7 @@
                     Rp
                   </div>
                 </div>
-                <input type="text" class="form-control potonganDp" id="potonganDp" name="potonganDp" value="" placeholder="masukkan potongan dp baru">
+                <input type="text" class="form-control potonganDp" id="potonganDp" name="potonganDp" value="0" placeholder="masukkan potongan dp baru">
               </div>
             </div>
             <div class="form-group row mb-4">

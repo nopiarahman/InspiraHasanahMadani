@@ -129,8 +129,8 @@
               <td style="height:20pt">{{$rab->jenisUnit}}</td>
               <td style="height:20pt">{{hitungUnit($rab->isi,$rab->judul,$rab->jenisUnit)}}</td>
               <td style="height:20pt">{{satuanUnit($rab->judul)}}</td>
-              <td style="height:20pt">{{(int)$rab->hargaSatuan)}}</td>
-              <th style="font-weight: bold; height:20pt">{{(hitungUnit($rab->isi,$rab->judul,$rab->jenisUnit))*(int)$rab->hargaSatuan)}}</th>
+              <td style="height:20pt">{{(int)$rab->hargaSatuan}}</td>
+              <th style="font-weight: bold; height:20pt">{{(hitungUnit($rab->isi,$rab->judul,$rab->jenisUnit))*(int)$rab->hargaSatuan}}</th>
               @php
                   $totalIsi[$judul]=(hitungUnit($rab->isi,$rab->judul,$rab->jenisUnit))*(int)$rab->hargaSatuan+$totalIsi[$judul];
               @endphp
@@ -138,7 +138,7 @@
               <th style="font-weight: bold; height:20pt">
                 @if((int)$rab->hargaSatuan != 0)
                 {{-- pengeluaran/total*100 --}}
-                {{(float)(hitungTransaksiRABUnit($rab->id)/(hitungUnit($rab->isi,$rab->judul,$rab->jenisUnit)*(int)$rab->hargaSatuan)*100),2)}}%
+                {{(float)(hitungTransaksiRABUnit($rab->id)/(hitungUnit($rab->isi,$rab->judul,$rab->jenisUnit)*(int)$rab->hargaSatuan)*100),2}}%
                 
                 @else
                 -
@@ -168,8 +168,8 @@
           </tbody>
           <tfoot>
             <tr>
-              <th style="font-weight: bold; height:20pt" colspan="6" >TOTAL BIAYA UNIT</th>
-              <th style="font-weight: bold; height:20pt" colspan="3" > {{array_sum($b)}}</th>
+              <th style="font-weight: bold; height:20pt" colspan="6" >TOTAL RAB</th>
+              <th style="font-weight: bold; height:20pt" colspan="3" > {{array_sum($b)+array_sum($bRAB)}}</th>
           </tr>
         </tfoot>
       </table>
