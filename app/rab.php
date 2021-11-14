@@ -19,4 +19,8 @@ class rab extends Model
     {
         return $this->hasOne(transaksi::class);
     }
+    public function alokasiGudang()
+    {
+        return $this->hasOne(alokasiGudang::class);
+    }
 }

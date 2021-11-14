@@ -753,7 +753,7 @@ select.form-control:not([size]):not([multiple]) {
     .card.card-hero .card-header .card-icon {
       float: right;
       color: #b9b9b9;
-      margin: -60px; }
+      margin: -40px; }
       .card.card-hero .card-header .card-icon .ion, .card.card-hero .card-header .card-icon .fas, .card.card-hero .card-header .card-icon .far, .card.card-hero .card-header .card-icon .fab, .card.card-hero .card-header .card-icon .fal {
         font-size: 140px; }
   .card.card-statistic-1 .card-header, .card.card-statistic-2 .card-header {

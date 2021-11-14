@@ -354,6 +354,68 @@
     </div>
   </div>
   <div class="row">
+    <div class="col-lg-12 col-md-12 col-sm-12">
+      <div class="card">
+        <div class="card-header"><h4>Pendapatan</h4></div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-lg-8 col-md-8 col-sm-12">
+              {!! $chartPendapatan->container() !!}
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-12">
+              <h4 class="text-primary mb-2">Total Pendapatan</h4>
+              <div class="row">
+                <div class="col-12">
+                  <div class="extra-radius">
+                    <div class="card card-hero" >
+                      <div class="card-header" style="background-image: linear-gradient(to bottom, #8fe700, #03a827);">
+                        <div class="card-icon" style="color: rgb(2, 63, 2)">
+                          <i class="fas fa-sign " style="font-size: 6rem"></i>
+                        </div>
+                        <h5 style="font-size:2rem">Rp. {{number_format($pendapatanKavling)}}</h5>
+                        <div class="card-description">Total Pendapatan Kavling</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row mt-n2">
+                <div class="col-12">
+                  <div class="extra-radius">
+                    <div class="card card-hero" >
+                      <div class="card-header" style="background-image: linear-gradient(to bottom, #ffd208, #ee9c03);">
+                        <div class="card-icon" style="color: rgb(90, 61, 7)">
+                          <i class="fas fa-home " style="font-size: 6rem"></i>
+                        </div>
+                        <h5 style="font-size:2rem">Rp. {{number_format($pendapatanRumah)}}</h5>
+                        <div class="card-description">Total Pendapatan Rumah</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row mt-n2">
+                <div class="col-12">
+                  <div class="extra-radius">
+                    <div class="card card-hero" >
+                      <div class="card-header" style="background-image: linear-gradient(to bottom, #08ceff, #037cee);">
+                        <div class="card-icon" style="color: rgb(2, 49, 63)">
+                          <i class="fas fa-money-bill-wave " style="font-size: 6rem"></i>
+                        </div>
+                        <h5 style="font-size:2rem">Rp. {{number_format($totalPendapatan)}}</h5>
+                        <div class="card-description">Total Pendapatan</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
     <div class="col-lg-12 col-md-12 col-12 col-sm-12">
       <div class="card">
         <div class="card-header">
@@ -424,5 +486,6 @@
 {!! $chartCicilanKavling->script() !!} 
 {!! $chartCicilanRumah->script() !!} 
 {!! $chartCicilanKios->script() !!} 
+{!! $chartPendapatan->script() !!} 
 {{-- <script src="{{asset('assets/js/index.js')}}"></script> --}}
 @endsection

@@ -122,6 +122,17 @@ class HomeController extends Controller
         }
         $sisaDpKios = $totalDpKios-$totalDpKiosTerbayar;
         $sisaCicilanKios = $totalCicilanKios-$totalCicilanKiosTerbayar;
+        /* Pendapatan */
+        $pendapatanRumah = $totalDpRumah+$totalCicilanRumah;
+        $pendapatanKavling = $totalDp+$totalDpKios+$totalCicilan+$totalCicilanKios;
+        $totalPendapatan = $pendapatanRumah+$pendapatanKavling;
+        /* chart */
+        $chartPendapatan = new chartAdmin;
+        $chartPendapatan->labels(['Kalving','Rumah']);
+        $chartPendapatan->dataset('Total Pendapatan','pie',[$pendapatanKavling,$pendapatanRumah])->options([
+            'backgroundColor'=>['#169948','#ffa426']
+        ]);
+        $chartPendapatan->title("Total Pendapatan");
 
         $chartDPKavling = new chartAdmin;
         $chartDPKavling->labels(['Total Terbayar','Sisa DP']);
@@ -164,8 +175,8 @@ class HomeController extends Controller
             'totalDpTerbayar','sisaDp','dpPelanggan','cicilanPelanggan','chartKasBesar','kavling','pelanggan','dataKavling','dataPembelian','persenDiskon','id',
             'totalCicilanTerbayar','sisaCicilan','sisaDpRumah','sisaCicilanRumah','totalDpRumahTerbayar','totalCicilanRumahTerbayar',
             'totalDpKiosTerbayar','sisaDpKios','totalCicilanKiosTerbayar','sisaCicilanKios',
-
-            'chartDPKavling','chartDPRumah','chartDPKios','chartCicilanKavling','chartCicilanRumah','chartCicilanKios'
+            'pendapatanRumah','pendapatanKavling','totalPendapatan',
+            'chartPendapatan','chartDPKavling','chartDPRumah','chartDPKios','chartCicilanKavling','chartCicilanRumah','chartCicilanKios'
         ));
     }
 

@@ -194,6 +194,8 @@
       <table class="table table-sm table-hover table-striped mt-3">
         <thead>
           <tr>
+            <th scope="col">No</th>
+            <th scope="col">Kode Transaksi</th>
             <th scope="col">Tanggal</th>
             <th scope="col">Uraian</th>
             <th scope="col">Jumlah Alokasi</th>
@@ -206,6 +208,14 @@
         <tbody>
           @forelse ($id->alokasiGudang as $alokasi)
             <tr>
+              <td>{{$loop->iteration}}</td>
+              <td>
+                @if($alokasi->rab)
+                {{$alokasi->rab->kodeRAB}}
+                @elseif($alokasi->rabUnit)
+                {{$alokasi->rabUnit->kodeRAB}}
+                @endif
+              </td>
               <td>{{formatTanggal($alokasi->tanggal)}}</td>
               <td>{{$alokasi->uraian}}</td>
               <td>{{$alokasi->jumlah}} {{$alokasi->satuan}}</td>
