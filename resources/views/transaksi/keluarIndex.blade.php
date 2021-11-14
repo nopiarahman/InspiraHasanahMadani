@@ -589,7 +589,7 @@
                 <tr>
                 <th colspan="6" class="bg-light">{{$loop->iteration}}. {{$judul}}</th>
                 </tr>
-                  @foreach($semuaRABUnit as $rab)
+                  @foreach($semuaRABUnit->sortBy('isi',SORT_NATURAL) as $rab)
                   <tr>
                     <td>{{$loop->iteration}}</td>
                     <td>{{$rab->isi}}</td>

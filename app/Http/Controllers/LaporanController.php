@@ -125,7 +125,7 @@ class LaporanController extends Controller
         $proyek=proyek::find(proyekId());
         $rekening=rekening::where('proyek_id',proyekId())->get();
         $pembelian= pembelian::where('id',$id->pembelian_id)->first();
-        $uraian = 'Pembayaran Cicilan Ke '.$id->urut.' '.jenisKepemilikan($pembelian->pelanggan_id).' '.$pembelian->kavling->blok;   
+        $uraian = 'Pembayaran Cicilan Ke '.cicilanKe($id->pembelian_id,$id->tanggal).' '.jenisKepemilikan($pembelian->pelanggan_id).' '.$pembelian->kavling->blok;   
         $cicilanPertama = cicilan::where('pembelian_id',$pembelian->id)->first();
         $sampaiSekarang = cicilan::whereBetween('created_at',[$cicilanPertama->created_at,$id->created_at])->where('pembelian_id',$id->pembelian_id)->get();
         // dd($sampaiSekarang);
@@ -164,7 +164,7 @@ class LaporanController extends Controller
         $proyek=proyek::find(proyekId());       
         $pembelian= pembelian::where('id',$id->pembelian_id)->first();
         $rekening=rekening::where('proyek_id',proyekId())->get();
-        $uraian = 'Pembayaran Dp Ke '.$id->urut.' '.jenisKepemilikan($pembelian->pelanggan_id).' '.$pembelian->kavling->blok;   
+        $uraian = 'Pembayaran Dp Ke '.dpKe($id->pembelian_id,$id->tanggal).' '.jenisKepemilikan($pembelian->pelanggan_id).' '.$pembelian->kavling->blok;   
         $DpPertama = dp::where('pembelian_id',$pembelian->id)->first();
         $sampaiSekarang = dp::whereBetween('created_at',[$DpPertama->created_at,$id->created_at])->where('pembelian_id',$id->pembelian_id)->get();
         return view('cetak/kwitansiDp',compact('tempo','id','pembelian','uraian','sampaiSekarang','rekening','proyek'));
