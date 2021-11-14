@@ -146,6 +146,7 @@ Route::group(['middleware'=>['auth','role:admin,projectmanager']],function(){
     Route::get('/alokasiGudang/{id}', 'GudangController@alokasi')->name('alokasiGudang');
     Route::post('/alokasiSimpan', 'GudangController@alokasiSimpan')->name('alokasiSimpan');
     Route::delete('/hapusAlokasi/{id}', 'GudangController@hapusAlokasi')->name('hapusAlokasi');
+    Route::delete('/hapusGudang/{id}', 'GudangController@hapusGudang')->name('hapusGudang');
     // Route::post('/alokasiGudang/{id}', 'GudangController@alokasiGudang')->name('alokasiGudang');
     
     Route::get('/rekening', 'ProyekController@rekening')->name('rekening');

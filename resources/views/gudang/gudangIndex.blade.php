@@ -31,6 +31,14 @@
             {{session ('status')}}
           </div>
         @endif
+        @if (session('error'))
+          <div class="alert alert-warning alert-dismissible show fade">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+            {{session ('error')}}
+          </div>
+        @endif
       </div>
     </div>
     
@@ -73,7 +81,14 @@
           </td>
           <td>Rp.{{number_format(($gudang->sisa)*$gudang->harga)}}</td>
           <td>
-            <a href="{{route('alokasiGudang',['id'=>$gudang->id])}}" class="btn btn-white border-success text-primary"> <i class="fas fa-pen    "></i> Input </a>
+            <a href="{{route('alokasiGudang',['id'=>$gudang->id])}}" class="btn btn-sm btn-white border-success text-primary"> <i class="fas fa-pen    "></i> Input </a>
+            <button type="button" class="btn btn-sm btn-white text-danger border-danger" 
+              data-toggle="modal" 
+              data-target="#hapusTransaksi" 
+              data-id="{{$gudang->id}}" 
+              data-uraian="{{$gudang->jenisBarang}}">
+              <i class="fa fa-trash" aria-hidden="true" ></i> Hapus</button>
+
           </td>
         </tr>
         @php
@@ -92,7 +107,42 @@
     </table>
   </div>
 </div>
-
+      <!-- Modal Hapus-->
+      <div class="modal fade hapusTransaksi" id="hapusTransaksi" tabindex="-1" role="dialog" aria-labelledby="hapusTransaksiTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLongTitle">Hapus Gudang</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <form action="" method="post" id="formHapus">
+                @method('delete')
+                @csrf
+                <p class="modal-text"></p>
+              </div>
+              <div class="modal-footer">
+                <button type="submit" class="btn btn-danger">Hapus!</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+      <script type="text/javascript">
+        $(document).ready(function(){
+          $('#hapusTransaksi').on('show.bs.modal', function (event) {
+          var button = $(event.relatedTarget) // Button that triggered the modal
+          var id = button.data('id') // Extract info from data-* attributes
+          var uraian = button.data('uraian') 
+          var modal = $(this)
+          modal.find('.modal-text').text('Yakin ingin menghapus item gudang ' + uraian+' ini?')
+          document.getElementById('formHapus').action='/hapusGudang/'+id;
+          })
+        });
+      </script>
 @endsection
 @section('script')
 <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.js"></script>

@@ -204,4 +204,19 @@ class GudangController extends Controller
         }
         
     }
+    function hapusGudang (Gudang $id){
+        // dd($id);
+        DB::beginTransaction();
+        try {
+            if($id->alokasiGudang->first()){
+                return redirect()->back()->with('error','Gagal Hapus gudang, gudang mempunyai alokasi');
+            }
+            $id->delete();
+            DB::commit();
+            return redirect()->back()->with('status','Gudang Berhasil dihapus');
+        } catch (\Exception $ex) {
+            DB::rollback();
+            return redirect()->back()->with('error','Gagal. Pesan Error: '.$ex->getMessage());
+        }
+    }
 }
