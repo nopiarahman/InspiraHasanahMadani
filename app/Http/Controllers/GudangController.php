@@ -36,7 +36,6 @@ class GudangController extends Controller
     }
     public function alokasiGudang(Gudang $id, Request $request){
 
-        // dd($request);
         $requestData = $request->all();
         $requestData['sisa']=$request->sisaSebelumnya-$request->jumlahAlokasi;
         $requestData['alokasi']=$request->keterangan;

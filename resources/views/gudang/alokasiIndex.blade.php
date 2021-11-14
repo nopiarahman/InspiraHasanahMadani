@@ -187,7 +187,7 @@
   @endif
   <div class="card">
     <div class="card-header">
-      <h4>Daftar Transaksi Keluar</h4>
+      <h4>Daftar Alokasi</h4>
     </div>
     <div class="card-body">
       
