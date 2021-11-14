@@ -279,7 +279,7 @@ class PelangganController extends Controller
         return redirect()->back()->with('status','Pelanggan berhasil dirubah');
     }
     public function updateUnit(Pelanggan $id, Request $request){
-        dd($request);
+        dd($id);
         DB::beginTransaction();
         try {
             $cekPembelian=pembelian::where('pelanggan_id',$id->id)->first();

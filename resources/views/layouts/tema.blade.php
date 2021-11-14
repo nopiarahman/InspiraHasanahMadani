@@ -116,7 +116,7 @@
         <aside id="sidebar-wrapper">
           <div class="sidebar-brand">
             <a href="{{route('home')}}">
-              <img src="{{asset('assets/img/logo-color.png')}}" alt="" width="150px" style="padding-top: 3em;">
+              <img src="{{asset('assets/img/logo-color.png')}}" alt="" width="200px" style="padding-top: 3em;">
             </a>
           </div>
           <div class="sidebar-brand sidebar-brand-sm">

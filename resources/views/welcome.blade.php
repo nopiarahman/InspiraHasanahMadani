@@ -8,8 +8,8 @@
 
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 
-<meta name="description" content="Nopi Arahman">
-<meta name="author" content="Khadijah IT Solutionn">
+<meta name="description" content="Inspira Group">
+<meta name="author" content="Khadijah IT Solution">
 <link rel="shortcut icon" href="{{asset('assets/img/favicon.png')}}">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
