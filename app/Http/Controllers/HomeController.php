@@ -181,14 +181,18 @@ class HomeController extends Controller
     }
 
     public function cariPelangganHome(Request $request){
-        $id=pelanggan::find($request->id);
-        $dataKavling=kavling::where('pelanggan_id',$request->id)->first();
-        $dataPembelian=pembelian::where('pelanggan_id',$request->id)->first();
-        $persenDiskon = ($dataPembelian->diskon/$dataPembelian->harga)*100;
-        $dataDp = dp::where('pembelian_id',$dataPembelian->id)->get();
-        $dataCicilan = cicilan::where('pembelian_id',$dataPembelian->id)->get();
-        return view ('pelanggan/pelangganDetail',compact('id','dataKavling','dataPembelian','persenDiskon','dataDp','dataCicilan'));
+        $id=pelanggan::find($request->id);        
+        return redirect()->route('pelangganDetail', ['id' => $id->id]);
     }
+    // public function cariPelangganHome(Request $request){
+    //     $id=pelanggan::find($request->id);
+    //     $dataKavling=kavling::where('pelanggan_id',$request->id)->first();
+    //     $dataPembelian=pembelian::where('pelanggan_id',$request->id)->first();
+    //     $persenDiskon = ($dataPembelian->diskon/$dataPembelian->harga)*100;
+    //     $dataDp = dp::where('pembelian_id',$dataPembelian->id)->get();
+    //     $dataCicilan = cicilan::where('pembelian_id',$dataPembelian->id)->get();
+    //     return view ('pelanggan/pelangganDetail',compact('id','dataKavling','dataPembelian','persenDiskon','dataDp','dataCicilan'));
+    // }
     public function cariPelangganDaftar(Request $request){
         if ($request->has('q')) {
     	    $cari = $request->q;

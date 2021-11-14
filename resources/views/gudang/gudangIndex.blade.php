@@ -67,7 +67,7 @@
         @if($daftarGudang->first() != null)
         @foreach($daftarGudang as $gudang)
         <tr>
-          <td>{{formatTanggal($gudang->tanggalPembelian)}}</td>
+          <td data-order="{{$gudang->tanggalPembelian}}">{{formatTanggal($gudang->tanggalPembelian)}}</td>
           <td>{{$gudang->alokasiAwal}}</td>
           <td>{{$gudang->jenisBarang}}</td>
           <td>{{$gudang->banyaknya}}{{$gudang->satuan}}</td>
