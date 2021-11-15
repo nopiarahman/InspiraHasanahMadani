@@ -107,9 +107,12 @@ class TransaksiController extends Controller
             $jumlah = str_replace(',', '', $request->total);
             // dd($jumlah);
             $rules=[
-                'total'=>'required',
-                'tanggal'=>'required',
-                'uraian'=>'required',
+                'nama'=>'required',
+                'kavling_id'=>'required',
+                'tenor'=>'required',
+                'potonganDp'=>'required',
+                'harga'=>'required',
+                'dp'=>'required',
             ];
             $costumMessages = [
                 'required'=>':attribute tidak boleh kosong'
