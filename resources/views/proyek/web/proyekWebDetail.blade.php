@@ -72,7 +72,7 @@
               <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Kategori Proyek</label>
               <div class="col-sm-12 col-md-7">
                 <select class="form-control selectric" tabindex="-1" name="kategori" >
-                  <option value="Perumahan Syar'i" @if($id->kategori==="Perumahan Syar'i")selected @endif>Perumahan Syar'i</option>                  
+                  <option value="Perumahan" @if($id->kategori==="Perumahan")selected @endif>Perumahan Syar'i</option>                  
                   <option value="Konstruksi" @if($id->kategori==="Konstruksi")selected @endif>Konstruksi</option>                  
                   <option value="Konsultasi" @if($id->kategori==="Konsultasi")selected @endif>Konsultasi</option>                  
                   <option value="Desain Arsitektur" @if($id->kategori==="Desain Arsitektur")selected @endif>Desain Arsitektur</option>                  
