@@ -28,7 +28,7 @@ class WebController extends Controller
         return view('web/project',compact('daftarProyek'));
     }
     public function galeri(){
-        $semuaGaleri = galeri::latest()->paginate(2);
+        $semuaGaleri = galeri::latest()->paginate(8);
         $kategori = galeri::all()->unique('kategori');
         // dd($kategori);
 
