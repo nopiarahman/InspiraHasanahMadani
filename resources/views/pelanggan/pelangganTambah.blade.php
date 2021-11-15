@@ -358,7 +358,7 @@
                       Rp
                     </div>
                   </div>
-                  <input type="text" class="form-control potonganDp" id="potonganDp" name="potonganDp" value="">
+                  <input type="text" class="form-control potonganDp" id="potonganDp" name="potonganDp" value="0">
                 </div>
               </div>
               <div class="form-group row mb-4">

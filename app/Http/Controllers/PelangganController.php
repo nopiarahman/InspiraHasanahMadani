@@ -93,6 +93,19 @@ class PelangganController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request){
+        // dd($request);
+        $rules=[
+            'nama'=>'required',
+            'kavling_id'=>'required',
+            'tenor'=>'required',
+            'potonganDp'=>'required',
+            'harga'=>'required',
+            'dp'=>'required',
+        ];
+        $costumMessages = [
+            'required'=>':attribute tidak boleh kosong'
+        ];
+        $this->validate($request,$rules,$costumMessages);
         DB::beginTransaction();
         try {
             /* Membuat Akun User */
