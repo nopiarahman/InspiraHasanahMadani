@@ -93,7 +93,7 @@ class PelangganController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request){
-        dd($request);
+        // dd($request);
         $rules=[
             'total'=>'required',
             'tanggal'=>'required',
