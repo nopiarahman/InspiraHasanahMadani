@@ -28,7 +28,7 @@
 	<tbody>
 		<tr>
 			{{-- <td rowspan="4" valign="top" align="center"><br><img src="{{url($logoPT)}}" alt=""></td> --}}
-			<td rowspan="4" valign="top" align="center"><br><img src="{{public_path(Storage::url($proyek->logoPT))}}" alt="" width="60px"></td>
+			<td rowspan="4" valign="top" align="center"><br><img src="{{public_path(Storage::url($proyek->logoPT))}}" alt="" width="100px"></td>
 			<td align="left" colspan="3"><b><font size="4">{{$proyek->namaPT}}</b></td>
 		</tr>
 		<tr>
@@ -118,7 +118,7 @@
 		<td colspan="2" style="border-top: 1px solid #000000" align="center" valign="bottom">Kasir</td>
 		</tr>
 	<tr>
-		<td align="center" colspan="4" valign="bottom" style="height: 10px">Kwitansi ini sah tanpa tanda tangan</td>
+		<td align="center" colspan="4" valign="bottom" style="height: 10px">Kwitansi digital ini sah tanpa tanda tangan</td>
 		</tr>
 </tbody>
 <tfoot>

@@ -18,16 +18,16 @@
       <div class="col-md-12 col-sm-12 ">
         <div class="page-header">
           <div class="row">
-            <div class="col-md-2 col-sm-12">
-              <img src="{{Storage::url($proyek->logoPT)}}" alt="" class="pl-4">
+            <div class="col-3">
+              <img src="{{Storage::url($proyek->logoPT)}}"  width="200px" alt="">
             </div>
-            <div class="col-md-7 col-sm-12">
+            <div class="col-6 ml-n4">
               <h4 style="font-weight:900">{{$proyek->namaPT}}</h4>
               <small style="font-size: medium">{{$proyek->alamatPT}}</small> <br>
               <small style="font-size: medium"> <i class="fa fa-phone" aria-hidden="true"></i> : {{$proyek->telpPT}}</small><br>
               <small style="font-size: medium"> <i class="fas fa-envelope    "></i> : {{$proyek->emailPT}}</small>
             </div>
-            <div class="col-md-3 col-sm-12">
+            <div class="col-3">
                 <small style="font-size: medium">Nomor Faktur:            
                   @if(jenisKepemilikan($pembelian->pelanggan_id)=='Kavling')
                   DK
@@ -179,22 +179,22 @@
   </section>
 </div>
 <div class="d-none kwitansi2"> {{-- invoice --}}    
-  <section class="invoice">
+  <section class="invoice" style="margin-top: 100px">
     <!-- title row -->
     <div class="row border-bottom ">
       <div class="col-md-12 col-sm-12">
         <div class="page-header">
           <div class="row">
-            <div class="col-md-2 col-sm-12">
-              <img src="{{Storage::url($proyek->logoPT)}}" alt="" class="pl-4">
+            <div class="col-3">
+              <img src="{{Storage::url($proyek->logoPT)}}" width="200px" alt="">
             </div>
-            <div class="col-md-7 col-sm-12">
+            <div class="col-6 ml-n4">
               <h4 style="font-weight:900">{{$proyek->namaPT}}</h4>
               <small style="font-size: medium">{{$proyek->alamatPT}}</small> <br>
               <small style="font-size: medium"> <i class="fa fa-phone" aria-hidden="true"></i> : {{$proyek->telpPT}}</small><br>
               <small style="font-size: medium"> <i class="fas fa-envelope    "></i> : {{$proyek->emailPT}}</small>
             </div>
-            <div class="col-md-3 col-sm-12">
+            <div class="col-3">
                 <small style="font-size: medium">Nomor Faktur:            
                   @if(jenisKepemilikan($pembelian->pelanggan_id)=='Kavling')
                   DK

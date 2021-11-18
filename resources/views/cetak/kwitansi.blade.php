@@ -12,16 +12,16 @@
   <!-- Main content -->
 <div> {{-- invoice --}}    
 
-  <section class="invoice">
+  <section class="invoice ">
     <!-- title row -->
     <div class="row border-bottom ">
       <div class="col-12 ">
         <div class="page-header">
           <div class="row">
-            <div class="col-2">
-              <img src="{{Storage::url($proyek->logoPT)}}" alt="" class="pl-4">
+            <div class="col-3">
+              <img src="{{Storage::url($proyek->logoPT)}}" width="200px" alt="" >
             </div>
-            <div class="col-7">
+            <div class="col-6 ml-n4">
               <h4 style="font-weight:900">{{$proyek->namaPT}}</h4>
               <small style="font-size: medium">{{$proyek->alamatPT}}</small> <br>
               <small style="font-size: medium"> <i class="fa fa-phone" aria-hidden="true"></i> : {{$proyek->telpPT}}</small><br>
@@ -53,7 +53,7 @@
     <table class="table table-sm table-responsive" style="font-size: medium">
       <tr style="font-size: medium">
         <td style="width: 20%"> Telah Diterima Dari</td>
-        <td style="width: 15%">: <span class="font-weight-bold">{{$pembelian->pelanggan->nama}}</span></td>
+        <td style="width: 25%">: <span class="font-weight-bold">{{$pembelian->pelanggan->nama}}</span></td>
         <td></td>
         <th rowspan="2" style="width: 65%;vertical-align:middle" class="border border-success"> 
           <h5 class="text-center align-middle mb-n1" style="font-style: italic">{{terbilang($id->jumlah)}} Rupiah</h5> 
@@ -178,16 +178,16 @@
   </section>
 </div>
 <div class="d-none kwitansi2 "> {{-- invoice --}}    
-  <section class="invoice ">
+  <section class="invoice " style="margin-top: 100px">
     <!-- title row -->
     <div class="row border-bottom mt-n5">
       <div class="col-12 ">
         <div class="page-header ">
           <div class="row">
-            <div class="col-md-2 col-sm-12">
-              <img src="{{Storage::url($proyek->logoPT)}}" alt="" class="pl-4">
+            <div class="col-3 ">
+              <img src="{{Storage::url($proyek->logoPT)}}" alt="" width="200px" class="pr-4">
             </div>
-            <div class="col-md-7 col-sm-12">
+            <div class="col-6  ml-n4" >
               <h4 style="font-weight:900">{{$proyek->namaPT}}</h4>
               <small style="font-size: medium">{{$proyek->alamatPT}}</small> <br>
               <small style="font-size: medium"> <i class="fa fa-phone" aria-hidden="true"></i> : {{$proyek->telpPT}}</small><br>
@@ -219,7 +219,7 @@
     <table class="table table-sm table-responsive" style="font-size: medium">
       <tr style="font-size: medium">
         <td style="width: 20%"> Telah Diterima Dari</td>
-        <td style="width: 15%">: <span class="font-weight-bold">{{$pembelian->pelanggan->nama}}</span></td>
+        <td style="width: 25%">: <span class="font-weight-bold">{{$pembelian->pelanggan->nama}}</span></td>
         <td></td>
         <th rowspan="2" style="width: 65%;vertical-align:middle" class="border border-success"> 
           <h5 class="text-center align-middle mb-n1" style="font-style: italic">{{terbilang($id->jumlah)}} Rupiah</h5> 
