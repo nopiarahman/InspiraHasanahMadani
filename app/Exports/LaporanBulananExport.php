@@ -15,13 +15,25 @@ class LaporanBulananExport implements FromView ,ShouldAutoSize
     protected $pendapatan;
     protected $start;
     protected $end;
-    protected $kategoriAkun;
+    protected $mts;
+    protected $ats;
+    protected $semuaRAB;
+    protected $semuaUnit;
+    protected $transaksiAset;
+    protected $bulan;
+    protected $tahuniniStart;
 
-    function __construct($pendapatan,$start,$end,$kategoriAkun) {
+    function __construct($transaksiAset,$ats,$pendapatan,$start,$end,$mts,$bulan,$tahuniniStart,$semuaRAB,$semuaUnit) {
         $this->pendapatan = $pendapatan;
         $this->start = $start;
         $this->end = $end;
-        $this->kategoriAkun = $kategoriAkun;
+        $this->mts = $mts;
+        $this->ats = $ats;
+        $this->semuaRAB = $semuaRAB;
+        $this->semuaUnit = $semuaUnit;
+        $this->transaksiAset = $transaksiAset;
+        $this->bulan = $bulan;
+        $this->tahuniniStart = $tahuniniStart;
     }
     public function view(): View
     {
@@ -29,7 +41,13 @@ class LaporanBulananExport implements FromView ,ShouldAutoSize
             'pendapatan'=> $this->pendapatan,
             'start'=> $this->start,
             'end'=> $this->end,
-            'kategoriAkun'=> $this->kategoriAkun
+            'mts'=> $this->mts,
+            'ats'=> $this->ats,
+            'semuaRAB'=> $this->semuaRAB,
+            'semuaUnit'=> $this->semuaUnit,
+            'transaksiAset'=> $this->transaksiAset,
+            'bulan'=> $this->bulan,
+            'tahuniniStart'=> $this->tahuniniStart
         ]);
     }
 }

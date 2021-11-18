@@ -111,24 +111,108 @@
     <h4>Laporan Keuangan Bulan {{\Carbon\carbon::parse($start)->firstOfMonth()->isoFormat('MMMM')}}</h4>
   </div>
       <div class="card-body">
-        <table class="table table-sm table-hover table-striped">
+        <table class="table table-sm table-hover">
           <thead>
             <tr>
-              <th scope="col" colspan="4" class="bg-primary text-white">Pendapatan</th>
+              <th scope="col" colspan="3" class="bg-primary text-white">Modal</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="bg-light">
+              <td></td>
+              <th>Modal Tahun Sebelumnya</th>
+              <th>Rp. {{number_format($mts)}}</th>
+            </tr>
+            @php
+                $b=[];
+            @endphp
+            @forelse ($bulan as $single=>$a)
+            <tr>
+              <td>{{$loop->iteration}}</td>
+              <th >Modal Bulan {{Carbon\Carbon::parse($a->first()->tanggal)->isoFormat('MMMM')}}</th>
+              <th>
+                Rp. {{number_format($a->sum('kredit'))}}
+                @php
+                    $b[]=$a->sum('kredit');
+                @endphp
+              </th>
+            </tr>              
+            @empty
+            @endforelse
+          {{-- </tbody>
+          <tfoot> --}}
+            <tr class="bg-light">
+              <td></td>
+              <th>Total Modal Tahun {{Carbon\Carbon::parse($tahuniniStart)->isoFormat('YYYY')}}</th>
+              <th>Rp. {{number_format(array_sum($b))}}</th>
+            </tr>
+            <tr class="bg-light">
+              <td></td>
+              <th>Total Modal</th>
+              <th>Rp. {{number_format(array_sum($b)+$mts)}}</th>
+            </tr>
+          {{-- </tfoot> --}}
+        {{-- </table>
+        <table class="table table-sm table-hover"> --}}
+          <thead>
+            <tr>
+              <th scope="col" colspan="3" class="bg-primary text-white">Aset</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="bg-light">
+              <td></td>
+              <th>Aset Tahun Sebelumnya</th>
+              <th>Rp. {{number_format($ats)}}</th>
+            </tr>
+            @php
+                $c=[];
+            @endphp
+            @forelse ($transaksiAset as $single=>$b)
+            <tr>
+              <td>{{$loop->iteration}}</td>
+              <th >Aset Bulan {{Carbon\Carbon::parse($b->first()->tanggal)->isoFormat('MMMM')}}</th>
+              <th>
+                Rp. {{number_format($b->sum('debet'))}}
+                @php
+                    $c[]=$b->sum('debet');
+                @endphp
+              </th>
+            </tr>              
+            @empty
+            @endforelse
+          {{-- </tbody>
+          <tfoot> --}}
+            <tr class="bg-light">
+              <td></td>
+              <th>Total Aset Tahun {{Carbon\Carbon::parse($tahuniniStart)->isoFormat('YYYY')}}</th>
+              <th>Rp. {{number_format(array_sum($c))}}</th>
+            </tr>
+            <tr class="bg-light">
+              <td></td>
+              <th>Total Aset</th>
+              <th>Rp. {{number_format(array_sum($c)+$ats)}}</th>
+            </tr>
+          {{-- </tfoot> --}}
+        {{-- </table>
+        <table class="table table-sm table-hover table-striped"> --}}
+          <thead>
+            <tr>
+              <th scope="col" colspan="3" class="bg-primary text-white">Pendapatan</th>
             </tr>
           </thead>
           <tbody>
             @foreach($pendapatan as $pd)
             <tr>
               <td>{{$loop->iteration}}</td>
-              <td colspan="2">{{$pd->uraian}}</td>
+              <td>{{$pd->uraian}}</td>
               <td>Rp.{{number_format($pd->kredit)}}</td>
             </tr>
             @endforeach
           </tbody>
         
             <tr class="border-top border-success">
-              <th colspan=3" class="text-right " >Pendapatan Bulan {{\Carbon\carbon::parse($start)->isoFormat('MMMM')}}</th>
+              <th colspan="2" class="text-right " >Pendapatan Bulan {{\Carbon\carbon::parse($start)->isoFormat('MMMM')}}</th>
               @if($pendapatan !=null)
               <th class="">Rp.{{number_format($pendapatan->sum('kredit'))}}</th>
               @else
@@ -136,69 +220,17 @@
               @endif
             </tr>
             <tr>
-              <th colspan=3" class="text-right " >Sisa Saldo Bulan {{\Carbon\carbon::parse($start)->firstOfMonth()->subMonths(1)->isoFormat('MMMM')}}</th>
+              <th colspan="2" class="text-right " >Sisa Saldo Bulan {{\Carbon\carbon::parse($start)->firstOfMonth()->subMonths(1)->isoFormat('MMMM')}}</th>
               <th class="">Rp.{{number_format(saldoBulanSebelumnya($start))}}</th>
             </tr>
             <tr>
-              <th colspan=3" class="text-right bg-secondary" >Total Pendapatan</th>
+              <th colspan="2" class="text-right bg-secondary" >Total Pendapatan</th>
               @if($pendapatan !=null)
               <th class="bg-secondary">Rp.{{number_format(saldoBulanSebelumnya($start)+$pendapatan->sum('kredit'))}}</th>
               @else
               <th class="bg-secondary">Rp.0</th>
               @endif
             </tr>
-            {{-- @php
-            $a=[];
-            $b=[];
-            $c=[];
-            $totalIsi=[];
-            @endphp
-            @foreach($perKategori as $judul=>$kategoriAkun)
-            @php
-              $a[$judul]=0;
-              $c[$judul]=0;
-              $totalIsi[$judul]=0;
-            @endphp
-            <tr>
-              <th colspan="4" class="">{{$loop->iteration}}. {{$judul}}</th>
-            </tr>
-              @foreach($kategoriAkun as $kategori)
-              <tr>
-                <td>{{$loop->iteration}}</td>
-                <td>{{$kategori->kodeAkun}}</td>
-                <td>{{$kategori->namaAkun}}</td>
-                <td>Rp. {{number_format(transaksiAkun($kategori->id,$start,$end))}}</td>
-              </tr>
-              @php
-                  $totalIsi[$judul]+=transaksiAkun($kategori->id,$start,$end);
-              @endphp
-              @endforeach
-              @php
-              $a[$judul]=$totalIsi[$judul]
-              @endphp
-              @php
-                  $c[$judul]=$a[$judul]-$c[$judul];
-              @endphp
-              <tr class="border-top border-success">
-                <th colspan="3" class="text-right " >Sub Total {{$judul}}</th>
-                <th class="" >Rp. {{number_format($a[$judul])}}</th>
-              </tr>
-            @endforeach
-          </tbody>
-          <tfoot>
-            <tr>
-              <th colspan="3" class="text-right bg-secondary" >Total Biaya Operasional Bulanan</th>
-                <th class="bg-secondary" >Rp. {{number_format(array_sum($c))}}</th>
-            </tr>
-            <tr>
-              <th colspan="3" class="text-right bg-info text-white" >Total Laba/Rugi Berjalan</th>
-              @if($pendapatan !=null)
-              <th class="bg-info text-white" >Rp. {{number_format($pendapatan->sum('kredit')+saldoBulanSebelumnya($start)-array_sum($c))}}</th>
-              @else
-              <th class="bg-info text-white" >Rp. 0</th>
-              @endif
-            </tr>
-          </tfoot> --}}
         </table>
       </div>
     </div>
@@ -241,21 +273,10 @@
               <tr>
                 <td>{{$loop->iteration}}</td>
                 <td>{{$rab->isi}}</td>
-                {{-- <td>{{$rab->volume}}</td>
-                <td>{{$rab->satuan}}</td>
-                <td>Rp.{{number_format((int)$rab->hargaSatuan)}}</td>
-                <th>Rp.{{number_format($rab->total)}}</th> --}}
                 <th> <a class="text-warning font-weight-bold" href="{{route('transaksiRAB',['id'=>$rab->id])}}"> Rp. {{number_Format(hitungTransaksiRABRange($rab->id,$start,$end))}}</a></th>
                 @php
                     $totalIsi[$judul]+=hitungTransaksiRABRange($rab->id,$start,$end);
                 @endphp
-                {{-- <th>
-                  @if($rab->total != 0)
-                  {{number_format((float)(hitungTransaksiRAB($rab->id)/$rab->total*100),2)}}%
-                  @else
-                  -
-                  @endif
-                </th> --}}
               </tr>
               @endforeach
               @php
@@ -278,15 +299,7 @@
               </tr>
               @endforeach
             </tbody>
-            {{-- <tfoot>
-              <tr>
-                <th colspan="5" class="text-white bg-warning text-right">TOTAL RAB</th>
-                <th colspan="4" class="bg-warning text-white" >Rp. {{number_format(array_sum($bRAB))}}</th>
-            </tr>
-          </tfoot> --}}
         </table>
-      {{-- </div> --}}
-      {{-- <div class="card-body"> --}}
         <table class="table table-sm table-hover table-responsive-sm">
           <thead>
             <tr>
@@ -315,30 +328,14 @@
             <tr>
               <th colspan="3" class="">{{$loop->iteration}}. {{$judul}}</th>
             </tr>
-              @foreach($semuaUnit as $rab)
+              @foreach($semuaUnit->sortBy('isi',SORT_NATURAL) as $rab)
               <tr>
                 <td>{{$loop->iteration}}</td>
                 <td>{{$rab->isi}}</td>
-                {{-- <td>{{$rab->jenisUnit}}</td>
-                <td>{{hitungUnit($rab->isi,$rab->judul,$rab->jenisUnit)}}</td>
-                <td>{{satuanUnit($rab->judul)}}</td> --}}
-                {{-- <td>Rp.{{number_format((int)$rab->hargaSatuan)}}</td> --}}
-                {{-- <th>Rp.{{number_format((hitungUnit($rab->isi,$rab->judul,$rab->jenisUnit))*(int)$rab->hargaSatuan)}}</th>
-                @php
-                    $totalIsi[$judul]=(hitungUnit($rab->isi,$rab->judul,$rab->jenisUnit))*(int)$rab->hargaSatuan+$totalIsi[$judul];
-                @endphp --}}
                 <th > <a class="text-warning font-weight-bold" href="{{route('transaksiRABUnit',['id'=>$rab->id])}}"> Rp.{{number_format(hitungTransaksiRABUnitRange($rab->id,$start,$end))}}</a></th>
                 @php
                     $totalIsi[$judul]+=hitungTransaksiRABUnitRange($rab->id,$start,$end);
                 @endphp
-                  {{-- @if((int)$rab->hargaSatuan != 0) --}}
-                  {{-- pengeluaran/total*100 --}}
-                  {{-- {{number_format((float)(hitungTransaksiRABUnit($rab->id)/(hitungUnit($rab->isi,$rab->judul,$rab->jenisUnit)*(int)$rab->hargaSatuan)*100),2)}}% --}}
-                  
-                  {{-- @else
-                  -
-                  @endif
-                </th> --}}
               </tr>
               @endforeach
               @php

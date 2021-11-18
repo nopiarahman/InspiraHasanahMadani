@@ -93,7 +93,7 @@
               @else
               <a href="#" class="badge badge-secondary">DP Belum Lunas</a>
               @endif
-              @if($cicilanUnit->sisaKewajiban==0)
+              @if($cicilanUnit->sisaKewajiban-cicilanTerbayarTotal($cicilanUnit->id) <=0)
               <span class="badge badge-info"><i class="fas fa-check"></i> Lunas</span>
               @endif
             </td>

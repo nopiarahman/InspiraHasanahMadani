@@ -784,3 +784,11 @@ function sisaDpKavling(){
     // dd($sisa);
     return $sisa;
 }
+function cicilanTerbayarTotal($id){
+    $sisa = cicilan::where('pembelian_id',$id)->get();
+    if($sisa){
+        return $sisa->sum('jumlah');
+    }
+    return 0;
+    
+}
