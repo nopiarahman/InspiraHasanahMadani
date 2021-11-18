@@ -291,7 +291,7 @@
               @endif
             </td>
             <td>{{$transaksi->uraian}} {{$transaksi->jumlah}} {{$transaksi->satuan}}</td>
-            <td>Rp.{{number_format($transaksi->debet)}}</td>
+            <td data-order="{{$transaksi->debet}}" >Rp.{{number_format($transaksi->debet)}}</td>
             <td>{{$transaksi->sumber}}</td>
             <td>
               @if($transaksi->sumber != "Gudang")

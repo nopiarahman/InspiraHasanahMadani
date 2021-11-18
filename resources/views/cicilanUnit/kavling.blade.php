@@ -74,7 +74,13 @@
             <td>{{unitPelanggan($cicilanUnit->kavling_id)->blok}}</td>
             @endif
             <td>{{jenisKepemilikan($cicilanUnit->pelanggan_id)}}</td>
-            <td>
+            <td 
+            @if($cicilanUnit->sisaCicilan != null ||$cicilanUnit->sisaCicilan <=0)
+            data-order="{{$cicilanUnit->sisaCicilan}}"
+            @else
+            data-order="{{$cicilanUnit->sisaKewajiban}}"
+            @endif
+            >
               @if($cicilanUnit->sisaCicilan != null ||$cicilanUnit->sisaCicilan <=0)
               Rp.{{number_format($cicilanUnit->sisaCicilan)}}
               @else

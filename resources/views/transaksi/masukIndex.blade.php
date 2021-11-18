@@ -116,7 +116,7 @@
             {{$transaksi->kategori}}
           </td>
           <td>{{$transaksi->uraian}}</td>
-          <td>Rp.{{number_format($transaksi->kredit)}}</td>
+          <td data-order="{{$transaksi->kredit}}" >Rp.{{number_format($transaksi->kredit)}}</td>
           <td>{{$transaksi->sumber}}</td>
           {{-- <td><a href="#" class="badge badge-primary">Detail</a></td> --}}
         </tr>

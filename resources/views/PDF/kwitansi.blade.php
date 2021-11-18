@@ -99,7 +99,7 @@
 	<tr>
 		<td>Status</td>
 		<td>:
-			@if($pembelian->sisaCicilan <=0)
+			@if($id->pembelian->sisaKewajiban-cicilanTerbayar($id->pembelian_id,$id->tanggal) <=0)
 			<span class="text-primary">Lunas </span>
 			@else
 			<span class="text-warning">Belum Lunas </span>
@@ -108,7 +108,13 @@
 	</tr>
 	<tr>
 		<td>Jatuh Tempo</td>
-		<td>: 1-10 {{Carbon\Carbon::parse($tempo)->isoFormat('MMMM YYYY')}}</td>
+		<td>:
+			@if($id->pembelian->sisaKewajiban-cicilanTerbayar($id->pembelian_id,$id->tanggal) <=0)
+			-
+			@else
+			1-10 {{Carbon\Carbon::parse($tempo)->isoFormat('MMMM YYYY')}}
+			@endif
+		</td>
 		<td colspan="2" style="border-top: 1px solid #000000" align="center" valign="bottom">Kasir</td>
 		</tr>
 	<tr>
