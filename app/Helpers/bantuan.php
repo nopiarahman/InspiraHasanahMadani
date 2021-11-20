@@ -214,6 +214,24 @@ function kasBesarKeluar($dataArray)
     // dd($dataTransaksi);
     transaksi::create($dataTransaksi);
 }
+function kasBesarKeluarTanpaJumlah($dataArray)
+{
+    $data = collect($dataArray);
+    $total= str_replace(',', '', $data->get('total'));
+    $dataTransaksi['tanggal'] = $data->get('tanggal');
+    $dataTransaksi['satuan'] = $data->get('satuan');
+    $dataTransaksi['rab_id'] = $data->get('rab_id');
+    $dataTransaksi['rabunit_id'] = $data->get('rabunit_id');
+    $dataTransaksi['akun_id'] = $data->get('akun_id');
+    $dataTransaksi['uraian'] = $data->get('uraian');
+    $dataTransaksi['sumber'] = $data->get('sumber');
+    $dataTransaksi['debet'] = $total;
+    $dataTransaksi['no'] = $data->get('no');
+    $dataTransaksi['saldo'] = $data->get('saldo');
+    $dataTransaksi['proyek_id'] = proyekId();
+    // dd($dataTransaksi);
+    transaksi::create($dataTransaksi);
+}
 function pettyCashKeluar($dataArray)
 {
     $data = collect($dataArray);

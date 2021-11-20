@@ -42,4 +42,5 @@ class transaksi extends Model
     {
         return $this->belongsTo(rabUnit::class);
     }
+
 }

@@ -120,11 +120,13 @@ class HomeController extends Controller
                 $totalCicilanKiosTerbayar += $a->cicilan()->sum('jumlah');
             }
         }
+        $kelebihanTanah=transaksi::where('kategori','Kelebihan Tanah')->where('proyek_id',proyekId())->get()->sum('kredit');
+        // dd($kelebihanTanah);
         $sisaDpKios = $totalDpKios-$totalDpKiosTerbayar;
         $sisaCicilanKios = $totalCicilanKios-$totalCicilanKiosTerbayar;
         /* Pendapatan */
         $pendapatanRumah = $totalDpRumah+$totalCicilanRumah;
-        $pendapatanKavling = $totalDp+$totalDpKios+$totalCicilan+$totalCicilanKios;
+        $pendapatanKavling = $totalDp+$totalDpKios+$totalCicilan+$totalCicilanKios+$kelebihanTanah;
         $totalPendapatan = $pendapatanRumah+$pendapatanKavling;
         /* chart */
         $chartPendapatan = new chartAdmin;

@@ -71,6 +71,7 @@
             <div class="col-sm-12 col-md-7">
               {{-- <img src="{{Storage::url($proyek->logoPT)}}" alt=""> --}}
               <input type="file" class="form-control @error('logoPT') is-invalid @enderror" name="logoPT" id="logoPT" value="{{old('logoPT')}}">
+              <div class="text-primary">Ukuran logo disarankan 200x100px</div>
               <img src="{{Storage::url($proyek->logoPT)}}" id="img-tag" width="100%">
               @error('logoPT')
                 <div class="invalid-feedback">{{$message}}</div>

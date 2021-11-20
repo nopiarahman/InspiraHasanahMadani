@@ -98,6 +98,7 @@
                 <select class="form-control" tabindex="-1" name="kategori" >
                 <option value="Modal">Modal</option>                  
                 <option value="Aset">Aset</option>                  
+                <option value="Kelebihan Tanah">Kelebihan Tanah</option>                  
                 <option value="Pendapatan Lain">Pendapatan Lain-lain</option>                  
               </select>
                 @error('uraian')

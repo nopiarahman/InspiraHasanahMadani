@@ -10,6 +10,7 @@ use App\rabUnit;
 use App\akun;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class PengembalianController extends Controller
 {
@@ -21,7 +22,7 @@ class PengembalianController extends Controller
     public function buatPengembalian(Pelanggan $id, Request $request)
     {
         /* RAB */
-        // dd($id);
+        // dd($id->pembelian);
         $semuaRAB = rab::where('proyek_id',proyekId())->get()->groupBy(['header',function($item){
             return $item['judul'];
         }],$preserveKeys=true);
@@ -35,79 +36,21 @@ class PengembalianController extends Controller
         $perHeaderUnit=$semuaRABUnit;
         $perJudulUnit=$semuaRABUnit;
 
-        /* Akun */
-        $semuaAkun=akun::where('proyek_id',proyekId())->get();
-        $kategoriAkun=akun::where('proyek_id',proyekId())->get()->groupBy('kategori');
-        $perKategori = $kategoriAkun;
-        
         /* pengembalian */
         $pengembalian=pengembalian::where('pelanggan_id',$id->id)->get();
-        return view ('pengembalian/buatPengembalian',compact('id','pengembalian','semuaAkun','perKategori','kategoriAkun','perHeader','semuaRAB','perJudul','perHeaderUnit','semuaRABUnit','perJudulUnit'));
+        return view ('pengembalian/buatPengembalian',compact('id','pengembalian','perHeader','semuaRAB','perJudul','perHeaderUnit','semuaRABUnit','perJudulUnit'));
     }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+    public function destroy(Pengembalian $id){
+        DB::beginTransaction();
+        try {
+            $id->delete();
+            $transaksi=transaksi::find($id->transaksi_id)->delete();
+            DB::commit();
+            return redirect()->back()->with('status','Transaksi berhasil dihapus');
+        } catch (\Exception $ex) {
+            DB::rollback();
+            return redirect()->back()->with('error','Gagal. Pesan Error: '.$ex->getMessage());
+        }
     }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\pengembalian  $pengembalian
-     * @return \Illuminate\Http\Response
-     */
-    public function show(pengembalian $pengembalian)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\pengembalian  $pengembalian
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(pengembalian $pengembalian)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\pengembalian  $pengembalian
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, pengembalian $pengembalian)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\pengembalian  $pengembalian
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(pengembalian $pengembalian)
-    {
-        //
-    }
+    
 }

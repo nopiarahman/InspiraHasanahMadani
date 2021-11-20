@@ -71,25 +71,23 @@
         </tr> 
         <tr>
           <th>Total Pembayaran DP</th>
-          <td>: Rp. {{number_format($id->pembelian->dp-$id->pembelian->sisaDp)}}</td>
-          @php
-              $dp = $id->pembelian->dp-$id->pembelian->sisaDp;
-          @endphp
+          <td>: Rp. {{number_format(cekTotalDp($id->pembelian->id))}}</td>
         </tr>
         <tr>
           <th>Total Pembayaran Unit</th>
-          <td>: Rp. {{number_format($id->pembelian->sisaKewajiban-$id->pembelian->sisaCicilan)}}</td>
-          @php
-              $cicilan=$id->pembelian->sisaKewajiban-$id->pembelian->sisaCicilan
-          @endphp
+          <td>: Rp. {{number_format(cicilanTerbayarTotal($id->pembelian->id))}}</td>
         </tr>
         <tr>
           <th>Potongan Biaya</th>
-          <td>: Rp. {{number_format(5000000)}}</td>
+          <td>: Rp. {{number_format($id->pembelian->pengembalian)}}     
+            <button class="btn btn-sm btn-primary" data-toggle="modal" data-target="#tanggalAkad"> 
+              <i class="fas fa-pen    "></i> Ganti Nilai Potongan
+            </button>
+          </td>
         </tr>
         <tr>
           <th>Total Pengembalian Dana</th>
-          <td>: Rp. {{number_format($dp+$cicilan-5000000)}}</td>
+          <td>: Rp. {{number_format(cekTotalDp($id->pembelian->id)+cicilanTerbayarTotal($id->pembelian->id)-$id->pembelian->pengembalian)}}</td>
         </tr>
       </table>
       </div>
@@ -113,27 +111,11 @@
             </div>
           </div>
           <div class="form-group row mb-4">
-            <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Kode Akun</label>
-            <div class="input-group col-sm-12 col-md-7">
-              {{-- <div class="input-group-prepend"> --}}
-                <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#pilihAkun">Pilih Akun</a>
-              {{-- </div> --}}
-            </div>
-          </div>
-          <div class="form-group row mb-4">
-            <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Nama Akun</label>
-            <div class="col-sm-12 col-md-7">
-              <input type="text" readonly class="form-control" name="" id="isiNamaAkun" value="{{old('isiNamaAkun')}}">
-            </div>
-          </div>
-          <div class="form-group row mb-4">
             <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Kategori RAB</label>
             <div class="input-group col-sm-12 col-md-7">
               <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#pilihRAB">Pilih RAB</a>
               <div class="input-group-prepend mx-3 mt-1">
-                {{-- <div class="input-group-text " style="border: none"> --}}
                   atau
-                {{-- </div> --}}
               </div>
               <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#pilihRABUnit">Pilih Biaya Unit</a>
             </div>
@@ -157,38 +139,7 @@
               @enderror
             </div>
           </div>
-          {{-- <div class="form-group row mb-4">
-            <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Jumlah</label>
-            <div class="col-sm-12 col-md-7">
-              <input type="text" class="form-control jumlah @error('uraian') is-invalid @enderror" name="jumlah" value="{{old('jumlah')}}" id="jumlahBarang">
-              @error('jumlah')
-                <div class="invalid-feedback">{{$message}}</div>
-              @enderror
-            </div>
-          </div>
-          <div class="form-group row mb-4">
-            <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Satuan</label>
-            <div class="col-sm-12 col-md-7">
-              <input type="text" class="form-control @error('uraian') is-invalid @enderror" name="satuan" value="{{old('satuan')}}">
-              @error('satuan')
-                <div class="invalid-feedback">{{$message}}</div>
-              @enderror
-            </div>
-          </div> --}}
-          {{-- <div class="form-group row mb-4">
-            <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Harga Satuan</label>
-            <div class="input-group col-sm-12 col-md-7">
-              <div class="input-group-prepend">
-                <div class="input-group-text">
-                  Rp
-                </div>
-              </div>
-              <input type="text" class="form-control hargaSatuan @error('hargaSatuan') is-invalid @enderror" name="hargaSatuan" value="{{old('hargaSatuan')}}" id="hargaSatuan">
-              @error('hargaSatuan')
-                <div class="invalid-feedback">{{$message}}</div>
-              @enderror
-            </div>
-          </div> --}}
+          
           <div class="form-group row mb-4">
             <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Jumlah</label>
             <div class="input-group col-sm-12 col-md-7">
@@ -197,7 +148,7 @@
                   Rp
                 </div>
               </div>
-              <input type="text" class="form-control totalHarga @error('total') is-invalid @enderror" name="total" value="{{old('total')}}" id="totalHarga">
+              <input type="text" class="form-control jumlah @error('total') is-invalid @enderror" name="total" value="{{old('total')}}" id="totalHarga">
               @error('total')
                 <div class="invalid-feedback">{{$message}}</div>
               @enderror
@@ -268,11 +219,11 @@
       <table class="table table-hover table-striped mt-3" id="table">
         <thead>
           <tr>
-            <td scope="col">No</td>
+            <th scope="col">No</th>
             <th scope="col">Tanggal</th>
             <th scope="col">Jumlah</th>
             <th scope="col">Sisa Pengembalian</th>
-            {{-- <th scope="col">Aksi</th> --}}
+            <th scope="col">Aksi</th>
           </tr>
         </thead>
         <tbody>
@@ -283,219 +234,59 @@
             <td>Rp. {{number_format($p->jumlah)}}</td>
             <td>Rp. {{number_format($p->sisaPengembalian)}}</td>
             <td>
-              {{-- @if($transaksi->sumber != "Gudang")
-              @if (cekGudang($transaksi->id) == true)
-              
-              <a href="{{route('gudang')}}" type="button" class="btn btn-sm btn-white text-primary border-success">
-              <i class="fas fa-warehouse "></i> Ada Stok Gudang</a>
-              @else
-              <button type="button" class="btn btn-sm btn-white text-primary border-success" 
-              data-toggle="modal" 
-              data-target="#keGudang" 
-              data-id="{{$transaksi->id}}" 
-              data-tanggal="{{$transaksi->tanggal}}" 
-              data-uraian="{{$transaksi->uraian}}" 
-              data-jumlah="{{$transaksi->jumlah}}" 
-              data-satuan="{{$transaksi->satuan}}" 
-              data-harga="{{$transaksi->hargaSatuan}}" 
-              data-total="{{$transaksi->debet}}" 
-              data-akun="{{$transaksi->akun->id}}" 
-              data-awal="{{$transaksi->akun->namaAkun}}" 
-              >
-              Sisa Barang</button>
-              @endif
               <button type="button" class="btn btn-sm btn-white text-danger border-danger" 
               data-toggle="modal" 
               data-target="#hapusTransaksi" 
-              data-id="{{$transaksi->id}}" 
-              data-uraian="{{$transaksi->uraian}}">
+              data-id="{{$p->id}}">
               <i class="fa fa-trash" aria-hidden="true" ></i> Hapus</button>
             </td>
-            @endif --}}
           @endforeach
         </tbody>
         <tfoot>
           <tr>
-            <th colspan="3" class="text-right text-primary">Total Transaksi</th>
-            {{-- <th colspan="2" class="text-primary">Rp. {{number_format($transaksiKeluar->sum('debet'))}}</th> --}}
+            <th colspan="2" class="text-right text-primary">Total Transaksi</th>
+            <th colspan="3" class="text-primary">Rp. {{number_format($pengembalian->sum('jumlah'))}}</th>
           </tr>
         </tfoot>
       </table>
     </div>
   </div>
-  {{-- modal keGudang --}}
-<div class="modal fade keGudang bd-example-modal-lg ml-5" id="keGudang" tabindex="-1" role="dialog" aria-labelledby="keGudangTitle" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLongTitle">Transfer transaksi ke Gudang</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <form action="" method="POST" enctype="multipart/form-data" id="formTransfer" onchange="hitung()">
-          @csrf
-          <input type="hidden" class="form-control" name="transaksi_id" value="" id="id">
-          <input type="hidden"  class="form-control " name="akun_id" value="" id="akun">
-          <div class="form-group row mb-4">
-            <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Tanggal</label>
-            <div class="col-sm-12 col-md-7">
-              <input type="date" class="form-control @error('tanggal') is-invalid @enderror" name="tanggal" value="" id="tanggal">
-              @error('tanggal')
-                <div class="invalid-feedback">{{$message}}</div>
-              @enderror
-            </div>
-          </div>
-          <div class="form-group row mb-4">
-            <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Alokasi Awal</label>
-            <div class="col-sm-12 col-md-7">
-              <input type="text" class="form-control @error('alokasiAwal') is-invalid @enderror" name="alokasiAwal" value="" id="alokasiAwal">
-              @error('alokasiAwal')
-                <div class="invalid-feedback">{{$message}}</div>
-              @enderror
-            </div>
-          </div>
-          <div class="form-group row mb-4">
-            <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Uraian</label>
-            <div class="col-sm-12 col-md-7">
-              <input type="text" class="form-control @error('uraian') is-invalid @enderror" name="uraian" value="" id="uraian">
-              @error('uraian')
-                <div class="invalid-feedback">{{$message}}</div>
-              @enderror
-            </div>
-          </div>
-          <div class="form-group row mb-4">
-            <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Jumlah Awal</label>
-            <div class="col-sm-12 col-md-7">
-              <input type="text" readonly class="form-control @error('banyaknya') is-invalid @enderror" name="banyaknya" value="" id="banyaknya">
-              @error('banyaknya')
-                <div class="invalid-feedback">{{$message}}</div>
-              @enderror
-            </div>
-          </div>
-          <div class="form-group row mb-4">
-            <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Satuan</label>
-            <div class="col-sm-12 col-md-7">
-              <input type="text" readonly class="form-control @error('satuan') is-invalid @enderror" name="satuan" value="" id="satuan">
-              @error('satuan')
-                <div class="invalid-feedback">{{$message}}</div>
-              @enderror
-            </div>
-          </div>
-          <div class="form-group row mb-4">
-            <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Harga Satuan</label>
-            <div class="input-group col-sm-12 col-md-7">
-              <div class="input-group-prepend">
-                <div class="input-group-text">
-                  Rp
-                </div>
-              </div>
-              <input type="text" readonly class="hargaGudang form-control @error('harga') is-invalid @enderror" name="harga" value="" min="0" max="100" id="harga">
-              @error('harga')
-              <div class="invalid-feedback">{{$message}}</div>
-              @enderror
-            </div>
-          </div>
-          <div class="form-group row mb-4">
-            <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Total</label>
-            <div class="input-group col-sm-12 col-md-7">
-              <div class="input-group-prepend">
-                <div class="input-group-text">
-                  Rp
-                </div>
-              </div>
-              <input type="text" readonly class="totalGudang form-control @error('total') is-invalid @enderror" name="total" value="{{old('total')}} " min="0" max="100" id="total">
-              @error('total')
-              <div class="invalid-feedback">{{$message}}</div>
-              @enderror
-            </div>
-          </div>
-          <div class="form-group row mb-4">
-            <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Jumlah Terpakai</label>
-            <div class="col-sm-12 col-md-7">
-              <input type="number" class="form-control @error('terpakai') is-invalid @enderror" max="" name="terpakai" value="" id="terpakai">
-              @error('terpakai')
-                <div class="invalid-feedback">{{$message}}</div>
-              @enderror
-            </div>
-          </div>
-          <div class="form-group row mb-4">
-            <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3"></label>
-            <div class="col-sm-12 col-md-7">
-              <button class="btn btn-primary" type="submit">Transfer</button>
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
-            </div>
-          </div>
-        </form>
+  <!-- Modal Hapus-->
+  <div class="modal fade hapusTransaksi" id="hapusTransaksi" tabindex="-1" role="dialog" aria-labelledby="hapusTransaksiTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">Hapus Transaksi</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
         </div>
+        <div class="modal-body">
+          <form action="" method="post" id="formHapus">
+            @method('delete')
+            @csrf
+            <p class="modal-text"></p>
+          </div>
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-danger">Hapus!</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+          </form>
+        </div>
+      </div>
     </div>
   </div>
-</div>
-<script type="text/javascript">
-  $(document).ready(function () {
-    $('#keGudang').on('show.bs.modal', function (event) {
-    var button = $(event.relatedTarget) // Button that triggered the modal
-    var id = button.data('id') // Extract info from data-* attributes
-    var tanggal = button.data('tanggal') 
-    var uraian = button.data('uraian') 
-    var satuan = button.data('satuan') 
-    var jumlah = button.data('jumlah') 
-    var harga = button.data('harga') 
-    var total = button.data('total') 
-    var akun = button.data('akun') 
-    var kategori = button.data('kategori')
-    var awal = button.data('awal')
-    document.getElementById('formTransfer').action='transferGudang/'+id;
-    $('#id').val(id);
-    $('#tanggal').val(tanggal);
-    $('#akun').val(akun);
-    $('#uraian').val(uraian);
-    $('#banyaknya').val(jumlah);
-    $('#terpakai').attr({"max":jumlah});
-    $('#satuan').val(satuan);
-    $('#harga').val(harga);
-    $('#total').val(total);
-    $('#alokasiAwal').val(awal);
-    })
-  });
+  <script type="text/javascript">
+    $(document).ready(function(){
+      $('#hapusTransaksi').on('show.bs.modal', function (event) {
+      var button = $(event.relatedTarget) // Button that triggered the modal
+      var id = button.data('id') // Extract info from data-* attributes
+      var modal = $(this)
+      modal.find('.modal-text').text('Yakin ingin menghapus pengembalian dana ini ?')
+      document.getElementById('formHapus').action='/hapusPengembalian/'+id;
+      })
+    });
   </script>
-      <!-- Modal Hapus-->
-      <div class="modal fade hapusTransaksi" id="hapusTransaksi" tabindex="-1" role="dialog" aria-labelledby="hapusTransaksiTitle" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLongTitle">Hapus Transaksi</h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <div class="modal-body">
-              <form action="" method="post" id="formHapus">
-                @method('delete')
-                @csrf
-                <p class="modal-text"></p>
-              </div>
-              <div class="modal-footer">
-                <button type="submit" class="btn btn-danger">Hapus!</button>
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
-              </form>
-            </div>
-          </div>
-        </div>
-      </div>
-      <script type="text/javascript">
-        $(document).ready(function(){
-          $('#hapusTransaksi').on('show.bs.modal', function (event) {
-          var button = $(event.relatedTarget) // Button that triggered the modal
-          var id = button.data('id') // Extract info from data-* attributes
-          var uraian = button.data('uraian') 
-          var modal = $(this)
-          modal.find('.modal-text').text('Yakin ingin menghapus transaksi ' + uraian+' ?')
-          document.getElementById('formHapus').action='/hapusTransaksiKeluar/'+id;
-          })
-        });
-      </script>
+
   {{-- modal RAB--}}
   <div class="modal fade" id="pilihRAB" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
@@ -598,51 +389,35 @@
       </div>
     </div>
   </div>
-  {{-- modal Akun--}}
-  <div class="modal fade " id="pilihAkun" tabindex="-1"  role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <!-- Modal ganti potongan-->
+  <div class="modal fade" tabindex="-1" role="dialog" id="tanggalAkad" data-backdrop="false">
     <div class="modal-dialog modal-dialog-centered" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Pilih Akun</h5>
+          <h5 class="modal-title">Masukan Nilai Potongan</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
         <div class="modal-body">
-          <div class="body table-responsive-xl">
-            <table class="table table-sm table-hover">
-              <thead>
-                <tr>
-                  <th scope="col">No</th>
-                  <th scope="col">Kode Akun</th>
-                  <th scope="col">Nama</th>
-                  <th scope="col">Aksi</th>
-                </tr>
-              </thead>
-              <tbody>
-                @foreach($perKategori as $judul=>$kategoriAkun)
-                <tr>
-                  <th colspan="4" class="bg-light">{{$judul}}</th>
-                </tr>
-                  @foreach($kategoriAkun as $kategori)
-                  <tr>
-                    <td>{{$loop->iteration}}</td>
-                    <td>{{$kategori->kodeAkun}}</td>
-                    <td>{{$kategori->namaAkun}}</td>
-                    <td>
-                      <a href="#" class="badge badge-info pilihRAB" data-id-akun={{$kategori->id}} data-isi="{{$kategori->namaAkun}}" id="akun" >Pilih</a>
-                    </td>
-                  </tr>
-                  @endforeach
-                @endforeach
-              </tbody>
-            </table>
+          <form method="POST" action="{{route('simpanNilaiPotongan',['id'=>$id->id])}}" class="" enctype="multipart/form-data">
+            @csrf
+            @method('patch')
+            <div class="row mb-1"> 
+              <div class="col-sm-4">
+                <label for="tanggalAkad" class=" col-form-label">Potongan Biaya</label>
+              </div>
+              <div class="col-sm-8 ">
+                  <input type="text" class="potonganBiaya form-control "
+                      id="tanggalAkad" name="pengembalian" value="{{$id->pembelian->pengembalian}}">
+              </div>
             </div>
           </div>
-        </div>
-        <div class="modal-footer">
-          </form>  
-        </div>
+          <div class="modal-footer bg-whitesmoke br">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+            <input type="submit" class="btn btn-primary" value="Simpan">
+          </div>
+        </form>
       </div>
     </div>
   </div>
@@ -691,11 +466,15 @@
       numeral: true,
       numeralThousandsGroupStyle: 'thousand'
   });
-  var cleave = new Cleave('.hargaSatuan', {
-      numeral: true,
-      numeralThousandsGroupStyle: 'thousand'
-  });
-  var cleave = new Cleave('.hargaGudang', {
+  // var cleave = new Cleave('.hargaSatuan', {
+  //     numeral: true,
+  //     numeralThousandsGroupStyle: 'thousand'
+  // });
+  // var cleave = new Cleave('.hargaGudang', {
+  //     numeral: true,
+  //     numeralThousandsGroupStyle: 'thousand'
+  // });
+  var cleave = new Cleave('.potonganBiaya', {
       numeral: true,
       numeralThousandsGroupStyle: 'thousand'
   });

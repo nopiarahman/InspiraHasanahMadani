@@ -10,6 +10,7 @@ use App\pelanggan;
 use App\pengembalian;
 use App\gudang;
 use App\isiPengadaan;
+use App\alokasigudang;
 use App\pettyCash;
 use App\kasKecilLapangan;
 use Carbon\Carbon;
@@ -117,10 +118,10 @@ class TransaksiController extends Controller
             $this->validate($request,$rules,$costumMessages);
             $requestData=$request->all();
             // dd($requestData);
-            if($request->pengembalian != null){
-                $requestData['jumlah']=$jumlah;
-                $requestData['hargaSatuan']=1;
-            }
+            // if($request->pengembalian != null){
+            //     $requestData['jumlah']=null;
+            //     $requestData['hargaSatuan']=null;
+            // }
             /* cek apakah ada transaksi sebelumnya */
             $cekTransaksiSebelum=transaksi::where('tanggal','<=',$request->tanggal)->orderBy('no')->where('proyek_id',proyekId())->get();
             /* jika transaksi sebelumnya ada value */
@@ -148,7 +149,11 @@ class TransaksiController extends Controller
                 }
                 // dd($requestData);
                 /*  simpan ke kas besar sesuai input requestData*/
+            if($request->pengembalian != null){
+                kasBesarKeluarTanpaJumlah($requestData);
+            }else{
                 kasBesarKeluar($requestData);
+            }
             }elseif($request->sumberKas=='kasKecilLapangan'){
                 /* cek transaksi sesudah input */
                 $cekTransaksi=transaksi::where('tanggal','>',$request->tanggal)->orderBy('no')->where('proyek_id',proyekId())->get();
@@ -258,24 +263,33 @@ class TransaksiController extends Controller
             if($request->pengembalian !=null){
                 
                 $pelanggan=pelanggan::find($request->pengembalian);
-                $pengembalian=pengembalian::where('pelanggan_id',$pelanggan->id)->first();
-
+                $pengembalian=pengembalian::where('pelanggan_id',$pelanggan->id)->get();
+                $totalCicilan = cicilanTerbayarTotal($pelanggan->pembelian->id);
+                $totalDP = cekTotalDp($pelanggan->pembelian->id);
+                // dd($totalDP);
+                $sisa=    $totalCicilan+$totalDP-$pelanggan->pembelian->pengembalian - $jumlah;
+                // dd($sisa);
                 $requestPengembalian = $request->all();
                 $requestPengembalian['proyek_id']=proyekId();
                 $requestPengembalian['pelanggan_id']=$pelanggan->id;
                 $requestPengembalian['jumlah']=$jumlah;
-                if($pengembalian == null){
-                    $requestPengembalian['sisaPengembalian']=$pelanggan->pembelian->sisaKewajiban-$pelanggan->pembelian->sisaCicilan- $jumlah;
+                if($pengembalian->first() == null){
+                    $requestPengembalian['sisaPengembalian']=$sisa;
                 }else{
                     $terakhir = $pengembalian->last();
                     $requestPengembalian['sisaPengembalian']=$terakhir->sisaPengembalian - $jumlah;
                 }
+                $cekTransaksi = transaksi::where('tanggal',$request->tanggal)->where('uraian',$request->uraian)->where('debet',$jumlah)->first();
+                $requestPengembalian['transaksi_id']=$cekTransaksi->id;
+                
                 pengembalian::create($requestPengembalian);
+
             }
             DB::commit();
             return redirect()->back()->with('status','Transaksi Berhasil disimpan');
         } catch (\Exception $ex) {
             DB::rollback();
+            // dd($ex);
             return redirect()->back()->with('error','Gagal. Pesan Error: '.$ex->getMessage());
         }
         
@@ -346,8 +360,23 @@ class TransaksiController extends Controller
                     $updateKasBesar->save();
                 }
             }
+            $cekAlokasi = alokasigudang::whereBetween('created_at',[$dari,$sampai])->where('uraian',$id->uraian)->first();
+            if($cekAlokasi){
+                $cekGudang = gudang::where('id',$cekAlokasi->gudang_id)->first();
+                $cekAlokasi->delete();
+                $updateStok = $cekGudang->sisa + $id->jumlah;
+                $cekGudang->update(['sisa'=>$updateStok]);
+            }
+            $cekGudang = gudang::where('transaksi_id',$id->id)->first();
+            // dd($cekGudang);
+            if($cekGudang){
+                if($cekGudang->alokasigudang->first()){
+                    return redirect()->back()->with('error','Gagal Dihapus, transaksi mempunyai stok gudang yang telah dialokasi');
+                }
+                $cekGudang->delete();
+            }    
+            $cekPengembalian = pengembalian::where('transaksi_id',$id->id)->delete();
             $id->delete();
-            $cekGudang = gudang::where('transaksi_id',$id->id)->delete();
             DB::commit();
             return redirect()->back()->with('status','Transaksi berhasil dihapus');
         } catch (\Exception $ex) {

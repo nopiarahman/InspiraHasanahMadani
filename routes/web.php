@@ -77,7 +77,7 @@ Route::group(['middleware'=>['auth','role:admin,projectmanager']],function(){
     Route::delete('/hapusPelanggan/{id}', 'PelangganController@destroy')->name('hapusPelanggan');
     Route::delete('/hapusPelangganNonAktif/{id}', 'PelangganController@destroyNonAktif')->name('hapusPelangganNonAktif');
     Route::patch('/restoreTerhapus/{id}', 'PelangganController@restoreTerhapus')->name('rsetoreTerhapus');
-    
+    Route::patch('/simpanNilaiPotongan/{id}', 'PelangganController@simpanNilaiPotongan')->name('simpanNilaiPotongan');
     Route::get('/estimasi', 'EstimasiController@estimasi')->name('estimasi');
     
     
@@ -181,6 +181,7 @@ Route::group(['middleware'=>['auth','role:admin,projectmanager']],function(){
     Route::get('/buatTransaksi/{id}', 'PengadaanController@buatTransaksi')->name('buatTransaksi');
     
     Route::get('/pengembalian/{id}', 'PengembalianController@buatPengembalian')->name('pengembalian');
+    Route::delete('/hapusPengembalian/{id}', 'PengembalianController@destroy')->name('hapusPengembalian');
 
 });
 Route::group(['middleware'=>['auth','role:projectmanager']],function(){

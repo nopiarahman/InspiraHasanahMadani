@@ -764,4 +764,10 @@ class PelangganController extends Controller
         transferDp::create($requestData);
         return redirect()->route('DPPelanggan')->with('status','Terima kasih, pembayaran akan dicek oleh admin kami');
     }
+    public function simpanNilaiPotongan(Pelanggan $id, Request $request){
+        // dd($id);
+        $pengembalian = str_replace(',', '', $request->pengembalian);
+        $id->pembelian->update(['pengembalian'=>$pengembalian]);
+        return redirect()->back()->with('status','Nilai Potongan Disimpan');
+    }
 }
