@@ -41,10 +41,22 @@ class PengembalianController extends Controller
         return view ('pengembalian/buatPengembalian',compact('id','pengembalian','perHeader','semuaRAB','perJudul','perHeaderUnit','semuaRABUnit','perJudulUnit'));
     }
     public function destroy(Pengembalian $id){
+        // dd($id);
         DB::beginTransaction();
         try {
+            $transaksi=transaksi::where('id',$id->transaksi_id)->first();
+            // dd($transaksi);
+            $cekTransaksi=transaksi::where('tanggal','>=',$transaksi->tanggal)->where('no','>',$transaksi->no)->orderBy('no')->get();
+            if($cekTransaksi->first() != null){
+                /* jika ada, update transaksi sesudah sesuai perubahan input*/
+                foreach($cekTransaksi as $updateTransaksi){
+                    $updateTransaksi['no'] = $updateTransaksi->no -1;
+                    $updateTransaksi['saldo'] = $updateTransaksi->saldo + $id->jumlah;
+                    $updateTransaksi->save();
+                }
+            }
+            $transaksi->delete();
             $id->delete();
-            $transaksi=transaksi::find($id->transaksi_id)->delete();
             DB::commit();
             return redirect()->back()->with('status','Transaksi berhasil dihapus');
         } catch (\Exception $ex) {
