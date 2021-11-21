@@ -10,7 +10,7 @@ use App\pelanggan;
 use App\pengembalian;
 use App\gudang;
 use App\isiPengadaan;
-use App\alokasigudang;
+use App\alokasiGudang;
 use App\pettyCash;
 use App\kasKecilLapangan;
 use Carbon\Carbon;
@@ -360,7 +360,7 @@ class TransaksiController extends Controller
                     $updateKasBesar->save();
                 }
             }
-            $cekAlokasi = alokasigudang::whereBetween('created_at',[$dari,$sampai])->where('uraian',$id->uraian)->first();
+            $cekAlokasi = alokasiGudang::whereBetween('created_at',[$dari,$sampai])->where('uraian',$id->uraian)->first();
             if($cekAlokasi){
                 $cekGudang = gudang::where('id',$cekAlokasi->gudang_id)->first();
                 $cekAlokasi->delete();
