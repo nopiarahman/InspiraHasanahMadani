@@ -13,7 +13,7 @@
 	<link rel="shortcut icon" href="{{asset('assets/img/logo-color.png')}}">
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 	
-	<title>Inspira Property</title>
+	<title>Inspira Group</title>
 	
 	<!-- STYLES -->
 	<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>

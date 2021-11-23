@@ -13,7 +13,7 @@
 <link rel="shortcut icon" href="{{asset('assets/img/favicon.png')}}">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-<title>Inspira Kreasindo</title>
+<title>Inspira Group</title>
 
 <!-- STYLES -->
 <link rel="stylesheet" href="{{asset('assets/css/custom.css')}}">
