@@ -957,7 +957,7 @@
 			<div class="modal-content">
 					<div class="container-fluid">
                 <div class="row">
-                    <div class="col-md-6 bg-img rounded-left m-h-60 d-none d-sm-block" style="background-image: url('https://images.unsplash.com/photo-1507679799987-c73779587ccf?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1742&q=80')">
+                    <div class="col-md-6 bg-img rounded-left m-h-60 d-none d-sm-block" style="background-image: url('{{Storage::url($popup->gambar)}}')">
                     </div>
                     <div class="col-md-6 py-5 px-sm-5 my-auto ">
                         <h2 class="pt-sm-3">{{$popup->judul}} </h2>
