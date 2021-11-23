@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\kabarBerita;
 use App\proyekweb;
+use App\popup;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -16,9 +17,9 @@ use App\proyekweb;
 
 Route::get('/', function () {
     $kabarBerita = kabarBerita::latest()->take(3)->get();
-    // dd($kabarBerita);
     $proyek = proyekweb::where('status','publik')->latest()->take(4)->get();
-    return view('welcome',compact('kabarBerita','proyek'));
+    $popup = popup::first();
+    return view('welcome',compact('kabarBerita','proyek','popup'));
 });
 /* WEB */
 Route::get('/blog', 'WebController@blog')->name('blog');
@@ -193,7 +194,9 @@ Route::group(['middleware'=>['auth','role:projectmanager']],function(){
     Route::delete('/hapusUser/{id}', 'ProjectManagerController@hapusUser')->name('hapusUser');
 });
 Route::group(['middleware'=>['auth','role:adminWeb']],function(){
-    
+
+    Route::get('/popup', 'PopUpController@create')->name('popup');
+    Route::post('/popUpSimpan', 'PopUpController@store')->name('popUpSimpan');
     Route::get('/kabarBerita', 'KabarBeritaController@index')->name('kabarBerita');
     Route::get('/kabarBeritaTambah', 'KabarBeritaController@create')->name('kabarBeritaTambah');
     Route::post('/kabarBeritaSimpan', 'KabarBeritaController@store')->name('kabarBeritaSimpan');
