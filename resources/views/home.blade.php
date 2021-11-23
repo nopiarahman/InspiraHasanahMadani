@@ -250,83 +250,8 @@
           </div>
         </div>
       </div>
-      {{-- @if(auth()->user()->role=="admin")
-      <div class="row">
-        <div class="col-md-6 col-12 col-sm-12">
-          <div class="card card-hero ">
-            <div class="card-header">
-              <div class="card-icon" style="color: rgb(192, 125, 0)">
-                <i class="fas fa-coins    "></i>
-              </div>
-              <h4>{{$transferDp->count()}}</h4>
-              <div class="card-description">Pelanggan Transfer DP</div>
-            </div>
-            <div class="card-body p-0">
-              <div class="tickets-list">
-                @forelse($transferDp->take(2)->sortByDesc('created_at') as $dp)
-                <a href="#" class="ticket-item">
-                  <div class="ticket-title">
-                    <h4>{{$dp->pelanggan->nama}}</h4>
-                  </div>
-                  <div class="ticket-info">
-                    <div>{{jenisKepemilikan($dp->pelanggan->id)}} {{$dp->pelanggan->kavling->blok}}</div>
-                    <div class="bullet"></div>
-                    <div class="text-primary">{{Carbon\Carbon::parse($dp->created_at)->diffForHumans()}}</div>
-                  </div>
-                </a>
-                @empty
-                <div class="ticket-info">
-                  <div>Tidak Ada data</div>
-                </div>
-                @endforelse
-                <a href="{{route('cekTransferDPPelanggan')}}" class="ticket-item ticket-more">
-                  View All <i class="fas fa-chevron-right"></i>
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-6 col-12 col-sm-12">
-          <div class="card card-hero ">
-            <div class="card-header" style="background-image: linear-gradient(to bottom, #8fe700, #03a827);">
-              <div class="card-icon" style="color: green">
-                <i class="fas fa-money-bill-wave" aria-hidden="true"></i>
-              </div>
-              <h4>{{$transferUnit->count()}}</h4>
-              <div class="card-description">Pelanggan Transfer Cicilan</div>
-            </div>
-            <div class="card-body p-0">
-              <div class="tickets-list">
-                @forelse($transferUnit->take(2)->sortByDesc('created_at') as $dp)
-                <a href="#" class="ticket-item">
-                  <div class="ticket-title">
-                    <h4>{{$dp->pelanggan->nama}}</h4>
-                  </div>
-                  <div class="ticket-info">
-                    <div>{{jenisKepemilikan($dp->pelanggan->id)}} {{$dp->pelanggan->kavling->blok}}</div>
-                    <div class="bullet"></div>
-                    <div class="text-primary">{{Carbon\Carbon::parse($dp->created_at)->diffForHumans()}}</div>
-                  </div>
-                </a>
-                @empty
-                <a href="#" class="ticket-item">
-                <div class="ticket-title">
-                  <h4>Tidak Ada data</h4>
-                </div>
-              </a>
-                @endforelse
-                <a href="{{route('cekTransferDPPelanggan')}}" class="ticket-item ticket-more">
-                  View All <i class="fas fa-chevron-right"></i>
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
-
-      </div>
-      @endif --}}
     </div>
-    @endif
+  @endif
     <div class="col-lg-4 col-md-12 col-12 col-sm-12">
       @if(auth()->user()->role=="admin")
       <div class="card">
@@ -353,6 +278,7 @@
       @endif
     </div>
   </div>
+  @if(auth()->user()->role=="admin" || auth()->user()->role=="projectmanager")
   <div class="row">
     <div class="col-lg-12 col-md-12 col-sm-12">
       <div class="card">
@@ -476,6 +402,7 @@
       </div>
     </div>
   </div>
+  @endif
 @endsection
 
 @section('script')
