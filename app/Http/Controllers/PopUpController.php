@@ -30,7 +30,7 @@ class PopUpController extends Controller
         }else{
             $popup =null;
         }
-        return view('popup/createPopUP',compact('popup'));
+        return view('popup/createPopUp',compact('popup'));
     }
 
     /**
