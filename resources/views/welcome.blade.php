@@ -962,6 +962,7 @@
 <!-- / WRAPPER ALL -->
 
 <!-- Modal -->
+@if($popup)
 @if($popup->status ==='publik')
 <div class="modal fade   "  id="myModal"  tabindex="-1" role="dialog"
      aria-labelledby="myModal" aria-hidden="true">
@@ -986,6 +987,7 @@
         </div>
     </div>
 </div>
+@endif
 @endif
 <!-- Modal Ends -->
 <!-- SCRIPTS -->
