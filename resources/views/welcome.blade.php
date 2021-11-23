@@ -349,33 +349,20 @@
 			<div id="image-slider" class="splide " >
 				<div class="splide__track">
 					<ul class="splide__list">
+						@foreach($slider as $s)
 						<li class="splide__slide">
 							<div  style="opacity: 0.5">
-								<img src="{{asset('frontPage/img/slider/1.jpg')}}">
+								<img src="{{Storage::url($s->gambar)}}">
 							</div>
 							<div class="slider_text">
-								<h2>INSPIRA GROUP</h2>
-								<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quo reiciendis ipsam dignissimos explicabo rerum est ea quis blanditiis enim, nulla modi perspiciatis voluptates, qui corporis! Quaerat deleniti voluptatum et quod.</p>
+								<h2>{{$s->judul}}</h2>
+								<p>
+									{!!$s->text!!}
+								</p>
+								<a href="{{url($s->link)}}" type="button" class="btn btn-block btn-cta mt-5 text-white" data-dismiss="modal" aria-label="Close" target="_blank" style="background-color: #1f664b !important">Selengkapnya</a>
 							</div>
 						</li>
-						<li class="splide__slide">
-							<div  style="opacity: 0.5">
-								<img src="{{asset('frontPage/img/slider/2.jpg')}}">
-							</div>
-							<div class="slider_text">
-								<h2>Properti Syariah Tanpa Riba</h2>
-								<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quo reiciendis ipsam dignissimos explicabo rerum est ea quis blanditiis enim, nulla modi perspiciatis voluptates, qui corporis! Quaerat deleniti voluptatum et quod.</p>
-							</div>
-						</li>
-						<li class="splide__slide">
-							<div  style="opacity: 0.5">
-								<img src="{{asset('frontPage/img/slider/3.jpg')}}">
-							</div>
-							<div class="slider_text">
-								<h2>Tanpa Denda, Tanpa Sita</h2>
-								<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quo reiciendis ipsam dignissimos explicabo rerum est ea quis blanditiis enim, nulla modi perspiciatis voluptates, qui corporis! Quaerat deleniti voluptatum et quod.</p>
-							</div>
-						</li>
+						@endforeach
 					</ul>
 				</div>
 			</div>
@@ -977,8 +964,10 @@
                         <p class="text-muted">
 													{!!$popup->text!!}
                         </p>
+						@if($popup->link != null)
                             <a href="{{url($popup->link)}}" type="button" class="btn btn-cstm-dark btn-block btn-cta mt-5" data-dismiss="modal" aria-label="Close" target="_blank">Buka</a>
-													<div class="pt-3 ">
+						@endif						
+							<div class="pt-3 ">
 														<small><a href="#" data-bs-dismiss="modal" aria-label="Close" class="text-muted">Tutup</a></small>
 												</div>
                     </div>

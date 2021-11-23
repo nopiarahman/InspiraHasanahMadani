@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\kabarBerita;
 use App\proyekweb;
+use App\slider;
 use App\popup;
 /*
 |--------------------------------------------------------------------------
@@ -19,7 +20,8 @@ Route::get('/', function () {
     $kabarBerita = kabarBerita::latest()->take(3)->get();
     $proyek = proyekweb::where('status','publik')->latest()->take(4)->get();
     $popup = popup::first();
-    return view('welcome',compact('kabarBerita','proyek','popup'));
+    $slider = slider::latest()->take(3)->get();
+    return view('welcome',compact('kabarBerita','proyek','popup','slider'));
 });
 /* WEB */
 Route::get('/blog', 'WebController@blog')->name('blog');
@@ -197,6 +199,12 @@ Route::group(['middleware'=>['auth','role:adminWeb']],function(){
 
     Route::get('/popup', 'PopUpController@create')->name('popup');
     Route::post('/popUpSimpan', 'PopUpController@store')->name('popUpSimpan');
+    Route::get('/slider', 'SliderController@index')->name('slider');
+    Route::get('/tambahSlider', 'SliderController@create')->name('sliderTambah');
+    Route::post('/simpanSlider', 'SliderController@store')->name('simpanSlider');
+    Route::get('/sliderEdit/{id}', 'SliderController@edit')->name('sliderEdit');
+    Route::patch('/sliderUpdate/{id}', 'SliderController@update')->name('sliderUpdate');
+    
     Route::get('/kabarBerita', 'KabarBeritaController@index')->name('kabarBerita');
     Route::get('/kabarBeritaTambah', 'KabarBeritaController@create')->name('kabarBeritaTambah');
     Route::post('/kabarBeritaSimpan', 'KabarBeritaController@store')->name('kabarBeritaSimpan');

@@ -225,6 +225,7 @@
           @if(auth()->user()->role=='adminWeb')
               <li class="menu-header">Menu Website</li>
               <li class=" @yield('menuPopUp')"><a class="nav-link" href="{{route('popup')}}"> <i class="fas fa-file-image    "></i> <span> Pop Up</span></a></li>
+              <li class=" @yield('menuSlider')"><a class="nav-link" href="{{route('slider')}}"> <i class="fas fa-image    "></i><span>Slider</span></a></li>
               <li class=" @yield('menuProyekWeb')"><a class="nav-link" href="{{route('proyekWeb')}}"><i class="fas fa-archway"></i> <span> Proyek</span></a></li>
               <li class=" @yield('menuKabarBerita')"><a class="nav-link" href="{{route('kabarBerita')}}"><i class="fas fa-book-open"></i> <span> Kabar Berita</span></a></li>
 
