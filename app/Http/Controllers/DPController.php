@@ -165,6 +165,7 @@ class DPController extends Controller
             $sampai = Carbon::parse($id->created_at)->addSeconds(240);
             $hapusKasBesar = transaksi::whereBetween('created_at',[$dari,$sampai])
                                         ->where('kredit',$id->jumlah)->where('tanggal',$id->tanggal)->first();
+            // dd($hapusKasBesar);
             /* cek transaksi sesudah input */
             $cekTransaksi=transaksi::where('tanggal','>=',$id->tanggal)->where('no','>',$hapusKasBesar->no)->orderBy('no')->get();
             // dd($cekTransaksi);
@@ -184,6 +185,7 @@ class DPController extends Controller
             DB::commit();
             return redirect()->back()->with('status','Transaksi DP berhasil dihapus');
         } catch (\Exception $ex) {
+            dd($ex);
             DB::rollback();
             return redirect()->back()->with('error','Gagal. Pesan Error: '.$ex->getMessage());
         }

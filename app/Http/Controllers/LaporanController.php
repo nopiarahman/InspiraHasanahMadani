@@ -343,7 +343,7 @@ class LaporanController extends Controller
         }else{
             $blok = "Batal Akad";
         }
-        $uraian = 'Pembayaran Dp Ke '.$id->urut.' '.jenisKepemilikan($pembelian->pelanggan_id).' '.$pembelian->kavling->blok;   
+        $uraian = 'Pembayaran Dp Ke '.dpKe($id->pembelian_id,$id->tanggal).' '.jenisKepemilikan($pembelian->pelanggan_id).' '.$pembelian->kavling->blok;   
         $DpPertama = Dp::where('pembelian_id',$pembelian->id)->first();
         $sampaiSekarang = dp::whereBetween('created_at',[$DpPertama->created_at,$id->created_at])->where('pembelian_id',$id->pembelian_id)->get();
         // return view('PDF/kwitansiDp2',compact('id','pembelian','uraian','sampaiSekarang','rekening','proyek'));
@@ -391,7 +391,7 @@ class LaporanController extends Controller
         }else{
             $blok = "Batal Akad";
         }
-        $uraian = 'Pembayaran Cicilan Ke '.$id->urut.' '.jenisKepemilikan($pembelian->pelanggan_id).' '.$pembelian->kavling->blok;   
+        $uraian = 'Pembayaran Cicilan Ke '.cicilanKe($id->pembelian_id,$id->tanggal).' '.jenisKepemilikan($pembelian->pelanggan_id).' '.$pembelian->kavling->blok;   
         $cicilanPertama = cicilan::where('pembelian_id',$pembelian->id)->first();
         $sampaiSekarang = cicilan::whereBetween('created_at',[$cicilanPertama->created_at,$id->created_at])->where('pembelian_id',$id->pembelian_id)->get();
         $pdf=PDF::loadview('PDF/kwitansi',compact('tempo','id','pembelian','uraian','sampaiSekarang','rekening','proyek','logoPT'))->setPaper('A5','landscape');
