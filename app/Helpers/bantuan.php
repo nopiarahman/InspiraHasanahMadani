@@ -707,7 +707,8 @@ function filterBulan($tanggal){
 function updateDPPelanggan(pembelian $dp){
     $semuaDp = $dp->dp()->get();
     foreach ($semuaDp as $a ) {
-        updateTempo($a);
+        // updateTempo($a);
+        updateSisaDp($a);
     }
     return true;
 }
@@ -715,6 +716,7 @@ function updateCicilanPelanggan(pembelian $cicilan){
     $semuaCicilan = $cicilan->cicilan()->get();
     foreach ($semuaCicilan as $a ) {
         updateTempoCicilan($a);
+        updateSisaCicilan($a);
     }
     return true;
 }
@@ -756,26 +758,30 @@ function updateTempoCicilan(cicilan $id){
     $pembayaranPertama= cicilan::where('pembelian_id',$id->pembelian_id)->orderBy('tanggal')->first();
     $pembayaranSebelum = cicilan::where('pembelian_id',$id->pembelian_id)->where('tanggal','<',$id->tanggal)->orderBy('tanggal','desc')->first();
     if($pembayaranSebelum){
-        $tanggalSebelum = $pembayaranSebelum->tanggal;
+        $tempoSebelum = $pembayaranSebelum->tempo;
     }else{
-        $tanggalSebelum = $id->tanggal;
+        $tempoSebelum = $id->tanggal;
     }
     $semuaPembayaran = cicilan::where('pembelian_id',$id->pembelian_id)->where('tanggal','<=',$id->tanggal)->get();
     $nilai=$id->pembelian->sisaKewajiban/$id->pembelian->tenor;
     $bulanTerbayar= intVal($semuaPembayaran->sum('jumlah')/$nilai) ;
     $bulanBerjalan = Carbon::parse($id->tanggal)->firstOfMonth()->addMonth(1)->diffInMonths(Carbon::parse($pembayaranPertama->tanggal)->firstOfMonth(),true);
 
-    $cek=Carbon::parse($id->tanggal)->firstOfMonth()->diffInMonths(Carbon::parse($tanggalSebelum)->firstOfMonth(),false);
+    $cek=Carbon::parse($id->tanggal)->firstOfMonth()->diffInMonths(Carbon::parse($tempoSebelum)->firstOfMonth(),false);
     if($cek>=0){
         /* lancar */
-        if($bulanTerbayar>=$bulanBerjalan){
+        if($nilai > $id->jumlah){
+            $tempo = Carbon::parse($id->tanggal)->firstOfMonth()->isoFormat('YYYY-MM-DD');
+        }elseif($bulanTerbayar>=$bulanBerjalan){
             $tempo = Carbon::parse($pembayaranPertama->tanggal)->firstOfMonth()->addMonth($bulanTerbayar)->isoFormat('YYYY-MM-DD');
         }else{
             $tempo = Carbon::parse($id->tanggal)->firstOfMonth()->addMonth(1)->isoFormat('YYYY-MM-DD');
         }
     }else{
         /* nunggak */
-        if($bulanTerbayar>=$bulanBerjalan){
+        if($nilai > $id->jumlah){
+            $tempo = Carbon::parse($id->tanggal)->firstOfMonth()->isoFormat('YYYY-MM-DD');
+        }elseif($bulanTerbayar>=$bulanBerjalan){
             $tempo = Carbon::parse($pembayaranPertama->tanggal)->firstOfMonth()->addMonth($bulanTerbayar)->isoFormat('YYYY-MM-DD');
         }else{
             $tempo = Carbon::parse($id->tanggal)->firstOfMonth()->addMonth(1)->isoFormat('YYYY-MM-DD');
@@ -809,4 +815,14 @@ function cicilanTerbayarTotal($id){
     }
     return 0;
     
+}
+function updateSisaDp(Dp $id){
+    $akadDp = $id->pembelian->dp;
+    $sisa = $akadDp - dpTerbayar($id->pembelian_id,$id->tanggal);
+    $id->update(['sisaDp'=>$sisa]);
+}
+function updateSisaCicilan(Cicilan $id){
+    $akad = $id->pembelian->sisaKewajiban;
+    $sisa = $akad - cicilanTerbayar($id->pembelian_id,$id->tanggal);
+    $id->update(['sisaKewajiban'=>$sisa]);
 }

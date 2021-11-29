@@ -24,38 +24,41 @@ class EstimasiController extends Controller
                 return $value->pelanggan->kavling != null;
             }
         });
-        $dpTempo = dp::whereBetween('tempo',[$start,$end])->where('proyek_id',proyekId())->where('sisaDp','>',0)->get();
+        $dpTempo = dp::whereBetween('tempo',[$start,$end])->where('proyek_id',proyekId())->get();
         $dpAktif = $dpTempo->filter(function ($value, $key) {
             if($value->pelanggan != null){
-                return $value->pelanggan->kavling != null;
+                if($value->pelanggan->kavling != null){
+                    return $value->sisaDp >= 0;
+                }
             }
         });
+
         // dd($dpAktif);
         /* Tunggakan */
-        $semuadp=dp::where('tempo','<',$start)->where('proyek_id',proyekId())->where('sisaDp','>',0)->get();
-        $semuaTunggakanDP = $semuadp->filter(function ($value, $key) {
-            if($value->pelanggan != null){
-                return $value->pelanggan->kavling != null;
-            }
-        });
+        // $semuadp=dp::where('tempo','<',$start)->where('proyek_id',proyekId())->where('sisaDp','>',0)->get();
+        // $semuaTunggakanDP = $semuadp->filter(function ($value, $key) {
+        //     if($value->pelanggan != null){
+        //         return $value->pelanggan->kavling != null;
+        //     }
+        // });
         $DPtertunggak=[];
-        foreach($semuaTunggakanDP as $dp){
-            if(cekPembayaranDP($dp->id) == null){
-                $DPtertunggak[]=$dp;
-            }
-        }
-        $semuaCicilan=cicilan::where('tempo','<',$start)->where('proyek_id',proyekId())->where('sisaKewajiban','>',0)->get();
-        $semuaTunggakanCicilan = $semuaCicilan->filter(function ($value, $key) {
-            if($value->pelanggan != null){
-                return $value->pelanggan->kavling != null;
-            }
-        });
+        // foreach($semuaTunggakanDP as $dp){
+        //     if(cekPembayaranDP($dp->id) == null){
+        //         $DPtertunggak[]=$dp;
+        //     }
+        // }
+        // $semuaCicilan=cicilan::where('tempo','<',$start)->where('proyek_id',proyekId())->where('sisaKewajiban','>',0)->get();
+        // $semuaTunggakanCicilan = $semuaCicilan->filter(function ($value, $key) {
+        //     if($value->pelanggan != null){
+        //         return $value->pelanggan->kavling != null;
+        //     }
+        // });
         $cicilanTertunggak=[];
-        foreach($semuaTunggakanCicilan as $cicilan){
-            if(cekPembayaranCicilan($cicilan->id) == null){
-                $cicilanTertunggak[]=$cicilan;
-            }
-        }
+        // foreach($semuaTunggakanCicilan as $cicilan){
+        //     if(cekPembayaranCicilan($cicilan->id) == null){
+        //         $cicilanTertunggak[]=$cicilan;
+        //     }
+        // }
         // dd($cicilanTertunggak);
         return view('estimasi/estimasiIndex',compact('start','end','cicilanAktif','dpAktif','DPtertunggak','cicilanTertunggak'));
     }

@@ -225,12 +225,14 @@
         @foreach($daftarCicilanUnit as $cicilanUnit)
         {{-- update semua tempo setelah input --}}
         {{updateTempoCicilan($cicilanUnit)}}
+        {{updateSisaCicilan($cicilanUnit)}}
         <tr>
           <th scope="row">{{cicilanKe($cicilanUnit->pembelian->id,$cicilanUnit->tanggal)}}</th>
           <td data-order="{{$cicilanUnit->tanggal}}" >{{formatTanggal($cicilanUnit->tanggal)}}</td>
           <td>Rp.{{number_format($cicilanUnit->jumlah)}}</td>
           
           <td>Rp.{{number_format($cicilanUnit->pembelian->sisaKewajiban-cicilanTerbayar($cicilanUnit->pembelian->id,$cicilanUnit->tanggal))}}</td>
+          <td>{{$cicilanUnit->sisaKewajiban}}</td>
           <td>
             @if(jenisKepemilikan($id->pelanggan_id)=='Kavling')
             CK

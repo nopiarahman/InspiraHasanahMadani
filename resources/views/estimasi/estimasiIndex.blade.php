@@ -78,7 +78,6 @@
             <th scope="col">Nama</th>
             <th scope="col">No Telp</th>
             <th scope="col">Blok</th>
-            <th scope="col">Jenis</th>
             <th scope="col">Nilai Cicilan</th>
             <th scope="col">DP Ke</th>
             <th scope="col">Terbayar</th>
@@ -97,7 +96,6 @@
             <td>{{$dp->pelanggan->nama}}</td>
             <td>{{$dp->pelanggan->nomorTelepon}}</td>
             <td>{{$dp->pelanggan->kavling->blok}}</td>
-            <td>{{jenisKepemilikan($dp->pelanggan->id)}}</td>
             @if ($dp->pembelian->dp/$dp->pembelian->tenorDP >= $dp->sisaDp)
                 @php
                     $nilai = $dp->sisaDp
@@ -147,7 +145,7 @@
     </div>
   </div>
   {{-- Cicilan Unit --}}
-  <div class="card">
+  {{-- <div class="card">
     <div class="card-header">
       <h4>Daftar Cicilan Aktif</h4>
     </div>
@@ -188,7 +186,6 @@
             @endphp
             @endif
             <td>Rp. {{number_format($nilai)}}</td>
-            {{-- <td>Rp. {{number_format($cicilan->pembelian->sisaKewajiban/$cicilan->pembelian->tenor)}}</td> --}}
             @php
                 $totalCicilan += $nilai;
             @endphp
@@ -256,7 +253,6 @@
             @endforelse
         </tbody>
       </table>
-      {{-- {{$pelangganAktif->links()}} --}}
     </div>
   </div>
   <div class="card">
@@ -292,7 +288,6 @@
             @endforelse
         </tbody>
       </table>
-      {{-- {{$pelangganAktif->links()}} --}}
     </div>
   </div>
   <div class="row">
@@ -318,7 +313,7 @@
         </div>
       </div>
     </div>
-  </div>
+  </div> --}}
 @endsection
 @section('script')
 <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.js"></script>
