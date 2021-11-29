@@ -200,7 +200,12 @@ class HomeController extends Controller
     	    $cari = $request->q;
     		$data = pelanggan::select('id', 'nama')->where('nama', 'LIKE', '%'.$cari.'%')
                                                 ->where('proyek_id',proyekId())->get();
-            // dd($data);
+            // // dd($data);
+            
+            // $pelanggan = pelanggan::find($data['id']);
+            // $data['blok']= $pelanggan->kavling->blok;
+            // $pelanggan = pelanggan::find($data['id']);
+            // dd($pelanggan);
     		return response()->json($data);
     	}
     }

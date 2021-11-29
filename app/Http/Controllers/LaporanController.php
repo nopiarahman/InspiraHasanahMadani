@@ -134,26 +134,33 @@ class LaporanController extends Controller
         $pembayaranPertama= cicilan::where('pembelian_id',$id->pembelian_id)->orderBy('tanggal')->first();
         $pembayaranSebelum = cicilan::where('pembelian_id',$id->pembelian_id)->where('tanggal','<',$id->tanggal)->orderBy('tanggal','desc')->first();
         if($pembayaranSebelum){
-            $tanggalSebelum = $pembayaranSebelum->tanggal;
+            $tempoSebelum = $pembayaranSebelum->tempo;
         }else{
-            $tanggalSebelum = $id->tanggal;
+            $tempoSebelum = $id->tanggal;
         }
+        // dd($tempoSebelum);
         $semuaPembayaran = cicilan::where('pembelian_id',$id->pembelian_id)->where('tanggal','<=',$id->tanggal)->get();
         $nilai=$id->pembelian->sisaKewajiban/$id->pembelian->tenor;
         $bulanTerbayar= intVal($semuaPembayaran->sum('jumlah')/$nilai) ;
         $bulanBerjalan = Carbon::parse($id->tanggal)->firstOfMonth()->addMonth(1)->diffInMonths(Carbon::parse($pembayaranPertama->tanggal)->firstOfMonth(),true);
-
-        $cek=Carbon::parse($id->tanggal)->firstOfMonth()->diffInMonths(Carbon::parse($tanggalSebelum)->firstOfMonth(),false);
+        $cek=Carbon::parse($id->tanggal)->firstOfMonth()->diffInMonths(Carbon::parse($tempoSebelum)->firstOfMonth(),false);
+        // dd($nilai);
         if($cek>=0){
             /* lancar */
-            if($bulanTerbayar>=$bulanBerjalan){
+            /* pembayaran dibawah nilai bulanan */
+            if($nilai > $id->jumlah){
+                $tempo = Carbon::parse($id->tanggal)->firstOfMonth()->isoFormat('YYYY-MM-DD');
+            }elseif($bulanTerbayar>=$bulanBerjalan){
                 $tempo = Carbon::parse($pembayaranPertama->tanggal)->firstOfMonth()->addMonth($bulanTerbayar)->isoFormat('YYYY-MM-DD');
             }else{
                 $tempo = Carbon::parse($id->tanggal)->firstOfMonth()->addMonth(1)->isoFormat('YYYY-MM-DD');
             }
         }else{
             /* nunggak */
-            if($bulanTerbayar>=$bulanBerjalan){
+            /* pembayaran dibawah nilai bulanan */
+            if($nilai > $id->jumlah){
+                $tempo = Carbon::parse($id->tanggal)->firstOfMonth()->isoFormat('YYYY-MM-DD');
+            }elseif($bulanTerbayar>=$bulanBerjalan){
                 $tempo = Carbon::parse($pembayaranPertama->tanggal)->firstOfMonth()->addMonth($bulanTerbayar)->isoFormat('YYYY-MM-DD');
             }else{
                 $tempo = Carbon::parse($id->tanggal)->firstOfMonth()->addMonth(1)->isoFormat('YYYY-MM-DD');
