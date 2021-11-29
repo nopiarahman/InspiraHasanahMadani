@@ -161,10 +161,11 @@ class DPController extends Controller
             $akadDp=$cekDp->dp;
             /* UPDATE KAS BESAR */
             /* hapus Kas besar */
+            $uraian = 'Penerimaan Cicilan DP '.jenisKepemilikan($cekDp->pelanggan_id).' '.$cekDp->kavling->blok.' a/n '.$cekDp->pelanggan->nama;
             $dari = Carbon::parse($id->created_at);
             $sampai = Carbon::parse($id->created_at)->addSeconds(240);
             $hapusKasBesar = transaksi::whereBetween('created_at',[$dari,$sampai])
-                                        ->where('kredit',$id->jumlah)->where('tanggal',$id->tanggal)->first();
+                                        ->where('kredit',$id->jumlah)->where('uraian',$uraian)->first();
             // dd($hapusKasBesar);
             /* cek transaksi sesudah input */
             $cekTransaksi=transaksi::where('tanggal','>=',$id->tanggal)->where('no','>',$hapusKasBesar->no)->orderBy('no')->get();
@@ -185,8 +186,8 @@ class DPController extends Controller
             DB::commit();
             return redirect()->back()->with('status','Transaksi DP berhasil dihapus');
         } catch (\Exception $ex) {
-            dd($ex);
             DB::rollback();
+            // dd($ex);
             return redirect()->back()->with('error','Gagal. Pesan Error: '.$ex->getMessage());
         }
         

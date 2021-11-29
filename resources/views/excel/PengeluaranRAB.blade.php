@@ -40,7 +40,7 @@
             @endif
             {{$transaksi->kategori}}
             </td>
-            <td>{{$transaksi->uraian}}</td>
+            <td>{{$transaksi->uraian}}  {{$transaksi->jumlah}} {{$transaksi->satuan}}</td>
             <td>{{$transaksi->debet}}</td>
             <td>{{$transaksi->sumber}}</td>
           @endforeach
