@@ -109,25 +109,25 @@
                   $nilai = $cicilan->pembelian->sisaKewajiban/$cicilan->pembelian->tenor
               @endphp
               @endif
-              <td>Rp. {{number_format($nilai)}}</td>
+              <td data-order="{{$nilai}}">Rp. {{number_format($nilai)}}</td>
               @php
                   $totalCicilan += $nilai;
               @endphp
               @if (cekPembayaranCicilan($cicilan->id)==null)
                   <td> <a href="{{route('unitKavlingDetail',['id'=>$cicilan->pembelian->id])}}"> <span class="text-danger"> Belum Dibayar</span></a></td>
               @else
-                  <td><a href="{{route('unitKavlingDetail',['id'=>$cicilan->pembelian->id])}}"> <span class="text-primary">Rp. {{number_format(cekPembayaranCicilan($cicilan->id))}}</span> </a></td>
+                  <td data-order="{{cekPembayaranCicilan($cicilan->id)}}"><a href="{{route('unitKavlingDetail',['id'=>$cicilan->pembelian->id])}}"> <span class="text-primary">Rp. {{number_format(cekPembayaranCicilan($cicilan->id))}}</span> </a></td>
               @endif
               @php
                   $totalTerbayar +=cekPembayaranCicilan($cicilan->id);
               @endphp
-              <td>
                 @if(cekPembayaranEstimasi($cicilan->id)!=null)
-                {{formatTanggal(cekPembayaranEstimasi($cicilan->id)->tanggal)}}
+                <td data-order="{{cekPembayaranEstimasi($cicilan->id)->tanggal}}">
+                  {{formatTanggal(cekPembayaranEstimasi($cicilan->id)->tanggal)}}
+                </td>
                 @else
-                
-                @endif
-              </td>
+                <td></td>
+              @endif
             </tr>
             @endif
           @endif

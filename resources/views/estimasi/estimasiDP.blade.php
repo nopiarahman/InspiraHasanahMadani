@@ -110,7 +110,7 @@
                     $nilai = $dp->pembelian->dp/$dp->pembelian->tenorDP
                 @endphp
                 @endif
-                <td>Rp. {{number_format($nilai)}}</td>
+                <td data-order="{{$nilai}}">Rp. {{number_format($nilai)}}</td>
                 @php
                     $totalDP += $nilai;
                 @endphp
@@ -118,19 +118,19 @@
                     <td> <a href="{{route('DPKavlingTambah',['id'=>$dp->pembelian->id])}}"> 
                       <span class="text-danger"> Belum Dibayar</span></a></td>
                 @else
-                    <td>  <a href="{{route('DPKavlingTambah',['id'=>$dp->pembelian->id])}}">
+                    <td data-order="{{cekPembayaranDP($dp->id,$start)}}">  <a href="{{route('DPKavlingTambah',['id'=>$dp->pembelian->id])}}">
                       <span class="text-primary">Rp. {{number_format(cekPembayaranDP($dp->id,$start))}}</span> </a></td>
                 @endif
                 @php
                     $totalDPTerbayar +=cekPembayaranDP($dp->id,$start);
                 @endphp
-                <td>
                   @if(cekDPEstimasi($dp->id)!=null)
-                  {{formatTanggal(cekDPEstimasi($dp->id)->tanggal)}}
+                  <td>
+                    {{formatTanggal(cekDPEstimasi($dp->id)->tanggal)}}
+                  </td>
                   @else
-                  
+                  <td></td>
                   @endif
-                </td>
                 @if ($dp->pembelian->sisaDp <= 0)
                 <td> <span class="text-info">DP LUNAS</span> </td>
                 @else
