@@ -843,3 +843,7 @@ function bulanDpBerjalan(dp $id){
     $berjalan = Carbon::parse($id->tanggal)->firstOfMonth()->diffInMonths(Carbon::parse($pembayaranPertama->tanggal)->firstOfMonth()->subMonth(1),true);
     return $berjalan+1;
 }
+function saldoTransaksiSebelum2($no){
+    $sebelum = transaksi::where('no',$no-1)->first();
+    return $sebelum->saldo;
+}

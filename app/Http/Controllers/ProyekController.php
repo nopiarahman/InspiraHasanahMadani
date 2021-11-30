@@ -406,7 +406,24 @@ class ProyekController extends Controller
         }
         return Excel::download(new PengeluaranUnitExport($transaksiKeluar,$totalFilter,$id,$bulanTerpilih), 'Pengeluaran Unit '.$id->isi.'.xlsx');
     }
+    
     public function rekening(){
+
+        $transaksi = transaksi::where('no','>',1)->orderBy('no')->where('proyek_id',proyekId())->get();
+        $n=2;
+        $total = $transaksi->count();
+        /* update nomor */
+        // foreach($transaksi as $t){
+        //     $t->update(['no'=>$n]);
+        //     $n++;
+        // }
+        /* update saldo */
+        // foreach($transaksi as $t){
+        //     $saldo = saldoTransaksiSebelum2($t->no)+(int)$t->kredit-(int) $t->debet;
+        //     $t->update(['saldo'=>$saldo]);
+        // }
+        // dd($transaksi->pluck('saldo'));
+
         $rekening = rekening::where('proyek_id',proyekId())->get();
         return view('rekening/index',compact('rekening'));
     }
