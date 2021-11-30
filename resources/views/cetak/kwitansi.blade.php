@@ -142,10 +142,16 @@
               @if($id->pembelian->sisaKewajiban-cicilanTerbayar($id->pembelian_id,$id->tanggal) <=0)
               -
               @else
-              1-10 {{Carbon\Carbon::parse($tempo)->isoFormat('MMMM YYYY')}}
+              1-10 {{Carbon\Carbon::parse($id->tempo)->isoFormat('MMMM YYYY')}}
               @endif
             </td>
           </tr>
+          @if($kekurangan >= 0)
+          <tr>
+            <th>Kekurangan Angsuran</th>
+            <td>: Rp {{number_format($kekurangan)}}</td>
+          </tr>
+          @endif
         </table>
       </div>
       <!-- /.col -->
@@ -311,6 +317,7 @@
               @endif
             </td>
           </tr>
+          
         </table>
       </div>
       <!-- /.col -->

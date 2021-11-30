@@ -128,14 +128,14 @@
           <tr>
             <th>Status</th>
             <td>: 
-              @if($pembelian->dp-$sampaiSekarang->sum('jumlah') <=0)
+              @if($id->pembelian->dp - dpTerbayar($id->pembelian->id,$id->tanggal) <=0)
               <span class="text-primary"> Lunas </span>
               @else
               <span class="text-warning"> Belum Lunas </span>
               @endif
             </td>
           </tr>
-          @if($pembelian->dp-$sampaiSekarang->sum('jumlah') <=0)
+          @if($id->pembelian->dp - dpTerbayar($id->pembelian->id,$id->tanggal) <=0)
           @else
           <tr>
             <th>Jatuh Tempo</th>
@@ -295,14 +295,14 @@
           <tr>
             <th>Status</th>
             <td>: 
-              @if($pembelian->dp-$sampaiSekarang->sum('jumlah') <=0)
+              @if($id->pembelian->dp - dpTerbayar($id->pembelian->id,$id->tanggal) <=0)
               <span class="text-primary"> Lunas </span>
               @else
               <span class="text-warning"> Belum Lunas </span>
               @endif
             </td>
           </tr>
-          @if($pembelian->dp-$sampaiSekarang->sum('jumlah') <=0)
+          @if($id->pembelian->dp - dpTerbayar($id->pembelian->id,$id->tanggal) <=0)
           @else
           <tr>
             <th>Jatuh Tempo</th>

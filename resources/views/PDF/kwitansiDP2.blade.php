@@ -87,19 +87,19 @@
 		<td>Total Angsuran Dibayarkan</td>
 		<td>: Rp. {{number_format(dpTerbayar($id->pembelian_id,$id->tanggal))}}</td>
 	</tr>
-	<tr>
+	{{-- <tr>
 		<td>Sisa Hutang</td>
 		<td>: Rp. {{number_format($id->pembelian->dp - dpTerbayar($id->pembelian->id,$id->tanggal))}}</td>
-		</tr>
+		</tr> --}}
 	<tr>
 		<td>Status</td>
-		<td>:@if($pembelian->dp-$sampaiSekarang->sum('jumlah') <=0)
+		<td>:@if($id->pembelian->dp - dpTerbayar($id->pembelian->id,$id->tanggal) <=0)
 			<span class="text-primary"> Lunas </span>
 			@else
 			<span class="text-warning"> Belum Lunas </span>
 			@endif</td>
 	</tr>
-	@if($pembelian->dp-$sampaiSekarang->sum('jumlah') <=0)
+	@if($id->pembelian->dp - dpTerbayar($id->pembelian->id,$id->tanggal) <=0)
 	@else
 	<tr>
 		<td>Jatuh Tempo</td>

@@ -68,7 +68,7 @@
   {{-- Cicilan DP --}}
   <div class="card">
     <div class="card-header">
-      <h4>Daftar DP Aktif</h4>
+      <h4>Daftar DP Jatuh Tempo Bulan {{Carbon\Carbon::parse($start)->isoFormat('MMMM')}}</h4>
     </div>
     <div class="card-body">
       <table class="table table-hover table-sm table-responsive-sm" id="dpAktif">
@@ -77,9 +77,7 @@
             <th scope="col">No</th>
             <th scope="col">Nama</th>
             <th scope="col">No Telp</th>
-            <th scope="col">Blok</th>
             <th scope="col">Nilai Cicilan</th>
-            <th scope="col">DP Ke</th>
             <th scope="col">Terbayar</th>
             <th scope="col">Tanggal Pembayaran</th>
             <th scope="col">Keterangan</th>
@@ -87,67 +85,76 @@
         </thead>
         <tbody>
           @php
+          $n=1;
               $totalDP = 0;
               $totalDPTerbayar=0;
           @endphp
           @foreach($dpAktif as $dp)
-          <tr>
-            <td>{{$loop->iteration}}</td>
-            <td>{{$dp->pelanggan->nama}}</td>
-            <td>{{$dp->pelanggan->nomorTelepon}}</td>
-            <td>{{$dp->pelanggan->kavling->blok}}</td>
-            @if ($dp->pembelian->dp/$dp->pembelian->tenorDP >= $dp->sisaDp)
-                @php
-                    $nilai = $dp->sisaDp
-                @endphp
-            @else
-            @php
-                $nilai = $dp->pembelian->dp/$dp->pembelian->tenorDP
-            @endphp
-            @endif
-            <td>Rp. {{number_format($nilai)}}</td>
-            @php
-                $totalDP += $nilai;
-            @endphp
-            <td>{{$dp->urut+1}}</td>
-            @if (cekPembayaranDP($dp->id,$start)==null)
-                <td> <a href="{{route('DPKavlingTambah',['id'=>$dp->pembelian->id])}}"> <span class="text-danger"> Belum Dibayar</span></a></td>
-            @else
-                <td>  <a href="{{route('DPKavlingTambah',['id'=>$dp->pembelian->id])}}"><span class="text-primary">Rp. {{number_format(cekPembayaranDP($dp->id,$start))}}</span> </a></td>
-            @endif
-            @php
-                $totalDPTerbayar +=cekPembayaranDP($dp->id,$start);
-            @endphp
-            <td>
-              @if(cekDPEstimasi($dp->id)!=null)
-              {{formatTanggal(cekDPEstimasi($dp->id)->tanggal)}}
+            @if ($dp) 
+              @if (cekPembayaranDP($dp->id,$start)==null && $dp->pembelian->sisaDp <= 0)
               @else
-              
+              <tr>
+                <td>{{$n}}</td>
+                @php
+                    $n++;
+                @endphp
+                <td>{{$dp->pelanggan->nama}} | {{$dp->pelanggan->kavling->blok}}</td>
+                <td>{{$dp->pelanggan->nomorTelepon}} </td>
+                @if ($dp->pembelian->dp/$dp->pembelian->tenorDP >= $dp->sisaDp)
+                    @php
+                        $nilai = $dp->sisaDp
+                    @endphp
+                @else
+                @php
+                    $nilai = $dp->pembelian->dp/$dp->pembelian->tenorDP
+                @endphp
+                @endif
+                <td>Rp. {{number_format($nilai)}}</td>
+                @php
+                    $totalDP += $nilai;
+                @endphp
+                @if (cekPembayaranDP($dp->id,$start)==null)
+                    <td> <a href="{{route('DPKavlingTambah',['id'=>$dp->pembelian->id])}}"> 
+                      <span class="text-danger"> Belum Dibayar</span></a></td>
+                @else
+                    <td>  <a href="{{route('DPKavlingTambah',['id'=>$dp->pembelian->id])}}">
+                      <span class="text-primary">Rp. {{number_format(cekPembayaranDP($dp->id,$start))}}</span> </a></td>
+                @endif
+                @php
+                    $totalDPTerbayar +=cekPembayaranDP($dp->id,$start);
+                @endphp
+                <td>
+                  @if(cekDPEstimasi($dp->id)!=null)
+                  {{formatTanggal(cekDPEstimasi($dp->id)->tanggal)}}
+                  @else
+                  
+                  @endif
+                </td>
+                @if ($dp->pembelian->sisaDp <= 0)
+                <td> <span class="text-info">DP LUNAS</span> </td>
+                @else
+                <td>Sisa DP: Rp. {{number_format($dp->pembelian->sisaDp)}}</td>
+                @endif
+              </tr>
               @endif
-            </td>
-            @if ($dp->pembelian->sisaDp <= 0)
-            <td> <span class="text-info">DP LUNAS</span> </td>
-            @else
-            <td>Sisa DP: Rp. {{number_format($dp->pembelian->sisaDp)}}</td>
             @endif
-          </tr>
           @endforeach
         </tbody>
         <tfoot>
           <tr>
-            <th colspan="5" class=" text-primary text-right border-success border-top">Total</th>
+            <th colspan="3" class=" text-primary text-right border-success border-top">Total</th>
             <th class="border-success border-top text-primary">Rp.{{number_format($totalDP)}}</th>
-            <th class=" text-primary text-right border-success border-top">Total</th>
-            <th colspan="3" class="border-success border-top text-primary">Rp.{{number_format($totalDPTerbayar)}}</th>
+            <th  class="border-success border-top text-primary">Rp.{{number_format($totalDPTerbayar)}}</th>
+            <td colspan="2" class="border-success border-top text-primary"></td>
           </tr>
         </tfoot>
       </table>
     </div>
   </div>
   {{-- Cicilan Unit --}}
-  {{-- <div class="card">
+  <div class="card">
     <div class="card-header">
-      <h4>Daftar Cicilan Aktif</h4>
+      <h4>Daftar Cicilan  Jatuh Tempo Bulan {{Carbon\Carbon::parse($start)->isoFormat('MMMM')}}</h4>
     </div>
     <div class="card-body">
       <table class="table table-hover table-sm table-responsive-sm" id="cicilanAktif">
@@ -156,10 +163,7 @@
             <th scope="col">No</th>
             <th scope="col">Nama</th>
             <th scope="col">No Telp</th>
-            <th scope="col">Blok</th>
-            <th scope="col">Jenis</th>
             <th scope="col">Nilai Cicilan</th>
-            <th scope="col">Cicilan Ke</th>
             <th scope="col">Terbayar</th>
             <th scope="col">Tanggal Pembayaran</th>
           </tr>
@@ -168,58 +172,64 @@
           @php
               $totalCicilan = 0;
               $totalTerbayar=0;
+              $n=1;
           @endphp
           @foreach($cicilanAktif as $cicilan)
-          <tr>
-            <td>{{$loop->iteration}}</td>
-            <td>{{$cicilan->pelanggan->nama}}</td>
-            <td>{{$cicilan->pelanggan->nomorTelepon}}</td>
-            <td>{{$cicilan->pelanggan->kavling->blok}}</td>
-            <td>{{jenisKepemilikan($cicilan->pelanggan->id)}}</td>
-            @if ($cicilan->pembelian->sisaKewajiban/$cicilan->pembelian->tenor >= $cicilan->sisaKewajiban)
-            @php
-                $nilai = $cicilan->sisaKewajiban
-            @endphp
+          @if ($cicilan)
+            @if (cekPembayaranCicilan($cicilan->id,$start)==null && $dp->pembelian->sisaKewajiban <= 0)
             @else
-            @php
-                $nilai = $cicilan->pembelian->sisaKewajiban/$cicilan->pembelian->tenor
-            @endphp
-            @endif
-            <td>Rp. {{number_format($nilai)}}</td>
-            @php
-                $totalCicilan += $nilai;
-            @endphp
-            <td>{{$cicilan->urut+1}}</td>
-            @if (cekPembayaranCicilan($cicilan->id)==null)
-                <td> <a href="{{route('unitKavlingDetail',['id'=>$cicilan->pembelian->id])}}"> <span class="text-danger"> Belum Dibayar</span></a></td>
-            @else
-                <td><a href="{{route('unitKavlingDetail',['id'=>$cicilan->pembelian->id])}}"> <span class="text-primary">Rp. {{number_format(cekPembayaranCicilan($cicilan->id))}}</span> </a></td>
-            @endif
-            @php
-                $totalTerbayar +=cekPembayaranCicilan($cicilan->id);
-            @endphp
-            <td>
-              @if(cekPembayaranEstimasi($cicilan->id)!=null)
-              {{formatTanggal(cekPembayaranEstimasi($cicilan->id)->tanggal)}}
+            <tr>
+              <td>{{$n}}</td>
+              @php
+                  $n++;
+              @endphp
+              <td>{{$cicilan->pelanggan->nama}} | {{$cicilan->pelanggan->kavling->blok}}</td>
+              <td>{{$cicilan->pelanggan->nomorTelepon}}</td>
+              @if ($cicilan->pembelian->sisaKewajiban/$cicilan->pembelian->tenor >= $cicilan->sisaKewajiban)
+              @php
+                  $nilai = $cicilan->sisaKewajiban
+              @endphp
               @else
-              
+              @php
+                  $nilai = $cicilan->pembelian->sisaKewajiban/$cicilan->pembelian->tenor
+              @endphp
               @endif
-            </td>
-          </tr>
+              <td>Rp. {{number_format($nilai)}}</td>
+              @php
+                  $totalCicilan += $nilai;
+              @endphp
+              @if (cekPembayaranCicilan($cicilan->id)==null)
+                  <td> <a href="{{route('unitKavlingDetail',['id'=>$cicilan->pembelian->id])}}"> <span class="text-danger"> Belum Dibayar</span></a></td>
+              @else
+                  <td><a href="{{route('unitKavlingDetail',['id'=>$cicilan->pembelian->id])}}"> <span class="text-primary">Rp. {{number_format(cekPembayaranCicilan($cicilan->id))}}</span> </a></td>
+              @endif
+              @php
+                  $totalTerbayar +=cekPembayaranCicilan($cicilan->id);
+              @endphp
+              <td>
+                @if(cekPembayaranEstimasi($cicilan->id)!=null)
+                {{formatTanggal(cekPembayaranEstimasi($cicilan->id)->tanggal)}}
+                @else
+                
+                @endif
+              </td>
+            </tr>
+            @endif
+          @endif
           @endforeach
         </tbody>
         <tfoot>
           <tr>
-            <th colspan="5" class=" text-primary text-right border-success border-top">Total</th>
+            <th colspan="3" class=" text-primary text-right border-success border-top">Total</th>
             <th class="border-success border-top text-primary">Rp.{{number_format($totalCicilan)}}</th>
-            <th class=" text-primary text-right border-success border-top">Total</th>
-            <th colspan="2" class="border-success border-top text-primary">Rp.{{number_format($totalTerbayar)}}</th>
+            <th class="border-success border-top text-primary">Rp.{{number_format($totalTerbayar)}}</th>
+            <td colspan="2"></td>
           </tr>
         </tfoot>
       </table>
     </div>
   </div>
-  
+  {{-- DP NUNGGAK --}}
   <div class="card">
     <div class="card-header">
       <h4 class="text-danger">DP Tertunggak</h4>
@@ -237,20 +247,21 @@
           </tr>
         </thead>
         <tbody>
-            @forelse ($DPtertunggak as $tunggakan)
-            <tr>
-              <td>{{$loop->iteration}}</td>
-              <td>{{$tunggakan->pelanggan->nama}}</td>
-              <td>{{$tunggakan->pelanggan->kavling->blok}}</td>
-              <td>{{jenisKepemilikan($tunggakan->pelanggan->id)}}</td>
-              <td>{{$tunggakan->pelanggan->nomorTelepon}}</td>
-              <td> 1-10 {{Carbon\Carbon::parse($tunggakan->tempo)->isoFormat('MMMM YYYY')}}</td>
-            </tr>
-            @empty
-            <tr>
-              <td>Tidak Ada Tunggakan</td>
-            </tr>
-            @endforelse
+            @foreach ($DPtertunggak as $tunggakan)
+              @if($tunggakan)
+                <tr>
+                  <td>{{$loop->iteration}}</td>
+                  <td>{{$tunggakan->pelanggan->nama}}</td>
+                  <td>{{$tunggakan->pelanggan->kavling->blok}}</td>
+                  <td>{{jenisKepemilikan($tunggakan->pelanggan->id)}}</td>
+                  <td>{{$tunggakan->pelanggan->nomorTelepon}}</td>
+                  <td><a class="text-danger" href="{{route('DPKavlingTambah',['id'=>$tunggakan->pembelian_id])}}">
+                    1-10 {{Carbon\Carbon::parse($tunggakan->tempo)->isoFormat('MMMM YYYY')}}
+                    </a>
+                  </td>
+                </tr>
+              @endif
+            @endforeach
         </tbody>
       </table>
     </div>
@@ -273,14 +284,20 @@
         </thead>
         <tbody>
             @forelse ($cicilanTertunggak as $tunggakan)
+            @if($tunggakan)
             <tr>
               <td>{{$loop->iteration}}</td>
               <td>{{$tunggakan->pelanggan->nama}}</td>
               <td>{{$tunggakan->pelanggan->kavling->blok}}</td>
               <td>{{jenisKepemilikan($tunggakan->pelanggan->id)}}</td>
               <td>{{$tunggakan->pelanggan->nomorTelepon}}</td>
-              <td> 1-10 {{Carbon\Carbon::parse($tunggakan->tempo)->isoFormat('MMMM YYYY')}}</td>
+              <td>
+                <a class="text-danger" href="{{route('unitKavlingDetail',['id'=>$tunggakan->pembelian_id])}}">
+                  1-10 {{Carbon\Carbon::parse($tunggakan->tempo)->isoFormat('MMMM YYYY')}}
+                  </a>
+                </td>
             </tr>
+            @endif
             @empty
             <tr>
               <td>Tidak Ada Tunggakan</td>
@@ -313,7 +330,7 @@
         </div>
       </div>
     </div>
-  </div> --}}
+  </div>
 @endsection
 @section('script')
 <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.js"></script>

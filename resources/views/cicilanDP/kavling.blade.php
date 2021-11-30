@@ -56,7 +56,7 @@
             @endphp
             @foreach($semuaCicilanDp as $cicilanDp)
             @if($cicilanDp->pelanggan !=null && $cicilanDp->pelanggan->kavling !=null)
-            {{-- {{updateDPPelanggan($cicilanDp)}} --}}
+            {{updateDPPelanggan($cicilanDp)}}
             <tr>
               @php
                   $n++
@@ -68,11 +68,11 @@
                 {{$cicilanDp->pelanggan->nama}}
                 </a>
               </td>
-              @if($cicilanDp->pelanggan->kavling==null)
+              {{-- @if($cicilanDp->pelanggan->kavling==null)
               <td>Batal Akad</td>
-              @else
+              @else --}}
               <td>{{$cicilanDp->kavling->blok}}</td>
-              @endif
+              {{-- @endif --}}
               <td>{{jenisKepemilikan($cicilanDp->pelanggan_id)}}</td>
               <td data-order="{{$cicilanDp->dp-cekTotalDp($cicilanDp->id)}}" >Rp.{{number_format($cicilanDp->dp-cekTotalDp($cicilanDp->id))}}</td>
               <td><a href="{{route('DPKavlingTambah',['id'=>$cicilanDp->id])}}" class="btn btn-white btn-sm text-primary border-success">Pembayaran</a>

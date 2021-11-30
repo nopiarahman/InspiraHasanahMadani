@@ -216,6 +216,11 @@
           <th scope="col">Sisa Hutang</th>
           <th scope="col">Nomor Faktur</th>
           <th scope="col">Aksi</th>
+
+          <th>tempo</th>
+          <th>totalTerbayar</th>
+          <th>terbayar seharusnya</th>
+          <th>kurang</th>
         </tr>
       </thead>
       <tbody>
@@ -232,7 +237,6 @@
           <td>Rp.{{number_format($cicilanUnit->jumlah)}}</td>
           
           <td>Rp.{{number_format($cicilanUnit->pembelian->sisaKewajiban-cicilanTerbayar($cicilanUnit->pembelian->id,$cicilanUnit->tanggal))}}</td>
-          <td>{{$cicilanUnit->sisaKewajiban}}</td>
           <td>
             @if(jenisKepemilikan($id->pelanggan_id)=='Kavling')
             CK
@@ -248,6 +252,10 @@
             data-id="{{$cicilanUnit->id}}">
             <i class="fa fa-trash" aria-hidden="true" ></i> Hapus </button>  
           </td>
+          <td>{{$cicilanUnit->tempo}}</td>
+          <td>{{cicilanTerbayar($cicilanUnit->pembelian->id,$cicilanUnit->tanggal)}}</td>
+          <td>{{number_format($cicilanPerBulan*$loop->iteration)}}</td>
+          <td>{{($cicilanPerBulan*$loop->iteration)-cicilanTerbayar($cicilanUnit->pembelian->id,$cicilanUnit->tanggal)}}</td>
         </tr>
         @endforeach
       </tbody>

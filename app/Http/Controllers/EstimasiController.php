@@ -18,48 +18,86 @@ class EstimasiController extends Controller
             $start = Carbon::now()->firstOfMonth()->isoFormat('YYYY-MM-DD');
             $end = Carbon::now()->endOfMonth()->isoFormat('YYYY-MM-DD');
         }
-        $cicilanTempo = cicilan::whereBetween('tempo',[$start,$end])->where('proyek_id',proyekId())->where('sisaKewajiban','>',0)->get();
-        $cicilanAktif = $cicilanTempo->filter(function ($value, $key) {
-            if($value->pelanggan != null){
-                return $value->pelanggan->kavling != null;
-            }
+        $semuaPelanggan = pelanggan::where('proyek_id',proyekId())->orderBy('nama')->get();
+        $pelangganAktif = $semuaPelanggan->filter(function ($value, $key) {
+            return $value->kavling != null;
         });
-        $dpTempo = dp::whereBetween('tempo',[$start,$end])->where('proyek_id',proyekId())->get();
-        $dpAktif = $dpTempo->filter(function ($value, $key) {
-            if($value->pelanggan != null){
-                if($value->pelanggan->kavling != null){
-                    return $value->sisaDp >= 0;
-                }
-            }
-        });
+        foreach($pelangganAktif as $p){
+            $dp[]= $p->dp->whereBetween('tempo',[$start,$end])->last();
+            $cicilan[]= $p->cicilan->whereBetween('tempo',[$start,$end])->last();
+            $dpNunggak[]=$p->dp->where('tempo','<',$start)->filter(function ($value, $key) {
+                return cekPembayaranDP($value->id) == null;
+            })->last();
+            $cicilanNunggak[]=$p->cicilan->where('tempo','<',$start)->filter(function ($value, $key) {
+                return cekPembayaranCicilan($value->id) == null;
+            })->last();
+        }
+        $dpAktif = collect($dp);
+        $cicilanAktif = collect($cicilan);
+        $DPtertunggak=collect($dpNunggak)->where('sisaDp','>',0);
 
-        // dd($dpAktif);
-        /* Tunggakan */
-        // $semuadp=dp::where('tempo','<',$start)->where('proyek_id',proyekId())->where('sisaDp','>',0)->get();
-        // $semuaTunggakanDP = $semuadp->filter(function ($value, $key) {
-        //     if($value->pelanggan != null){
-        //         return $value->pelanggan->kavling != null;
-        //     }
-        // });
-        $DPtertunggak=[];
-        // foreach($semuaTunggakanDP as $dp){
-        //     if(cekPembayaranDP($dp->id) == null){
-        //         $DPtertunggak[]=$dp;
-        //     }
-        // }
-        // $semuaCicilan=cicilan::where('tempo','<',$start)->where('proyek_id',proyekId())->where('sisaKewajiban','>',0)->get();
-        // $semuaTunggakanCicilan = $semuaCicilan->filter(function ($value, $key) {
-        //     if($value->pelanggan != null){
-        //         return $value->pelanggan->kavling != null;
-        //     }
-        // });
-        $cicilanTertunggak=[];
-        // foreach($semuaTunggakanCicilan as $cicilan){
-        //     if(cekPembayaranCicilan($cicilan->id) == null){
-        //         $cicilanTertunggak[]=$cicilan;
-        //     }
-        // }
-        // dd($cicilanTertunggak);
+        $cicilanTertunggak=collect($cicilanNunggak)->where('sisaKewajiban','>',0);
         return view('estimasi/estimasiIndex',compact('start','end','cicilanAktif','dpAktif','DPtertunggak','cicilanTertunggak'));
+    }
+    public function estimasiDp(Request $request){
+        if($request->get('filter')){
+            $start = Carbon::parse($request->start)->isoFormat('YYYY-MM-DD');
+            $end = Carbon::parse($request->end)->isoFormat('YYYY-MM-DD');
+        }else{
+            $start = Carbon::now()->firstOfMonth()->isoFormat('YYYY-MM-DD');
+            $end = Carbon::now()->endOfMonth()->isoFormat('YYYY-MM-DD');
+        }
+        $semuaPelanggan = pelanggan::where('proyek_id',proyekId())->orderBy('nama')->get();
+        $pelangganAktif = $semuaPelanggan->filter(function ($value, $key) {
+            return $value->kavling != null;
+        });
+        foreach($pelangganAktif as $p){
+            $dp[]= $p->dp->whereBetween('tempo',[$start,$end])->last();
+            
+        }
+        $dpAktif = collect($dp);
+        return view('estimasi/estimasiDP',compact('start','end','dpAktif'));
+    }
+    public function estimasiCicilan(Request $request){
+        if($request->get('filter')){
+            $start = Carbon::parse($request->start)->isoFormat('YYYY-MM-DD');
+            $end = Carbon::parse($request->end)->isoFormat('YYYY-MM-DD');
+        }else{
+            $start = Carbon::now()->firstOfMonth()->isoFormat('YYYY-MM-DD');
+            $end = Carbon::now()->endOfMonth()->isoFormat('YYYY-MM-DD');
+        }
+        $semuaPelanggan = pelanggan::where('proyek_id',proyekId())->orderBy('nama')->get();
+        $pelangganAktif = $semuaPelanggan->filter(function ($value, $key) {
+            return $value->kavling != null;
+        });
+        foreach($pelangganAktif as $p){
+            $cicilan[]= $p->cicilan->whereBetween('tempo',[$start,$end])->last();            
+        }
+        $cicilanAktif = collect($cicilan);
+        return view('estimasi/estimasiCicilan',compact('start','end','cicilanAktif'));
+    }
+    public function estimasiTunggakan(Request $request){
+        if($request->get('filter')){
+            $start = Carbon::parse($request->start)->isoFormat('YYYY-MM-DD');
+            $end = Carbon::parse($request->end)->isoFormat('YYYY-MM-DD');
+        }else{
+            $start = Carbon::now()->firstOfMonth()->isoFormat('YYYY-MM-DD');
+            $end = Carbon::now()->endOfMonth()->isoFormat('YYYY-MM-DD');
+        }
+        $semuaPelanggan = pelanggan::where('proyek_id',proyekId())->orderBy('nama')->get();
+        $pelangganAktif = $semuaPelanggan->filter(function ($value, $key) {
+            return $value->kavling != null;
+        });
+        foreach($pelangganAktif as $p){
+            $dpNunggak[]=$p->dp->where('tempo','<',$start)->filter(function ($value, $key) {
+                return cekPembayaranDP($value->id) == null;
+            })->last();
+            $cicilanNunggak[]=$p->cicilan->where('tempo','<',$start)->filter(function ($value, $key) {
+                return cekPembayaranCicilan($value->id) == null;
+            })->last();
+        }
+        $DPtertunggak=collect($dpNunggak)->where('sisaDp','>',0);
+        $cicilanTertunggak=collect($cicilanNunggak)->where('sisaKewajiban','>',0);
+        return view('estimasi/estimasiTunggakan',compact('start','end','DPtertunggak','cicilanTertunggak'));
     }
 }

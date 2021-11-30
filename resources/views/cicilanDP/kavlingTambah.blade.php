@@ -195,7 +195,6 @@ function cash(){
           <td data-order="{{$cicilanDp->tanggal}}">{{formatTanggal($cicilanDp->tanggal)}}</td>
           <td>Rp.{{number_format($cicilanDp->jumlah)}}</td>
           <td>Rp.{{number_format($cicilanDp->pembelian->dp - dpTerbayar($cicilanDp->pembelian->id,$cicilanDp->tanggal))}} </td>
-          <td>{{$cicilanDp->sisaDp}}</td>
           <td>
             @if(jenisKepemilikan($id->pelanggan_id)=='Kavling')
             DK

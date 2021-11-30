@@ -188,7 +188,16 @@
             @endif
             @if(auth()->user()->role=="admin" || auth()->user()->role=="projectmanager")
 
-            <li class=" @yield('menuEstimasi')"><a class="nav-link" href="{{route('estimasi')}}"><i class="fas fa-calendar-plus    "></i> <span> Estimasi Pemasukan</span></a></li>
+            {{-- <li class=" @yield('menuEstimasi')"><a class="nav-link" href="{{route('estimasi')}}"><i class="fas fa-calendar-plus    "></i> <span> Estimasi Pemasukan</span></a></li> --}}
+            <li class="nav-item dropdown @yield('menuEstimasi')">
+              <a href="" class="nav-link has-dropdown"><i class="fas fa-box-open    "></i> <span>Estimasi Pemasukan</span></a>
+              <ul class="dropdown-menu">
+                {{-- <li class=" @yield('menuAkun')"><a href="{{route('akun')}}">Akun</a></li> --}}
+                <li class=" @yield('menuEstimasiDp')"><a href="{{route('estimasiDp')}}">DP</a></li>
+                <li class=" @yield('menuEstimasiCicilan')"><a href="{{route('estimasiCicilan')}}">Cicilan</a></li>
+                <li class=" @yield('menuEstimasiTunggakan')"><a href="{{route('estimasiTunggakan')}}">Tunggakan</a></li>
+              </ul>
+            </li>
             <li class="nav-item dropdown @yield('menuKas')">
               <a href="" class="nav-link has-dropdown"><i class="fas fa-book"></i> <span>KAS</span></a>
               <ul class="dropdown-menu">

@@ -535,7 +535,7 @@
               <div class="form-group row mb-4">
                 <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Tenor DP</label>
                 <div class="input-group col-sm-12 col-md-7">
-                  <input type="number" class=" form-control @error('tenorDP') is-invalid @enderror" name="tenorDP" id="tenorDPInput">
+                  <input type="number" class=" form-control @error('tenorDP') is-invalid @enderror" name="tenorDP" id="tenorDPInput" value="{{$dataPembelian->tenorDP}}">
                   @error('tenorDP')
                   <div class="invalid-feedback">{{$message}}</div>
                   @enderror
