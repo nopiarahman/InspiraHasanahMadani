@@ -162,9 +162,9 @@ class KasController extends Controller
                 $requestData['jumlah']=null;
             }else{
                 /* jika tidak ada value simpan ke akhir transaksi */
-                $requestData['no']=noTransaksiTerakhir()+1;
+                $requestData['no']=1;
                 $requestData['kategori']=$request->kategori;
-                $requestData['saldo']=saldoTerakhir()+$jumlah;
+                $requestData['saldo']=$jumlah;
                 $requestData['kredit']=str_replace(',', '', $request->jumlah);
                 $requestData['proyek_id']=proyekId();
                 $requestData['jumlah']=null;
@@ -172,6 +172,7 @@ class KasController extends Controller
             }
             /* cek transaksi sesudah input */
             $cekTransaksi=transaksi::where('tanggal','>',$request->tanggal)->orderBy('no')->get();
+            // dd($cekTransaksi);
             if($cekTransaksi->first() != null){
                 /* jika ada, update transaksi sesudah sesuai perubahan input*/
                 foreach($cekTransaksi as $updateTransaksi){

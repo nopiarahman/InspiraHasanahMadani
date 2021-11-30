@@ -833,3 +833,13 @@ function updateSisaCicilan(Cicilan $id){
     $sisa = $akad - cicilanTerbayar($id->pembelian_id,$id->tanggal);
     $id->update(['sisaKewajiban'=>$sisa]);
 }
+function bulanCicilanBerjalan(Cicilan $id){
+    $pembayaranPertama= cicilan::where('pembelian_id',$id->pembelian_id)->orderBy('tanggal')->first();
+    $berjalan = Carbon::parse($id->tanggal)->firstOfMonth()->diffInMonths(Carbon::parse($pembayaranPertama->tanggal)->firstOfMonth(),true);
+    return $berjalan;
+}
+function bulanDpBerjalan(dp $id){
+    $pembayaranPertama= dp::where('pembelian_id',$id->pembelian_id)->orderBy('tanggal')->first();
+    $berjalan = Carbon::parse($id->tanggal)->firstOfMonth()->diffInMonths(Carbon::parse($pembayaranPertama->tanggal)->firstOfMonth(),true);
+    return $berjalan+1;
+}
