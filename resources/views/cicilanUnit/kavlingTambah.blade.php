@@ -217,10 +217,10 @@
           <th scope="col">Nomor Faktur</th>
           <th scope="col">Aksi</th>
 
-          <th>tempo</th>
+          {{-- <th>tempo</th>
           <th>totalTerbayar</th>
           <th>terbayar seharusnya</th>
-          <th>kurang</th>
+          <th>kurang</th> --}}
         </tr>
       </thead>
       <tbody>
@@ -252,10 +252,10 @@
             data-id="{{$cicilanUnit->id}}">
             <i class="fa fa-trash" aria-hidden="true" ></i> Hapus </button>  
           </td>
-          <td>{{$cicilanUnit->tempo}}</td>
+          {{-- <td>{{$cicilanUnit->tempo}}</td>
           <td>{{cicilanTerbayar($cicilanUnit->pembelian->id,$cicilanUnit->tanggal)}}</td>
           <td>{{number_format($cicilanPerBulan*$loop->iteration)}}</td>
-          <td>{{($cicilanPerBulan*$loop->iteration)-cicilanTerbayar($cicilanUnit->pembelian->id,$cicilanUnit->tanggal)}}</td>
+          <td>{{($cicilanPerBulan*$loop->iteration)-cicilanTerbayar($cicilanUnit->pembelian->id,$cicilanUnit->tanggal)}}</td> --}}
         </tr>
         @endforeach
       </tbody>
