@@ -119,7 +119,7 @@
           </tr>
           <tr>
             <th>Total Angsuran Dibayarkan</th>
-            <td>: Rp. {{number_format($sampaiSekarang->sum('jumlah'))}}</td>
+            <td>: Rp. {{number_format(cicilanTerbayar($id->pembelian_id,$id->tanggal))}}</td>
           </tr>
           <tr>
             <th>Sisa Hutang</th>
@@ -291,7 +291,7 @@
           </tr>
           <tr>
             <th>Total Angsuran Dibayarkan</th>
-            <td>: Rp. {{number_format($sampaiSekarang->sum('jumlah'))}}</td>
+            <td>: Rp. {{number_format(cicilanTerbayar($id->pembelian_id,$id->tanggal))}}</td>
           </tr>
           <tr>
             <th>Sisa Hutang</th>

@@ -132,7 +132,8 @@
                 <a class="text-danger" href="{{route('unitKavlingDetail',['id'=>$tunggakan->pembelian_id])}}">
                   1-10 {{Carbon\Carbon::parse($tunggakan->tempo)->isoFormat('MMMM YYYY')}}
                   </a>
-                </td>
+              </td>
+              <td>{{$tunggakan->tanggal}}{{$tunggakan->tempo}}</td>
             </tr>
             @endif
             @empty

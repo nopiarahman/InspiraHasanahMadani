@@ -98,6 +98,7 @@ class EstimasiController extends Controller
         }
         $DPtertunggak=collect($dpNunggak)->where('sisaDp','>',0);
         $cicilanTertunggak=collect($cicilanNunggak)->where('sisaKewajiban','>',0);
+        // dd($cicilanTertunggak);
         return view('estimasi/estimasiTunggakan',compact('start','end','DPtertunggak','cicilanTertunggak'));
     }
 }
