@@ -23,7 +23,7 @@
 <table cellspacing="0" border="0">
 	<tbody>
 		<tr>
-			<td rowspan="4" valign="top" align="center"><br><img src="{{public_path(Storage::url($proyek->logoPT))}}" alt="" width="100px"></td>
+			<td rowspan="4" valign="top" align="center"><br><img src="{{public_path(Storage::url($proyek->logoPT))}}" alt="" width="80px"></td>
 			<td align="left" colspan="3"><b><font size="4">{{$proyek->namaPT}}</b></td>
 		</tr>
 		<tr>
@@ -65,7 +65,7 @@
 			<td colspan="2">Rp. {{number_format($id->jumlah)}}</td>
 		</tr>
 	<tr>
-		<td colspan="4" style="padding:15px 0px 15px 0px"><b><font size="4" color="#6C757D">Metode Pembayaran: <span style="color: green"> 
+		<td colspan="4" style="padding:7px 0px 7px 0px"><b><font size="4" color="#6C757D">Metode Pembayaran: <span style="color: green"> 
 			@if($id->sumber == 'Cash' || $id->sumber == 'cash')
 			TUNAI 
 			@else
@@ -99,6 +99,12 @@
 			<span class="text-warning"> Belum Lunas </span>
 			@endif</td>
 	</tr>
+	@if($kekurangan > 0)
+	<tr>
+		<td>Kekurangan Angsuran</td>
+		<td>: Rp {{number_format($kekurangan)}}</td>
+	</tr>
+	@endif
 	@if($id->pembelian->dp - dpTerbayar($id->pembelian->id,$id->tanggal) <=0)
 	@else
 	<tr>
@@ -106,8 +112,9 @@
 		<td>: 1-10 {{Carbon\Carbon::parse($tempo)->isoFormat('MMMM YYYY')}}</td>
 		<td colspan="2" style="border-top: 1px solid #000000" align="center" valign="bottom">Kasir</td>
 		</tr>
-	<tr>
 	@endif
+	
+	<tr>
 		<td align="center" colspan="4" valign="bottom" style="height: 25px">Kwitansi digital ini sah tanpa tanda tangan</td>
 		</tr>
 </tbody>

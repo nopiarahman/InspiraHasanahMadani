@@ -211,13 +211,14 @@ class LaporanController extends Controller
             }
             // $tempo = Carbon::parse($id->tanggal)->firstOfMonth()->addMonth(1)->isoFormat('YYYY-MM-DD');
         }
+        $kekurangan=$nilai*dpKe($id->pembelian_id,$id->tanggal)-dpTerbayar($id->pembelian_id,$id->tanggal);
         $proyek=proyek::find(proyekId());       
         $pembelian= pembelian::where('id',$id->pembelian_id)->first();
         $rekening=rekening::where('proyek_id',proyekId())->get();
         $uraian = 'Pembayaran Dp Ke '.dpKe($id->pembelian_id,$id->tanggal).' '.jenisKepemilikan($pembelian->pelanggan_id).' '.$pembelian->kavling->blok;   
         $DpPertama = dp::where('pembelian_id',$pembelian->id)->first();
         $sampaiSekarang = dp::whereBetween('created_at',[$DpPertama->tanggal,$id->tanggal])->where('pembelian_id',$id->pembelian_id)->get();
-        return view('cetak/kwitansiDp',compact('tempo','id','pembelian','uraian','sampaiSekarang','rekening','proyek'));
+        return view('cetak/kwitansiDp',compact('kekurangan','tempo','id','pembelian','uraian','sampaiSekarang','rekening','proyek'));
     }
     public function exportBulanan(Request $request){
         $start = Carbon::now()->firstOfMonth()->isoFormat('YYYY-MM-DD');
@@ -359,11 +360,12 @@ class LaporanController extends Controller
         }else{
             $blok = "Batal Akad";
         }
+        $kekurangan=$nilai*dpKe($id->pembelian_id,$id->tanggal)-dpTerbayar($id->pembelian_id,$id->tanggal);
         $uraian = 'Pembayaran Dp Ke '.dpKe($id->pembelian_id,$id->tanggal).' '.jenisKepemilikan($pembelian->pelanggan_id).' '.$pembelian->kavling->blok;   
         $DpPertama = Dp::where('pembelian_id',$pembelian->id)->first();
         $sampaiSekarang = dp::whereBetween('created_at',[$DpPertama->tanggal,$id->tanggal])->where('pembelian_id',$id->pembelian_id)->get();
         // return view('PDF/kwitansiDp2',compact('id','pembelian','uraian','sampaiSekarang','rekening','proyek'));
-        $pdf=PDF::loadview('PDF/kwitansiDP2',compact('tempo','id','pembelian','uraian','sampaiSekarang','rekening','proyek'))->setPaper('A5','landscape');
+        $pdf=PDF::loadview('PDF/kwitansiDP2',compact('kekurangan','tempo','id','pembelian','uraian','sampaiSekarang','rekening','proyek'))->setPaper('A5','landscape');
         return $pdf->download('Kwitansi DP '.$pembelian->pelanggan->nama .' '. $blok .' Ke '.$id->urut.'.pdf');
     }
     public function cetakKwitansiPDF(Cicilan $id){
@@ -414,10 +416,11 @@ class LaporanController extends Controller
         }else{
             $blok = "Batal Akad";
         }
+        $kekurangan=$nilai*cicilanKe($id->pembelian_id,$id->tanggal)-cicilanTerbayar($id->pembelian_id,$id->tanggal);
         $uraian = 'Pembayaran Cicilan Ke '.cicilanKe($id->pembelian_id,$id->tanggal).' '.jenisKepemilikan($pembelian->pelanggan_id).' '.$pembelian->kavling->blok;   
         $cicilanPertama = cicilan::where('pembelian_id',$pembelian->id)->first();
         $sampaiSekarang = cicilan::whereBetween('created_at',[$cicilanPertama->tanggal,$id->tanggal])->where('pembelian_id',$id->pembelian_id)->get();
-        $pdf=PDF::loadview('PDF/kwitansi',compact('tempo','id','pembelian','uraian','sampaiSekarang','rekening','proyek','logoPT'))->setPaper('A5','landscape');
+        $pdf=PDF::loadview('PDF/kwitansi',compact('kekurangan','tempo','id','pembelian','uraian','sampaiSekarang','rekening','proyek','logoPT'))->setPaper('A5','landscape');
         return $pdf->download('Kwitansi Cicilan '.$pembelian->pelanggan->nama.' '.$blok.' Ke '.$id->urut.'.pdf');
     }
 }

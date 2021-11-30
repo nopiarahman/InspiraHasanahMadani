@@ -142,6 +142,12 @@
             <td>: 1-10 {{Carbon\Carbon::parse($tempo)->isoFormat('MMMM YYYY')}}
             </td>
           </tr>
+          @if($kekurangan > 0)
+          <tr>
+            <th>Kekurangan Angsuran</th>
+            <td>: Rp {{number_format($kekurangan)}}</td>
+          </tr>
+          @endif
           {{-- <tr>
             <th>Jatuh Tempo</th>
             <td>: 1-10 {{Carbon\Carbon::parse($id->tempo)->isoFormat('MMMM YYYY')}}
@@ -309,7 +315,12 @@
             <td>: 1-10 {{Carbon\Carbon::parse($tempo)->isoFormat('MMMM YYYY')}}
             </td>
           </tr>
-          
+          @if($kekurangan > 0)
+          <tr>
+            <th>Kekurangan Angsuran</th>
+            <td>: Rp {{number_format($kekurangan)}}</td>
+          </tr>
+          @endif
           @endif
         </table>
       </div>

@@ -117,6 +117,7 @@
             <th scope="col">Jenis</th>
             <th scope="col">No Telp</th>
             <th scope="col">Jatuh Tempo</th>
+            <th scope="col">Nominal Tunggakan</th>
           </tr>
         </thead>
         <tbody>
@@ -133,7 +134,7 @@
                   1-10 {{Carbon\Carbon::parse($tunggakan->tempo)->isoFormat('MMMM YYYY')}}
                   </a>
               </td>
-              <td>{{$tunggakan->tanggal}}{{$tunggakan->tempo}}</td>
+              <td></td>
             </tr>
             @endif
             @empty
