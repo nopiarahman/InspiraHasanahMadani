@@ -8,6 +8,7 @@ use App\rab;
 use App\rekening;
 use App\transaksi;
 use App\rumah;
+use App\pembelian;
 use App\rabUnit;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -423,7 +424,20 @@ class ProyekController extends Controller
         //     $t->update(['saldo'=>$saldo]);
         // }
         // dd($transaksi->pluck('saldo'));
-
+        /* update tempo dan sisa cicilan */
+        // $semuaCicilanDp = pembelian::where('statusDp','Credit')->where('proyek_id',proyekId())->orderBy('kavling_id')->get();
+        // foreach($semuaCicilanDp as $cicilanDp){
+        //     if($cicilanDp->pelanggan !=null && $cicilanDp->pelanggan->kavling !=null){
+        //         updateDPPelanggan($cicilanDp);
+        //     }
+        // }
+        // $semuaCicilanUnit = pembelian::where('statusCicilan','Credit')->where('proyek_id',proyekId())->orderBy('kavling_id')->get();
+        // foreach($semuaCicilanUnit as $cicilanUnit){
+        //     if($cicilanUnit->pelanggan !=null && $cicilanUnit->pelanggan->kavling !=null){
+        //         updateCicilanPelanggan($cicilanUnit);
+        //     }
+        // }
+        
         $rekening = rekening::where('proyek_id',proyekId())->get();
         return view('rekening/index',compact('rekening'));
     }

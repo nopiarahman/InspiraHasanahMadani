@@ -52,8 +52,9 @@ class EstimasiController extends Controller
             return $value->kavling != null;
         });
         foreach($pelangganAktif as $p){
-            $dp[]= $p->dp->whereBetween('tempo',[$start,$end])->last();
-            
+            $dp[]= $p->dp->whereBetween('tempo',[$start,$end])->filter(function ($value, $key) {
+                return cekPembayaranDP($value->id) == null;
+            })->last();
         }
         $dpAktif = collect($dp);
         return view('estimasi/estimasiDP',compact('start','end','dpAktif'));
@@ -71,9 +72,13 @@ class EstimasiController extends Controller
             return $value->kavling != null;
         });
         foreach($pelangganAktif as $p){
-            $cicilan[]= $p->cicilan->whereBetween('tempo',[$start,$end])->last();            
+            $cicilan[]= $p->cicilan->whereBetween('tempo',[$start,$end])->sortBy('tanggal')->filter(function ($value, $key) {
+                return cekPembayaranCicilan($value->id) == null;
+            })->last();       
         }
+
         $cicilanAktif = collect($cicilan);
+        // dd($cicilanAktif);
         return view('estimasi/estimasiCicilan',compact('start','end','cicilanAktif'));
     }
     public function estimasiTunggakan(Request $request){

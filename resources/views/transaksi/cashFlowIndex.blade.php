@@ -231,7 +231,7 @@
         @foreach($cashFlow as $transaksi)
         <tr>
           {{-- <td>{{$transaksi->no}}</td> --}}
-          <td data-order="{{$transaksi->tanggal}}" >{{formatTanggal($transaksi->tanggal)}}</td>
+          <td data-order="{{$transaksi->tanggal}}" >{{$transaksi->no}} {{formatTanggal($transaksi->tanggal)}}</td>
           <td>
             @if($transaksi->rab)
             {{$transaksi->rab->kodeRAB}}

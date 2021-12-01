@@ -91,14 +91,14 @@
           @endphp
           @foreach($cicilanAktif as $cicilan)
           @if ($cicilan)
-            @if (cekPembayaranCicilan($cicilan->id,$start)==null && $cicilan->pembelian->sisaKewajiban <= 0)
+            @if (cekPembayaranCicilan($cicilan->id)==null && $cicilan->pembelian->sisaKewajiban <= 0)
             @else
             <tr>
               <td>{{$n}}</td>
               @php
                   $n++;
               @endphp
-              <td>{{$cicilan->pelanggan->nama}} | {{$cicilan->pelanggan->kavling->blok}}</td>
+              <td> {{$cicilan->pelanggan->nama}} | {{$cicilan->pelanggan->kavling->blok}}</td>
               <td>{{$cicilan->pelanggan->nomorTelepon}}</td>
               @if ($cicilan->pembelian->sisaKewajiban/$cicilan->pembelian->tenor >= $cicilan->sisaKewajiban)
               @php

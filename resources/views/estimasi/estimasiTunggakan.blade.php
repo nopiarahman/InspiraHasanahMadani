@@ -81,11 +81,12 @@
             <th scope="col">Jenis</th>
             <th scope="col">No Telp</th>
             <th scope="col">Jatuh Tempo</th>
+            <th scope="col">Nominal Tunggakan - {{Carbon\Carbon::parse($start)->isoFormat('MMMM')}}</th>
           </tr>
         </thead>
         <tbody>
             @foreach ($DPtertunggak as $tunggakan)
-              @if($tunggakan)
+              @if($tunggakan && bulanDpTunggakanBerjalan($tunggakan)>0)
                 <tr>
                   <td>{{$loop->iteration}}</td>
                   <td>{{$tunggakan->pelanggan->nama}}</td>
@@ -96,6 +97,7 @@
                     1-10 {{Carbon\Carbon::parse($tunggakan->tempo)->isoFormat('MMMM YYYY')}}
                     </a>
                   </td>
+                  <td>Rp. {{number_format(bulanDpTunggakanBerjalan($tunggakan))}}</td>
                 </tr>
               @endif
             @endforeach
@@ -117,7 +119,7 @@
             <th scope="col">Jenis</th>
             <th scope="col">No Telp</th>
             <th scope="col">Jatuh Tempo</th>
-            <th scope="col">Nominal Tunggakan</th>
+            <th scope="col">Nominal Tunggakan - {{Carbon\Carbon::parse($start)->isoFormat('MMMM')}}</th>
           </tr>
         </thead>
         <tbody>
@@ -134,7 +136,7 @@
                   1-10 {{Carbon\Carbon::parse($tunggakan->tempo)->isoFormat('MMMM YYYY')}}
                   </a>
               </td>
-              <td></td>
+              <td>Rp. {{number_format(bulanCicilanTunggakanBerjalan($tunggakan))}}</td>
             </tr>
             @endif
             @empty

@@ -183,6 +183,12 @@ function cash(){
           <th scope="col">Sisa DP</th>
           <th scope="col">Nomor Faktur</th>
           <th scope="col">Aksi</th>
+
+          {{-- <th>tempo</th>
+          <th>totalTerbayar</th>
+          <th>bulan berjalan</th>
+          <th>terbayar seharusnya</th>
+          <th>kurang</th> --}}
         </tr>
       </thead>
       <tbody>
@@ -212,6 +218,11 @@ function cash(){
             data-id="{{$cicilanDp->id}}">
             <i class="fa fa-trash" aria-hidden="true" ></i> Hapus </button>   
           </td>
+          {{-- <td>{{formatTanggal($cicilanDp->tempo)}}</td>
+          <td>{{dpTerbayar($cicilanDp->pembelian->id,$cicilanDp->tanggal)}}</td>
+          <td>{{bulanDpBerjalan($cicilanDp)}}</td>
+          <td>{{number_format($id->dp/$id->tenorDP*bulanDpBerjalan($cicilanDp))}}</td>
+          <td>{{($id->dp/$id->tenorDP*bulanDpBerjalan($cicilanDp))-dpTerbayar($cicilanDp->pembelian->id,$cicilanDp->tanggal)}}</td> --}}
         </tr>
         @endforeach
       </tbody>
