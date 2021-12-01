@@ -21,7 +21,7 @@ class EsDpExport implements FromView ,ShouldAutoSize
     }
     public function view(): View
     {
-        return view ('excel/EsDPExport',[
+        return view ('excel/EsDpExport',[
             'dpAktif'=> $this->dpAktif,
             'start'=> $this->start,
             'end'=> $this->end,
