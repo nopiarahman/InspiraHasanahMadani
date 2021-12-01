@@ -277,6 +277,10 @@ function formatTanggal($date){
     $newDate = \Carbon\Carbon::parse($date);
     return $newDate->isoFormat('DD/MM/YYYY');
 }
+function formatBulanTahun($date){
+    $newDate = \Carbon\Carbon::parse($date);
+    return $newDate->isoFormat('MMMM YYYY');
+}
 function satuanUnit($judul){
     // dd($judul);
     if($judul=='Biaya Produksi Rumah'){
@@ -708,7 +712,7 @@ function updateDPPelanggan(pembelian $dp){
     $semuaDp = $dp->dp()->get();
     foreach ($semuaDp as $a ) {
         updateTempo($a);
-        updateSisaDp($a);
+        // updateSisaDp($a);
     }
     return true;
 }
@@ -759,7 +763,9 @@ function updateTempo(dp $id){
         }
     }
     if($id->pembelian->dp - dpTerbayar($id->pembelian->id,$id->tanggal) <=0){
-        $id->update(['tempo'=>null]);
+        /* lunas dp */
+        $tempoCicilanPertama = Carbon::parse($id->tanggal)->firstOfMonth()->addMonth(1)->isoFormat('YYYY-MM-DD');
+        $id->update(['tempo'=>$tempoCicilanPertama]);
     }else{
         $id->update(['tempo'=>$tempo]);
     }
@@ -872,4 +878,36 @@ function bulanDpTunggakanBerjalan(dp $id){
     $seharusnyaTerbayar = $nilai*$berjalan;
     $tunggakan = $seharusnyaTerbayar - $terbayar;
     return $tunggakan;
+}
+function cekCicilanBulananTerbayar(Pembelian $id,$tanggal){
+    $cek = cicilan::where('pembelian_id',$id->id)
+                    ->whereBetween('tanggal',[Carbon::parse($tanggal)->firstOfMonth(),Carbon::parse($tanggal)->endOfMonth()])
+                    ->first();
+    if($cek){
+        return $cek;
+    }
+    return null;
+}
+function cekCicilanSekaligus(Pembelian $id, $tanggal){
+    $cek = cicilan::where('pembelian_id',$id->id)
+                    ->where('tempo','>',Carbon::parse($tanggal)->firstOfMonth())
+                    ->orderBy('tanggal')
+                    ->get();
+    if($cek){
+        return $cek->last();
+    }
+    return null;
+}
+function cekDPLunasBulanan(pembelian $id, $tanggal){
+    $awalBulan = Carbon::parse($tanggal)->endOfMonth();
+    $akhirBulan = Carbon::parse($tanggal)->endOfMonth();
+    $cek = dp::where('pembelian_id',$id->id)
+                ->where('tanggal','<=',$akhirBulan)
+                ->get();
+    if($cek->last()){
+        if($cek->last()->sisaDp ===0 &&$cek->last()->tempo <= $awalBulan){
+            return "lunas";
+        }
+        return "Cicilan";
+    }
 }

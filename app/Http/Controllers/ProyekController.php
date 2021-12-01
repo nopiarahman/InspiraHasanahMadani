@@ -425,12 +425,12 @@ class ProyekController extends Controller
         // }
         // dd($transaksi->pluck('saldo'));
         /* update tempo dan sisa cicilan */
-        // $semuaCicilanDp = pembelian::where('statusDp','Credit')->where('proyek_id',proyekId())->orderBy('kavling_id')->get();
-        // foreach($semuaCicilanDp as $cicilanDp){
-        //     if($cicilanDp->pelanggan !=null && $cicilanDp->pelanggan->kavling !=null){
-        //         updateDPPelanggan($cicilanDp);
-        //     }
-        // }
+        $semuaCicilanDp = pembelian::where('statusDp','Credit')->where('proyek_id',proyekId())->orderBy('kavling_id')->get();
+        foreach($semuaCicilanDp as $cicilanDp){
+            if($cicilanDp->pelanggan !=null && $cicilanDp->pelanggan->kavling !=null){
+                updateDPPelanggan($cicilanDp);
+            }
+        }
         // $semuaCicilanUnit = pembelian::where('statusCicilan','Credit')->where('proyek_id',proyekId())->orderBy('kavling_id')->get();
         // foreach($semuaCicilanUnit as $cicilanUnit){
         //     if($cicilanUnit->pelanggan !=null && $cicilanUnit->pelanggan->kavling !=null){

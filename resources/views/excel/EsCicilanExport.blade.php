@@ -26,48 +26,47 @@
               $n=1;
           @endphp
           @foreach($cicilanAktif as $cicilan)
-          @if ($cicilan)
-            @if (cekPembayaranCicilan($cicilan->id)==null && $cicilan->pembelian->sisaKewajiban <= 0)
-            @else
+          @if(cekDPLunasBulanan($cicilan,$start)==="lunas")
             <tr>
-              <td>{{$n}}</td>
-              @php
-                  $n++;
-              @endphp
-              <td> {{$cicilan->pelanggan->nama}} | {{$cicilan->pelanggan->kavling->blok}}</td>
+              <td>{{$n, $n++}}</td>
+              <td>{{$cicilan->pelanggan->nama}} | {{$cicilan->kavling->blok}}</td>
               <td>{{$cicilan->pelanggan->nomorTelepon}}</td>
-              @if ($cicilan->pembelian->sisaKewajiban/$cicilan->pembelian->tenor >= $cicilan->sisaKewajiban)
+              @if ($cicilan->tenor ===0)
               @php
                   $nilai = $cicilan->sisaKewajiban
               @endphp
               @else
               @php
-                  $nilai = $cicilan->pembelian->sisaKewajiban/$cicilan->pembelian->tenor
+                  $nilai = $cicilan->sisaKewajiban/$cicilan->tenor
               @endphp
               @endif
-              <td data-order="{{$nilai}}">{{$nilai}}</td>
+              <td data-order="{{$nilai}}">Rp. {{number_format($nilai)}}</td>
               @php
                   $totalCicilan += $nilai;
               @endphp
-              @if (cekPembayaranCicilan($cicilan->id)==null)
-                  <td> <a href="{{route('unitKavlingDetail',['id'=>$cicilan->pembelian->id])}}"> <span class="text-danger"> Belum Dibayar</span></a></td>
-              @else
-                  <td data-order="{{cekPembayaranCicilan($cicilan->id)}}"><a href="{{route('unitKavlingDetail',['id'=>$cicilan->pembelian->id])}}"> 
-                    <span class="text-primary">{{cekPembayaranCicilan($cicilan->id)}}</span> </a></td>
-              @endif
-              @php
-                  $totalTerbayar +=cekPembayaranCicilan($cicilan->id);
-              @endphp
-                @if(cekPembayaranEstimasi($cicilan->id)!=null)
-                <td data-order="{{cekPembayaranEstimasi($cicilan->id)->tanggal}}">
-                  {{formatTanggal(cekPembayaranEstimasi($cicilan->id)->tanggal)}}
+                <td><a href="{{route('unitKavlingDetail',['id'=>$cicilan->id])}}"> 
+                  @if (cekCicilanBulananTerbayar($cicilan,$start)!=null)
+                  {{cekCicilanBulananTerbayar($cicilan,$start)->jumlah}}
+                  @php
+                      $totalTerbayar += cekCicilanBulananTerbayar($cicilan,$start)->jumlah;
+                  @endphp
+                  @elseif(cekCicilanSekaligus($cicilan,$start)!=null)
+                  s/d {{formatBulanTahun(cekCicilanSekaligus($cicilan,$start)->tempo)}}
+                  @else
+                  <span class="text-danger">Belum bayar</span>
+                  @endif
+                  </a>
                 </td>
-                @else
-                <td></td>
-              @endif
+                <td>
+                  @if(cekCicilanBulananTerbayar($cicilan,$start))
+                    {{formatTanggal(cekCicilanBulananTerbayar($cicilan,$start)->tanggal)}}
+                  @endif
+                </td>
+                <td>
+                  <i class="fa fa-times text-danger" aria-hidden="true"></i>
+                </td>
             </tr>
             @endif
-          @endif
           @endforeach
   </tbody>
   <tfoot>

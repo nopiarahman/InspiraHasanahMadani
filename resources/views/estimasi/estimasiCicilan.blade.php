@@ -62,7 +62,7 @@
     <div class="row">
       <div class="col-6"></div>
           <div class="col-6">
-          <form action="{{route('estimasi')}}" method="get" enctype="multipart/form-data">
+          <form action="{{route('estimasiCicilan')}}" method="get" enctype="multipart/form-data">
       
             <div class="form-group row ">
               <div class="input-group col-sm-12 col-md-12">
@@ -111,7 +111,7 @@
   {{-- Cicilan Unit --}}
   <div class="card">
     <div class="card-header">
-      <h4>Daftar Cicilan  Jatuh Tempo Bulan {{Carbon\Carbon::parse($start)->isoFormat('MMMM')}}</h4>
+      <h4>Daftar Cicilan </h4>
     </div>
     <div class="card-body">
       <table class="table table-hover table-sm table-responsive-sm" id="cicilanAktif">
@@ -123,6 +123,7 @@
             <th scope="col">Nilai Cicilan</th>
             <th scope="col">Terbayar</th>
             <th scope="col">Tanggal Pembayaran</th>
+            <th scope="col">Lunas Cicilan</th>
           </tr>
         </thead>
         <tbody>
@@ -132,47 +133,47 @@
               $n=1;
           @endphp
           @foreach($cicilanAktif as $cicilan)
-          @if ($cicilan)
-            @if (cekPembayaranCicilan($cicilan->id)==null && $cicilan->pembelian->sisaKewajiban <= 0)
-            @else
+          @if(cekDPLunasBulanan($cicilan,$start)==="lunas")
             <tr>
-              <td>{{$n}}</td>
-              @php
-                  $n++;
-              @endphp
-              <td> {{$cicilan->pelanggan->nama}} | {{$cicilan->pelanggan->kavling->blok}}</td>
+              <td>{{$n, $n++}}</td>
+              <td>{{$cicilan->pelanggan->nama}} | {{$cicilan->kavling->blok}}</td>
               <td>{{$cicilan->pelanggan->nomorTelepon}}</td>
-              @if ($cicilan->pembelian->sisaKewajiban/$cicilan->pembelian->tenor >= $cicilan->sisaKewajiban)
+              @if ($cicilan->tenor ===0)
               @php
                   $nilai = $cicilan->sisaKewajiban
               @endphp
               @else
               @php
-                  $nilai = $cicilan->pembelian->sisaKewajiban/$cicilan->pembelian->tenor
+                  $nilai = $cicilan->sisaKewajiban/$cicilan->tenor
               @endphp
               @endif
               <td data-order="{{$nilai}}">Rp. {{number_format($nilai)}}</td>
               @php
                   $totalCicilan += $nilai;
               @endphp
-              @if (cekPembayaranCicilan($cicilan->id)==null)
-                  <td> <a href="{{route('unitKavlingDetail',['id'=>$cicilan->pembelian->id])}}"> <span class="text-danger"> Belum Dibayar</span></a></td>
-              @else
-                  <td data-order="{{cekPembayaranCicilan($cicilan->id)}}"><a href="{{route('unitKavlingDetail',['id'=>$cicilan->pembelian->id])}}"> <span class="text-primary">Rp. {{number_format(cekPembayaranCicilan($cicilan->id))}}</span> </a></td>
-              @endif
-              @php
-                  $totalTerbayar +=cekPembayaranCicilan($cicilan->id);
-              @endphp
-                @if(cekPembayaranEstimasi($cicilan->id)!=null)
-                <td data-order="{{cekPembayaranEstimasi($cicilan->id)->tanggal}}">
-                  {{formatTanggal(cekPembayaranEstimasi($cicilan->id)->tanggal)}}
+                <td><a href="{{route('unitKavlingDetail',['id'=>$cicilan->id])}}"> 
+                  @if (cekCicilanBulananTerbayar($cicilan,$start)!=null)
+                  Rp. {{number_format(cekCicilanBulananTerbayar($cicilan,$start)->jumlah)}}
+                  @php
+                      $totalTerbayar += cekCicilanBulananTerbayar($cicilan,$start)->jumlah;
+                  @endphp
+                  @elseif(cekCicilanSekaligus($cicilan,$start)!=null)
+                  s/d {{formatBulanTahun(cekCicilanSekaligus($cicilan,$start)->tempo)}}
+                  @else
+                  <span class="text-danger">Belum bayar</span>
+                  @endif
+                  </a>
                 </td>
-                @else
-                <td></td>
-              @endif
+                <td>
+                  @if(cekCicilanBulananTerbayar($cicilan,$start))
+                    {{formatTanggal(cekCicilanBulananTerbayar($cicilan,$start)->tanggal)}}
+                  @endif
+                </td>
+                <td>
+                  <i class="fa fa-times text-danger" aria-hidden="true"></i>
+                </td>
             </tr>
             @endif
-          @endif
           @endforeach
         </tbody>
         <tfoot>
@@ -208,29 +209,29 @@
 @section('script')
 <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.js"></script>
 <script>
-  //fungsi untuk filtering data berdasarkan tanggal 
-  var start_date;
-   var end_date;
-   var DateFilterFunction = (function (oSettings, aData, iDataIndex) {
-      var dateStart = parseDateValue(start_date);
-      var dateEnd = parseDateValue(end_date);
-      var evalDate= parseDateValue(aData[8]);
-        if ( ( isNaN( dateStart ) && isNaN( dateEnd ) ) ||
-             ( isNaN( dateStart ) && evalDate <= dateEnd ) ||
-             ( dateStart <= evalDate && isNaN( dateEnd ) ) ||
-             ( dateStart <= evalDate && evalDate <= dateEnd ) )
-        {
-            return true;
-        }
-        return false;
-  });
+  // //fungsi untuk filtering data berdasarkan tanggal 
+  // var start_date;
+  //  var end_date;
+  //  var DateFilterFunction = (function (oSettings, aData, iDataIndex) {
+  //     var dateStart = parseDateValue(start_date);
+  //     var dateEnd = parseDateValue(end_date);
+  //     var evalDate= parseDateValue(aData[8]);
+  //       if ( ( isNaN( dateStart ) && isNaN( dateEnd ) ) ||
+  //            ( isNaN( dateStart ) && evalDate <= dateEnd ) ||
+  //            ( dateStart <= evalDate && isNaN( dateEnd ) ) ||
+  //            ( dateStart <= evalDate && evalDate <= dateEnd ) )
+  //       {
+  //           return true;
+  //       }
+  //       return false;
+  // });
 
-  // fungsi untuk converting format tanggal dd/mm/yyyy menjadi format tanggal javascript menggunakan zona aktubrowser
-  function parseDateValue(rawDate) {
-      var dateArray= rawDate.split("/");
-      var parsedDate= new Date(dateArray[2], parseInt(dateArray[1])-1, dateArray[0]);  // -1 because months are from 0 to 11   
-      return parsedDate;
-  }    
+  // // fungsi untuk converting format tanggal dd/mm/yyyy menjadi format tanggal javascript menggunakan zona aktubrowser
+  // function parseDateValue(rawDate) {
+  //     var dateArray= rawDate.split("/");
+  //     var parsedDate= new Date(dateArray[2], parseInt(dateArray[1])-1, dateArray[0]);  // -1 because months are from 0 to 11   
+  //     return parsedDate;
+  // }    
 
   $( document ).ready(function() {
   //konfigurasi DataTable pada tabel dengan id example dan menambahkan  div class dateseacrhbox dengan dom untuk meletakkan inputan daterangepicker
@@ -260,33 +261,6 @@
       "<'row'<'col-sm-12'tr>>" +
       "<'row'<'col-sm-5'i><'col-sm-7'p>>"
    });
-
-   //menambahkan daterangepicker di dalam datatables
-   $("div.datesearchbox2").html('<input type="text" class="form-control mb-3 mt-n2" id="datesearch2" placeholder="Filter tanggal pembayaran..">');
-
-   document.getElementsByClassName("datesearchbox2")[0].style.textAlign = "right";
-
-   //konfigurasi daterangepicker pada input dengan id datesearch
-   $('#datesearch2').daterangepicker({
-      autoUpdateInput: false
-    });
-
-   //menangani proses saat apply date range
-    $('#datesearch2').on('apply.daterangepicker', function(ev, picker) {
-       $(this).val(picker.startDate.format('DD/MM/YYYY') + ' - ' + picker.endDate.format('DD/MM/YYYY'));
-       start_date=picker.startDate.format('DD/MM/YYYY');
-       end_date=picker.endDate.format('DD/MM/YYYY');
-       $.fn.dataTableExt.afnFiltering.push(DateFilterFunction);
-       $dTable.draw();
-    });
-
-    $('#datesearch2').on('cancel.daterangepicker', function(ev, picker) {
-      $(this).val('');
-      start_date='';
-      end_date='';
-      $.fn.dataTable.ext.search.splice($.fn.dataTable.ext.search.indexOf(DateFilterFunction, 1));
-      $dTable.draw();
-    });
   });
 </script>
 @endsection

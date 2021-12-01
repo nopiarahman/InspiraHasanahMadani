@@ -61,7 +61,7 @@
     <div class="row">
       <div class="col-6"></div>
           <div class="col-6">
-          <form action="{{route('estimasi')}}" method="get" enctype="multipart/form-data">
+          <form action="{{route('estimasiDp')}}" method="get" enctype="multipart/form-data">
       
             <div class="form-group row ">
               <div class="input-group col-sm-12 col-md-12">
