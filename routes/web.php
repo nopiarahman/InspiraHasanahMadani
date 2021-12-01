@@ -85,6 +85,7 @@ Route::group(['middleware'=>['auth','role:admin,projectmanager']],function(){
     Route::get('/estimasiDp', 'EstimasiController@estimasiDp')->name('estimasiDp');
     Route::get('/estimasiCicilan', 'EstimasiController@estimasiCicilan')->name('estimasiCicilan');
     Route::get('/estimasiTunggakan', 'EstimasiController@estimasiTunggakan')->name('estimasiTunggakan');
+    Route::get('/exportEstimasiCicilan', 'EstimasiController@exportEstimasiCicilan')->name('exportEstimasiCicilan');
     
     
     Route::get('/DPRumah', 'DPController@DPRumah')->name('DPRumah');
@@ -170,6 +171,7 @@ Route::group(['middleware'=>['auth','role:admin,projectmanager']],function(){
     Route::get('/exportPettyCash', 'KasController@exportPettyCash')->name('exportPettyCash');
     Route::get('/exportBulanan', 'LaporanController@exportBulanan')->name('exportBulanan');
     Route::get('/exportTahunan', 'LaporanController@exportTahunan')->name('exportTahunan');
+    Route::get('/exportEstimasiDp', 'EstimasiController@exportEstimasiDp')->name('exportEstimasiDp');
     
     Route::get('/pengadaan', 'PengadaanController@pengadaanIndex')->name('pengadaan');
     Route::get('/barang', 'PengadaanController@barangIndex')->name('barang');

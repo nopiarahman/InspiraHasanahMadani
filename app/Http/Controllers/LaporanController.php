@@ -31,7 +31,6 @@ class LaporanController extends Controller
     {
         //
     }
-    
     public function laporanBulananRAB(Request $request){
         // dd($request);
         // $akunId=akun::where('proyek_id',proyekId())->where('namaAkun','pendapatan')->first();
@@ -112,7 +111,6 @@ class LaporanController extends Controller
         return view ('laporan/bulananRAB',compact('transaksiAset','ats',
             'pendapatan','start','end','semuaRAB','semuaUnit','mts','bulan','tahuniniStart'));
     }
-
     public function laporanTahunan(Request $request){
         if($request->get('filter')){
             $start = Carbon::parse($request->start)->isoFormat('YYYY-MM-DD');
@@ -128,7 +126,6 @@ class LaporanController extends Controller
         $pendapatanLain = akun::where('proyek_id',proyekId())->where('jenis','Pendapatan Lain-lain')->get();
         return view ('laporan/tahunanIndex',compact('produksi','operasional','nonOperasional','start','end','pendapatanLain'));
     }
-
     public function cetakKwitansi(Cicilan $id){
         // dd($id);
         $pembayaranPertama= cicilan::where('pembelian_id',$id->pembelian_id)->orderBy('tanggal')->first();
@@ -424,4 +421,5 @@ class LaporanController extends Controller
         $pdf=PDF::loadview('PDF/kwitansi',compact('kekurangan','tempo','id','pembelian','uraian','sampaiSekarang','rekening','proyek','logoPT'))->setPaper('A5','landscape');
         return $pdf->download('Kwitansi Cicilan '.$pembelian->pelanggan->nama.' '.$blok.' Ke '.$id->urut.'.pdf');
     }
+    
 }

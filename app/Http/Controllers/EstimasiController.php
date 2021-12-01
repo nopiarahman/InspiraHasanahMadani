@@ -6,6 +6,9 @@ use App\pembelian;
 use App\cicilan;
 use App\pelanggan;
 use Carbon\Carbon;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\EsDpExport;
+use App\Exports\EsCicilanExport;
 use Illuminate\Http\Request;
 
 class EstimasiController extends Controller
@@ -105,5 +108,53 @@ class EstimasiController extends Controller
         $cicilanTertunggak=collect($cicilanNunggak)->where('sisaKewajiban','>',0);
         // dd($cicilanTertunggak);
         return view('estimasi/estimasiTunggakan',compact('start','end','DPtertunggak','cicilanTertunggak'));
+    }
+    public function exportEstimasiDp(Request $request){
+        // dd($request);
+        if($request->get('filter')){
+            $start = Carbon::parse($request->start)->isoFormat('YYYY-MM-DD');
+            $end = Carbon::parse($request->end)->isoFormat('YYYY-MM-DD');
+        }else{
+            $start = Carbon::now()->firstOfMonth()->isoFormat('YYYY-MM-DD');
+            $end = Carbon::now()->endOfMonth()->isoFormat('YYYY-MM-DD');
+        }
+        $semuaPelanggan = pelanggan::where('proyek_id',proyekId())->orderBy('nama')->get();
+        $pelangganAktif = $semuaPelanggan->filter(function ($value, $key) {
+            return $value->kavling != null;
+        });
+        foreach($pelangganAktif as $p){
+            $dp[]= $p->dp->whereBetween('tempo',[$start,$end])->filter(function ($value, $key) {
+                return cekPembayaranDP($value->id) == null;
+            })->last();
+        }
+        $bulan=$start;
+        $dpAktif = collect($dp);
+        return Excel::download(new EsDpExport(
+            $start,$end,$dpAktif
+        ), 'Estimasi DP '.$bulan.'.xlsx');
+    }
+    public function exportEstimasiCicilan(Request $request){
+        if($request->get('filter')){
+            $start = Carbon::parse($request->start)->isoFormat('YYYY-MM-DD');
+            $end = Carbon::parse($request->end)->isoFormat('YYYY-MM-DD');
+        }else{
+            $start = Carbon::now()->firstOfMonth()->isoFormat('YYYY-MM-DD');
+            $end = Carbon::now()->endOfMonth()->isoFormat('YYYY-MM-DD');
+        }
+        $semuaPelanggan = pelanggan::where('proyek_id',proyekId())->orderBy('nama')->get();
+        $pelangganAktif = $semuaPelanggan->filter(function ($value, $key) {
+            return $value->kavling != null;
+        });
+        foreach($pelangganAktif as $p){
+            $cicilan[]= $p->cicilan->whereBetween('tempo',[$start,$end])->sortBy('tanggal')->filter(function ($value, $key) {
+                return cekPembayaranCicilan($value->id) == null;
+            })->last();       
+        }
+
+        $cicilanAktif = collect($cicilan);
+        $bulan=$start;
+        return Excel::download(new EsCicilanExport(
+            $start,$end,$cicilanAktif
+        ), 'Estimasi Cicilan '.$bulan.'.xlsx');
     }
 }

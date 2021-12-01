@@ -65,7 +65,7 @@
 			<td colspan="2">Rp. {{number_format($id->jumlah)}}</td>
 		</tr>
 	<tr>
-		<td colspan="4" style="padding:7px 0px 7px 0px"><b><font size="4" color="#6C757D">Metode Pembayaran: <span style="color: green"> 
+		<td colspan="4" style="padding:2px 0px 2px 0px"><b><font size="4" color="#6C757D">Metode Pembayaran: <span style="color: green"> 
 			@if($id->sumber == 'Cash' || $id->sumber == 'cash')
 			TUNAI 
 			@else
@@ -94,9 +94,9 @@
 	<tr>
 		<td>Status</td>
 		<td>:@if($id->pembelian->dp - dpTerbayar($id->pembelian->id,$id->tanggal) <=0)
-			<span class="text-primary"> Lunas </span>
+			<span class="text-primary">Lunas </span>
 			@else
-			<span class="text-warning"> Belum Lunas </span>
+			<span class="text-warning">Belum Lunas </span>
 			@endif</td>
 	</tr>
 	@if($kekurangan > 0)
@@ -112,10 +112,16 @@
 		<td>: 1-10 {{Carbon\Carbon::parse($tempo)->isoFormat('MMMM YYYY')}}</td>
 		<td colspan="2" style="border-top: 1px solid #000000" align="center" valign="bottom">Kasir</td>
 		</tr>
+	@if($kekurangan > 0)
+	<tr>
+		<td>Kekurangan Angsuran</td>
+		<td>: Rp {{number_format($kekurangan)}}</td>
+	</tr>
+	@endif
 	@endif
 	
 	<tr>
-		<td align="center" colspan="4" valign="bottom" style="height: 25px">Kwitansi digital ini sah tanpa tanda tangan</td>
+		<td align="center" colspan="4" valign="bottom">Kwitansi digital ini sah tanpa tanda tangan</td>
 		</tr>
 </tbody>
 <tfoot>
