@@ -87,10 +87,10 @@
 		<td>Total Angsuran Dibayarkan</td>
 		<td>: Rp. {{number_format(dpTerbayar($id->pembelian_id,$id->tanggal))}}</td>
 	</tr>
-	{{-- <tr>
+	<tr>
 		<td>Sisa Hutang</td>
 		<td>: Rp. {{number_format($id->pembelian->dp - dpTerbayar($id->pembelian->id,$id->tanggal))}}</td>
-		</tr> --}}
+		</tr>
 	<tr>
 		<td>Status</td>
 		<td>:@if($id->pembelian->dp - dpTerbayar($id->pembelian->id,$id->tanggal) <=0)
@@ -99,12 +99,12 @@
 			<span class="text-warning">Belum Lunas </span>
 			@endif</td>
 	</tr>
-	@if($kekurangan > 0)
+	{{-- @if($kekurangan > 0)
 	<tr>
 		<td>Kekurangan Angsuran</td>
 		<td>: Rp {{number_format($kekurangan)}}</td>
 	</tr>
-	@endif
+	@endif --}}
 	@if($id->pembelian->dp - dpTerbayar($id->pembelian->id,$id->tanggal) <=0)
 	@else
 	<tr>

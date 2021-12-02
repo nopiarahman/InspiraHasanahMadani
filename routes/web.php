@@ -86,6 +86,7 @@ Route::group(['middleware'=>['auth','role:admin,projectmanager']],function(){
     Route::get('/estimasiCicilan', 'EstimasiController@estimasiCicilan')->name('estimasiCicilan');
     Route::get('/estimasiTunggakan', 'EstimasiController@estimasiTunggakan')->name('estimasiTunggakan');
     Route::get('/exportEstimasiCicilan', 'EstimasiController@exportEstimasiCicilan')->name('exportEstimasiCicilan');
+    Route::get('/exportEstimasiTunggakan', 'EstimasiController@exportEstimasiTunggakan')->name('exportEstimasiTunggakan');
     
     
     Route::get('/DPRumah', 'DPController@DPRumah')->name('DPRumah');
