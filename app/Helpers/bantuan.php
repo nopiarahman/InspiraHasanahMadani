@@ -849,12 +849,13 @@ function updateSisaCicilan(Cicilan $id){
 }
 function bulanCicilanBerjalan(Cicilan $id){
     $pembayaranPertama= cicilan::where('pembelian_id',$id->pembelian_id)->orderBy('tanggal')->first();
-    $berjalan = Carbon::parse($id->tanggal)->firstOfMonth()->diffInMonths(Carbon::parse($pembayaranPertama->tanggal)->endOfMonth()->subMonth(2),true);
+    $berjalan = Carbon::parse($id->tanggal)->endOfMonth()->addDay(2)->diffInMonths(Carbon::parse($pembayaranPertama->tanggal)->firstOfMonth(),true);
+    // dd($berjalan);
     return $berjalan;
 }
 function bulanDpBerjalan(dp $id){
     $pembayaranPertama= dp::where('pembelian_id',$id->pembelian_id)->orderBy('tanggal')->first();
-    $berjalan = Carbon::parse($id->tanggal)->firstOfMonth()->diffInMonths(Carbon::parse($pembayaranPertama->tanggal)->endOfMonth()->subMonth(2),true);
+    $berjalan = Carbon::parse($id->tanggal)->endOfMonth()->addDay(2)->diffInMonths(Carbon::parse($pembayaranPertama->tanggal)->firstOfMonth(),true);
     return $berjalan;
 }
 function saldoTransaksiSebelum2($no){
