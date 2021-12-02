@@ -341,6 +341,7 @@ class PelangganController extends Controller
             'sisaDp'=>$sisaDp,
             'sisaCicilan'=>$sisaCicilan,
             'tenor'=>$request->tenor,
+            'tenorDP'=>$request->tenorDP,
             'statusDp'=>$request->statusDp,
             'statusCicilan'=>$request->statusCicilan,
             'proyek_id'=>proyekId(),
