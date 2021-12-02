@@ -139,7 +139,7 @@
           @else
           <tr>
             <th>Jatuh Tempo</th>
-            <td>: 1-10 {{Carbon\Carbon::parse($tempo)->isoFormat('MMMM YYYY')}}
+            <td>:1-10 {{Carbon\Carbon::parse($id->tempo)->isoFormat('MMMM YYYY')}}
             </td>
           </tr>
           @if($kekurangan > 0)
@@ -312,7 +312,7 @@
           @else
           <tr>
             <th>Jatuh Tempo</th>
-            <td>: 1-10 {{Carbon\Carbon::parse($tempo)->isoFormat('MMMM YYYY')}}
+            <td>:1-10 {{Carbon\Carbon::parse($id->tempo)->isoFormat('MMMM YYYY')}}
             </td>
           </tr>
           @if($kekurangan > 0)

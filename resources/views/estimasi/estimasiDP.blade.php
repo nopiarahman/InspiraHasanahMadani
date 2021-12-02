@@ -110,7 +110,7 @@
   {{-- Cicilan DP --}}
   <div class="card">
     <div class="card-header">
-      <h4>Daftar DP Jatuh Tempo Bulan {{Carbon\Carbon::parse($start)->isoFormat('MMMM')}}</h4>
+      <h4>Daftar Estimasi Dp</h4>
     </div>
     <div class="card-body">
       <table class="table table-hover table-sm table-responsive-sm" id="dpAktif">
@@ -127,59 +127,54 @@
         </thead>
         <tbody>
           @php
-          $n=1;
+              $n=1;
               $totalDP = 0;
               $totalDPTerbayar=0;
           @endphp
           @foreach($dpAktif as $dp)
-            @if ($dp) 
-              @if (cekPembayaranDP($dp->id,$start)==null && $dp->pembelian->sisaDp <= 0)
-              @else
+          @if(cekDPLunasBulanan($dp,$start)==="Cicilan")
               <tr>
-                <td>{{$n}}</td>
-                @php
-                    $n++;
-                @endphp
+                <td>{{$n,$n++}}</td>
                 <td>{{$dp->pelanggan->nama}} | {{$dp->pelanggan->kavling->blok}}</td>
                 <td>{{$dp->pelanggan->nomorTelepon}} </td>
-                @if ($dp->pembelian->dp/$dp->pembelian->tenorDP >= $dp->sisaDp)
+                @if ($dp->tenorDp===0)
                     @php
                         $nilai = $dp->sisaDp
                     @endphp
                 @else
                 @php
-                    $nilai = $dp->pembelian->dp/$dp->pembelian->tenorDP
+                    $nilai = $dp->dp/$dp->tenorDP
                 @endphp
                 @endif
                 <td data-order="{{$nilai}}">Rp. {{number_format($nilai)}}</td>
                 @php
                     $totalDP += $nilai;
                 @endphp
-                @if (cekPembayaranDP($dp->id,$start)==null)
-                    <td> <a href="{{route('DPKavlingTambah',['id'=>$dp->pembelian->id])}}"> 
-                      <span class="text-danger"> Belum Dibayar</span></a></td>
-                @else
-                    <td data-order="{{cekPembayaranDP($dp->id,$start)}}">  <a href="{{route('DPKavlingTambah',['id'=>$dp->pembelian->id])}}">
-                      <span class="text-primary">Rp. {{number_format(cekPembayaranDP($dp->id,$start))}}</span> </a></td>
-                @endif
+                <td> <a href="{{route('DPKavlingTambah',['id'=>$dp->id])}}"> 
+                @if (cekDpBulananTerbayar($dp,$start)->sum('jumlah')>0)
+                Rp. {{number_format(cekDpBulananTerbayar($dp,$start)->sum('jumlah'))}}
                 @php
-                    $totalDPTerbayar +=cekPembayaranDP($dp->id,$start);
+                    $totalDPTerbayar +=cekDpBulananTerbayar($dp,$start)->sum('jumlah');
                 @endphp
-                  @if(cekDPEstimasi($dp->id)!=null)
-                  <td>
-                    {{formatTanggal(cekDPEstimasi($dp->id)->tanggal)}}
-                  </td>
-                  @else
-                  <td></td>
-                  @endif
-                @if ($dp->pembelian->sisaDp <= 0)
+                @elseif(cekDpSekaligus($dp,$start)!=null)
+                s/d {{formatBulanTahun(cekDpSekaligus($dp,$start)->tempo)}}
+                @else
+                <span class="text-danger">Belum bayar</span>
+                @endif
+                </a>
+                </td>
+                <td>
+                @if(cekDpTanggalTerbayar($dp,$start))
+                {{formatTanggal(cekDpTanggalTerbayar($dp,$start)->tanggal)}}
+                @endif
+                </td>
+                @if ($dp->sisaDp-$dp->potonganDp <= 0)
                 <td> <span class="text-info">DP LUNAS</span> </td>
                 @else
-                <td>Sisa DP: Rp. {{number_format($dp->pembelian->sisaDp)}}</td>
+                <td>Sisa DP: Rp. {{number_format($dp->sisaDp)}}</td>
                 @endif
               </tr>
               @endif
-            @endif
           @endforeach
         </tbody>
         {{-- <tfoot>
@@ -222,28 +217,28 @@
 <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.js"></script>
 <script>
   //fungsi untuk filtering data berdasarkan tanggal 
-  var start_date;
-   var end_date;
-   var DateFilterFunction = (function (oSettings, aData, iDataIndex) {
-      var dateStart = parseDateValue(start_date);
-      var dateEnd = parseDateValue(end_date);
-      var evalDate= parseDateValue(aData[8]);
-        if ( ( isNaN( dateStart ) && isNaN( dateEnd ) ) ||
-             ( isNaN( dateStart ) && evalDate <= dateEnd ) ||
-             ( dateStart <= evalDate && isNaN( dateEnd ) ) ||
-             ( dateStart <= evalDate && evalDate <= dateEnd ) )
-        {
-            return true;
-        }
-        return false;
-  });
+  // var start_date;
+  //  var end_date;
+  //  var DateFilterFunction = (function (oSettings, aData, iDataIndex) {
+  //     var dateStart = parseDateValue(start_date);
+  //     var dateEnd = parseDateValue(end_date);
+  //     var evalDate= parseDateValue(aData[8]);
+  //       if ( ( isNaN( dateStart ) && isNaN( dateEnd ) ) ||
+  //            ( isNaN( dateStart ) && evalDate <= dateEnd ) ||
+  //            ( dateStart <= evalDate && isNaN( dateEnd ) ) ||
+  //            ( dateStart <= evalDate && evalDate <= dateEnd ) )
+  //       {
+  //           return true;
+  //       }
+  //       return false;
+  // });
 
-  // fungsi untuk converting format tanggal dd/mm/yyyy menjadi format tanggal javascript menggunakan zona aktubrowser
-  function parseDateValue(rawDate) {
-      var dateArray= rawDate.split("/");
-      var parsedDate= new Date(dateArray[2], parseInt(dateArray[1])-1, dateArray[0]);  // -1 because months are from 0 to 11   
-      return parsedDate;
-  }    
+  // // fungsi untuk converting format tanggal dd/mm/yyyy menjadi format tanggal javascript menggunakan zona aktubrowser
+  // function parseDateValue(rawDate) {
+  //     var dateArray= rawDate.split("/");
+  //     var parsedDate= new Date(dateArray[2], parseInt(dateArray[1])-1, dateArray[0]);  // -1 because months are from 0 to 11   
+  //     return parsedDate;
+  // }    
 
   $( document ).ready(function() {
   //konfigurasi DataTable pada tabel dengan id example dan menambahkan  div class dateseacrhbox dengan dom untuk meletakkan inputan daterangepicker
@@ -274,32 +269,32 @@
       "<'row'<'col-sm-5'i><'col-sm-7'p>>"
    });
 
-   //menambahkan daterangepicker di dalam datatables
-   $("div.datesearchbox").html('<input type="text" class="form-control mb-3 mt-n2" id="datesearch" placeholder="Filter tanggal pembayaran..">');
+  //  //menambahkan daterangepicker di dalam datatables
+  //  $("div.datesearchbox").html('<input type="text" class="form-control mb-3 mt-n2" id="datesearch" placeholder="Filter tanggal pembayaran..">');
 
-   document.getElementsByClassName("datesearchbox")[0].style.textAlign = "right";
+  //  document.getElementsByClassName("datesearchbox")[0].style.textAlign = "right";
 
-   //konfigurasi daterangepicker pada input dengan id datesearch
-   $('#datesearch').daterangepicker({
-      autoUpdateInput: false
-    });
+  //  //konfigurasi daterangepicker pada input dengan id datesearch
+  //  $('#datesearch').daterangepicker({
+  //     autoUpdateInput: false
+  //   });
 
-   //menangani proses saat apply date range
-    $('#datesearch').on('apply.daterangepicker', function(ev, picker) {
-       $(this).val(picker.startDate.format('DD/MM/YYYY') + ' - ' + picker.endDate.format('DD/MM/YYYY'));
-       start_date=picker.startDate.format('DD/MM/YYYY');
-       end_date=picker.endDate.format('DD/MM/YYYY');
-       $.fn.dataTableExt.afnFiltering.push(DateFilterFunction);
-       $dTable.draw();
-    });
+  //  //menangani proses saat apply date range
+  //   $('#datesearch').on('apply.daterangepicker', function(ev, picker) {
+  //      $(this).val(picker.startDate.format('DD/MM/YYYY') + ' - ' + picker.endDate.format('DD/MM/YYYY'));
+  //      start_date=picker.startDate.format('DD/MM/YYYY');
+  //      end_date=picker.endDate.format('DD/MM/YYYY');
+  //      $.fn.dataTableExt.afnFiltering.push(DateFilterFunction);
+  //      $dTable.draw();
+  //   });
 
-    $('#datesearch').on('cancel.daterangepicker', function(ev, picker) {
-      $(this).val('');
-      start_date='';
-      end_date='';
-      $.fn.dataTable.ext.search.splice($.fn.dataTable.ext.search.indexOf(DateFilterFunction, 1));
-      $dTable.draw();
-    });
+  //   $('#datesearch').on('cancel.daterangepicker', function(ev, picker) {
+  //     $(this).val('');
+  //     start_date='';
+  //     end_date='';
+  //     $.fn.dataTable.ext.search.splice($.fn.dataTable.ext.search.indexOf(DateFilterFunction, 1));
+  //     $dTable.draw();
+  //   });
   });
 </script>
 

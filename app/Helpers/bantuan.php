@@ -888,8 +888,37 @@ function cekCicilanBulananTerbayar(Pembelian $id,$tanggal){
     }
     return null;
 }
+function cekDpBulananTerbayar(Pembelian $id,$tanggal){
+    $cek = dp::where('pembelian_id',$id->id)
+                    ->whereBetween('tanggal',[Carbon::parse($tanggal)->firstOfMonth(),Carbon::parse($tanggal)->endOfMonth()])
+                    ->get();
+    
+    if($cek){
+        return $cek;
+    }
+    return null;
+}
+function cekDpTanggalTerbayar(Pembelian $id,$tanggal){
+    $cek = dp::where('pembelian_id',$id->id)
+                    ->whereBetween('tanggal',[Carbon::parse($tanggal)->firstOfMonth(),Carbon::parse($tanggal)->endOfMonth()])
+                    ->get();
+    if($cek){
+        return $cek->last();
+    }
+    return null;
+}
 function cekCicilanSekaligus(Pembelian $id, $tanggal){
     $cek = cicilan::where('pembelian_id',$id->id)
+                    ->where('tempo','>',Carbon::parse($tanggal)->firstOfMonth())
+                    ->orderBy('tanggal')
+                    ->get();
+    if($cek){
+        return $cek->last();
+    }
+    return null;
+}
+function cekDpSekaligus(Pembelian $id, $tanggal){
+    $cek = dp::where('pembelian_id',$id->id)
                     ->where('tempo','>',Carbon::parse($tanggal)->firstOfMonth())
                     ->orderBy('tanggal')
                     ->get();
@@ -903,6 +932,7 @@ function cekDPLunasBulanan(pembelian $id, $tanggal){
     $akhirBulan = Carbon::parse($tanggal)->endOfMonth();
     $cek = dp::where('pembelian_id',$id->id)
                 ->where('tanggal','<=',$akhirBulan)
+                ->orderBy('tanggal')
                 ->get();
     if($cek->last()){
         if($cek->last()->sisaDp ===0 &&$cek->last()->tempo <= $awalBulan){

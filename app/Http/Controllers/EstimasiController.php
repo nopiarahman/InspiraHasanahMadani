@@ -55,7 +55,7 @@ class EstimasiController extends Controller
             return $value->kavling != null;
         });
         foreach($pelangganAktif as $p){
-            $dp[]= $p->dp->whereBetween('tempo',[$start,$end])->last();
+            $dp[]= $p->pembelian;
         }
         $dpAktif = collect($dp);
         return view('estimasi/estimasiDP',compact('start','end','dpAktif'));
@@ -120,12 +120,10 @@ class EstimasiController extends Controller
             return $value->kavling != null;
         });
         foreach($pelangganAktif as $p){
-            $dp[]= $p->dp->whereBetween('tempo',[$start,$end])->filter(function ($value, $key) {
-                return cekPembayaranDP($value->id) == null;
-            })->last();
+            $dp[]= $p->pembelian;
         }
-        $bulan=$start;
         $dpAktif = collect($dp);
+        $bulan=$start;
         return Excel::download(new EsDpExport(
             $start,$end,$dpAktif
         ), 'Estimasi DP '.$bulan.'.xlsx');

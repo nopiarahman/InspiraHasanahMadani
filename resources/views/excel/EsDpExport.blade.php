@@ -23,59 +23,54 @@
   <tbody>
     @php
     $n=1;
-        $totalDP = 0;
-        $totalDPTerbayar=0;
-    @endphp
-    @foreach($dpAktif as $dp)
-      @if ($dp) 
-        @if (cekPembayaranDP($dp->id,$start)==null && $dp->pembelian->sisaDp <= 0)
-        @else
-        <tr>
-          <td>{{$n}}</td>
+    $totalDP = 0;
+    $totalDPTerbayar=0;
+@endphp
+@foreach($dpAktif as $dp)
+@if(cekDPLunasBulanan($dp,$start)==="Cicilan")
+    <tr>
+      <td>{{$n,$n++}}</td>
+      <td>{{$dp->pelanggan->nama}} | {{$dp->pelanggan->kavling->blok}}</td>
+      <td>{{$dp->pelanggan->nomorTelepon}} </td>
+      @if ($dp->tenorDp===0)
           @php
-              $n++;
+              $nilai = $dp->sisaDp
           @endphp
-          <td>{{$dp->pelanggan->nama}} | {{$dp->pelanggan->kavling->blok}}</td>
-          <td>{{$dp->pelanggan->nomorTelepon}} </td>
-          @if ($dp->pembelian->dp/$dp->pembelian->tenorDP >= $dp->sisaDp)
-              @php
-                  $nilai = $dp->sisaDp
-              @endphp
-          @else
-          @php
-              $nilai = $dp->pembelian->dp/$dp->pembelian->tenorDP
-          @endphp
-          @endif
-          <td data-order="{{$nilai}}">{{$nilai}}</td>
-          @php
-              $totalDP += $nilai;
-          @endphp
-          @if (cekPembayaranDP($dp->id,$start)==null)
-              <td> <a href="{{route('DPKavlingTambah',['id'=>$dp->pembelian->id])}}"> 
-                <span> Belum Dibayar</span></a></td>
-          @else
-              <td data-order="{{cekPembayaranDP($dp->id,$start)}}">  <a href="{{route('DPKavlingTambah',['id'=>$dp->pembelian->id])}}">
-                <span>{{cekPembayaranDP($dp->id,$start)}}</span> </a></td>
-          @endif
-          @php
-              $totalDPTerbayar +=cekPembayaranDP($dp->id,$start);
-          @endphp
-            @if(cekDPEstimasi($dp->id)!=null)
-            <td>
-              {{formatTanggal(cekDPEstimasi($dp->id)->tanggal)}}
-            </td>
-            @else
-            <td></td>
-            @endif
-          @if ($dp->pembelian->sisaDp <= 0)
-          <td> <span>DP LUNAS</span> </td>
-          @else
-          <td>Sisa DP: Rp. {{number_format($dp->pembelian->sisaDp)}}</td>
-          @endif
-        </tr>
-        @endif
+      @else
+      @php
+          $nilai = $dp->dp/$dp->tenorDP
+      @endphp
       @endif
-    @endforeach
+      <td data-order="{{$nilai}}">Rp. {{number_format($nilai)}}</td>
+      @php
+          $totalDP += $nilai;
+      @endphp
+      <td> <a href="{{route('DPKavlingTambah',['id'=>$dp->id])}}"> 
+      @if (cekDpBulananTerbayar($dp,$start)->sum('jumlah')>0)
+      {{cekDpBulananTerbayar($dp,$start)->sum('jumlah')}}
+      @php
+          $totalDPTerbayar +=cekDpBulananTerbayar($dp,$start)->sum('jumlah');
+      @endphp
+      @elseif(cekDpSekaligus($dp,$start)!=null)
+      s/d {{formatBulanTahun(cekDpSekaligus($dp,$start)->tempo)}}
+      @else
+      <span class="text-danger">Belum bayar</span>
+      @endif
+      </a>
+      </td>
+      <td>
+      @if(cekDpTanggalTerbayar($dp,$start))
+      {{formatTanggal(cekDpTanggalTerbayar($dp,$start)->tanggal)}}
+      @endif
+      </td>
+      @if ($dp->sisaDp-$dp->potonganDp <= 0)
+      <td> <span class="text-info">DP LUNAS</span> </td>
+      @else
+      <td>Sisa DP: Rp. {{number_format($dp->sisaDp)}}</td>
+      @endif
+    </tr>
+    @endif
+@endforeach
   </tbody>
   <tfoot>
       <tr class="bg-light">
