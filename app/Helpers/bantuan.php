@@ -862,18 +862,18 @@ function saldoTransaksiSebelum2($no){
     $sebelum = transaksi::where('no',$no-1)->first();
     return $sebelum->saldo;
 }
-function bulanCicilanTunggakanBerjalan(Cicilan $id){
+function bulanCicilanTunggakanBerjalan(Cicilan $id,$tanggal){
     $pembayaranPertama= cicilan::where('pembelian_id',$id->pembelian_id)->orderBy('tanggal')->first();
-    $berjalan = Carbon::now()->firstOfMonth()->diffInMonths(Carbon::parse($pembayaranPertama->tanggal)->firstOfMonth()->subMonth(1),true);
+    $berjalan = Carbon::parse($tanggal)->endOfMonth()->addDay(2)->diffInMonths(Carbon::parse($pembayaranPertama->tanggal)->firstOfMonth(),true);
     $terbayar = cicilan::where('pembelian_id',$id->pembelian_id)->sum('jumlah');
     $nilai = $id->pembelian->sisaKewajiban/$id->pembelian->tenor;
     $seharusnyaTerbayar = $nilai*$berjalan;
     $tunggakan = $seharusnyaTerbayar - $terbayar;
     return $tunggakan;
 }
-function bulanDpTunggakanBerjalan(dp $id){
+function bulanDpTunggakanBerjalan(dp $id,$tanggal){
     $pembayaranPertama= dp::where('pembelian_id',$id->pembelian_id)->orderBy('tanggal')->first();
-    $berjalan = Carbon::now()->firstOfMonth()->diffInMonths(Carbon::parse($pembayaranPertama->tanggal)->firstOfMonth()->subMonth(1),true);
+    $berjalan = Carbon::parse($tanggal)->endOfMonth()->addDay(2)->diffInMonths(Carbon::parse($pembayaranPertama->tanggal)->firstOfMonth(),true);
     $terbayar = dp::where('pembelian_id',$id->pembelian_id)->sum('jumlah');
     $nilai = $id->pembelian->sisaKewajiban/$id->pembelian->tenor;
     $seharusnyaTerbayar = $nilai*$berjalan;

@@ -127,7 +127,7 @@
               $n=1;
           @endphp
             @foreach ($DPtertunggak as $tunggakan)
-              @if($tunggakan && bulanDpTunggakanBerjalan($tunggakan)>0)
+              @if($tunggakan && bulanDpTunggakanBerjalan($tunggakan,$start)>0)
                 <tr>
                   <td>{{$n,$n++}}</td>
                   <td>{{$tunggakan->pelanggan->nama}}</td>
@@ -138,7 +138,7 @@
                     1-10 {{Carbon\Carbon::parse($tunggakan->tempo)->isoFormat('MMMM YYYY')}}
                     </a>
                   </td>
-                  <td data-order="{{bulanDpTunggakanBerjalan($tunggakan)}}">Rp. {{number_format(bulanDpTunggakanBerjalan($tunggakan))}}</td>
+                  <td data-order="{{bulanDpTunggakanBerjalan($tunggakan,$start,$start)}}">Rp. {{number_format(bulanDpTunggakanBerjalan($tunggakan,$start))}}</td>
                 </tr>
               @endif
             @endforeach
@@ -180,7 +180,7 @@
                   1-10 {{Carbon\Carbon::parse($tunggakan->tempo)->isoFormat('MMMM YYYY')}}
                   </a>
               </td>
-              <td data-order="{{bulanCicilanTunggakanBerjalan($tunggakan)}}">Rp. {{number_format(bulanCicilanTunggakanBerjalan($tunggakan))}}</td>
+              <td data-order="{{bulanCicilanTunggakanBerjalan($tunggakan,$start)}}">Rp. {{number_format(bulanCicilanTunggakanBerjalan($tunggakan,$start))}}</td>
             </tr>
             @endif
             @empty
