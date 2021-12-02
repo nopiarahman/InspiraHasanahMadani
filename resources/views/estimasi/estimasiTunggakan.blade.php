@@ -123,10 +123,13 @@
           </tr>
         </thead>
         <tbody>
+          @php
+              $n=1;
+          @endphp
             @foreach ($DPtertunggak as $tunggakan)
               @if($tunggakan && bulanDpTunggakanBerjalan($tunggakan)>0)
                 <tr>
-                  <td>{{$loop->iteration}}</td>
+                  <td>{{$n,$n++}}</td>
                   <td>{{$tunggakan->pelanggan->nama}}</td>
                   <td>{{$tunggakan->pelanggan->kavling->blok}}</td>
                   <td>{{jenisKepemilikan($tunggakan->pelanggan->id)}}</td>
@@ -161,10 +164,13 @@
           </tr>
         </thead>
         <tbody>
+          @php
+              $n=1;
+          @endphp
             @forelse ($cicilanTertunggak as $tunggakan)
             @if($tunggakan)
             <tr>
-              <td>{{$loop->iteration}}</td>
+              <td>{{$n,$n++}}</td>
               <td>{{$tunggakan->pelanggan->nama}}</td>
               <td>{{$tunggakan->pelanggan->kavling->blok}}</td>
               <td>{{jenisKepemilikan($tunggakan->pelanggan->id)}}</td>
