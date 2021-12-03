@@ -122,6 +122,7 @@
             <th scope="col">No Telp</th>
             <th scope="col">Nilai Cicilan</th>
             <th scope="col">Terbayar</th>
+            {{-- <th scope="col">Tempo Selanjutnya</th> --}}
             <th scope="col">Tanggal Pembayaran</th>
             <th scope="col">Lunas Cicilan</th>
           </tr>
@@ -151,22 +152,29 @@
               @php
                   $totalCicilan += $nilai;
               @endphp
-                <td><a href="{{route('unitKavlingDetail',['id'=>$cicilan->id])}}"> 
-                  @if (cekCicilanBulananTerbayar($cicilan,$start)!=null)
-                  Rp. {{number_format(cekCicilanBulananTerbayar($cicilan,$start)->jumlah)}}
-                  @php
-                      $totalTerbayar += cekCicilanBulananTerbayar($cicilan,$start)->jumlah;
-                  @endphp
-                  @elseif(cekCicilanSekaligus($cicilan,$start)!=null)
-                  s/d {{formatBulanTahun(cekCicilanSekaligus($cicilan,$start)->tempo)}}
-                  @else
+                <td ><a href="{{route('unitKavlingDetail',['id'=>$cicilan->id])}}"> 
+                  @if (pembayaranCicilanEstimasi($cicilan,$start) ==null)
+                  {{-- Rp. {{number_format(pembayaranCicilanEstimasi($cicilan,$start))}} --}}
                   <span class="text-danger">Belum bayar</span>
+                  @elseif(is_int(pembayaranCicilanEstimasi($cicilan,$start)))
+                  Rp. {{number_format(pembayaranCicilanEstimasi($cicilan,$start))}}
+                  @php
+                      $totalTerbayar += pembayaranCicilanEstimasi($cicilan,$start);
+                  @endphp
+                  @else
+                  s/d {{formatBulanTahun(pembayaranCicilanEstimasi($cicilan,$start))}}
                   @endif
                   </a>
                 </td>
+                  {{-- <td>
+                    @if( cekCicilanSekaligus($cicilan,$start)!=null)
+                    1-10 {{formatBulanTahun(cekCicilanSekaligus($cicilan,$start)->tempo)}}
+                    @else
+                    @endif
+                </td> --}}
                 <td>
-                  @if(cekCicilanBulananTerbayar($cicilan,$start))
-                    {{formatTanggal(cekCicilanBulananTerbayar($cicilan,$start)->tanggal)}}
+                  @if(cekCicilanBulananTerbayar($cicilan,$start)->last() !=null)
+                    {{formatTanggal(cekCicilanBulananTerbayar($cicilan,$start)->last()->tanggal)}}
                   @endif
                 </td>
                 <td>

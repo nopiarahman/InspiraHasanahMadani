@@ -127,18 +127,21 @@
               $n=1;
           @endphp
             @foreach ($DPtertunggak as $tunggakan)
-              @if($tunggakan && bulanDpTunggakanBerjalan($tunggakan,$start)>0)
+            @if($tunggakan->sisaDp-$tunggakan->potonganDp > 0)
+              {{-- @if($tunggakan && bulanDpTunggakanBerjalan($tunggakan,$start)>0) --}}
                 <tr>
+                  {{-- {{dd($tunggakan)}} --}}
                   <td>{{$n,$n++}}</td>
                   <td>{{$tunggakan->pelanggan->nama}}</td>
                   <td>{{$tunggakan->pelanggan->kavling->blok}}</td>
                   <td>{{jenisKepemilikan($tunggakan->pelanggan->id)}}</td>
                   <td>{{$tunggakan->pelanggan->nomorTelepon}}</td>
-                  <td data-order="{{$tunggakan->tempo}}"><a class="text-danger" href="{{route('DPKavlingTambah',['id'=>$tunggakan->pembelian_id])}}">
-                    1-10 {{Carbon\Carbon::parse($tunggakan->tempo)->isoFormat('MMMM YYYY')}}
+                  <td data-order="{{tempoDpNunggak($tunggakan,$start)->tempo}}"><a class="text-danger" href="{{route('DPKavlingTambah',['id'=>$tunggakan->id])}}">
+                    {{-- <td> --}}
+                    1-10 {{Carbon\Carbon::parse(tempoDpNunggak($tunggakan,$start)->tempo)->isoFormat('MMMM YYYY')}}
                     </a>
                   </td>
-                  <td data-order="{{bulanDpTunggakanBerjalan($tunggakan,$start,$start)}}">Rp. {{number_format(bulanDpTunggakanBerjalan($tunggakan,$start))}}</td>
+                  <td data-order="{{bulanDpTunggakanBerjalan(tempoDpNunggak($tunggakan,$start),$start)}}">Rp. {{number_format(bulanDpTunggakanBerjalan(tempoDpNunggak($tunggakan,$start),$start))}}</td>
                 </tr>
               @endif
             @endforeach
@@ -175,12 +178,13 @@
               <td>{{$tunggakan->pelanggan->kavling->blok}}</td>
               <td>{{jenisKepemilikan($tunggakan->pelanggan->id)}}</td>
               <td>{{$tunggakan->pelanggan->nomorTelepon}}</td>
-              <td data-order="{{$tunggakan->tempo}}">
-                <a class="text-danger" href="{{route('unitKavlingDetail',['id'=>$tunggakan->pembelian_id])}}">
-                  1-10 {{Carbon\Carbon::parse($tunggakan->tempo)->isoFormat('MMMM YYYY')}}
+              <td data-order="{{tempoCicilanNunggak($tunggakan,$start)->tempo}}">
+                <a class="text-danger" href="{{route('unitKavlingDetail',['id'=>$tunggakan->id])}}">
+                  1-10 {{Carbon\Carbon::parse(tempoCicilanNunggak($tunggakan,$start)->tempo)->isoFormat('MMMM YYYY')}}
+
                   </a>
               </td>
-              <td data-order="{{bulanCicilanTunggakanBerjalan($tunggakan,$start)}}">Rp. {{number_format(bulanCicilanTunggakanBerjalan($tunggakan,$start))}}</td>
+              <td data-order="{{bulanCicilanTunggakanBerjalan(tempoCicilanNunggak($tunggakan,$start),$start)}}">Rp. {{number_format(bulanCicilanTunggakanBerjalan(tempoCicilanNunggak($tunggakan,$start),$start))}}</td>
             </tr>
             @endif
             @empty

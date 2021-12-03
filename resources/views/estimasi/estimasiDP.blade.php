@@ -151,21 +151,21 @@
                     $totalDP += $nilai;
                 @endphp
                 <td> <a href="{{route('DPKavlingTambah',['id'=>$dp->id])}}"> 
-                @if (cekDpBulananTerbayar($dp,$start)->sum('jumlah')>0)
-                Rp. {{number_format(cekDpBulananTerbayar($dp,$start)->sum('jumlah'))}}
-                @php
-                    $totalDPTerbayar +=cekDpBulananTerbayar($dp,$start)->sum('jumlah');
-                @endphp
-                @elseif(cekDpSekaligus($dp,$start)!=null)
-                s/d {{formatBulanTahun(cekDpSekaligus($dp,$start)->tempo)}}
-                @else
-                <span class="text-danger">Belum bayar</span>
-                @endif
+                  @if (pembayaranDpEstimasi($dp,$start) ==null)
+                  <span class="text-danger">Belum bayar</span>
+                  @elseif(is_int(pembayaranDpEstimasi($dp,$start)))
+                  Rp. {{number_format(pembayaranDpEstimasi($dp,$start))}}
+                  @php
+                      $totalDPTerbayar += pembayaranDpEstimasi($dp,$start);
+                  @endphp
+                  @else
+                  s/d {{formatBulanTahun(pembayaranDpEstimasi($dp,$start))}}
+                  @endif
                 </a>
                 </td>
                 <td>
-                @if(cekDpTanggalTerbayar($dp,$start))
-                {{formatTanggal(cekDpTanggalTerbayar($dp,$start)->tanggal)}}
+                  @if(cekDpBulananTerbayar($dp,$start)->last() !=null)
+                  {{formatTanggal(cekDpBulananTerbayar($dp,$start)->last()->tanggal)}}
                 @endif
                 </td>
                 @if ($dp->sisaDp-$dp->potonganDp <= 0)

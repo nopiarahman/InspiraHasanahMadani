@@ -626,6 +626,40 @@ function cekDPTerbayar($DPId,$tanggal){
         return null;
     }
 }
+function cekDPNunggakBulanIni(Pembelian $id,$tanggal){
+    $start = \Carbon\carbon::parse($tanggal)->firstOfMonth()->isoFormat('YYYY-MM-DD');
+    $end = \Carbon\carbon::parse($tanggal)->endOfMonth();
+    $dp = $id->dp()->orderBy('tanggal')->get();
+    $tempoSebelum = $dp->where('tempo','<=',$end)->last();
+    $pembayaranSetelah = $dp->where('tanggal','>',$end)->first();
+    $tempoSetelah = $dp->where('tempo','>',$end)->first();
+    $tempoBulanIni=$dp->whereBetween('tempo',[$start,$end])->first();
+    $pembayaranBulanIni=$dp->whereBetween('tanggal',[$start,$end])->first();
+    if($pembayaranBulanIni==null){
+        /* tidak ada pembayaran bulan ini */
+        if($tempoBulanIni!=null || $tempoSebelum !=null && $tempoSetelah == null ){
+                return $dp;
+        }
+    }
+    return null;
+}
+function cekCicilanNunggakBulanIni(Pembelian $id,$tanggal){
+    $start = \Carbon\carbon::parse($tanggal)->firstOfMonth()->isoFormat('YYYY-MM-DD');
+    $end = \Carbon\carbon::parse($tanggal)->endOfMonth();
+    $cicilan = $id->cicilan->sortBy('tanggal');
+    $tempoSebelum = $cicilan->where('tempo','<=',$end)->last();
+    $pembayaranSetelah = $cicilan->where('tanggal','>',$end)->first();
+    $tempoSetelah = $cicilan->where('tempo','>',$end)->first();
+    $tempoBulanIni=$cicilan->whereBetween('tempo',[$start,$end])->first();
+    $pembayaranBulanIni=$cicilan->whereBetween('tanggal',[$start,$end])->first();
+    if($pembayaranBulanIni==null){
+        /* tidak ada pembayaran bulan ini */
+        if($tempoBulanIni!=null || $tempoSebelum !=null && $tempoSetelah == null ){
+                return $cicilan;
+        }
+    }
+    return null;
+}
 function cekPembayaranDP($DPId){
     $cekDPIni = dp::find($DPId);
     $tempo = \Carbon\carbon::parse($cekDPIni->tempo)->firstOfMonth()->isoFormat('YYYY-MM-DD');
@@ -864,8 +898,9 @@ function saldoTransaksiSebelum2($no){
 }
 function bulanCicilanTunggakanBerjalan(Cicilan $id,$tanggal){
     $pembayaranPertama= cicilan::where('pembelian_id',$id->pembelian_id)->orderBy('tanggal')->first();
-    $berjalan = Carbon::parse($tanggal)->endOfMonth()->addDay(2)->diffInMonths(Carbon::parse($pembayaranPertama->tanggal)->firstOfMonth(),true);
-    $terbayar = cicilan::where('pembelian_id',$id->pembelian_id)->sum('jumlah');
+    $sampaiSekarang=cicilan::where('tempo','<=',Carbon::parse($tanggal)->endOfMonth())->orderBy('tanggal')->get();
+    $berjalan = Carbon::parse($sampaiSekarang->last()->tempo)->endOfMonth()->addDay(2)->diffInMonths(Carbon::parse($pembayaranPertama->tanggal)->firstOfMonth(),true);
+    $terbayar = cicilan::where('pembelian_id',$id->pembelian_id)->where('tempo','<=',Carbon::parse($sampaiSekarang->last()->tempo)->endOfMonth())->sum('jumlah');
     $nilai = $id->pembelian->sisaKewajiban/$id->pembelian->tenor;
     $seharusnyaTerbayar = $nilai*$berjalan;
     $tunggakan = $seharusnyaTerbayar - $terbayar;
@@ -873,22 +908,111 @@ function bulanCicilanTunggakanBerjalan(Cicilan $id,$tanggal){
 }
 function bulanDpTunggakanBerjalan(dp $id,$tanggal){
     $pembayaranPertama= dp::where('pembelian_id',$id->pembelian_id)->orderBy('tanggal')->first();
-    $berjalan = Carbon::parse($tanggal)->endOfMonth()->addDay(2)->diffInMonths(Carbon::parse($pembayaranPertama->tanggal)->firstOfMonth(),true);
-    $terbayar = dp::where('pembelian_id',$id->pembelian_id)->sum('jumlah');
-    $nilai = $id->pembelian->sisaKewajiban/$id->pembelian->tenor;
+    $sampaiSekarang=dp::where('tempo','<=',Carbon::parse($tanggal)->endOfMonth())->orderBy('tanggal')->get();
+    $berjalan = Carbon::parse($sampaiSekarang->last()->tempo)->endOfMonth()->addDay(2)->diffInMonths(Carbon::parse($pembayaranPertama->tanggal)->firstOfMonth(),true);
+    $terbayar = dp::where('pembelian_id',$id->pembelian_id)->where('tempo','<=',Carbon::parse($sampaiSekarang->last()->tempo)->endOfMonth())->sum('jumlah');
+    $nilai = $id->pembelian->dp/$id->pembelian->tenorDP;
     $seharusnyaTerbayar = $nilai*$berjalan;
     $tunggakan = $seharusnyaTerbayar - $terbayar;
     return $tunggakan;
 }
+function tempoDpNunggak(Pembelian $id, $start){
+    $dp = $id->dp()->orderBy('tanggal')->where('tempo','<=',Carbon::parse($start)->endOfMonth())->get();
+    return $dp->last();
+}
+function tempoCicilanNunggak(Pembelian $id, $start){
+    $cicilan = $id->cicilan->sortBy('tanggal')->where('tempo','<=',Carbon::parse($start)->endOfMonth());
+    return $cicilan->last();
+}
 function cekCicilanBulananTerbayar(Pembelian $id,$tanggal){
     $cek = cicilan::where('pembelian_id',$id->id)
                     ->whereBetween('tanggal',[Carbon::parse($tanggal)->firstOfMonth(),Carbon::parse($tanggal)->endOfMonth()])
-                    ->first();
+                    ->get();
     if($cek){
         return $cek;
     }
     return null;
 }
+function cekCicilanBulananSelanjutnya(Pembelian $id,$tanggal){
+    $cek = cicilan::where('pembelian_id',$id->id)
+                    ->where('tanggal','>=',Carbon::parse($tanggal)->firstOfMonth()->addMonth(1))
+                    ->get();
+    if($cek){
+        return $cek;
+    }
+    return null;
+}
+function cekDpBulananSelanjutnya(Pembelian $id,$tanggal){
+    $cek = dp::where('pembelian_id',$id->id)
+                    ->where('tanggal','>=',Carbon::parse($tanggal)->firstOfMonth()->addMonth(1))
+                    ->get();
+    if($cek){
+        return $cek;
+    }
+    return null;
+}
+function cekTempoDpBulananSelanjutnya(Pembelian $id,$tanggal){
+    $cek = dp::where('pembelian_id',$id->id)
+                    ->where('tempo','>=',Carbon::parse($tanggal)->firstOfMonth()->addMonth(1))
+                    ->get();
+    if($cek){
+        return $cek;
+    }
+    return null;
+}
+function cekCicilanBulananTempo(Pembelian $id,$tanggal){
+    $cek = cicilan::where('pembelian_id',$id->id)
+                    ->whereBetween('tempo',[Carbon::parse($tanggal)->firstOfMonth(),Carbon::parse($tanggal)->endOfMonth()])
+                    ->get();
+    if($cek){
+        return $cek->last();
+    }
+    return null;
+}
+function cekDpBulananTempo(Pembelian $id,$tanggal){
+    $cek = dp::where('pembelian_id',$id->id)
+                    ->whereBetween('tempo',[Carbon::parse($tanggal)->firstOfMonth(),Carbon::parse($tanggal)->endOfMonth()])
+                    ->get();
+    if($cek){
+        return $cek->last();
+    }
+    return null;
+}
+function pembayaranCicilanEstimasi(Pembelian $id, $tanggal){
+    if(cekCicilanBulananTerbayar($id,$tanggal)->sum('jumlah') == 0 && cekCicilanBulananSelanjutnya($id,$tanggal)!=null){
+        /* jika bulan ini blm bayar dan bulan depan ada bayaran */
+        if(cekCicilanBulananTempo($id,$tanggal) ==null){
+            /* jika tidak ada tempo dibulan ini */
+            if(cekCicilanSekaligus($id,$tanggal)){
+                /* berarti dia ngebomb bayar di bulan sebelumnya */
+                return cekCicilanSekaligus($id,$tanggal)->tempo;
+            }
+        }
+        /* berarti bulan ini blm bayar */
+        return null;
+    }else{
+        /* nominal saldo pembayaran bulan ini */
+        return cekCicilanBulananTerbayar($id,$tanggal)->sum('jumlah');
+    }
+}
+function pembayaranDpEstimasi(Pembelian $id, $tanggal){
+    if(cekDpBulananTerbayar($id,$tanggal)->sum('jumlah') == 0 && cekDpBulananSelanjutnya($id,$tanggal)!=null){
+        /* jika bulan ini blm bayar dan bulan depan ada bayaran */
+        if(cekDpBulananTempo($id,$tanggal) ==null){
+            /* jika tidak ada tempo dibulan ini */
+            if(cekDpSekaligus($id,$tanggal)){
+                /* berarti dia ngebomb bayar di bulan sebelumnya */
+                return cekDpSekaligus($id,$tanggal)->tempo;
+            }
+        }
+        /* berarti bulan ini blm bayar */
+        return null;
+    }else{
+        /* nominal saldo pembayaran bulan ini */
+        return cekDpBulananTerbayar($id,$tanggal)->sum('jumlah');
+    }
+}
+
 function cekDpBulananTerbayar(Pembelian $id,$tanggal){
     $cek = dp::where('pembelian_id',$id->id)
                     ->whereBetween('tanggal',[Carbon::parse($tanggal)->firstOfMonth(),Carbon::parse($tanggal)->endOfMonth()])

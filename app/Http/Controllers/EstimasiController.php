@@ -95,16 +95,24 @@ class EstimasiController extends Controller
             return $value->kavling != null;
         });
         foreach($pelangganAktif as $p){
-            $dpNunggak[]=$p->dp->where('tempo','<',$start)->filter(function ($value, $key) {
-                return cekPembayaranDP($value->id) == null;
-            })->last();
-            $cicilanNunggak[]=$p->cicilan->where('tempo','<',$start)->filter(function ($value, $key) {
-                return cekPembayaranCicilan($value->id) == null;
-            })->last();
+            $cicilanNunggak=[];
+            $x[]= $p->pembelian;
         }
-        $DPtertunggak=collect($dpNunggak)->where('sisaDp','>',0);
-        $cicilanTertunggak=collect($cicilanNunggak)->where('sisaKewajiban','>',0);
-        // dd($cicilanTertunggak);
+        foreach($x as $p){
+            if(cekDPNunggakBulanIni($p,$start)!=null){
+                $dpNunggak[]=$p;
+            };
+            if(cekCicilanNunggakBulanIni($p,$start)!=null){
+                $cicilanNunggak[]=$p;
+            };
+        }
+        // foreach($pembelian as $c){
+            //     $cicilanNunggak[]= pembayaranCicilanEstimasi($c,$start) ==null;
+            //     $dpNunggak[]=cekDpBulananTerbayar($c,$start)->last() != null;
+            // }
+            $DPtertunggak=collect($dpNunggak)->where('sisaDp','>',0);
+            $cicilanTertunggak=collect($cicilanNunggak)->where('sisaKewajiban','>',0);
+            // dd($cicilanTertunggak);
         return view('estimasi/estimasiTunggakan',compact('start','end','DPtertunggak','cicilanTertunggak'));
     }
     public function exportEstimasiDp(Request $request){
@@ -171,6 +179,9 @@ class EstimasiController extends Controller
             $cicilanNunggak[]=$p->cicilan->where('tempo','<',$start)->filter(function ($value, $key) {
                 return cekPembayaranCicilan($value->id) == null;
             })->last();
+            $cicilanNunggak[]=$p->cicilan->filter(function ($value,$key,$start){
+                return pembayaranCicilanEstimasi($value,$start) == null;
+            });
         }
         $DPtertunggak=collect($dpNunggak)->where('sisaDp','>',0);
         $cicilanTertunggak=collect($cicilanNunggak)->where('sisaKewajiban','>',0);
