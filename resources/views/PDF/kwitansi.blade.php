@@ -118,7 +118,7 @@
 			@if($id->pembelian->sisaKewajiban-cicilanTerbayar($id->pembelian_id,$id->tanggal) <=0)
 			-
 			@else
-			1-10 {{Carbon\Carbon::parse($tempo)->isoFormat('MMMM YYYY')}}
+			1-10 {{Carbon\Carbon::parse($id->$tempo)->isoFormat('MMMM YYYY')}}
 			@endif
 		</td>
 		<td colspan="2" style="border-top: 1px solid #000000" align="center" valign="bottom">Kasir</td>
