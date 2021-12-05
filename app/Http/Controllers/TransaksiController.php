@@ -144,6 +144,7 @@ class TransaksiController extends Controller
                     foreach($cekTransaksi as $updateTransaksi){
                         $updateTransaksi['no'] = $updateTransaksi->no +1;
                         $updateTransaksi['saldo'] = $updateTransaksi->saldo - $jumlah;
+                        
                         $updateTransaksi->save();
                     }
                 }
@@ -295,7 +296,7 @@ class TransaksiController extends Controller
         
     }
     public function cashFlow(Request $request){
-        $semuaAkun = akun::where('proyek_id',proyekId())->where('kategori','Pendapatan')->orWhere('kategori','Modal')->get();
+        // $semuaAkun = akun::where('proyek_id',proyekId())->where('kategori','Pendapatan')->orWhere('kategori','Modal')->get();
         // dd($request);
         if($request->get('filter')){
             $start = Carbon::parse($request->start)->isoFormat('YYYY-MM-DD');
@@ -309,7 +310,7 @@ class TransaksiController extends Controller
             $cashFlow=transaksi::whereBetween('tanggal',[$start,$end])->where('proyek_id',proyekId())->orderBy('no')->get();
             $awal=$cashFlow->first();
         }
-        return view ('transaksi/cashFlowIndex',compact('cashFlow','semuaAkun','awal','start','end'));
+        return view ('transaksi/cashFlowIndex',compact('cashFlow','awal','start','end'));
     }
     public function hapusKeluar(Transaksi $id){
         // dd($id);

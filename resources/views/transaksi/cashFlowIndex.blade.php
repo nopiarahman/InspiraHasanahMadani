@@ -210,6 +210,7 @@
     <table class="table table-sm table-striped table-hover mt-3">
       <thead>
         <tr>
+          <th scope="col">No</th>
           <th scope="col">Tanggal</th>
           <th scope="col">Kode Transaksi</th>
           <th scope="col">Uraian</th>
@@ -230,8 +231,8 @@
         </tr>
         @foreach($cashFlow as $transaksi)
         <tr>
-          {{-- <td>{{$transaksi->no}}</td> --}}
-          <td data-order="{{$transaksi->tanggal}}" >{{$transaksi->no}} {{formatTanggal($transaksi->tanggal)}}</td>
+          <td>{{$transaksi->no}}</td>
+          <td data-order="{{$transaksi->tanggal}}" >{{formatTanggal($transaksi->tanggal)}}</td>
           <td>
             @if($transaksi->rab)
             {{$transaksi->rab->kodeRAB}}
@@ -251,7 +252,7 @@
             Rp.{{number_format($transaksi->debet)}}
             @endif
           </td>
-          <td>Rp.{{number_format($transaksi->saldo)}}</td>
+          <td>Rp.{{number_format(saldoTransaksiSebelum2($transaksi->no)+$transaksi->kredit-$transaksi->debet)}}</td>
           <td>{{$transaksi->sumber}}</td>
           <td>
             @if($transaksi->kategori ==='Modal' || $transaksi->kategori ==='Aset' || $transaksi->kategori ==='Pendapatan Lain')

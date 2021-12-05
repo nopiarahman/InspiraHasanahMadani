@@ -367,6 +367,7 @@ class LaporanController extends Controller
         return $pdf->download('Kwitansi DP '.$pembelian->pelanggan->nama .' '. $blok .' Ke '.$id->urut.'.pdf');
     }
     public function cetakKwitansiPDF(Cicilan $id){
+        // dd($id);
         $pembayaranPertama= cicilan::where('pembelian_id',$id->pembelian_id)->orderBy('tanggal')->first();
         $pembayaranSebelum = cicilan::where('pembelian_id',$id->pembelian_id)->where('tanggal','<',$id->tanggal)->orderBy('tanggal','desc')->first();
         if($pembayaranSebelum){

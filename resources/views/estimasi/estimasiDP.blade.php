@@ -150,7 +150,7 @@
                 @php
                     $totalDP += $nilai;
                 @endphp
-                <td> <a href="{{route('DPKavlingTambah',['id'=>$dp->id])}}"> 
+                <td data-order="{{pembayaranDpEstimasi($dp,$start)}}"> <a href="{{route('DPKavlingTambah',['id'=>$dp->id])}}"> 
                   @if (pembayaranDpEstimasi($dp,$start) ==null)
                   <span class="text-danger">Belum bayar</span>
                   @elseif(is_int(pembayaranDpEstimasi($dp,$start)))

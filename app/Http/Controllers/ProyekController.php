@@ -413,6 +413,10 @@ class ProyekController extends Controller
         $transaksi = transaksi::where('no','>',1)->orderBy('no')->where('proyek_id',proyekId())->get();
         $n=2;
         $total = $transaksi->count();
+        foreach ($transaksi as $t) {
+            $no[]=$t->no;
+        }
+        // dd(collect($no)->duplicates());
         /* update nomor */
         // foreach($transaksi as $t){
         //     $t->update(['no'=>$n]);

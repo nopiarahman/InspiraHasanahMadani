@@ -70,7 +70,7 @@
 			<td colspan="2">Rp. {{number_format($id->jumlah)}}</td>
 		</tr>
 	<tr>
-		<td colspan="4" style="padding:15px 0px 7px 0px"><b><font size="4" color="#6C757D">Metode Pembayaran: <span style="color: green"> 
+		<td colspan="4" style="padding:5px 0px 5px 0px"><b><font size="4" color="#6C757D">Metode Pembayaran: <span style="color: green"> 
 			@if($id->sumber == 'Cash' || $id->sumber == 'cash')
 			TUNAI 
 			@else
@@ -118,7 +118,7 @@
 			@if($id->pembelian->sisaKewajiban-cicilanTerbayar($id->pembelian_id,$id->tanggal) <=0)
 			-
 			@else
-			1-10 {{Carbon\Carbon::parse($id->$tempo)->isoFormat('MMMM YYYY')}}
+			1-10 {{Carbon\Carbon::parse($id->tempo)->isoFormat('MMMM YYYY')}}
 			@endif
 		</td>
 		<td colspan="2" style="border-top: 1px solid #000000" align="center" valign="bottom">Kasir</td>
