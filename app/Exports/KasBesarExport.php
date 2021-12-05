@@ -16,7 +16,8 @@ class KasBesarExport implements FromView , WithTitle ,ShouldAutoSize
     protected $start;
     protected $end;
 
-    function __construct($cashFlow, $start, $end) {
+    function __construct($saldoSebelum,$cashFlow, $start, $end) {
+        $this->saldoSebelum = $saldoSebelum;
         $this->cashFlow = $cashFlow;
         $this->start = $start;
         $this->end = $end;
@@ -24,6 +25,7 @@ class KasBesarExport implements FromView , WithTitle ,ShouldAutoSize
     public function view(): View
     {
         return view ('excel/kasBesar',[
+            'saldoSebelum'=> $this->saldoSebelum,
             'cashFlow'=> $this->cashFlow,
             'start'=> $this->start,
             'end'=> $this->end
@@ -31,6 +33,6 @@ class KasBesarExport implements FromView , WithTitle ,ShouldAutoSize
     }
     public function title(): string
     {
-        return 'RAB';
+        return 'Kas Besar';
     }
 }

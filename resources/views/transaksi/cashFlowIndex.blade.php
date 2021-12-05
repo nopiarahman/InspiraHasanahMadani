@@ -210,7 +210,7 @@
     <table class="table table-sm table-striped table-hover mt-3">
       <thead>
         <tr>
-          <th scope="col">No</th>
+          {{-- <th scope="col">No</th> --}}
           <th scope="col">Tanggal</th>
           <th scope="col">Kode Transaksi</th>
           <th scope="col">Uraian</th>
@@ -227,11 +227,14 @@
         <tr>
           <td colspan="2"></td>
           <th class="text-primary " colspan="3" >Sisa Saldo Sebelumnya</th>
-          <th class="text-primary">Rp.{{number_format(saldoBulanSebelumnya($start))}}</th>
+          <th class="text-primary">Rp.{{number_format($saldoSebelum)}}</th>
         </tr>
+        @php
+            $saldo = $saldoSebelum;
+        @endphp
         @foreach($cashFlow as $transaksi)
         <tr>
-          <td>{{$transaksi->no}}</td>
+          {{-- <td>{{$transaksi->no}}</td> --}}
           <td data-order="{{$transaksi->tanggal}}" >{{formatTanggal($transaksi->tanggal)}}</td>
           <td>
             @if($transaksi->rab)
@@ -252,7 +255,10 @@
             Rp.{{number_format($transaksi->debet)}}
             @endif
           </td>
-          <td>Rp.{{number_format($transaksi->saldo)}}</td>
+          <td>Rp.{{number_format($saldo+$transaksi->kredit-$transaksi->debet)}}</td>
+          @php
+              $saldo=$saldo+$transaksi->kredit-$transaksi->debet
+          @endphp
           <td>{{$transaksi->sumber}}</td>
           <td>
             @if($transaksi->kategori ==='Modal' || $transaksi->kategori ==='Aset' || $transaksi->kategori ==='Pendapatan Lain')
@@ -274,7 +280,7 @@
             <th colspan="3" class="text-right text-primary">Total</th>
             <th class="text-primary">Rp. {{number_format($cashFlow->sum('kredit'))}}</th>
             <th class="text-primary">Rp. {{number_format($cashFlow->sum('debet'))}}</th>
-            <th colspan="3" class="text-primary">Rp. {{number_format(totalKasBesar($start,$end))}}</th>
+            <th colspan="3" class="text-primary">Rp. {{number_format($saldo)}}</th>
           </tr>
       </tfoot>
     </table>

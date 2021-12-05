@@ -301,16 +301,19 @@ class TransaksiController extends Controller
         if($request->get('filter')){
             $start = Carbon::parse($request->start)->isoFormat('YYYY-MM-DD');
             $end = Carbon::parse($request->end)->isoFormat('YYYY-MM-DD');
-            $cashFlow=transaksi::whereBetween('tanggal',[$start,$end])->where('proyek_id',proyekId())->orderBy('no')->get();
+            $cashFlow=transaksi::whereBetween('tanggal',[$start,$end])->where('proyek_id',proyekId())->orderBy('tanggal')->get();
             $awal=$cashFlow->first();
             // dd($awal);
         }else{
             $start = Carbon::now()->firstOfMonth()->isoFormat('YYYY-MM-DD');
             $end = Carbon::now()->endOfMonth()->isoFormat('YYYY-MM-DD');
-            $cashFlow=transaksi::whereBetween('tanggal',[$start,$end])->where('proyek_id',proyekId())->orderBy('no')->get();
+            $cashFlow=transaksi::whereBetween('tanggal',[$start,$end])->where('proyek_id',proyekId())->orderBy('tanggal')->get();
             $awal=$cashFlow->first();
         }
-        return view ('transaksi/cashFlowIndex',compact('cashFlow','awal','start','end'));
+        $transaksi= transaksi::where('tanggal','<',$start)->get();
+        $saldoSebelum = $transaksi->sum('kredit')-$transaksi->sum('debet');
+        // dd($saldoSebelum);
+        return view ('transaksi/cashFlowIndex',compact('saldoSebelum','cashFlow','awal','start','end'));
     }
     public function hapusKeluar(Transaksi $id){
         // dd($id);
@@ -421,6 +424,8 @@ class TransaksiController extends Controller
             $cashFlow=transaksi::whereBetween('tanggal',[$start,$end])->orderBy('no')->where('proyek_id',proyekId())->get();
             $awal=$cashFlow->first();
         }
-        return Excel::download(new KasBesarExport($cashFlow,$start,$end), 'Kas Besar.xlsx');
+        $transaksi= transaksi::where('tanggal','<',$start)->get();
+        $saldoSebelum = $transaksi->sum('kredit')-$transaksi->sum('debet');
+        return Excel::download(new KasBesarExport($saldoSebelum,$cashFlow,$start,$end), 'Kas Besar.xlsx');
     }
 }

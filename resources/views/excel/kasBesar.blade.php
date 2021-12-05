@@ -24,8 +24,11 @@
     <tr>
       <td style="width: 20px" colspan="2"></td>
       <th style="font-weight: bold; weight:20px" class="text-primary " colspan="3" >Sisa Saldo Sebelumnya</th>
-      <th style="font-weight: bold; weight:20px" class="text-primary">{{saldoBulanSebelumnya($start)}}</th>
+      <th style="font-weight: bold; weight:20px" class="text-primary">{{($saldoSebelum)}}</th>
     </tr>
+    @php
+        $saldo = $saldoSebelum;
+    @endphp
     @foreach($cashFlow as $transaksi)
     <tr>
       <td style="width: 20px">{{formatTanggal($transaksi->tanggal)}}</td>
@@ -48,7 +51,10 @@
         {{$transaksi->debet}}
         @endif
       </td>
-      <td style="width: 20px">{{$transaksi->saldo}}</td>
+      <td style="width: 20px">{{$saldo+$transaksi->kredit-$transaksi->debet}}</td>
+      @php
+          $saldo=$saldo+$transaksi->kredit-$transaksi->debet
+      @endphp
       <td style="width: 20px">{{$transaksi->sumber}}</td>
     </tr>
     @endforeach
@@ -58,7 +64,7 @@
         <th style="font-weight: bold; weight:20px" colspan="3" class="text-right text-primary">Total</th>
         <th style="font-weight: bold; weight:20px" class="text-primary">{{$cashFlow->sum('kredit')}}</th>
         <th style="font-weight: bold; weight:20px" class="text-primary">{{$cashFlow->sum('debet')}}</th>
-        <th style="font-weight: bold; weight:20px" colspan="3" class="text-primary">{{totalKasBesar($start,$end)}}</th>
+        <th style="font-weight: bold; weight:20px" class="text-primary text-right">{{($saldo)}}</th>
       </tr>
   </tfoot>
 </table>
