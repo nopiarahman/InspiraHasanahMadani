@@ -252,7 +252,7 @@
             Rp.{{number_format($transaksi->debet)}}
             @endif
           </td>
-          <td>Rp.{{number_format(saldoTransaksiSebelum2($transaksi->no)+$transaksi->kredit-$transaksi->debet)}}</td>
+          <td>Rp.{{number_format($transaksi->saldo)}}</td>
           <td>{{$transaksi->sumber}}</td>
           <td>
             @if($transaksi->kategori ==='Modal' || $transaksi->kategori ==='Aset' || $transaksi->kategori ==='Pendapatan Lain')
