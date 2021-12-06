@@ -15,6 +15,7 @@ use App\pettyCash;
 use App\kasPendaftaran;
 use App\kasKecilLapangan;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 function cekNamaUser(){
     return auth()->user()->name;
@@ -57,12 +58,9 @@ function jenisKepemilikan($id){  /* $id = pelanggan_id */
     }
 }
 function saldoTerakhir(){
-    $saldo = transaksi::orderBy('no','desc')->where('proyek_id',proyekId())->first();
-    $saldoTerakhir=0;
-    if($saldo != null){
-        $saldoTerakhir=$saldo->saldo;
-    }
-    return $saldoTerakhir;
+    $transaksi = DB::table('transaksi')->select('kredit','debet');
+    $saldo = $transaksi->sum('kredit')-$transaksi->sum('debet');
+    return $saldo;
 }
 function noTransaksiTerakhir(){
     $no = transaksi::orderBy('no','desc')->where('proyek_id',proyekId())->first();

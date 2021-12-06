@@ -174,7 +174,7 @@ function cash(){
     <h4>History Pembayaran Cicilan DP {{jenisKepemilikan($id->pelanggan_id)}} {{$id->pelanggan->nama}}</h4>
   </div>
   <div class="card-body">
-    <table class="table table-hover table-responsive" id="table">
+    <table class="table table-hover" id="table">
       <thead>
         <tr>
           <th scope="col">No</th>
@@ -184,11 +184,11 @@ function cash(){
           <th scope="col">Nomor Faktur</th>
           <th scope="col">Aksi</th>
 
-          <th>tempo</th>
+          {{-- <th>tempo</th>
           <th>totalTerbayar</th>
           <th>bulan berjalan</th>
           <th>terbayar seharusnya</th>
-          <th>kurang</th>
+          <th>kurang</th> --}}
         </tr>
       </thead>
       <tbody>
@@ -217,12 +217,26 @@ function cash(){
             data-target="#exampleModalCenter" 
             data-id="{{$cicilanDp->id}}">
             <i class="fa fa-trash" aria-hidden="true" ></i> Hapus </button>   
+            <button type="button" class="btn btn-sm btn-white text-info border-info" 
+            data-toggle="modal" 
+            data-target="#modalDetail" 
+            data-ke="{{dpKe($cicilanDp->pembelian->id,$cicilanDp->tanggal)}}"
+            {{-- data-tp="{{formatTanggal($cicilanDp->tanggal)}}" --}}
+            data-jumlah="{{$cicilanDp->jumlah}}"
+            data-sisa="{{$cicilanDp->pembelian->dp - dpTerbayar($cicilanDp->pembelian->id,$cicilanDp->tanggal)}}"
+            data-tempo="{{$cicilanDp->tempo}}"
+            data-terbayar="{{dpTerbayar($cicilanDp->pembelian->id,$cicilanDp->tanggal)}}"
+            data-berjalan="{{bulanDpBerjalan($cicilanDp)}}"
+            data-seharusnya="{{$id->dp/$id->tenorDP*bulanDpBerjalan($cicilanDp)}}"
+            data-kurang="{{($id->dp/$id->tenorDP*bulanDpBerjalan($cicilanDp))-dpTerbayar($cicilanDp->pembelian->id,$cicilanDp->tanggal)}}"
+            >
+            <i class="fas fa-info-circle    "></i></i> Detail </button>   
           </td>
-          <td>{{formatTanggal($cicilanDp->tempo)}}</td>
+          {{-- <td>{{formatTanggal($cicilanDp->tempo)}}</td>
           <td>{{dpTerbayar($cicilanDp->pembelian->id,$cicilanDp->tanggal)}}</td>
           <td>{{bulanDpBerjalan($cicilanDp)}}</td>
           <td>{{number_format($id->dp/$id->tenorDP*bulanDpBerjalan($cicilanDp))}}</td>
-          <td>{{($id->dp/$id->tenorDP*bulanDpBerjalan($cicilanDp))-dpTerbayar($cicilanDp->pembelian->id,$cicilanDp->tanggal)}}</td>
+          <td>{{($id->dp/$id->tenorDP*bulanDpBerjalan($cicilanDp))-dpTerbayar($cicilanDp->pembelian->id,$cicilanDp->tanggal)}}</td> --}}
         </tr>
         @endforeach
       </tbody>
@@ -240,6 +254,133 @@ function cash(){
     
   </div>
 </div>
+{{-- Modal Detail --}}
+<div class="modal fade modalDetail bd-example-modal-lg ml-5" id="modalDetail" tabindex="-1" role="dialog" aria-labelledby="keGudangTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Detail Transaksi</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+          <div class="form-group row mb-4">
+            <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Cicilan Ke</label>
+            <div class="col-sm-12 col-md-7">
+              <input type="text" class="form-control" name="ke" value="" id="ke">
+            </div>
+          </div>
+          {{-- <div class="form-group row mb-4">
+            <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Tanggal Pembayaran</label>
+            <div class="col-sm-12 col-md-7">
+              <input type="date" class="form-control" name="tp" value="" id="tp">
+            </div>
+          </div> --}}
+          <div class="form-group row mb-4">
+            <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Jumlah Terbayar</label>
+            <div class="input-group col-sm-12 col-md-7">
+              <div class="input-group-prepend">
+                <div class="input-group-text">
+                  Rp
+                </div>
+              </div>
+              <input type="text" readonly class="form-control" name="jumlah" value="" id="jumlahTerbayar">
+            </div>
+          </div>
+          <div class="form-group row mb-4">
+            <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Sisa</label>
+            <div class="input-group col-sm-12 col-md-7">
+              <div class="input-group-prepend">
+                <div class="input-group-text">
+                  Rp
+                </div>
+              </div>
+              <input type="text" readonly class=" form-control" name="sisa" value="" id="sisa">
+            </div>
+          </div>
+          <div class="form-group row mb-4">
+            <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Tempo Selanjutnya</label>
+            <div class="col-sm-12 col-md-7">
+              <input type="date" class="form-control" name="tempo" value="" id="tempo">
+            </div>
+          </div>
+          <div class="form-group row mb-4">
+            <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Terbayar</label>
+            <div class="input-group col-sm-12 col-md-7">
+              <div class="input-group-prepend">
+                <div class="input-group-text">
+                  Rp
+                </div>
+              </div>
+              <input type="text" readonly class=" form-control" name="terbayar" value="" id="terbayar">
+            </div>
+          </div>
+          <div class="form-group row mb-4">
+            <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Bulan Berjalan</label>
+            <div class="col-sm-12 col-md-7">
+              <input type="text" class="form-control" name="berjalan" value="" id="berjalan">
+            </div>
+          </div>
+          <div class="form-group row mb-4">
+            <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Terbayar Seharusnya</label>
+            <div class="input-group col-sm-12 col-md-7">
+              <div class="input-group-prepend">
+                <div class="input-group-text">
+                  Rp
+                </div>
+              </div>
+              <input type="text" readonly class=" form-control" name="seharusnya" value="" id="seharusnya">
+            </div>
+          </div>
+          <div class="form-group row mb-4">
+            <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Kurang Pembayaran</label>
+            <div class="input-group col-sm-12 col-md-7">
+              <div class="input-group-prepend">
+                <div class="input-group-text">
+                  Rp
+                </div>
+              </div>
+              <input type="text" readonly class=" form-control" name="kurang" value="" id="kurang">
+            </div>
+          </div>
+          <div class="form-group row mb-4">
+            <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3"></label>
+            <div class="col-sm-12 col-md-7">
+              <button type="button" class="btn btn-primary" data-dismiss="modal">Tutup</button>
+            </div>
+          </div>
+        </form>
+        </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+  $(document).ready(function () {
+    $('#modalDetail').on('show.bs.modal', function (event) {
+    var button = $(event.relatedTarget) // Button that triggered the modal
+    var tp = button.data('tp') 
+    // console.log(tp);
+    var jumlah = button.data('jumlah') 
+    var sisa = button.data('sisa') 
+    var tempo = button.data('tempo') 
+    var terbayar = button.data('terbayar') 
+    var berjalan = button.data('berjalan') 
+    var seharusnya = button.data('seharusnya') 
+    var kurang = button.data('kurang')
+    var ke = button.data('ke')
+    $('#ke').val(ke);
+    // $('#tp').val(tp);
+    $('#jumlahTerbayar').val(jumlah);
+    $('#sisa').val(sisa);
+    $('#tempo').val(tempo);
+    $('#terbayar').val(terbayar);
+    $('#berjalan').val(berjalan);
+    $('#seharusnya').val(seharusnya);
+    $('#kurang').val(kurang);
+    })
+  });
+  </script>
     <!-- Modal Hapus-->
     <div class="modal fade exampleModalCenter" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered" role="document">

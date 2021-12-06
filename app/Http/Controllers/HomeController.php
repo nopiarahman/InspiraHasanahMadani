@@ -130,7 +130,7 @@ class HomeController extends Controller
         $totalPendapatan = $pendapatanRumah+$pendapatanKavling;
         /* chart */
         $chartPendapatan = new chartAdmin;
-        $chartPendapatan->labels(['Kalving','Rumah']);
+        $chartPendapatan->labels(['Kalving','Rumah','Kelebihan Tanah']);
         $chartPendapatan->dataset('Total Pendapatan','pie',[$pendapatanKavling,$pendapatanRumah])->options([
             'backgroundColor'=>['#169948','#ffa426']
         ]);
