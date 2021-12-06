@@ -489,6 +489,7 @@
         var idRab = $(this).data('idRab');
         var isi =$(this).data('isi');
         $('#idRAB').val(idRab);
+        $('#idRABUnit').val("");
         // console.log(idRab);
         $('#isiRAB').val(isi);
         $('.close').click(); 
@@ -496,6 +497,7 @@
       $(document).on('click','#rabUnit',function(){
         var idUnit = $(this).data('idUnit');
         var isi =$(this).data('isi');
+        $('#idRAB').val("");
         $('#idRABUnit').val(idUnit);
         // console.log(idUnit);
         $('#isiRAB').val(isi);

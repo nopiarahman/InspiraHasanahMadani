@@ -1017,37 +1017,43 @@ function pembayaranCicilanEstimasi(Pembelian $id, $tanggal){
     }else{
         $berjalan = 0;
     }
-    // return $terbayarSebelum;
     $seharusnya = $berjalan * ($id->sisaKewajiban/$id->tenor);
-    // return $seharusnya;
     
     if(cekCicilanBulananTerbayar($id,$tanggal)->sum('jumlah') == 0 && cekCicilanBulananSelanjutnya($id,$tanggal)!=null){
         /* jika bulan ini blm bayar dan bulan depan ada bayaran */
-        // if($terbayarSebelum >= $seharusnya){
-            if(cekCicilanBulananTempo($id,$tanggal) ==null){
-                /* jika tidak ada tempo dibulan ini */
-                if(cekCicilanSekaligus($id,$tanggal)){
-                    /* berarti dia ngebomb bayar di bulan sebelumnya */
-                    return cekCicilanSekaligus($id,$tanggal)->tempo;
-                }
-            }elseif($terbayarSebelum >= $seharusnya){
-                $tempo = cicilan::where('pembelian_id',$id->id)->where('tanggal','<',Carbon::parse($tanggal)->firstOfMonth())->where('tempo','>=',Carbon::parse($tanggal)->firstOfMonth())->get();
-                // return $tempo;
-                if($tempo->last()){
-                    $tempoTerakhir = $tempo->last();
-                    return $tempoTerakhir->tempo;
-                }
-            }else{
-                /* berarti bulan ini blm bayar */
-                return null;
+        if(cekCicilanBulananTempo($id,$tanggal) ==null){
+            /* jika tidak ada tempo dibulan ini */
+            if(cekCicilanSekaligus($id,$tanggal)){
+                /* berarti dia ngebomb bayar di bulan sebelumnya */
+                return cekCicilanSekaligus($id,$tanggal)->tempo;
             }
-        // }
+        }elseif($terbayarSebelum >= $seharusnya){
+            /* jika jatuh tempo sudah terbayar di bulan sebelumnya */
+            $tempo = cicilan::where('pembelian_id',$id->id)->where('tanggal','<',Carbon::parse($tanggal)->firstOfMonth())->where('tempo','>=',Carbon::parse($tanggal)->firstOfMonth())->get();
+            // return $tempo;
+            if($tempo->last()){
+                $tempoTerakhir = $tempo->last();
+                return $tempoTerakhir->tempo;
+            }
+        }else{
+            /* berarti bulan ini blm bayar */
+            return null;
+            }
     }else{
         /* nominal saldo pembayaran bulan ini */
         return cekCicilanBulananTerbayar($id,$tanggal)->sum('jumlah');
     }
 }
 function pembayaranDpEstimasi(Pembelian $id, $tanggal){
+    $terbayar = dp::where('pembelian_id',$id->id)->where('tanggal','<=',Carbon::parse($tanggal)->endOfMonth())->orderBy('tanggal')->get();
+    $terbayarSebelum = $terbayar->sum('jumlah');
+    $pembayaranPertama= dp::where('pembelian_id',$id->id)->orderBy('tanggal')->first();
+    if($pembayaranPertama){
+        $berjalan = Carbon::parse($tanggal)->endOfMonth()->addDay(2)->diffInMonths(Carbon::parse($pembayaranPertama->tanggal)->firstOfMonth(),true);
+    }else{
+        $berjalan = 0;
+    }
+    $seharusnya = $berjalan * ($id->sisaDp/$id->tenorDP);
     if(cekDpBulananTerbayar($id,$tanggal)->sum('jumlah') == 0 && cekDpBulananSelanjutnya($id,$tanggal)!=null){
         /* jika bulan ini blm bayar dan bulan depan ada bayaran */
         if(cekDpBulananTempo($id,$tanggal) ==null){
@@ -1056,9 +1062,18 @@ function pembayaranDpEstimasi(Pembelian $id, $tanggal){
                 /* berarti dia ngebomb bayar di bulan sebelumnya */
                 return cekDpSekaligus($id,$tanggal)->tempo;
             }
+        }elseif($terbayarSebelum >= $seharusnya){
+            /* jika jatuh tempo sudah terbayar di bulan sebelumnya */
+            $tempo = dp::where('pembelian_id',$id->id)->where('tanggal','<',Carbon::parse($tanggal)->firstOfMonth())->where('tempo','>=',Carbon::parse($tanggal)->firstOfMonth())->get();
+            // return $tempo;
+            if($tempo->last()){
+                $tempoTerakhir = $tempo->last();
+                return $tempoTerakhir->tempo;
+            }
+        }else{
+            /* berarti bulan ini blm bayar */
+            return null;
         }
-        /* berarti bulan ini blm bayar */
-        return null;
     }else{
         /* nominal saldo pembayaran bulan ini */
         return cekDpBulananTerbayar($id,$tanggal)->sum('jumlah');
