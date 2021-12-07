@@ -57,11 +57,11 @@ class LaporanController extends Controller
             }else{
                 $mts = 0;
             }
-            $bulan = transaksi::where('kategori','Modal')->whereBetween('tanggal',[$tahuniniStart,$tahuniniEnd])->get()->groupBy(function ($val) {
+            $bulan = transaksi::where('kategori','Modal')->where('tanggal','<=',$end)->whereBetween('tanggal',[$tahuniniStart,$tahuniniEnd])->get()->groupBy(function ($val) {
                 return Carbon::parse($val->tanggal)->isoFormat('MMMM');
             });
             if($aset){
-                $transaksiAset=transaksi::where('rab_id',$aset->id)->whereBetween('tanggal',[$tahuniniStart,$tahuniniEnd])->get()->groupBy(function ($val) {
+                $transaksiAset=transaksi::where('rab_id',$aset->id)->where('tanggal','<=',$end)->whereBetween('tanggal',[$tahuniniStart,$tahuniniEnd])->get()->groupBy(function ($val) {
                     return Carbon::parse($val->tanggal)->isoFormat('MMMM');
                 });
                 $AsetTahunSebelum = transaksi::where('rab_id',$aset->id)->where('tanggal','<=',$tahunSebelumEnd)->get();
@@ -80,16 +80,16 @@ class LaporanController extends Controller
             }else{
                 $mts = 0;
             }
-            $bulan = transaksi::where('kategori','Modal')->whereBetween('tanggal',[$tahuniniStart,$tahuniniEnd])->get()->groupBy(function ($val) {
+            $bulan = transaksi::where('kategori','Modal')->where('tanggal','<=',$end)->whereBetween('tanggal',[$tahuniniStart,$tahuniniEnd])->get()->groupBy(function ($val) {
                 return Carbon::parse($val->tanggal)->isoFormat('MMMM');
             });
+            // if($aset){
+            //     $transaksiAset=transaksi::where('rab_id',$aset->id)->whereBetween('tanggal',[$tahuniniStart,$tahuniniEnd])->get()->groupBy(function ($val) {
+            //         return Carbon::parse($val->tanggal)->isoFormat('MMMM');
+            //     });
+            // }
             if($aset){
-                $transaksiAset=transaksi::where('rab_id',$aset->id)->whereBetween('tanggal',[$tahuniniStart,$tahuniniEnd])->get()->groupBy(function ($val) {
-                    return Carbon::parse($val->tanggal)->isoFormat('MMMM');
-                });
-            }
-            if($aset){
-                $transaksiAset=transaksi::where('rab_id',$aset->id)->whereBetween('tanggal',[$tahuniniStart,$tahuniniEnd])->get()->groupBy(function ($val) {
+                $transaksiAset=transaksi::where('rab_id',$aset->id)->where('tanggal','<=',$end)->whereBetween('tanggal',[$tahuniniStart,$tahuniniEnd])->get()->groupBy(function ($val) {
                     return Carbon::parse($val->tanggal)->isoFormat('MMMM');
                 });
                 $AsetTahunSebelum = transaksi::where('rab_id',$aset->id)->where('tanggal','<=',$tahunSebelumEnd)->get();
@@ -242,11 +242,11 @@ class LaporanController extends Controller
             }else{
                 $mts = 0;
             }
-            $bulan = transaksi::where('kategori','Modal')->whereBetween('tanggal',[$tahuniniStart,$tahuniniEnd])->get()->groupBy(function ($val) {
+            $bulan = transaksi::where('kategori','Modal')->where('tanggal','<=',$end)->whereBetween('tanggal',[$tahuniniStart,$tahuniniEnd])->get()->groupBy(function ($val) {
                 return Carbon::parse($val->tanggal)->isoFormat('MMMM');
             });
             if($aset){
-                $transaksiAset=transaksi::where('rab_id',$aset->id)->whereBetween('tanggal',[$tahuniniStart,$tahuniniEnd])->get()->groupBy(function ($val) {
+                $transaksiAset=transaksi::where('rab_id',$aset->id)->where('tanggal','<=',$end)->whereBetween('tanggal',[$tahuniniStart,$tahuniniEnd])->get()->groupBy(function ($val) {
                     return Carbon::parse($val->tanggal)->isoFormat('MMMM');
                 });
                 $AsetTahunSebelum = transaksi::where('rab_id',$aset->id)->where('tanggal','<=',$tahunSebelumEnd)->get();
@@ -265,16 +265,16 @@ class LaporanController extends Controller
             }else{
                 $mts = 0;
             }
-            $bulan = transaksi::where('kategori','Modal')->whereBetween('tanggal',[$tahuniniStart,$tahuniniEnd])->get()->groupBy(function ($val) {
+            $bulan = transaksi::where('kategori','Modal')->where('tanggal','<=',$end)->whereBetween('tanggal',[$tahuniniStart,$tahuniniEnd])->get()->groupBy(function ($val) {
                 return Carbon::parse($val->tanggal)->isoFormat('MMMM');
             });
+            // if($aset){
+            //     $transaksiAset=transaksi::where('rab_id',$aset->id)->whereBetween('tanggal',[$tahuniniStart,$tahuniniEnd])->where('tanggal','<',$start)->get()->groupBy(function ($val) {
+            //         return Carbon::parse($val->tanggal)->isoFormat('MMMM');
+            //     });
+            // }
             if($aset){
-                $transaksiAset=transaksi::where('rab_id',$aset->id)->whereBetween('tanggal',[$tahuniniStart,$tahuniniEnd])->get()->groupBy(function ($val) {
-                    return Carbon::parse($val->tanggal)->isoFormat('MMMM');
-                });
-            }
-            if($aset){
-                $transaksiAset=transaksi::where('rab_id',$aset->id)->whereBetween('tanggal',[$tahuniniStart,$tahuniniEnd])->get()->groupBy(function ($val) {
+                $transaksiAset=transaksi::where('rab_id',$aset->id)->where('tanggal','<=',$end)->whereBetween('tanggal',[$tahuniniStart,$tahuniniEnd])->get()->groupBy(function ($val) {
                     return Carbon::parse($val->tanggal)->isoFormat('MMMM');
                 });
                 $AsetTahunSebelum = transaksi::where('rab_id',$aset->id)->where('tanggal','<=',$tahunSebelumEnd)->get();
