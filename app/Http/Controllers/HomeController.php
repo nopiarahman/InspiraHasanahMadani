@@ -127,12 +127,12 @@ class HomeController extends Controller
         /* Pendapatan */
         $pendapatanRumah = $totalDpRumah+$totalCicilanRumah;
         $pendapatanKavling = $totalDp+$totalDpKios+$totalCicilan+$totalCicilanKios+$kelebihanTanah;
-        $totalPendapatan = $pendapatanRumah+$pendapatanKavling;
+        $totalPendapatan = $pendapatanRumah+$pendapatanKavling+$kelebihanTanah;
         /* chart */
         $chartPendapatan = new chartAdmin;
         $chartPendapatan->labels(['Kalving','Rumah','Kelebihan Tanah']);
-        $chartPendapatan->dataset('Total Pendapatan','pie',[$pendapatanKavling,$pendapatanRumah])->options([
-            'backgroundColor'=>['#169948','#ffa426']
+        $chartPendapatan->dataset('Total Pendapatan','pie',[$pendapatanKavling,$pendapatanRumah,$kelebihanTanah])->options([
+            'backgroundColor'=>['#169948','#ffa426','#fc544b']
         ]);
         $chartPendapatan->title("Total Pendapatan");
 
@@ -177,7 +177,7 @@ class HomeController extends Controller
             'totalDpTerbayar','sisaDp','dpPelanggan','cicilanPelanggan','chartKasBesar','kavling','pelanggan','dataKavling','dataPembelian','persenDiskon','id',
             'totalCicilanTerbayar','sisaCicilan','sisaDpRumah','sisaCicilanRumah','totalDpRumahTerbayar','totalCicilanRumahTerbayar',
             'totalDpKiosTerbayar','sisaDpKios','totalCicilanKiosTerbayar','sisaCicilanKios',
-            'pendapatanRumah','pendapatanKavling','totalPendapatan',
+            'pendapatanRumah','pendapatanKavling','totalPendapatan','kelebihanTanah',
             'chartPendapatan','chartDPKavling','chartDPRumah','chartDPKios','chartCicilanKavling','chartCicilanRumah','chartCicilanKios'
         ));
     }

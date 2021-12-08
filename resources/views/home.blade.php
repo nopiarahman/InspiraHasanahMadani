@@ -163,7 +163,7 @@
     </div>
   </div>
   @endif
-  @if(auth()->user()->role=="admin" || auth()->user()->role=="projectmanager")
+  @if(auth()->user()->role=="admin" || auth()->user()->role=="projectmanager" || auth()->user()->role=="adminGudang" || auth()->user()->role=="marketing")
   <div class="row">
     <div class="col-lg-4 col-md-4 col-sm-12">
       <a href="{{route('cashFlow')}}">
@@ -253,7 +253,7 @@
     </div>
   @endif
     <div class="col-lg-4 col-md-12 col-12 col-sm-12">
-      @if(auth()->user()->role=="admin")
+      @if(auth()->user()->role=="admin" || auth()->user()->role=="projectmanager" || auth()->user()->role=="adminGudang" || auth()->user()->role=="marketing")
       <div class="card">
         <div class="card-header">
           <h4>Quick Link</h4>
@@ -282,24 +282,21 @@
   <div class="row">
     <div class="col-lg-12 col-md-12 col-sm-12">
       <div class="card">
-        <div class="card-header"><h4>Pendapatan</h4></div>
+        <div class="card-header"><h4>Omset</h4></div>
         <div class="card-body">
           <div class="row">
             <div class="col-lg-8 col-md-8 col-sm-12">
               {!! $chartPendapatan->container() !!}
             </div>
             <div class="col-lg-4 col-md-4 col-sm-12">
-              <h4 class="text-primary mb-2">Total Pendapatan</h4>
+              <h4 class="text-primary mb-2">Rincian Omset</h4>
               <div class="row">
                 <div class="col-12">
                   <div class="extra-radius">
-                    <div class="card card-hero" >
+                    <div class="card" >
                       <div class="card-header" style="background-image: linear-gradient(to bottom, #8fe700, #03a827);">
-                        <div class="card-icon" style="color: rgb(2, 63, 2)">
-                          <i class="fas fa-sign " style="font-size: 6rem"></i>
-                        </div>
-                        <h5 style="font-size:2rem">Rp. {{number_format($pendapatanKavling)}}</h5>
-                        <div class="card-description">Total Pendapatan Kavling</div>
+                        <h4 style="color: white">Rp. {{number_format($pendapatanKavling)}}</h4>
+                        <span style="color: white">Total Kavling</span>
                       </div>
                     </div>
                   </div>
@@ -308,13 +305,22 @@
               <div class="row mt-n2">
                 <div class="col-12">
                   <div class="extra-radius">
-                    <div class="card card-hero" >
+                    <div class="card" >
                       <div class="card-header" style="background-image: linear-gradient(to bottom, #ffd208, #ee9c03);">
-                        <div class="card-icon" style="color: rgb(90, 61, 7)">
-                          <i class="fas fa-home " style="font-size: 6rem"></i>
-                        </div>
-                        <h5 style="font-size:2rem">Rp. {{number_format($pendapatanRumah)}}</h5>
-                        <div class="card-description">Total Pendapatan Rumah</div>
+                        <h4 style="color: white">Rp. {{number_format($pendapatanRumah)}}</h4>
+                        <span style="color: white">Total Rumah</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row mt-n2">
+                <div class="col-12">
+                  <div class="extra-radius">
+                    <div class="card" >
+                      <div class="card-header" style="background-image: linear-gradient(to bottom, #ff6b08, #ad342e);">
+                        <h4 style="color: white">Rp. {{number_format($kelebihanTanah)}}</h4>
+                        <span style="color: white">Total Kelebihan Tanah</span>
                       </div>
                     </div>
                   </div>
@@ -328,8 +334,8 @@
                         <div class="card-icon" style="color: rgb(2, 49, 63)">
                           <i class="fas fa-money-bill-wave " style="font-size: 6rem"></i>
                         </div>
-                        <h5 style="font-size:2rem">Rp. {{number_format($totalPendapatan)}}</h5>
-                        <div class="card-description">Total Pendapatan</div>
+                        <h4 style="font-size:2rem">Rp. {{number_format($totalPendapatan)}}</h4>
+                        <div class="card-description">Total Omset</div>
                       </div>
                     </div>
                   </div>

@@ -35,7 +35,7 @@ Route::get('/galeri', 'WebController@galeri')->name('galeri');
 Route::get('/tentang', 'WebController@tentang')->name('tentang');
 
 Auth::routes();
-Route::group(['middleware'=>['auth','role:admin,projectmanager']],function(){
+Route::group(['middleware'=>['auth','role:admin,projectmanager,adminGudang,marketing']],function(){
     Route::get('/proyek', 'ProyekController@index')->name('proyek');
     Route::get('/proyekTambah', 'ProyekController@create')->name('proyekTambah');
     Route::post('/proyekSimpan', 'ProyekController@store')->name('proyekSimpan');
@@ -150,6 +150,7 @@ Route::group(['middleware'=>['auth','role:admin,projectmanager']],function(){
     Route::get('/cetakKwitansiPDF/{id}', 'LaporanController@cetakKwitansiPDF')->name('cetakKwitansiPDF');
     
     Route::get('/gudang', 'GudangController@index')->name('gudang');
+    Route::get('/gudangHabis', 'GudangController@habis')->name('gudangHabis');
     Route::post('/transferGudang/{id}', 'GudangController@transferGudang')->name('transferGudang');
     Route::get('/alokasiGudang/{id}', 'GudangController@alokasi')->name('alokasiGudang');
     Route::post('/alokasiSimpan', 'GudangController@alokasiSimpan')->name('alokasiSimpan');

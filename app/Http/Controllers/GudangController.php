@@ -15,7 +15,11 @@ use Illuminate\Http\Request;
 class GudangController extends Controller
 {
     public function index(){
-        $daftarGudang = gudang::where('proyek_id',proyekId())->get();
+        $daftarGudang = gudang::where('proyek_id',proyekId())->where('sisa','>',0)->get();
+        return view('gudang/gudangIndex',compact('daftarGudang'));
+    }
+    public function habis(){
+        $daftarGudang = gudang::where('proyek_id',proyekId())->where('sisa','<=',0)->get();
         return view('gudang/gudangIndex',compact('daftarGudang'));
     }
     public function transferGudang(Transaksi $id, Request $request){

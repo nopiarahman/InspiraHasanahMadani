@@ -2,13 +2,23 @@
 @section('head')
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.css">
 @endsection
+@if(request()->routeIs('gudang'))
+@section ('menuGudangSisa','active')
+@elseif(request()->routeIs('gudangHabis'))
+@section ('menuGudangHabis','active')
+@endif
 @section ('menuGudang','active')
+
 @section('content')
 <div class="section-header sticky-top">
   <div class="container">
     <div class="row">
       <div class="col">
+        @if(request()->routeIs('gudang'))
         <h1>Gudang</h1>
+        @elseif(request()->routeIs('gudangHabis'))
+        <h1>Gudang Habis</h1>
+        @endif
       </div>
     </div>
     <div class="row">
@@ -44,7 +54,11 @@
     
 <div class="card">
   <div class="card-header">
+    @if(request()->routeIs('gudang'))
     <h4>Daftar Stok Gudang</h4>
+    @elseif(request()->routeIs('gudangHabis'))
+    <h4>Stok Gudang Habis</h4>
+    @endif
   </div>
   <div class="card-body">
     <table class="table table-hover table-sm table-responsive-sm" id="table">

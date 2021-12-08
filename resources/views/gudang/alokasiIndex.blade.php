@@ -40,7 +40,7 @@
         @endif
       </div>
     </div>
-    @if(auth()->user()->role=="admin")
+    {{-- @if(auth()->user()->role=="admin") --}}
   <div class="row">
     <div class="col-12">
       <div class="card">
@@ -184,7 +184,7 @@
       </div>
     </div>
   </div>
-  @endif
+  {{-- @endif --}}
   <div class="card">
     <div class="card-header">
       <h4>Daftar Alokasi</h4>

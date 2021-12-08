@@ -71,8 +71,10 @@
           <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Jabatan</label>
           <div class="col-sm-12 col-md-7">
             <select class="form-control selectric" tabindex="-1" name="jabatan" >
-              <option value="admin">Admin</option>
+              <option value="admin">Super Admin</option>
               <option value="adminWeb">Admin Website</option>
+              <option value="adminGudang">Admin Gudang</option>
+              <option value="marketing">Marketing</option>
             </select>
           </div>
         </div>

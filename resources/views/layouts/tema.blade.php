@@ -34,7 +34,7 @@
         @if(auth()->user()->role=="pelanggan")
         <h3 class="text-white align-center mt-2">{{auth()->user()->proyek->nama}}</h3>
         @endif
-        @if(auth()->user()->role=="admin" || auth()->user()->role=="projectmanager")
+        @if(auth()->user()->role=="admin" || auth()->user()->role=="projectmanager" || auth()->user()->role=="marketing" || auth()->user()->role=="adminGudang")
         <form action="{{route('cariPelangganHome')}}" method="post" enctype="multipart/form-data" class="form-inline mr-auto d-none d-md-block">
         @csrf
           <div class="row ">
@@ -128,17 +128,19 @@
           @if(auth()->user()->role=="projectmanager")
               <li class="menu-header">Menu Proyek</li>
               <li class="@yield('menuProyek')"><a class="nav-link" href="{{route('proyek')}}"><i class="fas fa-archway"></i> <span>Proyek</span></a></li>
-          @endif`
+          @endif
           @if(auth()->user()->role=="projectmanager" || auth()->user()->role=="admin")
-              <li class="menu-header">Menu Proyek</li>
-              <li class="nav-item dropdown @yield('menuDataProyek')">
-                <a href="" class="nav-link has-dropdown" data-toggle="dropdown"><i class="fas fa-home"></i> <span>Data Proyek</span></a>
-                <ul class="dropdown-menu">
-                  <li class="@yield('menuKavling')"><a class="nav-link" href="{{route('kavling')}}">Unit</a></li>
-                  <li class="@yield('menuRAB')"><a class="nav-link" href="{{route('RAB')}}">RAB</a></li>
-                  
-                </ul>
-              </li>
+          <li class="menu-header">Menu Proyek</li>
+          <li class="nav-item dropdown @yield('menuDataProyek')">
+            <a href="" class="nav-link has-dropdown" data-toggle="dropdown"><i class="fas fa-home"></i> <span>Data Proyek</span></a>
+            <ul class="dropdown-menu">
+              <li class="@yield('menuKavling')"><a class="nav-link" href="{{route('kavling')}}">Unit</a></li>
+              <li class="@yield('menuRAB')"><a class="nav-link" href="{{route('RAB')}}">RAB</a></li>
+              
+            </ul>
+          </li>
+          @endif
+          @if(auth()->user()->role=="projectmanager" || auth()->user()->role=="admin"|| auth()->user()->role=="adminGudang")
               <li class="menu-header">Menu Pelanggan</li>
               <li class="nav-item dropdown @yield('menuPelanggan')">
                 <a href="" class="nav-link has-dropdown"><i class="fas fa-clipboard-check"></i> <span>Pelanggan</span></a>
@@ -161,18 +163,16 @@
                 </ul>
               </li>
           @endif
-          @if(auth()->user()->role=="admin")
+          @if(auth()->user()->role=="admin"|| auth()->user()->role=="projectmanager" || auth()->user()->role=="adminGudang")
               <li class=" @yield('menuCicilanDP')"><a class="nav-link" href="{{route('DPKavling')}}"><i class="fas fa-coins"></i> <span> Cicilan DP</span></a></li>
               </li>
               <li class=" @yield('menuCicilanUnit')"><a class="nav-link" href="{{route('cicilanKavling')}}"><i class="fas fa-money-bill-wave"></i> <span> Cicilan Unit</span></a></li>
           @endif
-          @if(auth()->user()->role=="admin")
+          @if(auth()->user()->role=="admin" || auth()->user()->role=="projectmanager")
             <li class="menu-header">Menu Keuangan</li>
-            {{-- <li class=" @yield('menuAkun')"><a class="nav-link" href="{{route('akun')}}"><i class="fas fa-book-open"></i> <span> Akun</span></a></li> --}}
             <li class="nav-item dropdown @yield('menuTransaksi')">
               <a href="" class="nav-link has-dropdown"><i class="fas fa-handshake"></i> <span>Transaksi</span></a>
               <ul class="dropdown-menu">
-                {{-- <li class=" @yield('menuAkun')"><a href="{{route('akun')}}">Akun</a></li> --}}
                 <li class=" @yield('menuTransaksiMasuk')"><a href="{{route('transaksiMasuk')}}">Masuk</a></li>
                 <li class=" @yield('menuTransaksiKeluar')"><a href="{{route('transaksiKeluar')}}">Keluar</a></li>
               </ul>
@@ -180,13 +180,47 @@
             <li class="nav-item dropdown @yield('menuPengadaan')">
               <a href="" class="nav-link has-dropdown"><i class="fas fa-box-open    "></i> <span>Pengadaan</span></a>
               <ul class="dropdown-menu">
-                {{-- <li class=" @yield('menuAkun')"><a href="{{route('akun')}}">Akun</a></li> --}}
                 <li class=" @yield('menuDaftarPengadaan')"><a href="{{route('pengadaan')}}">Daftar Pengadaan</a></li>
                 <li class=" @yield('menuDaftarBarang')"><a href="{{route('barang')}}">Daftar Barang</a></li>
               </ul>
             </li>
             @endif
-            @if(auth()->user()->role=="admin" || auth()->user()->role=="projectmanager")
+            @if(auth()->user()->role=="marketing")
+            <li class="menu-header">Menu Keuangan</li>
+            <li class="nav-item dropdown @yield('menuTransaksi')">
+              <a href="" class="nav-link has-dropdown"><i class="fas fa-handshake"></i> <span>Transaksi</span></a>
+              <ul class="dropdown-menu">
+                <li class=" @yield('menuTransaksiMasuk')"><a href="{{route('transaksiMasuk')}}">Masuk</a></li>
+              </ul>
+            </li>
+            @endif
+            @if(auth()->user()->role=="marketing")
+            <li class="nav-item dropdown @yield('menuPengadaan')">
+              <a href="" class="nav-link has-dropdown"><i class="fas fa-box-open    "></i> <span>Pengadaan</span></a>
+              <ul class="dropdown-menu">
+                <li class=" @yield('menuDaftarPengadaan')"><a href="{{route('pengadaan')}}">Daftar Pengadaan</a></li>
+                <li class=" @yield('menuDaftarBarang')"><a href="{{route('barang')}}">Daftar Barang</a></li>
+              </ul>
+            </li>
+            @endif
+            @if(auth()->user()->role=="adminGudang")
+            <li class="menu-header">Menu Keuangan</li>
+            <li class="nav-item dropdown @yield('menuTransaksi')">
+              <a href="" class="nav-link has-dropdown"><i class="fas fa-handshake"></i> <span>Transaksi</span></a>
+              <ul class="dropdown-menu">
+                <li class=" @yield('menuTransaksiKeluar')"><a href="{{route('transaksiKeluar')}}">Keluar</a></li>
+              </ul>
+            </li>
+            <li class="nav-item dropdown @yield('menuPengadaan')">
+              <a href="" class="nav-link has-dropdown"><i class="fas fa-box-open    "></i> <span>Pengadaan</span></a>
+              <ul class="dropdown-menu">
+                <li class=" @yield('menuDaftarPengadaan')"><a href="{{route('pengadaan')}}">Daftar Pengadaan</a></li>
+                <li class=" @yield('menuDaftarBarang')"><a href="{{route('barang')}}">Daftar Barang</a></li>
+              </ul>
+            </li>
+
+            @endif
+            @if(auth()->user()->role=="admin" || auth()->user()->role=="projectmanager" )
 
             {{-- <li class=" @yield('menuEstimasi')"><a class="nav-link" href="{{route('estimasi')}}"><i class="fas fa-calendar-plus    "></i> <span> Estimasi Pemasukan</span></a></li> --}}
             <li class="nav-item dropdown @yield('menuEstimasi')">
@@ -208,7 +242,32 @@
                 <li class=" @yield('menuKasKecilLapangan')"><a class="nav-link" href="{{route('kasKecilLapangan')}}">Kas Kecil Lapangan</a></li>
               </ul>
             </li>
-            <li class=" @yield('menuGudang')"><a class="nav-link" href="{{route('gudang')}}"><i class="fas fa-warehouse    "></i> <span> Gudang</span></a></li>
+            @endif
+            @if(auth()->user()->role=="marketing")
+            <li class="nav-item dropdown @yield('menuEstimasi')">
+              <a href="" class="nav-link has-dropdown"><i class="fas fa-box-open    "></i> <span>Estimasi Pemasukan</span></a>
+              <ul class="dropdown-menu">
+                {{-- <li class=" @yield('menuAkun')"><a href="{{route('akun')}}">Akun</a></li> --}}
+                <li class=" @yield('menuEstimasiDp')"><a href="{{route('estimasiDp')}}">DP</a></li>
+                <li class=" @yield('menuEstimasiCicilan')"><a href="{{route('estimasiCicilan')}}">Cicilan</a></li>
+                <li class=" @yield('menuEstimasiTunggakan')"><a href="{{route('estimasiTunggakan')}}">Tunggakan</a></li>
+              </ul>
+            </li>
+            @endif
+
+            @if(auth()->user()->role=="admin" || auth()->user()->role=="projectmanager"|| auth()->user()->role=="adminGudang" ||auth()->user()->role=="marketing" )
+            {{-- <li class=" @yield('menuGudang')"><a class="nav-link" href="{{route('gudang')}}"><i class="fas fa-warehouse    "></i> <span> Gudang</span></a></li> --}}
+            <li class="nav-item dropdown @yield('menuGudang')">
+              <a href="" class="nav-link has-dropdown"> <i class="fas fa-warehouse    "></i> <span>Gudang</span></a>
+              <ul class="dropdown-menu">
+                {{-- <li class=" @yield('menuAkun')"><a href="{{route('akun')}}">Akun</a></li> --}}
+                <li class=" @yield('menuGudangSisa')"><a href="{{route('gudang')}}">Stok Sisa</a></li>
+                <li class=" @yield('menuGudangHabis')"><a href="{{route('gudangHabis')}}">Stok Habis</a></li>
+                {{-- <li class=" @yield('menuEstimasiTunggakan')"><a href="{{route('estimasiTunggakan')}}">Tunggakan</a></li> --}}
+              </ul>
+            </li>
+            @endif
+            @if(auth()->user()->role=="admin" || auth()->user()->role=="projectmanager")
             <li class=" @yield('menuRekening')"><a class="nav-link" href="{{route('rekening')}}"> <i class="fas fa-dollar-sign    "></i> <span> Rekening</span></a></li>
             @endif
             @if(auth()->user()->role=="projectmanager")
