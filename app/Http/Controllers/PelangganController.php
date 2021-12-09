@@ -443,7 +443,7 @@ class PelangganController extends Controller
                 /* dihapus dulu kepemilikan rumah */
                 $updatePembelian = pembelian::find($cekPembelian->id)->update(['kios_id'=>null]);
             }
-            $updateKios = kios::where('kavling_id',$kavlingBaru)->update(['luasBangunan'=>$request->luasBangunan,'kavling_id'=>$request->kavling_id]);
+            $updateKios = kios::where('kavling_id',$kavlingBaru)->update(['luasBangunan'=>$request->luasBangunan,'kavling_id'=>$kavlingBaru]);
             $kios=kios::where('kavling_id',$kavlingBaru)->first();
             $id->pembelian->update(['kios_id'=>$kios->id]);
         }
