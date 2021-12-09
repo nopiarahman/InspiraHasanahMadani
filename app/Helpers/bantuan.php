@@ -2,6 +2,7 @@
 use App\kavling;
 use App\dp;
 use App\akun;
+use App\rab;
 use App\kios;
 use App\gudang;
 use App\pembelian;
@@ -354,6 +355,16 @@ function hitungTransaksiRABRange($idRAB,$start,$end){
         return 0;
     }
 }
+function hitungJudulRAB($judul,$start,$end){
+    $rab = rab::where('judul',$judul)->where('proyek_id',proyekId())->get();
+    $total=0;
+    if($rab->first() ){
+        foreach($rab as $r){
+            $total += transaksi::where('rab_id',$r->id)->whereBetween('tanggal',[$start,$end])->get()->sum('debet');
+        }
+    }
+    return $total;
+}
 function hitungTransaksiRABUnit($idRAB){
     $total = transaksi::where('rabunit_id',$idRAB)->where('proyek_id',proyekId())->get();
     if($total != null){
@@ -400,18 +411,9 @@ function pendapatanLainTahunan($id,$start,$end){
 }
 
 function saldoBulanSebelumnya($start){
-    $mulai = \Carbon\carbon::parse($start)->subMonths(1)->firstOfMonth()->isoFormat('YYYY-MM-DD');
-    $akhir = \Carbon\carbon::parse($start)->subMonths(1)->endOfMonth()->isoFormat('YYYY-MM-DD');
-    // $akunId=akun::where('proyek_id',proyekId())->where('namaAkun','pendapatan')->first();
-    $pendapatan = transaksi::whereBetween('tanggal',[$mulai,$akhir])->where('proyek_id',proyekId())
-                            ->orderBy('no','desc')->first();
-    // dd($akhir);
-    if($pendapatan != null){
-        return $pendapatan->saldo;
-    }else{
-        return 0;
-        // return $pendapatan->saldo;
-    }
+    $transaksi= transaksi::where('tanggal','<',$start)->get();
+    $saldoSebelum = $transaksi->sum('kredit')-$transaksi->sum('debet');
+    return $saldoSebelum;
 }
 function saldoPettyCashBulanSebelumnya($start){
     $mulai = \Carbon\carbon::parse($start)->subMonths(1)->firstOfMonth()->isoFormat('YYYY-MM-DD');

@@ -124,7 +124,12 @@
     <tr>
       <th colspan="3" style="width: 20pt;font-weight:bold;">{{$header}}</th>
     </tr>
+    @php
+        $y=1;
+    @endphp
     @foreach($perJudul[$header] as $judul=>$semuaRAB)
+    @if(hitungJudulRAB($judul,$start,$end) >0)
+
     @php
         $a[$judul]=0;
         $c[$judul]=0;
@@ -134,6 +139,7 @@
       <th colspan="3" >{{$loop->iteration}}. {{$judul}}</th>
     </tr>
       @foreach($semuaRAB as $rab)
+      @if(hitungTransaksiRABRange($rab->id,$start,$end) >0)
       <tr>
         <td>{{$loop->iteration}}</td>
         <td>{{$rab->isi}}</td>
@@ -142,6 +148,7 @@
             $totalIsi[$judul]+=hitungTransaksiRABRange($rab->id,$start,$end);
         @endphp
       </tr>
+      @endif
       @endforeach
       @php
         $a[$judul]=$totalIsi[$judul]
@@ -153,6 +160,7 @@
         <th colspan="2">Sub Total {{$judul}}</th>
         <th>{{$c[$judul]}}</th>
       </tr>
+      @endif
       @endforeach
       <tr>
         <th style="width: 20pt;font-weight:bold;" colspan="2">TOTAL {{$header}}</th>
@@ -183,6 +191,7 @@
         <th colspan="3" >{{$loop->iteration}}. {{$judul}}</th>
       </tr>
       @foreach($semuaUnit->sortBy('isi',SORT_NATURAL) as $rab)
+      @if(hitungTransaksiRABUnitRange($rab->id,$start,$end)>0)
       <tr>
         <td>{{$loop->iteration}}</td>
         <td>{{$rab->isi}}</td>
@@ -191,6 +200,7 @@
             $totalIsi[$judul]+=hitungTransaksiRABUnitRange($rab->id,$start,$end);
         @endphp
       </tr>
+      @endif
       @endforeach
       @php
         $a[$judul]=$totalIsi[$judul]
