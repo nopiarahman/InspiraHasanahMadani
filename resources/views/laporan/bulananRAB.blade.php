@@ -260,24 +260,35 @@
             <tr>
               <th colspan="3" class="bg-primary text-white">{{$header}}</th>
             </tr>
+            @php
+                $y=1;
+            @endphp
             @foreach($perJudul[$header] as $judul=>$semuaRAB)
+            {{-- {{dd($judul)}} --}}
+            @if(hitungJudulRAB($judul,$start,$end) >0)
             @php
                 $a[$judul]=0;
                 $c[$judul]=0;
                 $totalIsi[$judul]=0;
             @endphp
+
             <tr>
-              <th colspan="3" class="">{{$loop->iteration}}. {{$judul}}</th>
+              <th colspan="3" class="">{{$y,$y++}}. {{$judul}}</th>
             </tr>
+            @php
+                $n=1;
+            @endphp
               @foreach($semuaRAB as $rab)
+              @if(hitungTransaksiRABRange($rab->id,$start,$end) >0)
               <tr>
-                <td>{{$loop->iteration}}</td>
+                <td>{{$n,$n++}}</td>
                 <td>{{$rab->isi}}</td>
                 <th> <a class="text-warning font-weight-bold" href="{{route('transaksiRAB',['id'=>$rab->id])}}"> Rp. {{number_Format(hitungTransaksiRABRange($rab->id,$start,$end))}}</a></th>
                 @php
                     $totalIsi[$judul]+=hitungTransaksiRABRange($rab->id,$start,$end);
                 @endphp
               </tr>
+              @endif
               @endforeach
               @php
                 $a[$judul]=$totalIsi[$judul]
@@ -289,6 +300,7 @@
                 <th colspan="2" class="text-right" >Sub Total {{$judul}}</th>
                 <th class="" >Rp. {{number_format($c[$judul])}}</th>
               </tr>
+              @endif
               @endforeach
               <tr>
                 <th colspan="2" class=" bg-secondary text-right">TOTAL {{$header}}</th>
@@ -328,15 +340,20 @@
             <tr>
               <th colspan="3" class="">{{$loop->iteration}}. {{$judul}}</th>
             </tr>
+            @php
+                $n=1;
+            @endphp
               @foreach($semuaUnit->sortBy('isi',SORT_NATURAL) as $rab)
+              @if(hitungTransaksiRABUnitRange($rab->id,$start,$end)>0)
               <tr>
-                <td>{{$loop->iteration}}</td>
+                <td>{{$n,$n++}}</td>
                 <td>{{$rab->isi}}</td>
                 <th > <a class="text-warning font-weight-bold" href="{{route('transaksiRABUnit',['id'=>$rab->id])}}"> Rp.{{number_format(hitungTransaksiRABUnitRange($rab->id,$start,$end))}}</a></th>
                 @php
                     $totalIsi[$judul]+=hitungTransaksiRABUnitRange($rab->id,$start,$end);
                 @endphp
               </tr>
+              @endif
               @endforeach
               @php
                 $a[$judul]=$totalIsi[$judul]

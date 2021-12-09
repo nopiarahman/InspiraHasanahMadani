@@ -20,6 +20,7 @@ class ProjectManagerController extends Controller
         return view('user/userTambah',compact('semuaProyek'));
     }
     public function userSimpan(Request $request){
+        // dd($request);
         DB::beginTransaction();
         try {
             // dd($request);
@@ -31,6 +32,7 @@ class ProjectManagerController extends Controller
             $requestData['password']=Hash::make($request->sandi);
             $requestData['role'] = $request->jabatan;
             $requestData['proyek_id']=$request->proyek;
+            // dd($requestData);
             $user = User::create($requestData);
             $user->save();
             $cekUser = User::where('email',$request->email)->first();
