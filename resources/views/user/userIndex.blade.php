@@ -55,6 +55,7 @@
           <tr>
             <th scope="col">No</th>
             <th scope="col">Nama</th>
+            <th scope="col">Username</th>
             <th scope="col">Email</th>
             <th scope="col">Proyek</th>
             <th scope="col">Jabatan</th>
@@ -66,6 +67,7 @@
           <tr>
             <th scope="row">{{$loop->iteration}}</th>
             <td>{{$user->name}}</td>
+            <td>{{$user->username}}</td>
             <td>{{$user->email}}</td>
             <td>{{$user->proyek->nama}}</td>
             <td>{{$user->role}}</td>
