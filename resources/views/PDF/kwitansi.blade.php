@@ -106,7 +106,7 @@
 			@endif
 		</td>
 	</tr>
-	@if($kekurangan >= 0)
+	@if($kekurangan > 0)
 	<tr>
 		<td>Kekurangan Angsuran</td>
 		<td>: Rp {{number_format($kekurangan)}}</td>

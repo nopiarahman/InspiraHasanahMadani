@@ -1019,7 +1019,7 @@ function pembayaranCicilanEstimasi(Pembelian $id, $tanggal){
     }else{
         $berjalan = 0;
     }
-    $seharusnya = $berjalan * ($id->sisaKewajiban/$id->tenor);
+    $seharusnya = $berjalan * floor($id->sisaKewajiban/$id->tenor);
     
     if(cekCicilanBulananTerbayar($id,$tanggal)->sum('jumlah') == 0 && cekCicilanBulananSelanjutnya($id,$tanggal)!=null){
         /* jika bulan ini blm bayar dan bulan depan ada bayaran */
@@ -1055,7 +1055,9 @@ function pembayaranDpEstimasi(Pembelian $id, $tanggal){
     }else{
         $berjalan = 0;
     }
-    $seharusnya = $berjalan * ($id->sisaDp/$id->tenorDP);
+    // return $terbayarSebelum;
+    $seharusnya = $berjalan * floor($id->dp/$id->tenorDP);
+    // return $seharusnya;
     if(cekDpBulananTerbayar($id,$tanggal)->sum('jumlah') == 0 && cekDpBulananSelanjutnya($id,$tanggal)!=null){
         /* jika bulan ini blm bayar dan bulan depan ada bayaran */
         if(cekDpBulananTempo($id,$tanggal) ==null){

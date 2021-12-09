@@ -409,13 +409,16 @@ class ProyekController extends Controller
     }
     
     public function rekening(){
-
-        $transaksi = transaksi::where('no','>',1)->orderBy('no')->where('proyek_id',proyekId())->get();
-        $n=2;
-        $total = $transaksi->count();
-        foreach ($transaksi as $t) {
-            $no[]=$t->no;
-        }
+        // $x = 55000000;
+        // $y = 72;
+        // $z= $x/$y;
+        // dd(floor($z));
+        // $transaksi = transaksi::where('no','>',1)->orderBy('no')->where('proyek_id',proyekId())->get();
+        // $n=2;
+        // $total = $transaksi->count();
+        // foreach ($transaksi as $t) {
+        //     $no[]=$t->no;
+        // }
         // dd(collect($no)->duplicates());
         /* update nomor */
         // foreach($transaksi as $t){

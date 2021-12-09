@@ -146,7 +146,7 @@
               @endif
             </td>
           </tr>
-          @if($kekurangan >= 0)
+          @if($kekurangan > 0)
           <tr>
             <th>Kekurangan Angsuran</th>
             <td>: Rp {{number_format($kekurangan)}}</td>
@@ -317,7 +317,7 @@
               @endif
             </td>
           </tr>
-          @if($kekurangan >= 0)
+          @if($kekurangan > 0)
           <tr>
             <th>Kekurangan Angsuran</th>
             <td>: Rp {{number_format($kekurangan)}}</td>

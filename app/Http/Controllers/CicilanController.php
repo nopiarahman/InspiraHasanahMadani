@@ -37,7 +37,7 @@ class CicilanController extends Controller
     public function unitKavlingDetail(Pembelian $id){
         $daftarCicilanUnit = cicilan::where('pembelian_id',$id->id)->orderBy('tanggal')->get();
         
-        $cicilanPerBulan = $id->sisaKewajiban/$id->tenor;
+        $cicilanPerBulan = floor($id->sisaKewajiban/$id->tenor);
         $terbayar=cicilan::where('pembelian_id',$id->id)->get();
         $totalTerbayar=0;
         foreach($terbayar as $tb){

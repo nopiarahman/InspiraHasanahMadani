@@ -311,12 +311,14 @@
               >
               Sisa Barang</button>
               @endif
+              @if(auth()->user()->role=="admin" || auth()->user()->role=="projectmanager" )
               <button type="button" class="btn btn-sm btn-white text-danger border-danger" 
               data-toggle="modal" 
               data-target="#hapusTransaksi" 
               data-id="{{$transaksi->id}}" 
               data-uraian="{{$transaksi->uraian}}">
               <i class="fa fa-trash" aria-hidden="true" ></i> Hapus</button>
+              @endif
             </td>
             @endif
           @endforeach

@@ -89,7 +89,7 @@
                   @endif
                 </td>
                 <td>
-                  @if(auth()->user()->role=="admin")
+                  @if(auth()->user()->role=="admin" || auth()->user()->role=="adminGudang" || auth()->user()->role=="marketing")
                   <a href="{{route('isiPengadaan',['id'=>$pengadaan->id])}}" class="btn btn-sm btn-white border-success text-primary"> <i class="fas fa-pen    "></i> Isi Pengadaan </a>
                   <button type="button" class="btn btn-sm btn-white text-danger border-danger" 
                   data-toggle="modal" 

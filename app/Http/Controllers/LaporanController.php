@@ -137,7 +137,7 @@ class LaporanController extends Controller
         }
         // dd($tempoSebelum);
         $semuaPembayaran = cicilan::where('pembelian_id',$id->pembelian_id)->where('tanggal','<=',$id->tanggal)->get();
-        $nilai=$id->pembelian->sisaKewajiban/$id->pembelian->tenor;
+        $nilai=floor($id->pembelian->sisaKewajiban/$id->pembelian->tenor);
         $bulanTerbayar= intVal($semuaPembayaran->sum('jumlah')/$nilai) ;
         $bulanBerjalan = Carbon::parse($id->tanggal)->firstOfMonth()->addMonth(1)->diffInMonths(Carbon::parse($pembayaranPertama->tanggal)->firstOfMonth(),true);
         $cek=Carbon::parse($id->tanggal)->firstOfMonth()->diffInMonths(Carbon::parse($tempoSebelum)->firstOfMonth(),false);
@@ -184,7 +184,7 @@ class LaporanController extends Controller
             $tempoSebelum = $id->tanggal;
         }
         $semuaPembayaran = dp::where('pembelian_id',$id->pembelian_id)->where('tanggal','<=',$id->tanggal)->get();
-        $nilai=$id->pembelian->dp/$id->pembelian->tenorDP;
+        $nilai=floor($id->pembelian->dp/$id->pembelian->tenorDP);
         $bulanTerbayar= intVal($semuaPembayaran->sum('jumlah')/$nilai) ;
         $bulanBerjalan = Carbon::parse($id->tanggal)->firstOfMonth()->addMonth(1)->diffInMonths(Carbon::parse($pembayaranPertama->tanggal)->firstOfMonth(),true);
 
@@ -325,7 +325,7 @@ class LaporanController extends Controller
             $tempoSebelum = $id->tanggal;
         }
         $semuaPembayaran = dp::where('pembelian_id',$id->pembelian_id)->where('tanggal','<=',$id->tanggal)->get();
-        $nilai=$id->pembelian->dp/$id->pembelian->tenorDP;
+        $nilai=floor($id->pembelian->dp/$id->pembelian->tenorDP);
         $bulanTerbayar= intVal($semuaPembayaran->sum('jumlah')/$nilai) ;
         $bulanBerjalan = Carbon::parse($id->tanggal)->firstOfMonth()->addMonth(1)->diffInMonths(Carbon::parse($pembayaranPertama->tanggal)->firstOfMonth(),true);
 
@@ -377,7 +377,7 @@ class LaporanController extends Controller
         }
         // dd($tempoSebelum);
         $semuaPembayaran = cicilan::where('pembelian_id',$id->pembelian_id)->where('tanggal','<=',$id->tanggal)->get();
-        $nilai=$id->pembelian->sisaKewajiban/$id->pembelian->tenor;
+        $nilai=floor($id->pembelian->sisaKewajiban/$id->pembelian->tenor);
         $bulanTerbayar= intVal($semuaPembayaran->sum('jumlah')/$nilai) ;
         $bulanBerjalan = Carbon::parse($id->tanggal)->firstOfMonth()->addMonth(1)->diffInMonths(Carbon::parse($pembayaranPertama->tanggal)->firstOfMonth(),true);
         $cek=Carbon::parse($id->tanggal)->firstOfMonth()->diffInMonths(Carbon::parse($tempoSebelum)->firstOfMonth(),false);
@@ -416,6 +416,7 @@ class LaporanController extends Controller
             $blok = "Batal Akad";
         }
         $kekurangan=$nilai*bulanCicilanBerjalan($id)-cicilanTerbayar($id->pembelian_id,$id->tanggal);
+        // dd($kekurangan);
         $uraian = 'Pembayaran Cicilan Ke '.cicilanKe($id->pembelian_id,$id->tanggal).' '.jenisKepemilikan($pembelian->pelanggan_id).' '.$pembelian->kavling->blok;   
         $cicilanPertama = cicilan::where('pembelian_id',$pembelian->id)->first();
         $sampaiSekarang = cicilan::whereBetween('created_at',[$cicilanPertama->tanggal,$id->tanggal])->where('pembelian_id',$id->pembelian_id)->get();

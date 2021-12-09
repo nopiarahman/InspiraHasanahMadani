@@ -44,7 +44,7 @@
       @endif
     </div>
     </div>
-    @if(auth()->user()->role=="admin")
+    @if(auth()->user()->role=="admin" || auth()->user()->role=="adminGudang" || auth()->user()->role=="marketing")
     <div class="row">
       <div class="col-12">
         <div class="card">
@@ -166,7 +166,7 @@
                   <a href="{{route('terimaPengadaan',['id'=>$isi->id])}}" class="btn btn-sm text-primary border-success"> <i class="fa fa-check" aria-hidden="true"></i> Terima</a>
                   <a href="{{route('tolakPengadaan',['id'=>$isi->id])}}" class="btn btn-sm text-danger border-danger"> <i class="fas fa-times    "></i> Tolak</a>
                   @endif
-                  @if(auth()->user()->role=="admin")
+                  @if(auth()->user()->role=="admin" || auth()->user()->role=="adminGudang" || auth()->user()->role=="marketing")
                     @if($isi->status == 1 && $isi->statusTransfer==0)
                     <a href="{{route('buatTransaksi',['id'=>$isi->id])}}" class="btn btn-sm text-primary border-success"> <i class="fas fa-handshake    "></i> Buat Transaksi</a>
                     @elseif($isi->statusTransfer==1)
