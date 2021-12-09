@@ -453,7 +453,7 @@ class PelangganController extends Controller
         return redirect()->back()->with('status','Data Unit Pelanggan berhasil diedit');
         } catch (\Exception $ex) {
             DB::rollback();
-            dd($ex);
+            // dd($ex);
             return redirect()->back()->with('error','Gagal. Pesan Error: '.$ex->getMessage());
         }
     }
