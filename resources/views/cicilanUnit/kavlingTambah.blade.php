@@ -246,14 +246,13 @@
             @endif
             {{romawi(Carbon\Carbon::parse($cicilanUnit->tanggal)->isoFormat('MM'))}}/{{$cicilanUnit->ke}}</td>
           <td>
-            <a href="{{route('cetakKwitansi',['id'=>$cicilanUnit->id])}}" class=" btn-sm border-success btn btn-white text-primary"> <i class="fas fa-file-invoice    "></i> Kwitansi</a>
             @if(auth()->user()->role=="admin"||auth()->user()->role=="projectmanager")
+            <a href="{{route('cetakKwitansi',['id'=>$cicilanUnit->id])}}" class=" btn-sm border-success btn btn-white text-primary"> <i class="fas fa-file-invoice    "></i> Kwitansi</a>
             <button type="button" class=" border-danger btn btn-sm btn-white text-danger" 
             data-toggle="modal" 
             data-target="#exampleModalCenter" 
             data-id="{{$cicilanUnit->id}}">
             <i class="fa fa-trash" aria-hidden="true" ></i> Hapus </button> 
-            @endif
             <button type="button" class="btn btn-sm btn-white text-info border-info" 
             data-toggle="modal" 
             data-target="#modalDetail" 
@@ -268,6 +267,8 @@
             data-kurang="{{($cicilanPerBulan*bulanCicilanBerjalan($cicilanUnit))-cicilanTerbayar($cicilanUnit->pembelian->id,$cicilanUnit->tanggal)}}"
             >
             <i class="fas fa-info-circle    "></i></i> Detail </button>   
+            @endif
+
           </td>
           {{-- <td>{{$cicilanUnit->tempo}}</td>
           <td>{{cicilanTerbayar($cicilanUnit->pembelian->id,$cicilanUnit->tanggal)}}</td>

@@ -260,7 +260,7 @@
             </li>
             @endif --}}
 
-            @if(auth()->user()->role=="admin" || auth()->user()->role=="projectmanager"|| auth()->user()->role=="adminGudang" ||auth()->user()->role=="marketing" )
+            @if(auth()->user()->role=="admin" || auth()->user()->role=="projectmanager"|| auth()->user()->role=="adminGudang" )
             {{-- <li class=" @yield('menuGudang')"><a class="nav-link" href="{{route('gudang')}}"><i class="fas fa-warehouse    "></i> <span> Gudang</span></a></li> --}}
             <li class="nav-item dropdown @yield('menuGudang')">
               <a href="" class="nav-link has-dropdown"> <i class="fas fa-warehouse    "></i> <span>Gudang</span></a>

@@ -181,7 +181,9 @@
             <th scope="col">Uraian</th>
             <th scope="col">Jumlah</th>
             <th scope="col">Sumber</th>
+            @if(auth()->user()->role=="admin" || auth()->user()->role=="projectmanager" || auth()->user()->role=="adminGudang")
             <th scope="col">Aksi</th>
+            @endif
           </tr>
         </thead>
         <tbody>
@@ -200,6 +202,7 @@
             <td data-order="{{$transaksi->debet}}">Rp.{{number_format($transaksi->debet)}}</td>
             <td>{{$transaksi->sumber}}</td>
             <td>
+              @if(auth()->user()->role=="admin" || auth()->user()->role=="projectmanager" || auth()->user()->role=="adminGudang")
               @if($transaksi->sumber != "Gudang")
               @if (cekGudang($transaksi->id) == "ada")
                 <a href="{{route('gudang')}}" type="button" class="btn btn-sm btn-white text-primary border-success">
@@ -224,12 +227,15 @@
               Sisa Barang</button>
               @endif
               @endif
+              @endif
+              @if(auth()->user()->role=="admin" || auth()->user()->role=="projectmanager")
               <button type="button" class="btn btn-sm btn-white text-danger border-danger" 
               data-toggle="modal" 
               data-target="#hapusTransaksi" 
               data-id="{{$transaksi->id}}" 
               data-uraian="{{$transaksi->uraian}}">
               <i class="fa fa-trash" aria-hidden="true" ></i> Hapus</button>
+              @endif
             </td>
           @endforeach
         </tbody>

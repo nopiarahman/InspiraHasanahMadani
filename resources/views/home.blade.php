@@ -253,7 +253,7 @@
     </div>
   @endif
     <div class="col-lg-4 col-md-12 col-12 col-sm-12">
-      @if(auth()->user()->role=="admin" || auth()->user()->role=="projectmanager" || auth()->user()->role=="adminGudang" || auth()->user()->role=="marketing")
+      @if(auth()->user()->role=="admin" || auth()->user()->role=="projectmanager" )
       <div class="card">
         <div class="card-header">
           <h4>Quick Link</h4>
