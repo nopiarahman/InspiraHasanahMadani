@@ -551,8 +551,8 @@ class PelangganController extends Controller
         $dataPembelian=pembelian::where('pelanggan_id',$id->id)->first();
         $persenDiskon = ($dataPembelian->diskon/$dataPembelian->harga)*100;
         /* tambahan model untuk cetak pelanggan */
-        $dataDp = dp::where('pembelian_id',$dataPembelian->id)->get();
-        $dataCicilan = cicilan::where('pembelian_id',$dataPembelian->id)->get();
+        $dataDp = dp::where('pembelian_id',$dataPembelian->id)->orderBy('tanggal')->get();
+        $dataCicilan = cicilan::where('pembelian_id',$dataPembelian->id)->orderBy('tanggal')->get();
         return view ('pelanggan/pelangganDetail',compact('id','dataKavling','dataPembelian','persenDiskon','dataDp','dataCicilan'));
     }
     public function simpanNomorAkad(Pembelian $id ,Request $request){

@@ -67,7 +67,7 @@
             <div class="profile-widget-item-value">{{jenisKepemilikan($id->id)}}</div>
           </div>
           <div class="profile-widget-item">
-            <button onclick="cetak('cetakPelanggan')" class="btn btn-primary m-2"> <i class="fas fa-print fa-L"></i> Cetak Pelanggan</button>
+            <button onclick="document.title='{{$id->nama.' blok '.$id->kavling->blok}}';cetak('cetakPelanggan')" class="btn btn-primary m-2"> <i class="fas fa-print fa-L"></i> Cetak Pelanggan</button>
           </div>
         </div>
       </div>
@@ -181,8 +181,13 @@
                 <td></td>
               </tr>
               <tr>
-                <th>Sisa Hutang</th>
-                <td>Rp {{number_format($dataPembelian->sisaCicilan)}}
+                <th>Cicilan/bulan</th>
+                <td>Rp. {{number_format($dataPembelian->sisaKewajiban/$dataPembelian->tenor)}}</td>
+                <td></td>
+              </tr>
+              <tr>
+                <th>Total Hutang</th>
+                <td>Rp {{number_format($dataPembelian->sisaKewajiban)}}
                   @if($dataPembelian->sisaCicilan==0)
                   /
                   <span class="badge badge-info"><i class="fas fa-check"></i> Lunas</span>
@@ -748,6 +753,10 @@
             <td>{{$dataPembelian->tenor}} bulan</td>
           </tr>
           <tr>
+            <th scope="row">Cicilan/bulan</th>
+            <td>Rp. {{number_format($dataPembelian->sisaKewajiban/$dataPembelian->tenor)}}</td>
+          </tr>
+          <tr>
             <th scope="row">Status DP</th>
             <td>{{$dataPembelian->statusDp}}</td>
             <td></td>
@@ -766,8 +775,8 @@
             <td></td>
           </tr>
           <tr>
-            <th>Sisa Cicilan</th>
-            <td>Rp {{number_format($dataPembelian->sisaCicilan)}}
+            <th>Total Hutang</th>
+            <td>Rp {{number_format($dataPembelian->sisaKewajiban)}}
               @if($dataPembelian->sisaCicilan==0)
               /
               <span class="badge badge-info"><i class="fas fa-check"></i> Lunas</span>
@@ -794,7 +803,7 @@
         <tbody>
           @foreach($dataDp as $cicilanDp)
           <tr>
-            <th scope="row">{{$cicilanDp->urut}}</th>
+            <th>{{dpKe($cicilanDp->pembelian->id,$cicilanDp->tanggal)}}</th>
             <td>{{formatTanggal($cicilanDp->tanggal)}}</td>
             <td>Rp.{{number_format($cicilanDp->jumlah)}}</td>
             <td>Rp.{{number_format($cicilanDp->sisaDp)}}</td>
@@ -838,7 +847,7 @@
         <tbody>
           @foreach($dataCicilan as $cicilanUnit)
           <tr>
-            <th scope="row">{{$cicilanUnit->urut}}</th>
+            <th scope="row">{{cicilanKe($cicilanUnit->pembelian->id,$cicilanUnit->tanggal)}}</th>
             <td>{{formatTanggal($cicilanUnit->tanggal)}}</td>
             <td>Rp.{{number_format($cicilanUnit->jumlah)}}</td>
             <td>Rp.{{number_format($cicilanUnit->sisaKewajiban)}}</td>

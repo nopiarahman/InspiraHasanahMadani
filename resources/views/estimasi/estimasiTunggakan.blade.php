@@ -117,7 +117,7 @@
             <th scope="col">Nama</th>
             <th scope="col">Blok</th>
             <th scope="col">Jenis</th>
-            <th scope="col">No Telp</th>
+            <th scope="col">Cicilan/bulan</th>
             <th scope="col">Jatuh Tempo</th>
             <th scope="col">Nominal Tunggakan - {{Carbon\Carbon::parse($start)->isoFormat('MMMM')}}</th>
           </tr>
@@ -132,10 +132,10 @@
                 <tr>
                   {{-- {{dd($tunggakan)}} --}}
                   <td>{{$n,$n++}}</td>
-                  <td>{{$tunggakan->pelanggan->nama}}</td>
+                  <td><a href="{{route('pelangganDetail',(['id'=>$tunggakan->pelanggan->id]))}}">{{$tunggakan->pelanggan->nama}}</a></td>
                   <td>{{$tunggakan->pelanggan->kavling->blok}}</td>
                   <td>{{jenisKepemilikan($tunggakan->pelanggan->id)}}</td>
-                  <td>{{$tunggakan->pelanggan->nomorTelepon}}</td>
+                  <td>Rp {{number_format(floor($tunggakan->dp/$tunggakan->tenorDP))}}</td>
                   <td data-order="{{tempoDpNunggak($tunggakan,$start)->tempo}}"><a class="text-danger" href="{{route('DPKavlingTambah',['id'=>$tunggakan->id])}}">
                     {{-- <td> --}}
                     1-10 {{Carbon\Carbon::parse(tempoDpNunggak($tunggakan,$start)->tempo)->isoFormat('MMMM YYYY')}}
@@ -161,7 +161,7 @@
             <th scope="col">Nama</th>
             <th scope="col">Blok</th>
             <th scope="col">Jenis</th>
-            <th scope="col">No Telp</th>
+            <th scope="col">Cicilan/bulan</th>
             <th scope="col">Jatuh Tempo</th>
             <th scope="col">Nominal Tunggakan - {{Carbon\Carbon::parse($start)->isoFormat('MMMM')}}</th>
           </tr>
@@ -174,10 +174,10 @@
             @if($tunggakan)
             <tr>
               <td>{{$n,$n++}}</td>
-              <td>{{$tunggakan->pelanggan->nama}}</td>
+              <td><a href="{{route('pelangganDetail',(['id'=>$tunggakan->pelanggan->id]))}}">{{$tunggakan->pelanggan->nama}}</a></td>
               <td>{{$tunggakan->pelanggan->kavling->blok}}</td>
               <td>{{jenisKepemilikan($tunggakan->pelanggan->id)}}</td>
-              <td>{{$tunggakan->pelanggan->nomorTelepon}}</td>
+              <td>Rp. {{number_format(floor($tunggakan->sisaKewajiban/$tunggakan->tenor))}}</td>
               <td data-order="{{tempoCicilanNunggak($tunggakan,$start)->tempo}}">
                 <a class="text-danger" href="{{route('unitKavlingDetail',['id'=>$tunggakan->id])}}">
                   1-10 {{Carbon\Carbon::parse(tempoCicilanNunggak($tunggakan,$start)->tempo)->isoFormat('MMMM YYYY')}}
