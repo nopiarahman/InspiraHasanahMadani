@@ -52,7 +52,7 @@
                                     processResults: function (data) {
                                         return {
                                         results:  $.map(data, function (item) {
-                                          console.log(data);
+                                          // console.log(data);
                                             return {
                                             text: item.nama +" "+item.kavling['blok'], /* memasukkan text di option => <option>namaSurah</option> */
                                             id: item.id /* memasukkan value di option => <option value=id> */
