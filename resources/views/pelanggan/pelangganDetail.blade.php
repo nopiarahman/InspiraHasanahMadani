@@ -202,7 +202,7 @@
       </div>
     </div>
   </div>
-  @if(auth()->user()->role=="admin")
+  @if(auth()->user()->role=="admin" || auth()->user()->role=="projectmanager")
   <div class="col-12 col-md-12 col-lg-12">
     <div class="card">
         <div class="card-header">
