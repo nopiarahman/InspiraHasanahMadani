@@ -17,6 +17,8 @@ use PDF;
 use SnappyImage;
 use App\Exports\LaporanBulananExport;
 use App\Exports\LaporanTahunanExport;
+use App\Exports\MasukExport;
+use App\Exports\KeluarExport;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
@@ -425,5 +427,34 @@ class LaporanController extends Controller
         $pdf=PDF::loadview('PDF/kwitansi',compact('kekurangan','tempo','id','pembelian','uraian','sampaiSekarang','rekening','proyek','logoPT'))->setPaper('A5','landscape');
         return $pdf->download('Kwitansi Cicilan '.$pembelian->pelanggan->nama.' '.$blok.' Ke '.$cicilanKe.'.pdf');
     }
-    
+    public function exportKeluar(Request $request){
+        // dd($request);
+        if($request->get('filter')){
+            $start = Carbon::parse($request->start)->isoFormat('YYYY-MM-DD');
+            $end = Carbon::parse($request->end)->isoFormat('YYYY-MM-DD');
+            $transaksiKeluar=transaksi::whereBetween('tanggal',[$start,$end])
+                            ->whereNotNull('debet')->where('proyek_id',proyekId())->orderBy('tanggal')->get();
+        }else{
+            $start = Carbon::now()->firstOfMonth()->isoFormat('YYYY-MM-DD');
+            $end = Carbon::now()->endOfMonth()->isoFormat('YYYY-MM-DD');
+            $transaksiKeluar=transaksi::whereBetween('tanggal',[$start,$end])
+                            ->whereNotNull('debet')->where('proyek_id',proyekId())->orderBy('tanggal')->get();
+        }
+        return Excel::download(new KeluarExport($transaksiKeluar,$start,$end), 'Transaksi Keluar '.$start.'.xlsx');
+    }
+    public function exportMasuk(Request $request){
+        // dd($request);
+        if($request->get('filter')){
+            $start = Carbon::parse($request->start)->isoFormat('YYYY-MM-DD');
+            $end = Carbon::parse($request->end)->isoFormat('YYYY-MM-DD');
+            $transaksiMasuk=transaksi::whereBetween('tanggal',[$start,$end])
+                            ->whereNotNull('kredit')->where('proyek_id',proyekId())->get();
+        }else{
+            $start = Carbon::now()->firstOfMonth()->isoFormat('YYYY-MM-DD');
+            $end = Carbon::now()->endOfMonth()->isoFormat('YYYY-MM-DD');
+            $transaksiMasuk=transaksi::whereBetween('tanggal',[$start,$end])
+            ->whereNotNull('kredit')->where('proyek_id',proyekId())->get();
+        }
+        return Excel::download(new MasukExport($transaksiMasuk,$start,$end), 'Transaksi Masuk '.$start.'.xlsx');
+    }
 }

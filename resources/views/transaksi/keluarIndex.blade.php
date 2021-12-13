@@ -8,16 +8,56 @@
 <div class="section-header sticky-top">
     <div class="container">
       <div class="row">
-        <div class="col">
+        <div class="col-6">
           <h1>Transaksi Keluar</h1>
         </div>
-      </div>
-      <div class="row">
-        <nav aria-label="breadcrumb">
-          <ol class="breadcrumb  bg-white mb-n2">
-            <li class="breadcrumb-item" aria-current="page"> Transaksi Keluar </li>
-          </ol>
-        </nav>
+        <div class="col-6">
+          {{-- filter --}}
+    <form action="{{route('exportKeluar')}}" method="get" enctype="multipart/form-data">
+      <div class="form-group row mb-4">
+        {{-- <label class="col-form-label text-md-right col-12 col-md-6 col-lg-6 mt-1 mr-n3" > <span style="font-size:small">Pilih Tanggal: </span> </label> --}}
+        <div class="input-group col-sm-12 col-md-12">
+          <div class="input-group-prepend">
+            <div class="input-group-text">
+              <i class="fa fa-calendar" aria-hidden="true"></i>
+            </div>
+          </div>
+          <input type="text" id="reportrange2" class="form-control filter @error('filter') is-invalid @enderror" name="filter" value="{{ request('filter') }}" id="filter">
+          <input type="hidden" name="start" id="mulai2" value="{{$start}}">
+          <input type="hidden" name="end" id="akhir2" value="{{$end}}">
+          <button type="submit" class="btn btn-primary btn-icon icon-right">
+            <i class="fas fa-file-excel    "></i>
+            Export
+          </button>
+        </div>
+      </form>
+      <script type="text/javascript">
+        $(function() {
+            moment.locale('id');
+            var start = moment($('#mulai2').val());
+              var end = moment($('#akhir2').val());
+            function cb(start, end) {
+                $('#reportrange2 span').html(start.format('D M Y') + ' - ' + end.format('DD MMMM YYYY'));
+                $('#mulai2').val(start);
+                $('#akhir2').val(end);
+            }
+            $('#reportrange2').daterangepicker({
+                startDate: start,
+                endDate: end,
+                ranges: {
+                    'Hari Ini': [moment(), moment()],
+                    'Kemarin': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+                    '7 Hari Terakhir': [moment().subtract(6, 'days'), moment()],
+                    '30 Hari Terakhir': [moment().subtract(29, 'days'), moment()],
+                    'Bulan Ini': [moment().startOf('month'), moment().endOf('month')],
+                    'Bulan Lalu': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+                }
+            }, cb);
+            });
+        </script>
+        {{-- end filter --}}
+        </div>
+        </div>
       </div>
     </div>
   </div>
@@ -276,9 +316,9 @@
             <th scope="col">Uraian</th>
             <th scope="col">Jumlah</th>
             <th scope="col">Sumber</th>
-            @if(auth()->user()->role=="admin" || auth()->user()->role=="projectmanager" || auth()->user()->role=="marketing")
+            {{-- @if(auth()->user()->role=="admin" || auth()->user()->role=="projectmanager" || auth()->user()->role=="marketing") --}}
             <th scope="col">Aksi</th>
-            @endif
+            {{-- @endif --}}
           </tr>
         </thead>
         <tbody>

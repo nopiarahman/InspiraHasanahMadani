@@ -600,7 +600,7 @@ function cekGudang($transaksiId){
 }
 function cekStatusKavling($id){
     $cek = pembelian::where("kavling_id",$id)->get()->last();
-    // dd($cek);
+    dd($cek);
     if($cek != null){
         return $cek->statusPembelian;
     }

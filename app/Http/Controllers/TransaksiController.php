@@ -67,11 +67,6 @@ class TransaksiController extends Controller
         $perHeaderUnit=$semuaRABUnit;
         $perJudulUnit=$semuaRABUnit;
 
-        /* Akun */
-        // $semuaAkun=akun::where('proyek_id',proyekId())->get();
-        // $kategoriAkun=akun::where('proyek_id',proyekId())->get()->groupBy('kategori');
-        // $perKategori = $kategoriAkun;
-        
         if($request->get('filter')){
             $start = Carbon::parse($request->start)->isoFormat('YYYY-MM-DD');
             $end = Carbon::parse($request->end)->isoFormat('YYYY-MM-DD');

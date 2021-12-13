@@ -186,27 +186,16 @@ class HomeController extends Controller
         $id=pelanggan::find($request->id);        
         return redirect()->route('pelangganDetail', ['id' => $id->id]);
     }
-    // public function cariPelangganHome(Request $request){
-    //     $id=pelanggan::find($request->id);
-    //     $dataKavling=kavling::where('pelanggan_id',$request->id)->first();
-    //     $dataPembelian=pembelian::where('pelanggan_id',$request->id)->first();
-    //     $persenDiskon = ($dataPembelian->diskon/$dataPembelian->harga)*100;
-    //     $dataDp = dp::where('pembelian_id',$dataPembelian->id)->get();
-    //     $dataCicilan = cicilan::where('pembelian_id',$dataPembelian->id)->get();
-    //     return view ('pelanggan/pelangganDetail',compact('id','dataKavling','dataPembelian','persenDiskon','dataDp','dataCicilan'));
-    // }
     public function cariPelangganDaftar(Request $request){
         if ($request->has('q')) {
     	    $cari = $request->q;
     		$data = pelanggan::select('id', 'nama')->where('nama', 'LIKE', '%'.$cari.'%')
                                                 ->where('proyek_id',proyekId())->get();
-            // // dd($data);
-            
-            // $pelanggan = pelanggan::find($data['id']);
-            // $data['blok']= $pelanggan->kavling->blok;
-            // $pelanggan = pelanggan::find($data['id']);
-            // dd($pelanggan);
-    		return response()->json($data);
+    		$pelangganAktif = $data->filter(function ($value, $key) {
+                return $value->kavling != null;
+            });
+            // dd($pelangganAktif);
+            return response()->json($pelangganAktif);
     	}
     }
     public function pengaturan(){
