@@ -172,8 +172,13 @@ class LaporanController extends Controller
         $uraian = 'Pembayaran Cicilan Ke '.cicilanKe($id->pembelian_id,$id->tanggal).' '.jenisKepemilikan($pembelian->pelanggan_id).' '.$pembelian->kavling->blok;   
         $cicilanPertama = cicilan::where('pembelian_id',$pembelian->id)->first();
         $sampaiSekarang = cicilan::whereBetween('created_at',[$cicilanPertama->tanggal,$id->tanggal])->where('pembelian_id',$id->pembelian_id)->get();
-        // dd($sampaiSekarang);
         $kekurangan=$nilai*bulanCicilanBerjalan($id)-cicilanTerbayar($id->pembelian_id,$id->tanggal);
+        $sisaHutang = $id->pembelian->sisaKewajiban - cicilanTerbayar($id->pembelian_id,$id->tanggal);
+        if($kekurangan > $sisaHutang){
+            $kekurangan = $sisaHutang;
+        }else{
+            $kekurangan = $kekurangan;
+        }
         // dd($kekurangan);
         return view('cetak/kwitansi',compact('kekurangan','tempo','id','pembelian','uraian','sampaiSekarang','rekening','proyek'));
     }
@@ -211,13 +216,20 @@ class LaporanController extends Controller
             }
             // $tempo = Carbon::parse($id->tanggal)->firstOfMonth()->addMonth(1)->isoFormat('YYYY-MM-DD');
         }
+        $sisaHutang = $id->pembelian->dp - dpTerbayar($id->pembelian_id,$id->tanggal);
         $kekurangan=$nilai*bulanDpBerjalan($id)-dpTerbayar($id->pembelian_id,$id->tanggal);
+        if($kekurangan > $sisaHutang){
+            $kekurangan = $sisaHutang;
+        }else{
+            $kekurangan = $kekurangan;
+        }
         $proyek=proyek::find(proyekId());       
         $pembelian= pembelian::where('id',$id->pembelian_id)->first();
         $rekening=rekening::where('proyek_id',proyekId())->get();
         $uraian = 'Pembayaran Dp Ke '.dpKe($id->pembelian_id,$id->tanggal).' '.jenisKepemilikan($pembelian->pelanggan_id).' '.$pembelian->kavling->blok;   
         $DpPertama = dp::where('pembelian_id',$pembelian->id)->first();
         $sampaiSekarang = dp::whereBetween('created_at',[$DpPertama->tanggal,$id->tanggal])->where('pembelian_id',$id->pembelian_id)->get();
+        // dd($sampaiSekarang->sum('jumlah'));
         return view('cetak/kwitansiDp',compact('kekurangan','tempo','id','pembelian','uraian','sampaiSekarang','rekening','proyek'));
     }
     public function exportBulanan(Request $request){
@@ -360,7 +372,13 @@ class LaporanController extends Controller
         }else{
             $blok = "Batal Akad";
         }
+        $sisaHutang = $id->pembelian->dp - dpTerbayar($id->pembelian_id,$id->tanggal);
         $kekurangan=$nilai*bulanDpBerjalan($id)-dpTerbayar($id->pembelian_id,$id->tanggal);
+        if($kekurangan > $sisaHutang){
+            $kekurangan = $sisaHutang;
+        }else{
+            $kekurangan = $kekurangan;
+        }
         $uraian = 'Pembayaran Dp Ke '.dpKe($id->pembelian_id,$id->tanggal).' '.jenisKepemilikan($pembelian->pelanggan_id).' '.$pembelian->kavling->blok;   
         $DpPertama = Dp::where('pembelian_id',$pembelian->id)->first();
         $sampaiSekarang = dp::whereBetween('created_at',[$DpPertama->tanggal,$id->tanggal])->where('pembelian_id',$id->pembelian_id)->get();
@@ -418,7 +436,12 @@ class LaporanController extends Controller
             $blok = "Batal Akad";
         }
         $kekurangan=$nilai*bulanCicilanBerjalan($id)-cicilanTerbayar($id->pembelian_id,$id->tanggal);
-        // dd($kekurangan);
+        $sisaHutang = $id->pembelian->sisaKewajiban - cicilanTerbayar($id->pembelian_id,$id->tanggal);
+        if($kekurangan > $sisaHutang){
+            $kekurangan = $sisaHutang;
+        }else{
+            $kekurangan = $kekurangan;
+        }
         $cicilanKe = cicilanKe($id->pembelian_id,$id->tanggal);
         // dd($cicilanKe);
         $uraian = 'Pembayaran Cicilan Ke '.cicilanKe($id->pembelian_id,$id->tanggal).' '.jenisKepemilikan($pembelian->pelanggan_id).' '.$pembelian->kavling->blok;   

@@ -259,7 +259,11 @@
             data-ke="{{cicilanKe($cicilanUnit->pembelian->id,$cicilanUnit->tanggal)}}"
             {{-- data-tp="{{formatTanggal($cicilanUnit->tanggal)}}" --}}
             data-jumlah="{{$cicilanUnit->jumlah}}"
+            @if(($cicilanPerBulan*bulanCicilanBerjalan($cicilanUnit))-cicilanTerbayar($cicilanUnit->pembelian->id,$cicilanUnit->tanggal) > $cicilanUnit->pembelian->sisaKewajiban - cicilanTerbayar($cicilanUnit->pembelian->id,$cicilanUnit->tanggal))
             data-sisa="{{$cicilanUnit->pembelian->sisaKewajiban - cicilanTerbayar($cicilanUnit->pembelian->id,$cicilanUnit->tanggal)}}"
+            @else
+            data-sisa="{{($cicilanPerBulan*bulanCicilanBerjalan($cicilanUnit))-cicilanTerbayar($cicilanUnit->pembelian->id,$cicilanUnit->tanggal)}}"
+            @endif
             data-tempo="{{$cicilanUnit->tempo}}"
             data-terbayar="{{cicilanTerbayar($cicilanUnit->pembelian->id,$cicilanUnit->tanggal)}}"
             data-berjalan="{{bulanCicilanBerjalan($cicilanUnit)}}"

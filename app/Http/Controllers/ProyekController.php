@@ -339,6 +339,16 @@ class ProyekController extends Controller
         // return view ('excel.rab',compact('semuaRAB'));
         return Excel::download(new RABExport($semuaRAB,$semuaUnit), 'RAB.xlsx');
     }
+    public function cetakRABGudang(){
+        $semuaRAB = rab::all()->where('proyek_id',proyekId())->groupBy(['header',function($item){
+            return $item['judul'];
+        }],$preserveKeys=true)->forget('PIUTANG');
+        $semuaUnit = rabUnit::where('proyek_id',proyekId())->get()->groupBy(['header',function($item){
+            return $item['judul'];
+        }],$preserveKeys=true);
+        // return view ('excel.rab',compact('semuaRAB'));
+        return Excel::download(new RABExport($semuaRAB,$semuaUnit), 'RAB.xlsx');
+    }
     public function cetakRABUnit(){
 
         $semuaRAB = rabUnit::where('proyek_id',proyekId())->get()->groupBy(['header',function($item){
@@ -409,6 +419,8 @@ class ProyekController extends Controller
     }
     
     public function rekening(){
+        // $rabBatalAkad = rab::where('header','BIAYA PENGEMBALIAN DANA BATAL AKAD')->first();
+        // $transaksi = transaksi::where('rab_id',$rabBatalAkad->id)->get();
         // $x = 55000000;
         // $y = 72;
         // $z= $x/$y;
@@ -448,6 +460,7 @@ class ProyekController extends Controller
         $rekening = rekening::where('proyek_id',proyekId())->get();
         return view('rekening/index',compact('rekening'));
     }
+
     public function rekeningSimpan(Request $request){
         // dd($request);
         $rules=[
@@ -506,5 +519,62 @@ class ProyekController extends Controller
         }
         RABUnit::destroy($id->id);
         return redirect()->back()->with('status','Data RAB berhasil dihapus');
+    }
+    public function PengembalianBatalAkad(Request $request){
+        $id = rab::where('header','BIAYA PENGEMBALIAN DANA BATAL AKAD')->first();
+        $totalRAB=$id->total;
+        $transaksiRAB = transaksi::where('rab_id',$id->id)->get('tanggal');
+        if($transaksiRAB){
+            $bulan = [];
+            foreach($transaksiRAB as $t){
+                $bulan [] = Carbon::parse($t->tanggal)->isoFormat('MM/YYYY');
+            }      
+            $periode = collect($bulan)->unique();
+        }else{
+            $periode = null;
+        }
+        $bulanTerpilih=0;
+        /* Proses */
+        if($request->get('filter')){
+            $mulai = Carbon::parse($request->start)->isoFormat('YYYY-MM-DD');
+            $akhir = Carbon::parse($request->end)->isoFormat('YYYY-MM-DD');
+            $transaksiKeluar=transaksi::whereBetween('tanggal',[$mulai,$akhir])
+                            ->where('rab_id',$id->id)->get();
+            $total=transaksi::where('rab_id',$id->id)->get();
+            $totalFilter = $transaksiKeluar->sum('debet');
+        }elseif($request->get('bulan')){
+            $dateMonthArray = explode('/', $request->bulan);
+            $month = $dateMonthArray[0];
+            $year = $dateMonthArray[1];
+            $mulai = Carbon::createFromDate($year,$month)->startOfMonth()->isoFormat('YYYY-MM-DD');
+            // dd($mulai);
+            $akhir = Carbon::createFromDate($year,$month)->endOfMonth()->isoFormat('YYYY-MM-DD');
+            $transaksiKeluar=transaksi::whereBetween('tanggal',[$mulai,$akhir])
+                            ->where('rab_id',$id->id)->get();
+            $total=transaksi::where('rab_id',$id->id)->get();
+            $totalFilter = $transaksiKeluar->sum('debet');
+            /* opsi select */
+            $bulanTerpilih = $request->bulan;
+        }else{
+            $total=transaksi::where('rab_id',$id->id)->get();
+            $transaksiKeluar=transaksi::where('rab_id',$id->id)->get();
+            $totalFilter = $transaksiKeluar->sum('debet');
+        }
+        return view('proyek/dataProyek/pengeluaranUnit',compact('totalFilter','bulanTerpilih','transaksiKeluar','id','totalRAB','total','periode'));  
+    }
+    public function RABGudang(){
+        $semuaRAB = rab::all()->where('proyek_id',proyekId())->groupBy(['header',function($item){
+            return $item['judul'];
+        }],$preserveKeys=true)->forget('PIUTANG');
+        // dd($semuaRAB->forget('PIUTANG'));
+        $semuaUnit = rabUnit::where('proyek_id',proyekId())->get()->groupBy(['header',function($item){
+            return $item['judul'];
+        }],$preserveKeys=true);
+
+        $perHeader=$semuaRAB->sortBy('kodeRAB');
+        $perJudul=$semuaRAB->sortBy('kodeRAB');
+        $perHeaderUnit=$semuaUnit->sortBy('kodeRAB');
+        $perJudulUnit=$semuaUnit->sortBy('kodeRAB');        
+        return view ('proyek/dataProyek/RAB',compact('perHeader','semuaRAB','semuaUnit','perJudul','perHeaderUnit','perJudulUnit'));
     }
 }

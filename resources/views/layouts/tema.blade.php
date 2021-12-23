@@ -136,8 +136,15 @@
             <a href="" class="nav-link has-dropdown" data-toggle="dropdown"><i class="fas fa-home"></i> <span>Data Proyek</span></a>
             <ul class="dropdown-menu">
               <li class="@yield('menuKavling')"><a class="nav-link" href="{{route('kavling')}}">Unit</a></li>
+              @if(auth()->user()->role=="projectmanager" || auth()->user()->role=="admin")
               <li class="@yield('menuRAB')"><a class="nav-link" href="{{route('RAB')}}">RAB</a></li>
-              
+              @endif
+              @if(auth()->user()->role=="marketing")
+              <li class="@yield('menuPengembalianBatalAkad')"><a class="nav-link" href="{{route('PengembalianBatalAkad')}}">Pengembalian Batal Akad</a></li>
+              @endif
+              @if(auth()->user()->role=="adminGudang")
+              <li class="@yield('menuRABGudang')"><a class="nav-link" href="{{route('RABGudang')}}">RAB</a></li>
+              @endif
             </ul>
           </li>
           @endif

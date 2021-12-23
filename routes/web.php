@@ -43,24 +43,25 @@ Route::group(['middleware'=>['auth','role:admin,projectmanager,adminGudang,marke
     Route::patch('/proyek/update/{id}', 'ProyekController@update')->name('proyekUpdate');
     Route::get('/proyek/pengeluaran/{id}', 'ProyekController@transaksiRABUnit')->name('transaksiRABUnit');
     Route::get('/proyek/pengeluaran/RAB/{id}', 'ProyekController@transaksiRAB')->name('transaksiRAB');
-
     Route::get('/kavling', 'KavlingController@index')->name('kavling');
     Route::patch('/editKavling/{id}', 'KavlingController@update')->name('editKavling');
     Route::post('/kavlingSimpan', 'KavlingController@kavlingSimpan')->name('kavlingSimpan');
     Route::delete('/hapusKavling/{id}', 'KavlingController@destroy')->name('hapusKavling');
-
     Route::patch('/gantiStatus/{id}', 'KavlingController@gantiStatus')->name('gantiStatus');
     
     Route::get('/RAB', 'ProyekController@RAB')->name('RAB');
+    Route::get('/RABGudang', 'ProyekController@RABGudang')->name('RABGudang');
     Route::patch('/editRAB/{id}', 'ProyekController@editRAB');
     Route::patch('/editRABUnit/{id}', 'ProyekController@editRABUnit');
     Route::delete('/hapusRAB/{id}', 'ProyekController@hapusRAB');
     Route::delete('/hapusRABUnit/{id}', 'ProyekController@hapusRABUnit');
+
     Route::get('/biayaUnit', 'ProyekController@biayaUnit')->name('biayaUnit');
     Route::post('/rabUnitSimpan', 'ProyekController@rabUnitSimpan')->name('rabUnitSimpan');
     Route::get('/cariHeader', 'ProyekController@cariHeader')->name('cariHeader');
     Route::get('/cariJudul', 'ProyekController@cariJudul')->name('cariJudul');
     Route::post('/biayaRABSimpan', 'ProyekController@biayaRABSimpan')->name('biayaRABSimpan');
+    Route::get('/PengembalianBatalAkad', 'ProyekController@PengembalianBatalAkad')->name('PengembalianBatalAkad');
 
     Route::post('/cariPelangganHome', 'HomeController@cariPelangganHome')->name('cariPelangganHome');
     Route::get('/cariPelangganDaftar', 'HomeController@cariPelangganDaftar');
@@ -164,6 +165,7 @@ Route::group(['middleware'=>['auth','role:admin,projectmanager,adminGudang,marke
     Route::delete('/hapusRekening/{id}', 'ProyekController@hapusRekening')->name('hapusRekening');
     /* cetak */
     Route::get('/cetakRAB', 'ProyekController@cetakRAB')->name('cetakRAB');
+    Route::get('/cetakRABGudang', 'ProyekController@cetakRABGudang')->name('cetakRABGudang');
     Route::get('/cetakPengeluaranRAB/{id}', 'ProyekController@cetakPengeluaranRAB')->name('cetakPengeluaranRAB');
     Route::get('/cetakPengeluaranUnit/{id}', 'ProyekController@cetakPengeluaranUnit')->name('cetakPengeluaranUnit');
     Route::get('/cetakRABUnit', 'ProyekController@cetakRABUnit')->name('cetakRABUnit');
