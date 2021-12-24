@@ -11,31 +11,42 @@ use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 
 class LaporanTahunanExport implements FromView ,ShouldAutoSize
 {
-    
-    protected $produksi;
+    protected $pendapatan;
     protected $start;
     protected $end;
-    protected $operasional;
-    protected $nonOperasional;
-    protected $pendapatanLain;
+    protected $mts;
+    protected $ats;
+    protected $semuaRAB;
+    protected $semuaUnit;
+    protected $transaksiAset;
+    protected $bulan;
+    protected $tahuniniStart;
 
-    function __construct($produksi,$start,$end,$operasional,$nonOperasional,$pendapatanLain) {
-        $this->produksi = $produksi;
+    function __construct($transaksiAset,$ats,$pendapatan,$start,$end,$mts,$bulan,$tahuniniStart,$semuaRAB,$semuaUnit) {
+        $this->pendapatan = $pendapatan;
         $this->start = $start;
         $this->end = $end;
-        $this->operasional = $operasional;
-        $this->nonOperasional = $nonOperasional;
-        $this->pendapatanLain = $pendapatanLain;
+        $this->mts = $mts;
+        $this->ats = $ats;
+        $this->semuaRAB = $semuaRAB;
+        $this->semuaUnit = $semuaUnit;
+        $this->transaksiAset = $transaksiAset;
+        $this->bulan = $bulan;
+        $this->tahuniniStart = $tahuniniStart;
     }
     public function view(): View
     {
         return view ('excel/laporanTahunanExcel',[
-            'produksi'=> $this->produksi,
+            'pendapatan'=> $this->pendapatan,
             'start'=> $this->start,
             'end'=> $this->end,
-            'operasional'=> $this->operasional,
-            'nonOperasional'=> $this->nonOperasional,
-            'pendapatanLain'=> $this->pendapatanLain
+            'mts'=> $this->mts,
+            'ats'=> $this->ats,
+            'semuaRAB'=> $this->semuaRAB,
+            'semuaUnit'=> $this->semuaUnit,
+            'transaksiAset'=> $this->transaksiAset,
+            'bulan'=> $this->bulan,
+            'tahuniniStart'=> $this->tahuniniStart
         ]);
     }
 }
