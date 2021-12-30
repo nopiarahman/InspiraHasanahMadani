@@ -79,10 +79,12 @@
         </tr>
         <tr>
           <th>Potongan Biaya</th>
-          <td>: Rp. {{number_format($id->pembelian->pengembalian)}}     
+          <td>: Rp. {{number_format($id->pembelian->pengembalian)}} 
+            @if(auth()->user()->role=="admin" || auth()->user()->role=="projectmanager" )    
             <button class="btn btn-sm btn-primary" data-toggle="modal" data-target="#tanggalAkad"> 
               <i class="fas fa-pen    "></i> Ganti Nilai Potongan
             </button>
+            @endif
           </td>
         </tr>
         <tr>
@@ -92,6 +94,7 @@
       </table>
       </div>
     </div>
+    @if(auth()->user()->role=="admin" || auth()->user()->role=="projectmanager" )
   <div class="row">
     <div class="col-12">
       <div class="card">
@@ -209,7 +212,7 @@
       </div>
     </div>
   </div>
-  
+  @endif  
   <div class="card">
     <div class="card-header">
       <h4>Daftar Pengembalian Dana</h4>

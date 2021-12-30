@@ -58,7 +58,7 @@
               <th scope="col">Jenis</th>
               <th scope="col">No Telp</th>
               <th scope="col">Aksi</th>
-              @if(auth()->user()->role=="admin" || auth()->user()->role=="projectmanager")
+              @if(auth()->user()->role=="admin" || auth()->user()->role=="projectmanager"|| auth()->user()->role=="marketing")
               <th scope="col">Pengembalian</th>
               @endif
             </tr>
@@ -91,7 +91,7 @@
                 <i class="fa fa-trash" aria-hidden="true" ></i> Hapus</button>      
                 @endif
               </td>
-              @if(auth()->user()->role=="admin" || auth()->user()->role=="projectmanager")
+              @if(auth()->user()->role=="admin" || auth()->user()->role=="projectmanager" || auth()->user()->role=="marketing")
               <td>
                 <a href="{{route('pengembalian',['id'=>$pelanggan->id])}}" class="btn btn-white text-primary border-success btn-sm"> <i class="fa fa-check" aria-hidden="true"></i> Input</a>
               </td>
