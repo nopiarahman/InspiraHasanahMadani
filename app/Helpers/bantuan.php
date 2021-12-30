@@ -1137,3 +1137,12 @@ function cekDPLunasBulanan(pembelian $id, $tanggal){
         return "Cicilan";
     }
 }
+function transaksiRAB($judul){
+    $rab = rab::where('judul',$judul)->get();
+    $total=0;
+    foreach($rab as $r){
+        $transaksi=transaksi::where('rab_id',$r->id)->get();
+        $total+=$transaksi->sum('debet');
+    }
+    return $total;
+}

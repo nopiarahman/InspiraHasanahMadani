@@ -592,6 +592,7 @@
               <td>Rp.{{number_format((int)$rab->hargaSatuan)}}</td>
               <th>Rp.{{number_format($rab->total)}}</th>
               <th> <a class="text-warning font-weight-bold" href="{{route('transaksiRAB',['id'=>$rab->id])}}"> Rp. {{number_Format(hitungTransaksiRAB($rab->id))}}</a></th>
+              
               <th>
                 @if($rab->total != 0)
                 {{number_format((float)(hitungTransaksiRAB($rab->id)/$rab->total*100),2)}}%
@@ -628,7 +629,8 @@
             @endforeach
             <tr class="border-top border-success">
               <th colspan="6" class="text-right" >Sub Total {{$judul}}</th>
-              <th colspan="4" class="" >Rp. {{number_format($semuaRAB->sum('total'))}}</th>
+              <th colspan="" class="" >Rp. {{number_format($semuaRAB->sum('total'))}}</th>
+              <th>Rp. {{number_format(transaksiRAB($judul))}}</th>
             </tr>
             @php
                 $a[]=$semuaRAB->sum('total'); /* menghitung per total judul */
@@ -686,6 +688,8 @@
               $a[$judul]=0;
               $c[$judul]=0;
               $totalIsi[$judul]=0;
+              $totalJudul[$judul]=0;
+
           @endphp
           <tr>
             <th colspan="11" class="">{{$loop->iteration}}. {{$judul}}</th>
@@ -748,7 +752,8 @@
             @endphp
             <tr  class="border-top border-success">
               <th colspan="7" class="text-right " >Sub Total {{$judul}}</th>
-              <th colspan="4" class="" >Rp. {{number_format($c[$judul])}}</th>
+              <th colspan="" class="" >Rp. {{number_format($c[$judul])}}</th>
+              <th>{{$judul}}</th>
             </tr>
             @endforeach
               @php
