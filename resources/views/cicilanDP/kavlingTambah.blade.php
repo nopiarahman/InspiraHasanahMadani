@@ -231,7 +231,11 @@
             data-terbayar="{{dpTerbayar($cicilanDp->pembelian->id,$cicilanDp->tanggal)}}"
             data-berjalan="{{bulanDpBerjalan($cicilanDp)}}"
             data-seharusnya="{{$id->dp/$id->tenorDP*bulanDpBerjalan($cicilanDp)}}"
+            @if(($id->dp/$id->tenorDP*bulanDpBerjalan($cicilanDp))-dpTerbayar($cicilanDp->pembelian->id,$cicilanDp->tanggal) > $cicilanDp->pembelian->dp - dpTerbayar($cicilanDp->pembelian->id,$cicilanDp->tanggal))
+            data-kurang="{{$cicilanDp->pembelian->dp - dpTerbayar($cicilanDp->pembelian->id,$cicilanDp->tanggal)}}"
+            @else
             data-kurang="{{($id->dp/$id->tenorDP*bulanDpBerjalan($cicilanDp))-dpTerbayar($cicilanDp->pembelian->id,$cicilanDp->tanggal)}}"
+            @endif
             >
             <i class="fas fa-info-circle    "></i></i> Detail </button>   
             @endif

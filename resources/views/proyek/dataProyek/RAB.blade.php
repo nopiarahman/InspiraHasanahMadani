@@ -1,5 +1,10 @@
 @extends('layouts.tema')
+@if(request()->route()->getName()=='RAB')
 @section ('menuRAB','active')
+@endif
+@if(request()->route()->getName()=='RABGudang')
+@section ('menuRABGudang','active')
+@endif
 @section ('menuDataProyek','active')
 @section('content')
 <div class="section-header">
@@ -9,7 +14,12 @@
           <h1>RAB</h1>
         </div>
         <div class="kanan">
+          @if(request()->route()->getName()=='RAB')
           <a href="{{route('cetakRAB')}}" class="btn btn-primary"> <i class="fas fa-file-excel"></i> Export Excel</a>
+          @endif
+          @if(request()->route()->getName()=='RABGudang')
+          <a href="{{route('cetakRABGudang')}}" class="btn btn-primary"> <i class="fas fa-file-excel"></i> Export Excel</a>
+          @endif
         </div>
       </div>
       <div class="row">
