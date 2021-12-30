@@ -526,6 +526,8 @@ class PelangganController extends Controller
             if($id->kios != null){
                 $updateKios = kios::find($id->kios->id)->update(['pelanggan_id'=>0]);
             }
+            $user=user::find($id->user_id);
+            $user->delete();
             DB::commit();
             return redirect()->back()->with('status','Akad Dibatalkan!');
         } catch (\Exception $ex) {
