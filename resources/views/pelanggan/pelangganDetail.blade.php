@@ -67,7 +67,11 @@
             <div class="profile-widget-item-value">{{jenisKepemilikan($id->id)}}</div>
           </div>
           <div class="profile-widget-item">
+            @if($dataKavling==null)
+            <button onclick="document.title='{{$id->nama.' batal akad'}}';cetak('cetakPelanggan')" class="btn btn-primary m-2"> <i class="fas fa-print fa-L"></i> Cetak Pelanggan</button>
+            @else
             <button onclick="document.title='{{$id->nama.' blok '.$id->kavling->blok}}';cetak('cetakPelanggan')" class="btn btn-primary m-2"> <i class="fas fa-print fa-L"></i> Cetak Pelanggan</button>
+            @endif
           </div>
         </div>
       </div>

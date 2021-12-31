@@ -143,7 +143,7 @@
               @endif
             </td>
             @if($kavling->pembelian != null)
-            <td>
+            <td>d
               @if($kavling->pelanggan !=null)
               <a href="{{route('pelangganDetail',['id'=>$kavling->pelanggan->id])}}" class="text-primary">
               @endif

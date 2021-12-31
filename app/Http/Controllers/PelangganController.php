@@ -447,8 +447,13 @@ class PelangganController extends Controller
             $kios=kios::where('kavling_id',$kavlingBaru)->first();
             $id->pembelian->update(['kios_id'=>$kios->id]);
         }
+        
         $updateKepemilikanKavling=kavling::find($cekKavling->id)->update(['pelanggan_id'=>0]);
         $updateKavling = kavling::find($kavlingBaru)->update(['pelanggan_id'=>$id->id]);
+        $kavlingUser = kavling::find($kavlingBaru);
+        // dd($kavlingUser);
+        $username =strtolower("kta".$kavlingUser->blok);
+        $updateUser = $id->user->update(['username'=>$username]);
         DB::commit();
         return redirect()->back()->with('status','Data Unit Pelanggan berhasil diedit');
         } catch (\Exception $ex) {
@@ -515,6 +520,7 @@ class PelangganController extends Controller
     public function batalAkad(Pelanggan $id){
         DB::beginTransaction();
         try {
+
             $user = $id->user;
             $user->update(['username'=>'batalakad'.strtolower($id->kavling->blok)]);
             $cekKavling = kavling::where('pelanggan_id',$id->id)->first();
@@ -526,8 +532,6 @@ class PelangganController extends Controller
             if($id->kios != null){
                 $updateKios = kios::find($id->kios->id)->update(['pelanggan_id'=>0]);
             }
-            $user=user::find($id->user_id);
-            $user->delete();
             DB::commit();
             return redirect()->back()->with('status','Akad Dibatalkan!');
         } catch (\Exception $ex) {
