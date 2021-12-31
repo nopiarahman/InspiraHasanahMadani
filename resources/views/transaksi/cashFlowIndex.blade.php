@@ -261,7 +261,7 @@
           @endphp
           <td>{{$transaksi->sumber}}</td>
           <td>
-            @if($transaksi->kategori ==='Modal' || $transaksi->kategori ==='Aset' || $transaksi->kategori ==='Pendapatan Lain')
+            @if($transaksi->kategori ==='Modal' || $transaksi->kategori ==='Aset' || $transaksi->kategori ==='Pendapatan Lain' ||$transaksi->kategori ==='Kelebihan Tanah' )
               @if(auth()->user()->role=="admin")
                   <button type="button" class="btn btn-sm btn-white text-danger border-danger" 
                   data-toggle="modal" 
