@@ -1,4 +1,7 @@
 @extends('layouts.tema')
+@section('head')
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.css">
+@endsection
 @section ('menuKasBesar','active')
 @section ('menuKas','active')
 @section('content')
@@ -207,7 +210,13 @@
             });
         </script>
         {{-- end filter --}}
-    <table class="table table-sm table-striped table-hover mt-3">
+    <table class="table table-sm my-3 bg-light ">
+      <tr>
+        <th class="text-primary text-right pr-5">Sisa Saldo Sebelumnya:  Rp.{{number_format($saldoSebelum)}}</th>
+      </tr>
+    </table>
+    <table class="table table-sm table-striped table-hover mt-3" id="table">
+      
       <thead>
         <tr>
           {{-- <th scope="col">No</th> --}}
@@ -221,14 +230,11 @@
           @if(auth()->user()->role=="admin")
           <th scope="col">Aksi</th>
           @endif
+          <th></th>
         </tr>
       </thead>
+      
       <tbody>
-        <tr>
-          <td colspan="2"></td>
-          <th class="text-primary " colspan="3" >Sisa Saldo Sebelumnya</th>
-          <th class="text-primary">Rp.{{number_format($saldoSebelum)}}</th>
-        </tr>
         @php
             $saldo = $saldoSebelum;
         @endphp
@@ -342,5 +348,33 @@
       numeral: true,
       numeralThousandsGroupStyle: 'thousand'
   });
+</script>
+@endsection
+@section('script')
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.js"></script>
+<script type="text/javascript" >
+    $('#table').DataTable({
+      "pageLength":     25,
+      "language": {
+        "decimal":        "",
+        "emptyTable":     "Tidak ada data tersedia",
+        "info":           "Menampilkan _START_ sampai _END_ dari _TOTAL_ data",
+        "infoEmpty":      "Menampilkan 0 sampai 0 dari 0 data",
+        "infoFiltered":   "(difilter dari _MAX_ total data)",
+        "infoPostFix":    "",
+        "thousands":      ",",
+        "lengthMenu":     "Menampilkan _MENU_ data",
+        "loadingRecords": "Loading...",
+        "processing":     "Processing...",
+        "search":         "Cari:",
+        "zeroRecords":    "Tidak ada data ditemukan",
+        "paginate": {
+            "first":      "Awal",
+            "last":       "Akhir",
+            "next":       "Selanjutnya",
+            "previous":   "Sebelumnya"
+        },
+        }
+    });
 </script>
 @endsection
