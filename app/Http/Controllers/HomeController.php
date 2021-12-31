@@ -126,7 +126,7 @@ class HomeController extends Controller
         $sisaCicilanKios = $totalCicilanKios-$totalCicilanKiosTerbayar;
         /* Pendapatan */
         $pendapatanRumah = $totalDpRumah+$totalCicilanRumah;
-        $pendapatanKavling = $totalDp+$totalDpKios+$totalCicilan+$totalCicilanKios+$kelebihanTanah;
+        $pendapatanKavling = $totalDp+$totalDpKios+$totalCicilan+$totalCicilanKios;
         $totalPendapatan = $pendapatanRumah+$pendapatanKavling+$kelebihanTanah;
         /* chart */
         $chartPendapatan = new chartAdmin;
