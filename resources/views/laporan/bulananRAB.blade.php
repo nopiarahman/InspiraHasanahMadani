@@ -202,9 +202,10 @@
             </tr>
           </thead>
           <tbody>
-            @foreach($pendapatan as $pd)
+            @foreach($pendapatan->sortBy('tanggal',SORT_NATURAL) as $pd)
             <tr>
               <td>{{$loop->iteration}}</td>
+              {{-- <td>{{$pd->tanggal}}</td> --}}
               <td>{{$pd->uraian}}</td>
               <td>Rp.{{number_format($pd->kredit)}}</td>
             </tr>

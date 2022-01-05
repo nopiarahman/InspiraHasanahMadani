@@ -50,7 +50,7 @@ class LaporanController extends Controller
             $tahunSebelumEnd = Carbon::parse($request->end)->subYears(1)->endOfYear()->isoFormat('YYYY-MM-DD');
             $tahuniniStart = Carbon::parse($request->start)->firstOfYear()->isoFormat('YYYY-MM-DD');
             $tahuniniEnd = Carbon::parse($request->end)->endOfYear()->isoFormat('YYYY-MM-DD');
-            $pendapatan = transaksi::whereIn('kategori',['Pendapatan','Pendapatan Lain'])->whereBetween('tanggal',[$start,$end])->get();
+            $pendapatan = transaksi::whereIn('kategori',['Pendapatan','Pendapatan Lain','Kelebihan Tanah'])->whereBetween('tanggal',[$start,$end])->get();
             $modal = transaksi::where('kategori','Modal')->whereBetween('tanggal',[$start,$end])->get();
             $modalTahunSebelum = transaksi::where('kategori','Modal')->where('tanggal','<=',$tahunSebelumEnd)->get();
 
@@ -74,7 +74,7 @@ class LaporanController extends Controller
                 }
             }
         }else{
-            $pendapatan = transaksi::whereIn('kategori',['Pendapatan','Pendapatan Lain'])->whereBetween('tanggal',[$start,$end])->get();
+            $pendapatan = transaksi::whereIn('kategori',['Pendapatan','Pendapatan Lain','Kelebihan Tanah'])->whereBetween('tanggal',[$start,$end])->get();
             $modal = transaksi::where('kategori','Modal')->whereBetween('tanggal',[$start,$end])->get();
             $modalTahunSebelum = transaksi::where('kategori','Modal')->where('tanggal','<=',$tahunSebelumEnd)->get();
             if($modalTahunSebelum){
@@ -309,7 +309,7 @@ class LaporanController extends Controller
             $tahunSebelumEnd = Carbon::parse($request->end)->subYears(1)->endOfYear()->isoFormat('YYYY-MM-DD');
             $tahuniniStart = Carbon::parse($request->start)->firstOfYear()->isoFormat('YYYY-MM-DD');
             $tahuniniEnd = Carbon::parse($request->end)->endOfYear()->isoFormat('YYYY-MM-DD');
-            $pendapatan = transaksi::whereIn('kategori',['Pendapatan','Pendapatan Lain'])->whereBetween('tanggal',[$start,$end])->get();
+            $pendapatan = transaksi::whereIn('kategori',['Pendapatan','Pendapatan Lain','Kelebihan Tanah'])->whereBetween('tanggal',[$start,$end])->get();
             $modal = transaksi::where('kategori','Modal')->whereBetween('tanggal',[$start,$end])->get();
             $modalTahunSebelum = transaksi::where('kategori','Modal')->where('tanggal','<=',$tahunSebelumEnd)->get();
 
@@ -333,7 +333,7 @@ class LaporanController extends Controller
                 }
             }
         }else{
-            $pendapatan = transaksi::whereIn('kategori',['Pendapatan','Pendapatan Lain'])->whereBetween('tanggal',[$start,$end])->get();
+            $pendapatan = transaksi::whereIn('kategori',['Pendapatan','Pendapatan Lain','Kelebihan Tanah'])->whereBetween('tanggal',[$start,$end])->get();
             $modal = transaksi::where('kategori','Modal')->whereBetween('tanggal',[$start,$end])->get();
             $modalTahunSebelum = transaksi::where('kategori','Modal')->where('tanggal','<=',$tahunSebelumEnd)->get();
             if($modalTahunSebelum){

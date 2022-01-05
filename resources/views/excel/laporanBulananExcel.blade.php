@@ -80,7 +80,7 @@
     <tr>
       <th style="width: 20pt;font-weight:bold;" scope="col" colspan="3" >Pendapatan</th>
     </tr>
-    @foreach($pendapatan as $pd)
+    @foreach($pendapatan->sortBy('tanggal',SORT_NATURAL) as $pd)
     <tr>
       <td>{{$loop->iteration}}</td>
       <td>{{$pd->uraian}}</td>
