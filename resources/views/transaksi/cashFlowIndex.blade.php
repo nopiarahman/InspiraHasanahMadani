@@ -8,40 +8,39 @@
 <div class="section-header sticky-top">
   <div class="container">
     <div class="row">
-        <div class="col-6">
+        <div class="col-3">
           <h1>Kas Besar</h1>
         </div>
-        <div class="col-6">
-           {{-- filter --}}
-    <form action="{{route('exportKasBesar')}}" method="get" enctype="multipart/form-data">
+        <div class="col-9">
+         {{-- filter --}}
+    <form action="{{route('cashFlow')}}" method="get" enctype="multipart/form-data">
       <div class="form-group row mb-4">
         <label class="col-form-label text-md-right col-12 col-md-6 col-lg-6 mt-1 mr-n3" > <span style="font-size:small">Pilih Tanggal: </span> </label>
-        <div class="input-group col-sm-12 col-md-12">
+        <div class="input-group col-sm-12 col-md-6">
           <div class="input-group-prepend">
             <div class="input-group-text">
               <i class="fa fa-calendar" aria-hidden="true"></i>
             </div>
           </div>
-          <input type="text" id="reportrange2" class="form-control filter @error('filter') is-invalid @enderror" name="filter" value="{{ request('filter') }}" id="filter">
-          <input type="hidden" name="start" id="mulai2" value="{{$start}}">
-          <input type="hidden" name="end" id="akhir2" value="{{$end}}">
-          <button type="submit" class="btn btn-primary btn-icon icon-right">
-            <i class="fas fa-file-excel    "></i>
-            Export
+          <input type="text" id="reportrange" class="form-control filter @error('filter') is-invalid @enderror" name="filter" value="{{ request('filter') }}" id="filter">
+          <input type="hidden" name="start" id="mulai" value="{{$start}}">
+          <input type="hidden" name="end" id="akhir" value="{{$end}}">
+          <button type="submit" class="btn btn-primary btn-icon icon-right">Filter
+          <i class="fa fa-filter"></i>
           </button>
         </div>
       </form>
       <script type="text/javascript">
         $(function() {
             moment.locale('id');
-            var start = moment($('#mulai2').val());
-              var end = moment($('#akhir2').val());
+            var start = moment($('#mulai').val());
+              var end = moment($('#akhir').val());
             function cb(start, end) {
-                $('#reportrange2 span').html(start.format('D M Y') + ' - ' + end.format('DD MMMM YYYY'));
-                $('#mulai2').val(start);
-                $('#akhir2').val(end);
+                $('#reportrange span').html(start.format('D M Y') + ' - ' + end.format('DD MMMM YYYY'));
+                $('#mulai').val(start);
+                $('#akhir').val(end);
             }
-            $('#reportrange2').daterangepicker({
+            $('#reportrange').daterangepicker({
                 startDate: start,
                 endDate: end,
                 ranges: {
@@ -58,9 +57,6 @@
         {{-- end filter --}}
         </div>
       </div>
-      {{-- <div class="kanan">
-        <a href="{{route('exportKasBesar')}}" class="btn btn-primary"> <i class="fas fa-file-excel"></i> Export Excel</a>
-      </div> --}}
     </div>
   </div>
 </div>
@@ -85,7 +81,7 @@
     @endif
   </div>
 </div>
-@if(auth()->user()->role=="admin")
+@if(auth()->user()->role=="admin" || auth()->user()->role=="projectmanager")
     <div class="row">
       <div class="col-12">
         <div class="card">
@@ -167,49 +163,59 @@
     <h4>Daftar Kas Besar</h4>
   </div>
   <div class="card-body">
-    {{-- filter --}}
-    <form action="{{route('cashFlow')}}" method="get" enctype="multipart/form-data">
-      <div class="form-group row mb-4">
-        <label class="col-form-label text-md-right col-12 col-md-6 col-lg-6 mt-1 mr-n3" > <span style="font-size:small">Pilih Tanggal: </span> </label>
-        <div class="input-group col-sm-12 col-md-6">
-          <div class="input-group-prepend">
-            <div class="input-group-text">
-              <i class="fa fa-calendar" aria-hidden="true"></i>
-            </div>
-          </div>
-          <input type="text" id="reportrange" class="form-control filter @error('filter') is-invalid @enderror" name="filter" value="{{ request('filter') }}" id="filter">
-          <input type="hidden" name="start" id="mulai" value="{{$start}}">
-          <input type="hidden" name="end" id="akhir" value="{{$end}}">
-          <button type="submit" class="btn btn-primary btn-icon icon-right">Filter
-          <i class="fa fa-filter"></i>
-          </button>
+    <div class="row">
+      <div class="col-6">
+
+      </div>
+      <div class="col-6">
+{{-- filter --}}
+<form action="{{route('exportKasBesar')}}" method="get" enctype="multipart/form-data">
+  <div class="form-group row mb-4">
+    {{-- <label class="col-form-label text-md-right col-12 col-md-6 col-lg-6 mt-1 mr-n3" > <span style="font-size:small">Pilih Tanggal: </span> </label> --}}
+    <div class="input-group col-sm-12 col-md-12">
+      <div class="input-group-prepend">
+        <div class="input-group-text">
+          <i class="fa fa-calendar" aria-hidden="true"></i>
         </div>
-      </form>
-      <script type="text/javascript">
-        $(function() {
-            moment.locale('id');
-            var start = moment($('#mulai').val());
-              var end = moment($('#akhir').val());
-            function cb(start, end) {
-                $('#reportrange span').html(start.format('D M Y') + ' - ' + end.format('DD MMMM YYYY'));
-                $('#mulai').val(start);
-                $('#akhir').val(end);
+      </div>
+      <input type="text" id="reportrange2" class="form-control filter @error('filter') is-invalid @enderror" name="filter" value="{{ request('filter') }}" id="filter">
+      <input type="hidden" name="start" id="mulai2" value="{{$start}}">
+      <input type="hidden" name="end" id="akhir2" value="{{$end}}">
+      <button type="submit" class="btn btn-primary btn-icon icon-right">
+        <i class="fas fa-file-excel    "></i>
+        Export
+      </button>
+    </div>
+  </form>
+  <script type="text/javascript">
+    $(function() {
+        moment.locale('id');
+        var start = moment($('#mulai2').val());
+          var end = moment($('#akhir2').val());
+        function cb(start, end) {
+            $('#reportrange2 span').html(start.format('D M Y') + ' - ' + end.format('DD MMMM YYYY'));
+            $('#mulai2').val(start);
+            $('#akhir2').val(end);
+        }
+        $('#reportrange2').daterangepicker({
+            startDate: start,
+            endDate: end,
+            ranges: {
+                'Hari Ini': [moment(), moment()],
+                'Kemarin': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+                '7 Hari Terakhir': [moment().subtract(6, 'days'), moment()],
+                '30 Hari Terakhir': [moment().subtract(29, 'days'), moment()],
+                'Bulan Ini': [moment().startOf('month'), moment().endOf('month')],
+                'Bulan Lalu': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
             }
-            $('#reportrange').daterangepicker({
-                startDate: start,
-                endDate: end,
-                ranges: {
-                    'Hari Ini': [moment(), moment()],
-                    'Kemarin': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-                    '7 Hari Terakhir': [moment().subtract(6, 'days'), moment()],
-                    '30 Hari Terakhir': [moment().subtract(29, 'days'), moment()],
-                    'Bulan Ini': [moment().startOf('month'), moment().endOf('month')],
-                    'Bulan Lalu': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
-                }
-            }, cb);
-            });
-        </script>
-        {{-- end filter --}}
+        }, cb);
+        });
+    </script>
+    {{-- end filter --}}
+      </div>
+    </div>
+      
+    
     <table class="table table-sm my-3 bg-light ">
       <tr>
         <th class="text-primary text-right pr-5">Sisa Saldo Sebelumnya:  Rp.{{number_format($saldoSebelum)}}</th>
@@ -227,10 +233,10 @@
           <th scope="col">Debit</th>
           <th scope="col">Saldo</th>
           <th scope="col">Sumber</th>
-          @if(auth()->user()->role=="admin")
+          @if(auth()->user()->role=="admin" || auth()->user()->role=="projectmanager")
           <th scope="col">Aksi</th>
           @endif
-          <th></th>
+          {{-- <th></th> --}}
         </tr>
       </thead>
       
@@ -266,9 +272,9 @@
               $saldo=$saldo+$transaksi->kredit-$transaksi->debet
           @endphp
           <td>{{$transaksi->sumber}}</td>
+          @if(auth()->user()->role=="admin" || auth()->user()->role=="projectmanager")
           <td>
             @if($transaksi->kategori ==='Modal' || $transaksi->kategori ==='Aset' || $transaksi->kategori ==='Pendapatan Lain' ||$transaksi->kategori ==='Kelebihan Tanah' )
-              @if(auth()->user()->role=="admin")
                   <button type="button" class="btn btn-sm btn-white text-danger border-danger" 
                   data-toggle="modal" 
                   data-target="#hapusTransaksi" 
@@ -276,8 +282,8 @@
                   data-uraian="{{$transaksi->uraian}}">
                   <i class="fa fa-trash" aria-hidden="true" ></i> Hapus</button>    
                   @endif
-              @endif
-          </td>
+                </td>
+                @endif
         </tr>
         @endforeach
       </tbody>
