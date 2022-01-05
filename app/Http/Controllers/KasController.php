@@ -263,7 +263,7 @@ class KasController extends Controller
             ];
             $this->validate($request,$rules,$costumMessages);
             // $requestData=$request->all();
-            $requestData=$request->all();
+            $requestData=$request->except('jumlah');
             $requestData['kredit']=str_replace(',', '', $request->jumlah);
             $requestData['proyek_id']=proyekId();
             /* cek apakah ada transaksi sebelumnya */

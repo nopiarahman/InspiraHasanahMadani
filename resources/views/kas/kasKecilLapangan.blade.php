@@ -83,7 +83,7 @@
       <a href="{{route('kasKecilLapangan')}}"  class="btn btn-primary disabled ">Masuk</a>
       <a href="{{route('kasKecilLapanganKeluar')}}" class="btn btn-primary ml-2">Keluar</a>
   </div>
-  @if(auth()->user()->role=="admin")
+  @if(auth()->user()->role=="admin" || auth()->user()->role=="projectmanager")
     <div class="row">
       <div class="col-12">
         <div class="card">
