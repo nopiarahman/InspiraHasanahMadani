@@ -15,7 +15,7 @@
       <th style="font-weight: bold; weight:20px" scope="col">Nama</th>
       <th style="font-weight: bold; weight:20px" scope="col">Blok</th>
       <th style="font-weight: bold; weight:20px" scope="col">Jenis</th>
-      <th style="font-weight: bold; weight:20px" scope="col">No Telp</th>
+      <th style="font-weight: bold; weight:20px" scope="col">Cicilan/bulan</th>
       <th style="font-weight: bold; weight:20px" scope="col">Jatuh Tempo</th>
       <th scope="col">Nominal Tunggakan - {{Carbon\Carbon::parse($start)->isoFormat('MMMM')}}</th>
     </tr>
@@ -36,7 +36,7 @@
             <td>{{$tunggakan->pelanggan->nama}}</td>
             <td>{{$tunggakan->pelanggan->kavling->blok}}</td>
             <td>{{jenisKepemilikan($tunggakan->pelanggan->id)}}</td>
-            <td>{{$tunggakan->pelanggan->nomorTelepon}}</td>
+            <td>{{floor($tunggakan->dp/$tunggakan->tenorDP)}}</td>
             <td data-order="{{tempoDpNunggak($tunggakan,$start)->tempo}}"><a class="text-danger" href="{{route('DPKavlingTambah',['id'=>$tunggakan->id])}}">
               {{-- <td> --}}
               1-10 {{Carbon\Carbon::parse(tempoDpNunggak($tunggakan,$start)->tempo)->isoFormat('MMMM YYYY')}}
@@ -59,7 +59,7 @@
     <td>{{$tunggakan->pelanggan->nama}}</td>
     <td>{{$tunggakan->pelanggan->kavling->blok}}</td>
     <td>{{jenisKepemilikan($tunggakan->pelanggan->id)}}</td>
-    <td>{{$tunggakan->pelanggan->nomorTelepon}}</td>
+    <td>{{floor($tunggakan->sisaKewajiban/$tunggakan->tenor)}}</td>
     <td data-order="{{tempoCicilanNunggak($tunggakan,$start)->tempo}}">
       <a class="text-danger" href="{{route('unitKavlingDetail',['id'=>$tunggakan->id])}}">
         1-10 {{Carbon\Carbon::parse(tempoCicilanNunggak($tunggakan,$start)->tempo)->isoFormat('MMMM YYYY')}}

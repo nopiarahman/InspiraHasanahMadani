@@ -53,7 +53,9 @@ class KasController extends Controller
         }else{
             $kasKecilLapangan=kasKecilLapangan::whereBetween('tanggal',[$start,$end])->where('proyek_id',proyekId())->orderBy('no')->get();
         }
-        return view ('kas/kasKecilLapangan',compact('kasKecilLapangan','start','end'));
+        $transaksi= kasKecilLapangan::where('tanggal','<',$start)->get();
+        $saldoSebelum = $transaksi->sum('kredit')-$transaksi->sum('debet');
+        return view ('kas/kasKecilLapangan',compact('kasKecilLapangan','start','end','saldoSebelum'));
     }
     public function exportKasLapangan (Request $request){
         $start = Carbon::now()->firstOfMonth()->isoFormat('YYYY-MM-DD');

@@ -1,4 +1,7 @@
 @extends('layouts.tema')
+@section('head')
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.css">
+@endsection
 @section ('menuKas','active')
 @section ('menuKasKecilLapangan','active')
 @section('content')
@@ -195,7 +198,12 @@
               });
           </script>
           {{-- end filter --}}
-        <table class="table table-sm table-hover table-striped mt-3">
+          <table class="table table-sm my-3 bg-light ">
+            <tr>
+              <th class="text-primary text-right pr-5">Sisa Saldo Sebelumnya:  Rp.{{number_format($saldoSebelum)}}</th>
+            </tr>
+          </table>
+        <table class="table table-sm table-hover table-striped mt-3" id="table">
           <thead>
             <tr>
               <th scope="col">No</th>
@@ -205,17 +213,20 @@
               <th scope="col">Debit</th>
               <th scope="col">Saldo</th>
               <th scope="col">Sumber</th>
-              @if(auth()->user()->role=="admin")
+              @if(auth()->user()->role=="admin" || auth()->user()->role=="projectmanager")
               <th scope="col">Aksi</th>
               @endif
             </tr>
           </thead>
           <tbody>
-              <tr>
+              {{-- <tr>
                 <td colspan="2"></td>
                 <th class="text-primary " colspan="3" >Sisa Saldo Sebelumnya</th>
-                <th class="text-primary">Rp.{{number_format(saldoKasKecilLapanganSebelumnya($start))}}</th>
-              </tr>
+                <th class="text-primary">Rp.{{number_format($saldoSebelum)}}</th>
+              </tr> --}}
+              @php
+                  $saldo = $saldoSebelum;
+              @endphp
               @foreach($kasKecilLapangan as $kas)
               <tr>
                 <td>{{$loop->iteration}}</td>
@@ -231,9 +242,12 @@
                   Rp.{{number_format($kas->debet)}}
                   @endif
                 </td>
-                <td>Rp. {{number_format($kas->saldo)}}</td>
+                <td>Rp. {{number_format($saldo+$kas->kredit-$kas->debet)}}</td>
+                @php
+                    $saldo=$saldo+$kas->kredit-$kas->debet
+                @endphp
                 <td>{{$kas->sumber}}</td>
-                @if(auth()->user()->role=="admin")
+                @if(auth()->user()->role=="admin" || auth()->user()->role=="projectmanager")
                 <td>
                   <button type="button" class="btn btn-sm btn-white text-danger border-danger" 
                   data-toggle="modal" 
@@ -303,3 +317,31 @@
   });
 </script>
   @endsection
+  @section('script')
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.js"></script>
+<script type="text/javascript" >
+    $('#table').DataTable({
+      "pageLength":     25,
+      "language": {
+        "decimal":        "",
+        "emptyTable":     "Tidak ada data tersedia",
+        "info":           "Menampilkan _START_ sampai _END_ dari _TOTAL_ data",
+        "infoEmpty":      "Menampilkan 0 sampai 0 dari 0 data",
+        "infoFiltered":   "(difilter dari _MAX_ total data)",
+        "infoPostFix":    "",
+        "thousands":      ",",
+        "lengthMenu":     "Menampilkan _MENU_ data",
+        "loadingRecords": "Loading...",
+        "processing":     "Processing...",
+        "search":         "Cari:",
+        "zeroRecords":    "Tidak ada data ditemukan",
+        "paginate": {
+            "first":      "Awal",
+            "last":       "Akhir",
+            "next":       "Selanjutnya",
+            "previous":   "Sebelumnya"
+        },
+        }
+    });
+</script>
+@endsection
