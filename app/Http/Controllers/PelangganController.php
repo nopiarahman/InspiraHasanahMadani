@@ -98,6 +98,7 @@ class PelangganController extends Controller
             'nama'=>'required',
             'kavling_id'=>'required',
             'tenor'=>'required',
+            'diskon'=>'required',
             'potonganDp'=>'required',
             'harga'=>'required',
             'dp'=>'required',
@@ -555,6 +556,7 @@ class PelangganController extends Controller
         $dataKavling=kavling::where('pelanggan_id',$id->id)->first();
         // dd($dataKavling);
         $dataPembelian=pembelian::where('pelanggan_id',$id->id)->first();
+        // dd($dataPembelian);
         $persenDiskon = ($dataPembelian->diskon/$dataPembelian->harga)*100;
         /* tambahan model untuk cetak pelanggan */
         $dataDp = dp::where('pembelian_id',$dataPembelian->id)->orderBy('tanggal')->get();

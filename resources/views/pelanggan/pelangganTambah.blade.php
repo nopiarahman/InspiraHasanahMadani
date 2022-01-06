@@ -264,7 +264,8 @@
               <div class="form-group row mb-4">
                 <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Diskon</label>
                 <div class="input-group col-sm-12 col-md-7">
-                  <input type="text" class="form-control @error('diskon') is-invalid @enderror" name="diskon" value="{{old('diskon')}} " min="0" max="100" placeholder="diisi tanpa tanda %" id="diskon">
+                  <input type="text" class="form-control @error('diskon') is-invalid @enderror" name="diskon" value="0"  placeholder="jika tidak ada diskon diisi 0" id="diskon" required>
+                  {{-- <div class="feedback">*kosongkan jika data belum ada</div> --}}
                   @error('diskon')
                   <div class="invalid-feedback">{{$message}}</div>
                   @enderror
