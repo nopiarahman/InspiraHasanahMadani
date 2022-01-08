@@ -26,6 +26,9 @@
         <th style="width: 20pt; font-weight:bold;" class="text-primary " colspan="3" >Sisa Saldo Sebelumnya</th>
         <th style="width: 20pt; font-weight:bold;" class="text-primary">{{saldoKasKecilLapanganSebelumnya($start)}}</th>
       </tr>
+      @php
+          $saldo = $saldoSebelum;
+      @endphp
       @foreach($kasKecilLapangan as $kas)
       <tr>
         <td style="width: 20pt">{{$loop->iteration}}</td>
@@ -34,7 +37,7 @@
         <td style="width: 20pt">{{$kas->uraian}}</td>
         <td style="width: 20pt">
           @if($kas->kredit != null)
-          {{$kas->kredit)}}
+          {{$kas->kredit}}
           @endif
         </td>
         <td style="width: 20pt">
@@ -42,7 +45,10 @@
           {{$kas->debet}}
           @endif
         </td>
-        <td style="width: 20pt">{{$kas->saldo}}</td>
+        <td style="width: 20pt">{{$saldo+$kas->kredit-$kas->debet}}</td>
+        @php
+            $saldo=$saldo+$kas->kredit-$kas->debet
+        @endphp
         <td style="width: 20pt">{{$kas->sumber}}</td>
       </tr>
       @endforeach
@@ -52,7 +58,7 @@
       <th style="width: 20pt; font-weight:bold;" colspan="3" class="text-right text-primary">Total</th>
       <th style="width: 20pt; font-weight:bold;" class="text-primary">{{$kasKecilLapangan->sum('kredit')}}</th>
       <th style="width: 20pt; font-weight:bold;" class="text-primary">{{$kasKecilLapangan->sum('debet')}}</th>
-      <th style="width: 20pt; font-weight:bold;" colspan="2" class="text-primary">Rp. {{totalKasKecilLapangan($start,$end)}}</th>
+      <th style="width: 20pt; font-weight:bold;" colspan="2" class="text-primary">{{$saldo}}</th>
       <td style="width: 20pt"></td>
     </tr>
   </tfoot>

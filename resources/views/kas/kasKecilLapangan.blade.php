@@ -265,7 +265,7 @@
               <th colspan="3" class="text-right text-primary">Total</th>
               <th class="text-primary">Rp. {{number_format($kasKecilLapangan->sum('kredit'))}}</th>
               <th class="text-primary">Rp. {{number_format($kasKecilLapangan->sum('debet'))}}</th>
-              <th colspan="2" class="text-primary">Rp. {{number_format(totalKasKecilLapangan($start,$end))}}</th>
+              <th colspan="2" class="text-primary">Rp. {{number_format($saldo)}}</th>
               <td></td>
             </tr>
           </tfoot>
