@@ -2,11 +2,12 @@
 @section('content')
 <div class="section-header">
     <h1>Cetak Kwitansi DP</h1> 
+    @if(auth()->user()->role=="admin"||auth()->user()->role=="projectmanager" )
     <div class="kanan">
       <button onclick="cetak('wrapper')" class="btn btn-primary"> <i class="fas fa-print fa-L"></i> Cetak Kwitansi</button>
-      {{-- <a href="javascript:generatePDF()" class="btn btn-info ml-2"> <i class="fas fa-print fa-L"></i> Cetak PDF</a> --}}
       <a type="button" href="{{route('cetakDPPDF',['id'=>$id->id])}}" class="btn btn-info ml-2"> <i class="fas fa-file-pdf    "></i> Cetak PDF</a>
     </div>
+    @endif
 </div>
 
 <div class="wrapper" id="wrapper">

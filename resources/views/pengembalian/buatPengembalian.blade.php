@@ -11,6 +11,9 @@
         <div class="col">
           <h1>Pengembalian Dana {{$id->nama}}</h1>
         </div>
+        <div class="kanan">
+          <a href="{{route('exportPengembalian',['id'=>$id->id])}}" class="btn btn-primary"> <i class="fas fa-file-excel"></i> Export Excel</a>
+        </div>
       </div>
       <div class="row">
         <nav aria-label="breadcrumb">
@@ -226,7 +229,9 @@
             <th scope="col">Tanggal</th>
             <th scope="col">Jumlah</th>
             <th scope="col">Sisa Pengembalian</th>
+            @if(auth()->user()->role=="admin"||auth()->user()->role=="projectmanager" )
             <th scope="col">Aksi</th>
+            @endif
           </tr>
         </thead>
         <tbody>
@@ -236,6 +241,7 @@
             <td>{{formatTanggal($p->tanggal)}}</td>
             <td>Rp. {{number_format($p->jumlah)}}</td>
             <td>Rp. {{number_format($p->sisaPengembalian)}}</td>
+            @if(auth()->user()->role=="admin"||auth()->user()->role=="projectmanager" )
             <td>
               <button type="button" class="btn btn-sm btn-white text-danger border-danger" 
               data-toggle="modal" 
@@ -243,6 +249,7 @@
               data-id="{{$p->id}}">
               <i class="fa fa-trash" aria-hidden="true" ></i> Hapus</button>
             </td>
+            @endif
           @endforeach
         </tbody>
         <tfoot>

@@ -11,6 +11,8 @@ use App\akun;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\PengembalianExport;
 
 class PengembalianController extends Controller
 {
@@ -63,6 +65,11 @@ class PengembalianController extends Controller
             DB::rollback();
             return redirect()->back()->with('error','Gagal. Pesan Error: '.$ex->getMessage());
         }
+    }
+    public function exportPengembalian(Pelanggan $id){
+        // dd($id);
+        $pengembalian=pengembalian::where('pelanggan_id',$id->id)->get();
+        return Excel::download(new PengembalianExport($id,$pengembalian), 'Pengembalian Dana Batal Akad '.$id->nama.'.xlsx');
     }
     
 }
