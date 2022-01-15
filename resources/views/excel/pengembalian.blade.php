@@ -26,6 +26,11 @@
       <td>: Rp. {{number_format(cicilanTerbayarTotal($id->pembelian->id))}}</td>
     </tr>
     <tr>
+      <th>Potongan Biaya</th>
+      <td>: Rp. {{number_format($id->pembelian->pengembalian)}} 
+      </td>
+    </tr>
+    <tr>
       <th>Total Pengembalian Dana</th>
       <td>: Rp. {{number_format(cekTotalDp($id->pembelian->id)+cicilanTerbayarTotal($id->pembelian->id)-$id->pembelian->pengembalian)}}</td>
     </tr>
