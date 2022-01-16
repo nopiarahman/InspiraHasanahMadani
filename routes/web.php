@@ -196,6 +196,7 @@ Route::group(['middleware'=>['auth','role:admin,projectmanager,adminGudang,marke
     
     Route::get('/pengembalian/{id}', 'PengembalianController@buatPengembalian')->name('pengembalian');
     Route::get('/exportPengembalian/{id}', 'PengembalianController@exportPengembalian')->name('exportPengembalian');
+    Route::get('/exportPengembalianPDF/{id}', 'PengembalianController@exportPengembalianPDF')->name('exportPengembalianPDF');
     Route::delete('/hapusPengembalian/{id}', 'PengembalianController@destroy')->name('hapusPengembalian');
 
 });

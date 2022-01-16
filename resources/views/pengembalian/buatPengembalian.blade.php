@@ -12,7 +12,8 @@
           <h1>Pengembalian Dana {{$id->nama}}</h1>
         </div>
         <div class="kanan">
-          <a href="{{route('exportPengembalian',['id'=>$id->id])}}" class="btn btn-primary"> <i class="fas fa-file-excel"></i> Export Excel</a>
+          <a href="{{route('exportPengembalianPDF',['id'=>$id->id])}}" class="btn btn-primary"> <i class="fas fa-file-pdf    "></i> Download PDF</a>
+          <a href="{{route('exportPengembalian',['id'=>$id->id])}}" class="btn btn-primary ml-2"> <i class="fas fa-file-excel"></i> Export Excel</a>
         </div>
       </div>
       <div class="row">

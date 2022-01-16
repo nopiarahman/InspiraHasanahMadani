@@ -9,6 +9,7 @@ use App\rab;
 use App\rabUnit;
 use App\akun;
 use Carbon\Carbon;
+use PDF;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
@@ -70,6 +71,13 @@ class PengembalianController extends Controller
         // dd($id);
         $pengembalian=pengembalian::where('pelanggan_id',$id->id)->get();
         return Excel::download(new PengembalianExport($id,$pengembalian), 'Pengembalian Dana Batal Akad '.$id->nama.'.xlsx');
+    }
+    public function exportPengembalianPDF(Pelanggan $id){
+        // dd($id);
+        $pengembalian=pengembalian::where('pelanggan_id',$id->id)->get();
+        // return view('PDF/pengembalian',compact('id','pengembalian'));
+        $pdf=PDF::loadview('PDF/pengembalian',compact('id','pengembalian'))->setPaper('A4','portait');
+        return $pdf->download('Pengembalian Dana Batal Akad '.$id->nama.'.pdf');
     }
     
 }
