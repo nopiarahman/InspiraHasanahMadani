@@ -138,6 +138,7 @@
                   <option value="adminWeb">Admin Website</option>
                   <option value="adminGudang">Admin Gudang</option>
                   <option value="marketing">Marketing</option>
+                  <option value="gudang">Gudang</option>
             </select>
               </div>
             </div>

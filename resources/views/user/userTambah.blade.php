@@ -74,6 +74,7 @@
               <option value="admin">Super Admin</option>
               <option value="adminWeb">Admin Website</option>
               <option value="adminGudang">Admin Gudang</option>
+              <option value="gudang">Gudang</option>
               <option value="marketing">Marketing</option>
             </select>
           </div>

@@ -31,7 +31,11 @@
 
 <!--[if lt IE 9]> <script type="text/javascript" src="js/modernizr.custom.js"></script> <![endif]-->
 <!-- /STYLES -->
-
+<style>
+	.fullText{
+		display: none;
+	}
+</style>
 </head>
 
 <body>
@@ -558,7 +562,7 @@
 											<p>
 												{{-- {!! $kb->isi!!} --}}
 												{!! \Illuminate\Support\Str::limit($kb->isi, 150, $end='...') !!}
-											</p>
+											</p>	
 										</div>
 										<div class="glax_tm_button_more_wrap">
 											<a href="{{route('kabar_berita',['id'=>$kb->id])}}">
@@ -962,9 +966,29 @@
                     </div>
                     <div class="col-md-6 py-5 px-sm-5 my-auto ">
                         <h2 class="pt-sm-3">{{$popup->judul}} </h2>
-                        <p class="text-muted">
-													{!!$popup->text!!}
-                        </p>
+						@if(strlen($popup->text > 200))
+                        <div class="trimText" id="trimText" >
+								{!!substr($popup->text, 0, 200)!!}....
+								<button onclick="readmore()" id="myBtn" class="badge badge-secondary text-dark">Lihat Selengkapnya</button>
+						</div>	
+						<div class="fullText">{!!$popup->text!!}
+						</div>
+
+							<script type="text/javascript">
+								function readmore(){
+									var btnText = document.getElementById("myBtn");
+									var trim = document.getElementById("trimText");
+									var text = document.querySelector('.fullText');
+									trim.style.display = "none";
+									text.className='.fullText'
+									console.log(trim.className);
+									btnText.className='d-none'
+								}
+							</script>
+						@else
+						<div class="fullText">{!!$popup->text!!}</div>
+						@endif
+							
 						@if($popup->link != null)
                             <a href="{{url($popup->link)}}" type="button" class="btn btn-cstm-dark btn-block btn-cta mt-5" data-dismiss="modal" aria-label="Close" target="_blank">Buka</a>
 						@endif						
