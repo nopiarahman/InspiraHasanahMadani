@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\popup;
+use App\galeri;
 class PopUpController extends Controller
 {
     /**
@@ -11,9 +12,12 @@ class PopUpController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function banner()
     {
-        //
+        $detail = galeri::firstOrCreate([
+            'kategori'=>'banner'
+        ]);
+        return view ('popup/banner',compact('detail'));   
     }
 
     /**
@@ -32,7 +36,25 @@ class PopUpController extends Controller
         }
         return view('popup/createPopUp',compact('popup'));
     }
-
+    public function gantiBanner(galeri $id, Request $request){
+        // dd($request);
+        $requestData=$request->all();
+        $file_nama            = $request->file('foto')->store('public/user/banner');
+        if ($request->hasFile('foto')) {
+            $requestData['path'] = $file_nama;
+        } else {
+            unset($requestData['path']);
+        }
+        // dd($file_nama);
+        $id->update($requestData);
+        return redirect()->back()->with('status','Foto berhasil diganti');
+    }
+    public function linkBanner(galeri $id, Request $request){
+        // dd($request);?
+        $requestData=$request->all();
+        $id->update($requestData);
+        return redirect()->back()->with('status','Link berhasil diganti');
+    }
     /**
      * Store a newly created resource in storage.
      *

@@ -10,8 +10,8 @@ class WebController extends Controller
 {
     public function blog(){
         $blog = kabarBerita::latest()->paginate(5);
-        
-        return view('web/blog',compact('blog'));
+        $banner = galeri::where('kategori','banner')->first();
+        return view('web/blog',compact('blog','banner'));
         
     }
     public function kabar_berita(kabarBerita $id){

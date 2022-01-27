@@ -116,7 +116,7 @@
       <div class="main-sidebar">
         <aside id="sidebar-wrapper">
           <div class="sidebar-brand">
-            <a href="{{route('home')}}">
+            <a href="{{url('/')}}">
               <img src="{{asset('assets/img/logo-color.png')}}" alt="" width="200px" style="padding-top: 3em;">
             </a>
           </div>
@@ -249,6 +249,7 @@
           @if(auth()->user()->role=='adminWeb')
               <li class="menu-header">Menu Website</li>
               <li class=" @yield('menuPopUp')"><a class="nav-link" href="{{route('popup')}}"> <i class="fas fa-file-image    "></i> <span> Pop Up</span></a></li>
+              <li class=" @yield('menuBanner')"><a class="nav-link" href="{{route('banner')}}"> <i class="fas fa-file-image    "></i> <span> Banner </span></a></li>
               <li class=" @yield('menuSlider')"><a class="nav-link" href="{{route('slider')}}"> <i class="fas fa-image    "></i><span>Slider</span></a></li>
               <li class=" @yield('menuProyekWeb')"><a class="nav-link" href="{{route('proyekWeb')}}"><i class="fas fa-archway"></i> <span> Proyek</span></a></li>
               <li class=" @yield('menuKabarBerita')"><a class="nav-link" href="{{route('kabarBerita')}}"><i class="fas fa-book-open"></i> <span> Kabar Berita</span></a></li>

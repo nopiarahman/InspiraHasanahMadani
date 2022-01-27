@@ -211,6 +211,9 @@ Route::group(['middleware'=>['auth','role:projectmanager']],function(){
 Route::group(['middleware'=>['auth','role:adminWeb']],function(){
 
     Route::get('/popup', 'PopUpController@create')->name('popup');
+    Route::get('/banner', 'PopUpController@banner')->name('banner');
+    Route::patch('/gantiBanner/{id}', 'PopUpController@gantiBanner')->name('gantiBanner');
+    Route::patch('/linkBanner/{id}', 'PopUpController@linkBanner')->name('linkBanner');
     Route::post('/popUpSimpan', 'PopUpController@store')->name('popUpSimpan');
     Route::get('/slider', 'SliderController@index')->name('slider');
     Route::get('/tambahSlider', 'SliderController@create')->name('sliderTambah');

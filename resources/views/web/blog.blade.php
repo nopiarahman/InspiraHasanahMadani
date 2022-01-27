@@ -453,10 +453,12 @@
 						<div class="rightbox">
 							<div class="glax_tm_request_estimate_wrap">
 								<div class="image_wrap">
-									<img src="img/services/300x460.jpg" alt="" />
-									<div class="image"></div>
+									<a href="{{$banner->link}}">
+										<img src="{{Storage::url($banner->path)}}" alt="" />
+									</a>
+
 								</div>
-								<div class="definition">
+								{{-- <div class="definition">
 									<div class="text">
 										<p>Lets get started! Contact us for a free quote on your next home improvement project.</p>
 									</div>
@@ -473,9 +475,9 @@
 										<span class="second"></span>
 										<span class="third"></span>
 									</div>
-								</div>
+								</div> --}}
 							</div>
-							<div class="glax_tm_brochures_wrap">
+							{{-- <div class="glax_tm_brochures_wrap">
 								<div class="title_holder">
 									<span>Company Presentation</span>
 								</div>
@@ -508,7 +510,7 @@
 										</div>
 									</li>
 								</ul>
-							</div>
+							</div> --}}
 						</div>
 					</div>
 				</div>
