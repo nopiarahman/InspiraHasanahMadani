@@ -35,7 +35,7 @@ Route::get('/galeri', 'WebController@galeri')->name('galeri');
 Route::get('/tentang', 'WebController@tentang')->name('tentang');
 
 Auth::routes();
-Route::group(['middleware'=>['auth','role:admin,projectmanager,adminGudang,marketing,gudang']],function(){
+Route::group(['middleware'=>['auth','role:admin,projectmanager,adminGudang,marketing,gudang,kasir']],function(){
     Route::get('/proyek', 'ProyekController@index')->name('proyek');
     Route::get('/proyekTambah', 'ProyekController@create')->name('proyekTambah');
     Route::post('/proyekSimpan', 'ProyekController@store')->name('proyekSimpan');

@@ -81,7 +81,7 @@
     @endif
   </div>
 </div>
-@if(auth()->user()->role=="admin" || auth()->user()->role=="projectmanager")
+@if(auth()->user()->role=="admin" || auth()->user()->role=="projectmanager"||auth()->user()->role=="kasir")
     <div class="row">
       <div class="col-12">
         <div class="card">
@@ -158,6 +158,8 @@
       </div>
     </div>
 @endif
+@if(auth()->user()->role=="admin" || auth()->user()->role=="projectmanager" || auth()->user()->role=="marketing" || auth()->user()->role=="adminGudang")
+
 <div class="card">
   <div class="card-header">
     <h4>Daftar Kas Besar</h4>
@@ -355,6 +357,7 @@
       numeralThousandsGroupStyle: 'thousand'
   });
 </script>
+@endif
 @endsection
 @section('script')
 <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.js"></script>

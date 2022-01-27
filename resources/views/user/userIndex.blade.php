@@ -139,6 +139,7 @@
                   <option value="adminGudang">Admin Gudang</option>
                   <option value="marketing">Marketing</option>
                   <option value="gudang">Gudang</option>
+                  <option value="kasir">Kasir</option>
             </select>
               </div>
             </div>
