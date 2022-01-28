@@ -25,6 +25,7 @@ Route::get('/', function () {
 });
 /* WEB */
 Route::get('/blog', 'WebController@blog')->name('blog');
+// Route::get('/blog/{tanggal}', 'WebController@blog')->name('filterBerita');
 Route::get('/kabar_berita/{id}', 'WebController@kabar_berita')->name('kabar_berita');
 
 Route::get('/detailProyek/{id}', 'WebController@proyekdetail')->name('detailProyek');

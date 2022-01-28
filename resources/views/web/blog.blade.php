@@ -458,59 +458,41 @@
 									</a>
 
 								</div>
-								{{-- <div class="definition">
-									<div class="text">
-										<p>Lets get started! Contact us for a free quote on your next home improvement project.</p>
-									</div>
-									<div class="button">
-										<a href="#">Request an estimate</a>
-									</div>
-									<div class="first_shape">
-										<span class="first"></span>
-										<span class="second"></span>
-										<span class="third"></span>
-									</div>
-									<div class="second_shape">
-										<span class="first"></span>
-										<span class="second"></span>
-										<span class="third"></span>
-									</div>
-								</div> --}}
 							</div>
-							{{-- <div class="glax_tm_brochures_wrap">
+							<div class="glax_tm_brochures_wrap">
 								<div class="title_holder">
-									<span>Company Presentation</span>
+									<span>Lihat Tanggal Berita</span>
 								</div>
-								<ul>
-									<li>
-										<div class="inner">
-											<div class="icon">
-												<img class="svg" src="img/svg/file-pdf.svg" alt="" />
-											</div>
-											<span class="text">Download .PDF</span>
-											<span class="arrow"></span>
+								<div class="accordion accordion-flush" id="accordionFlushExample">
+									@forelse($listBerita->unique('tahun') as $tahun)
+									<div class="accordion-item">
+										<h2 class="accordion-header" id="heading{{$tahun->tahun}}">
+										<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{$tahun->tahun}}" aria-expanded="false" aria-controls="{{$tahun->tahun}}">
+											{{$tahun->tahun}}
+										</button>
+										</h2>
+										<div id="collapse{{$tahun->tahun}}" class="accordion-collapse collapse" aria-labelledby="heading{{$tahun->tahun}}" data-bs-parent="#accordionFlushExample">
+										<div class="accordion-body">
+											<ul class="list-group">
+												@forelse($listBerita->whereIn('tahun',[$tahun->tahun])->unique('bulan') as $bulan)
+												<li class="list-group-item">
+													<form action="{{route('blog')}}" method="get">
+														<input type="submit" name="filter" class="bg-white text-success" value="{{$bulan->bulan}} {{$bulan->tahun}}" >
+													</form>
+													{{-- <a href="{{route('blog',(['tanggal'=>$bulan->tanggal]))}}" style="color: green; text-decoration:none;"> --}}
+													</a>
+												</li>
+												@empty
+												@endforelse
+											</ul>
 										</div>
-									</li>
-									<li>
-										<div class="inner">
-											<div class="icon">
-												<img class="svg" src="img/svg/file-zip.svg" alt="" />
-											</div>
-											<span class="text">Download .ZIP</span>
-											<span class="arrow"></span>
 										</div>
-									</li>
-									<li>
-										<div class="inner">
-											<div class="icon">
-												<img class="svg" src="img/svg/file-doc.svg" alt="" />
-											</div>
-											<span class="text">Download .DOC</span>
-											<span class="arrow"></span>
-										</div>
-									</li>
-								</ul>
-							</div> --}}
+									</div>
+									@empty
+
+									@endforelse
+								</div>
+							</div>
 						</div>
 					</div>
 				</div>

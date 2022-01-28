@@ -6,12 +6,24 @@ use Illuminate\Http\Request;
 use App\kabarBerita;
 use App\proyekweb;
 use App\galeri;
+use Carbon\Carbon;
+
 class WebController extends Controller
 {
-    public function blog(){
-        $blog = kabarBerita::latest()->paginate(5);
+    public function blog(Request $request){
+        $listBerita = kabarBerita::selectRaw("tanggal, date_format(tanggal, '%M') bulan, date_format(tanggal, '%Y') tahun")
+        ->get()
+        ->sortBy('bulan');
+        if($request->filter){
+            $start = Carbon::parse($request->filter)->firstOfMonth()->isoFormat('YYYY-MM-DD');
+            $end = Carbon::parse($request->filter)->endOfMonth()->isoFormat('YYYY-MM-DD');
+
+            $blog= kabarBerita::whereBetween('tanggal',[$start,$end])->paginate(5);
+        }else{
+            $blog = kabarBerita::latest()->paginate(5);
+        }
         $banner = galeri::where('kategori','banner')->first();
-        return view('web/blog',compact('blog','banner'));
+        return view('web/blog',compact('blog','banner','listBerita'));
         
     }
     public function kabar_berita(kabarBerita $id){
