@@ -453,10 +453,11 @@
 						<div class="rightbox">
 							<div class="glax_tm_request_estimate_wrap">
 								<div class="image_wrap">
+									@if($banner)
 									<a href="{{$banner->link}}">
 										<img src="{{Storage::url($banner->path)}}" alt="" />
 									</a>
-
+									@endif
 								</div>
 							</div>
 							<div class="glax_tm_brochures_wrap">
