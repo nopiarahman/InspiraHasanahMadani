@@ -42,7 +42,7 @@
         @endif
       </div>
     </div>
-    @if(auth()->user()->role=="admin"||auth()->user()->role=="projectmanager")
+    @if(auth()->user()->role=="admin"||auth()->user()->role=="projectmanager"||auth()->user()->role=="kasir")
     <div class="row">
       <div class="col-12">
         <div class="card">
@@ -212,7 +212,7 @@
           </td>
             {{-- @if($loop->last == true) --}}
           <td>
-            @if(auth()->user()->role=="admin"||auth()->user()->role=="projectmanager"||auth()->user()->role=="marketing" )
+            @if(auth()->user()->role=="admin"||auth()->user()->role=="projectmanager"||auth()->user()->role=="marketing" ||auth()->user()->role=="kasir")
             <a href="{{route('cetakKwitansiDp',['id'=>$cicilanDp->id])}}" class=" btn-sm border-success btn btn-white text-primary"> <i class="fas fa-file-invoice    "></i> Kwitansi</a>
             @endif
             @if(auth()->user()->role=="admin"||auth()->user()->role=="projectmanager" )

@@ -2,7 +2,7 @@
 @section('content')
 <div class="section-header">
     <h1>Cetak Kwitansi Cicilan</h1> 
-    @if(auth()->user()->role=="admin"||auth()->user()->role=="projectmanager" )
+    @if(auth()->user()->role=="admin"||auth()->user()->role=="projectmanager" ||auth()->user()->role=="kasir")
     <div class="kanan">
       <button onclick="cetak('wrapper')" class="btn btn-primary"> <i class="fas fa-print fa-L"></i> Cetak Kwitansi</button>
       <a type="button" href="{{route('cetakKwitansiPDF',['id'=>$id->id])}}" class="btn btn-info ml-2"> <i class="fas fa-file-pdf    "></i> Cetak PDF</a>

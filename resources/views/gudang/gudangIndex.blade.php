@@ -113,7 +113,7 @@
       <tfoot>
         <tr class="bg-light">
           <th colspan="4" class="text-right text-primary">Total</th>
-          <th colspan="2" class="text-primary">Rp. {{number_format($gudang->sum('total'))}}</th>
+          <th colspan="2" class="text-primary">Rp. {{number_format($daftarGudang->sum('total'))}}</th>
           <th colspan="2" class="text-primary">Rp. {{number_format($totalNominal)}}</th>
         </tr>
       </tfoot>
