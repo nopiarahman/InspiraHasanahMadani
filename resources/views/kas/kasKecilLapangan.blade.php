@@ -13,6 +13,7 @@
         </div>
         <div class="col-8">
             {{-- filter --}}
+
       <form action="{{route('kasKecilLapangan')}}" method="get" enctype="multipart/form-data">
 
         <div class="form-group row mb-4">
@@ -83,11 +84,12 @@
         @endif
       </div>
     </div>
+  @if(auth()->user()->role=="admin" || auth()->user()->role=="projectmanager")
     <div class="section-header">
       <a href="{{route('kasKecilLapangan')}}"  class="btn btn-primary disabled ">Masuk</a>
       <a href="{{route('kasKecilLapanganKeluar')}}" class="btn btn-primary ml-2">Keluar</a>
   </div>
-  @if(auth()->user()->role=="admin" || auth()->user()->role=="projectmanager")
+  {{-- @if(auth()->user()->role=="admin" || auth()->user()->role=="projectmanager") --}}
     <div class="row">
       <div class="col-12">
         <div class="card">

@@ -351,6 +351,19 @@
               <li class=" @yield('menuGudangHabis')"><a href="{{route('gudangHabis')}}">Stok Habis</a></li>
             </ul>
           </li>
+          <li class="nav-item dropdown @yield('menuKas')">
+            <a href="" class="nav-link has-dropdown"><i class="fas fa-book"></i> <span>KAS</span></a>
+            <ul class="dropdown-menu">
+              <li class=" @yield('menuKasKecilLapangan')"><a class="nav-link" href="{{route('kasKecilLapangan')}}">Kas Kecil Lapangan</a></li>
+            </ul>
+          </li>
+          <li class="nav-item dropdown @yield('menuPengadaan')">
+            <a href="" class="nav-link has-dropdown"><i class="fas fa-box-open    "></i> <span>Pengadaan</span></a>
+            <ul class="dropdown-menu">
+              <li class=" @yield('menuDaftarPengadaan')"><a href="{{route('pengadaan')}}">Daftar Pengadaan</a></li>
+              <li class=" @yield('menuDaftarBarang')"><a href="{{route('barang')}}">Daftar Barang</a></li>
+            </ul>
+          </li>
           @endif
 
           @if(auth()->user()->role=="kasir" )

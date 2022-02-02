@@ -969,7 +969,7 @@
 						@if(strlen($popup->text > 200))
                         <div class="trimText" id="trimText" >
 								{!!substr($popup->text, 0, 200)!!}....
-								<button onclick="readmore()" id="myBtn" class="badge badge-secondary text-dark">Lihat Selengkapnya</button>
+								<button onclick="readmore()" id="myBtn" style="color: white; border:none" class="badge badge-white text-dark">Lihat Selengkapnya</button>
 						</div>	
 						<div class="fullText">{!!$popup->text!!}
 						</div>
