@@ -55,10 +55,16 @@ class EstimasiController extends Controller
         $pelangganAktif = $semuaPelanggan->filter(function ($value, $key) {
             return $value->kavling != null;
         });
+        $dp=[];
         foreach($pelangganAktif as $p){
             $dp[]= $p->pembelian;
         }
-        $dpAktif = collect($dp);
+        if($dp){
+            $dpAktif = collect($dp);
+        }else{
+            $dpAktif=[];
+        }
+
         return view('estimasi/estimasiDP',compact('start','end','dpAktif'));
     }
     public function estimasiCicilan(Request $request){
@@ -73,12 +79,15 @@ class EstimasiController extends Controller
         $pelangganAktif = $semuaPelanggan->filter(function ($value, $key) {
             return $value->kavling != null;
         });
+        $cicilan=[];
         foreach($pelangganAktif as $p){
             $cicilan[]= $p->pembelian;
-            // $cicilan=collect($cicilanPelanggan)->whereBetween('tempo',[$start,$end]);       
         }
-
-        $cicilanAktif = collect($cicilan)->where('sisaCicilan','>',0);
+        if($cicilan){
+            $cicilanAktif = collect($cicilan)->where('sisaCicilan','>',0);
+        }else{
+            $cicilanAktif=[];
+        }
         // dd($cicilanAktif->take(10));
         return view('estimasi/estimasiCicilan',compact('start','end','cicilanAktif'));
     }
@@ -94,19 +103,26 @@ class EstimasiController extends Controller
         $pelangganAktif = $semuaPelanggan->filter(function ($value, $key) {
             return $value->kavling != null;
         });
+        $x=[];
         foreach($pelangganAktif as $p){
             $x[]= $p->pembelian;
         }
-        foreach($x as $p){
-            if(cekDPNunggakBulanIni($p,$start)!=null){
-                $dpNunggak[]=$p;
-            };
-            if(cekCicilanNunggakBulanIni($p,$start)!=null){
-                $cicilanNunggak[]=$p;
-            };
-        }
+        if($x){
+            foreach($x as $p){
+                if(cekDPNunggakBulanIni($p,$start)!=null){
+                    $dpNunggak[]=$p;
+                };
+                if(cekCicilanNunggakBulanIni($p,$start)!=null){
+                    $cicilanNunggak[]=$p;
+                };
+            }
+
             $DPtertunggak=collect($dpNunggak)->where('sisaDp','>',0);
             $cicilanTertunggak=collect($cicilanNunggak)->where('sisaCicilan','>',0);
+        }else{
+            $DPtertunggak=[];
+            $cicilanTertunggak=[];
+        }
         return view('estimasi/estimasiTunggakan',compact('start','end','DPtertunggak','cicilanTertunggak'));
     }
     public function exportEstimasiDp(Request $request){
@@ -166,19 +182,23 @@ class EstimasiController extends Controller
         $pelangganAktif = $semuaPelanggan->filter(function ($value, $key) {
             return $value->kavling != null;
         });
+        $x=[];
         foreach($pelangganAktif as $p){
             $x[]= $p->pembelian;
         }
-        foreach($x as $p){
-            if(cekDPNunggakBulanIni($p,$start)!=null){
-                $dpNunggak[]=$p;
-            };
-            if(cekCicilanNunggakBulanIni($p,$start)!=null){
-                $cicilanNunggak[]=$p;
-            };
+        if($x){
+            foreach($x as $p){
+                if(cekDPNunggakBulanIni($p,$start)!=null){
+                    $dpNunggak[]=$p;
+                };
+                if(cekCicilanNunggakBulanIni($p,$start)!=null){
+                    $cicilanNunggak[]=$p;
+                };
+            }
+                $DPtertunggak=collect($dpNunggak)->where('sisaDp','>',0);
+                $cicilanTertunggak=collect($cicilanNunggak)->where('sisaCicilan','>',0);
+
         }
-            $DPtertunggak=collect($dpNunggak)->where('sisaDp','>',0);
-            $cicilanTertunggak=collect($cicilanNunggak)->where('sisaCicilan','>',0);
         return Excel::download(new EsTunggakanExport(
             $start,$end,$DPtertunggak,$cicilanTertunggak
         ), 'Tunggakan .xlsx');

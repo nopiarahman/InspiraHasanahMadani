@@ -5,6 +5,8 @@ use App\kabarBerita;
 use App\proyekweb;
 use App\slider;
 use App\popup;
+use Illuminate\Support\Facades\Auth;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -18,10 +20,10 @@ use App\popup;
 
 Route::get('/', function () {
     $kabarBerita = kabarBerita::latest()->take(3)->get();
-    $proyek = proyekweb::where('status','publik')->latest()->take(4)->get();
+    $proyek = proyekweb::where('status', 'publik')->latest()->take(4)->get();
     $popup = popup::first();
     $slider = slider::latest()->take(3)->get();
-    return view('welcome',compact('kabarBerita','proyek','popup','slider'));
+    return view('welcome', compact('kabarBerita', 'proyek', 'popup', 'slider'));
 });
 /* WEB */
 Route::get('/blog', 'WebController@blog')->name('blog');
@@ -36,7 +38,7 @@ Route::get('/galeri', 'WebController@galeri')->name('galeri');
 Route::get('/tentang', 'WebController@tentang')->name('tentang');
 
 Auth::routes();
-Route::group(['middleware'=>['auth','role:admin,projectmanager,adminGudang,marketing,gudang,kasir']],function(){
+Route::group(['middleware' => ['auth', 'role:admin,projectmanager,adminGudang,marketing,gudang,kasir']], function () {
     Route::get('/proyek', 'ProyekController@index')->name('proyek');
     Route::get('/proyekTambah', 'ProyekController@create')->name('proyekTambah');
     Route::post('/proyekSimpan', 'ProyekController@store')->name('proyekSimpan');
@@ -49,7 +51,7 @@ Route::group(['middleware'=>['auth','role:admin,projectmanager,adminGudang,marke
     Route::post('/kavlingSimpan', 'KavlingController@kavlingSimpan')->name('kavlingSimpan');
     Route::delete('/hapusKavling/{id}', 'KavlingController@destroy')->name('hapusKavling');
     Route::patch('/gantiStatus/{id}', 'KavlingController@gantiStatus')->name('gantiStatus');
-    
+
     Route::get('/RAB', 'ProyekController@RAB')->name('RAB');
     Route::get('/RABGudang', 'ProyekController@RABGudang')->name('RABGudang');
     Route::patch('/editRAB/{id}', 'ProyekController@editRAB');
@@ -65,6 +67,7 @@ Route::group(['middleware'=>['auth','role:admin,projectmanager,adminGudang,marke
     Route::get('/PengembalianBatalAkad', 'ProyekController@PengembalianBatalAkad')->name('PengembalianBatalAkad');
 
     Route::post('/cariPelangganHome', 'HomeController@cariPelangganHome')->name('cariPelangganHome');
+    Route::post('/ubahProyek', 'HomeController@ubahProyek')->name('ubahProyek');
     Route::get('/cariPelangganDaftar', 'HomeController@cariPelangganDaftar');
 
     Route::get('/pelanggan', 'PelangganController@index')->name('pelangganIndex');
@@ -89,15 +92,15 @@ Route::group(['middleware'=>['auth','role:admin,projectmanager,adminGudang,marke
     Route::get('/estimasiTunggakan', 'EstimasiController@estimasiTunggakan')->name('estimasiTunggakan');
     Route::get('/exportEstimasiCicilan', 'EstimasiController@exportEstimasiCicilan')->name('exportEstimasiCicilan');
     Route::get('/exportEstimasiTunggakan', 'EstimasiController@exportEstimasiTunggakan')->name('exportEstimasiTunggakan');
-    
-    
+
+
     Route::get('/DPRumah', 'DPController@DPRumah')->name('DPRumah');
     Route::get('/DPKavling', 'DPController@DPKavling')->name('DPKavling');
     Route::get('/DPKavlingTambah/{id}', 'DPController@DPKavlingTambah')->name('DPKavlingTambah');
     Route::post('/DPKavlingSimpan', 'DPController@DPKavlingSimpan')->name('DPKavlingSimpan');
     Route::get('/DPKios', 'DPController@DPKios')->name('DPKios');
     Route::delete('/hapusTransaksi/{id}', 'DPController@destroy')->name('hapusTransaksi');
-    
+
     Route::get('/cicilanRumah', 'CicilanController@cicilanRumah')->name('cicilanRumah');
     Route::get('/cicilanKavling', 'CicilanController@cicilanKavling')->name('cicilanKavling');
     Route::get('/unitKavlingDetail/{id}', 'CicilanController@unitKavlingDetail')->name('unitKavlingDetail');
@@ -110,7 +113,7 @@ Route::group(['middleware'=>['auth','role:admin,projectmanager,adminGudang,marke
     Route::get('/lihatTransferDPPelanggan/{id}', 'DPController@lihatTransferDPPelanggan')->name('lihatTransferDPPelanggan');
     Route::patch('/tolakTransfer/{id}', 'CicilanController@tolakTransfer')->name('tolakTransfer');
     Route::patch('/tolakTransferDP/{id}', 'DPController@tolakTransferDP')->name('tolakTransferDP');
-    
+
     Route::get('/akun', 'AkunController@index')->name('akun');
     Route::delete('/hapusAkun/{id}', 'AkunController@destroy')->name('hapusAkun');
     Route::patch('/editAkun/{id}', 'AkunController@update')->name('editAkun');
@@ -119,14 +122,14 @@ Route::group(['middleware'=>['auth','role:admin,projectmanager,adminGudang,marke
     Route::get('/cariAkunTransaksi', 'TransaksiController@cariAkunTransaksi')->name('cariAkunTransaksi');
     Route::get('/cariRAB', 'TransaksiController@cariRAB')->name('cariRAB');
     Route::get('/cariRABUnit', 'TransaksiController@cariRABUnit')->name('cariRABUnit');
-    
+
     Route::get('/transaksiMasuk', 'TransaksiController@masuk')->name('transaksiMasuk');
     Route::get('/transaksiKeluar', 'TransaksiController@keluar')->name('transaksiKeluar');
     Route::post('/transaksiKeluarSimpan', 'TransaksiController@keluarSimpan')->name('transaksiKeluarSimpan');
     Route::delete('/hapusTransaksiKeluar/{id}', 'TransaksiController@hapusKeluar')->name('hapusTransaksiKeluar');
     Route::get('/cashFlow', 'TransaksiController@cashFlow')->name('cashFlow');
     Route::delete('/hapusKasBesar/{id}', 'TransaksiController@hapusKasBesar')->name('hapusTransaksiKeluar');
-    
+
     Route::get('/kasKecilLapangan', 'KasController@kasKecilLapangan')->name('kasKecilLapangan');
     Route::get('/kasKecilLapanganKeluar', 'KasController@kasKecilLapanganKeluar')->name('kasKecilLapanganKeluar');
     Route::post('/kasKecilLapanganKeluarSimpan', 'KasController@kasKecilLapanganKeluarSimpan')->name('kasKecilLapanganKeluarSimpan');
@@ -142,15 +145,15 @@ Route::group(['middleware'=>['auth','role:admin,projectmanager,adminGudang,marke
     Route::delete('/hapusPettyCash/{id}', 'KasController@pettyCashHapus')->name('hapusPettyCash');
     Route::delete('/hapusKasPendaftaran/{id}', 'KasPendaftaranController@hapusPendaftaran')->name('hapusKasPendaftaran');
     Route::delete('/hapusKasKecilLapangan/{id}', 'KasController@hapusKasLapangan')->name('hapusKasLapangan');
-    
+
     Route::get('/laporanBulanan', 'LaporanController@laporanBulananRAB')->name('laporanBulanan');
     Route::get('/laporanTahunan', 'LaporanController@laporanTahunan')->name('laporanTahunan');
-    
+
     Route::get('/cetakKwitansi/{id}', 'LaporanController@cetakKwitansi')->name('cetakKwitansi');
     Route::get('/cetakKwitansiDp/{id}', 'LaporanController@cetakKwitansiDp')->name('cetakKwitansiDp');
     Route::get('/cetakDPPDF/{id}', 'LaporanController@cetakDPPDF')->name('cetakDPPDF');
     Route::get('/cetakKwitansiPDF/{id}', 'LaporanController@cetakKwitansiPDF')->name('cetakKwitansiPDF');
-    
+
     Route::get('/gudang', 'GudangController@index')->name('gudang');
     Route::get('/gudangHabis', 'GudangController@habis')->name('gudangHabis');
     Route::post('/transferGudang/{id}', 'GudangController@transferGudang')->name('transferGudang');
@@ -159,7 +162,7 @@ Route::group(['middleware'=>['auth','role:admin,projectmanager,adminGudang,marke
     Route::delete('/hapusAlokasi/{id}', 'GudangController@hapusAlokasi')->name('hapusAlokasi');
     Route::delete('/hapusGudang/{id}', 'GudangController@hapusGudang')->name('hapusGudang');
     // Route::post('/alokasiGudang/{id}', 'GudangController@alokasiGudang')->name('alokasiGudang');
-    
+
     Route::get('/rekening', 'ProyekController@rekening')->name('rekening');
     Route::post('/rekeningSimpan', 'ProyekController@rekeningSimpan')->name('rekeningSimpan');
     Route::patch('/rekeningUbah/{id}', 'ProyekController@rekeningUbah')->name('rekeningUbah');
@@ -179,7 +182,7 @@ Route::group(['middleware'=>['auth','role:admin,projectmanager,adminGudang,marke
     Route::get('/exportEstimasiDp', 'EstimasiController@exportEstimasiDp')->name('exportEstimasiDp');
     Route::get('/exportKeluar', 'LaporanController@exportKeluar')->name('exportKeluar');
     Route::get('/exportMasuk', 'LaporanController@exportMasuk')->name('exportMasuk');
-    
+
     Route::get('/pengadaan', 'PengadaanController@pengadaanIndex')->name('pengadaan');
     Route::get('/barang', 'PengadaanController@barangIndex')->name('barang');
     Route::get('/cariBarang', 'PengadaanController@cariBarang')->name('cariBarang');
@@ -194,22 +197,21 @@ Route::group(['middleware'=>['auth','role:admin,projectmanager,adminGudang,marke
     Route::get('/terimaPengadaan/{id}', 'PengadaanController@terimaPengadaan')->name('terimaPengadaan');
     Route::get('/tolakPengadaan/{id}', 'PengadaanController@tolakPengadaan')->name('tolakPengadaan');
     Route::get('/buatTransaksi/{id}', 'PengadaanController@buatTransaksi')->name('buatTransaksi');
-    
+
     Route::get('/pengembalian/{id}', 'PengembalianController@buatPengembalian')->name('pengembalian');
     Route::get('/exportPengembalian/{id}', 'PengembalianController@exportPengembalian')->name('exportPengembalian');
     Route::get('/exportPengembalianPDF/{id}', 'PengembalianController@exportPengembalianPDF')->name('exportPengembalianPDF');
     Route::delete('/hapusPengembalian/{id}', 'PengembalianController@destroy')->name('hapusPengembalian');
-
 });
-Route::group(['middleware'=>['auth','role:projectmanager']],function(){
-    
+Route::group(['middleware' => ['auth', 'role:projectmanager']], function () {
+
     Route::get('/kelolaUser', 'ProjectManagerController@kelolaUser')->name('kelolaUser');
     Route::get('/userTambah', 'ProjectManagerController@userTambah')->name('userTambah');
     Route::post('/userSimpan', 'ProjectManagerController@userSimpan')->name('userSimpan');
     Route::patch('/userEdit/{id}', 'ProjectManagerController@userEdit')->name('userEdit');
     Route::delete('/hapusUser/{id}', 'ProjectManagerController@hapusUser')->name('hapusUser');
 });
-Route::group(['middleware'=>['auth','role:adminWeb']],function(){
+Route::group(['middleware' => ['auth', 'role:adminWeb']], function () {
 
     Route::get('/popup', 'PopUpController@create')->name('popup');
     Route::get('/banner', 'PopUpController@banner')->name('banner');
@@ -221,14 +223,14 @@ Route::group(['middleware'=>['auth','role:adminWeb']],function(){
     Route::post('/simpanSlider', 'SliderController@store')->name('simpanSlider');
     Route::get('/sliderEdit/{id}', 'SliderController@edit')->name('sliderEdit');
     Route::patch('/sliderUpdate/{id}', 'SliderController@update')->name('sliderUpdate');
-    
+
     Route::get('/kabarBerita', 'KabarBeritaController@index')->name('kabarBerita');
     Route::get('/kabarBeritaTambah', 'KabarBeritaController@create')->name('kabarBeritaTambah');
     Route::post('/kabarBeritaSimpan', 'KabarBeritaController@store')->name('kabarBeritaSimpan');
     Route::get('/lihatBerita/{id}', 'KabarBeritaController@edit')->name('lihatBerita');
     Route::post('/updateBerita/{id}', 'KabarBeritaController@update')->name('kabarBeritaUpdate');
     Route::delete('/hapusBerita/{id}', 'KabarBeritaController@destroy')->name('hapusBerita');
-    
+
     Route::get('/proyekWeb', 'ProyekWebController@proyek')->name('proyekWeb');
     Route::get('/proyekWebTambah', 'ProyekWebController@proyekTambah')->name('proyekWebTambah');
     Route::get('/proyekWebDetail/{id}', 'ProyekWebController@proyekDetail')->name('proyekWebDetail');
@@ -238,7 +240,7 @@ Route::group(['middleware'=>['auth','role:adminWeb']],function(){
     Route::post('/galeriProyek/{id}', 'ProyekWebController@galeriProyek')->name('galeriProyek');
     Route::delete('/hapusGaleriProyek/{id}', 'ProyekWebController@hapusGaleriProyek')->name('hapusGaleriProyek');
 });
-Route::group(['middleware'=>['auth','role:pelanggan']],function(){
+Route::group(['middleware' => ['auth', 'role:pelanggan']], function () {
     Route::get('/dataDiri', 'PelangganController@dataDiri')->name('dataDiri');
     Route::get('/pembelianPelanggan', 'PelangganController@pembelianPelanggan')->name('pembelianPelanggan');
     Route::get('/DPPelanggan', 'PelangganController@DPPelanggan')->name('DPPelanggan');

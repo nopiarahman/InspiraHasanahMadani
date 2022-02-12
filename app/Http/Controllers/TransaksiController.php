@@ -305,7 +305,7 @@ class TransaksiController extends Controller
             $cashFlow=transaksi::whereBetween('tanggal',[$start,$end])->where('proyek_id',proyekId())->orderBy('tanggal')->get();
             $awal=$cashFlow->first();
         }
-        $transaksi= transaksi::where('tanggal','<',$start)->get();
+        $transaksi= transaksi::where('tanggal','<',$start)->where('proyek_id',proyekId())->get();
         $saldoSebelum = $transaksi->sum('kredit')-$transaksi->sum('debet');
         // dd($saldoSebelum);
         return view ('transaksi/cashFlowIndex',compact('saldoSebelum','cashFlow','awal','start','end'));

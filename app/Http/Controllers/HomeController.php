@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\pelanggan;
 use App\cicilan;
 use App\dp;
@@ -35,48 +36,49 @@ class HomeController extends Controller
     public function index()
     {
         /* package laravel chart check di https://v6.charts.erik.cat/installation.html#composer */
-        $kasBesar = transaksi::where(    'proyek_id',proyekId())->orderBy('no','desc')->take(15)->get();
-        $saldo=$kasBesar->map(function ($item){
-                            return $item->saldo;
-                            });
+        $kasBesar = transaksi::where('proyek_id', proyekId())->orderBy('no', 'desc')->take(15)->get();
+        $saldo = $kasBesar->map(function ($item) {
+            return $item->saldo;
+        });
         // dd($kasBesar);
         $chartKasBesar = new chartAdmin;
         $chartKasBesar->labels($saldo->reverse()->keys());
-        $chartKasBesar->dataset('Kas Besar','line',$saldo->reverse()->values())
-        ->options(['borderColor' => '#4CAF50',
-                                        'fill'=>false,       
-                                        'backgroundColor'=>'#4CAF50',
-                                        // 'tension'=>0.3, 
-                            ]);
+        $chartKasBesar->dataset('Kas Besar', 'line', $saldo->reverse()->values())
+            ->options([
+                'borderColor' => '#4CAF50',
+                'fill' => false,
+                'backgroundColor' => '#4CAF50',
+                // 'tension'=>0.3, 
+            ]);
         $chartKasBesar->height(200);
 
-        $kavling = kavling::where('proyek_id',proyekId())->get();
-        $pelanggan = pelanggan::where('proyek_id',proyekId())->get();
+        $kavling = kavling::where('proyek_id', proyekId())->get();
+        $pelanggan = pelanggan::where('proyek_id', proyekId())->get();
         // $transferDp = transferDp::where('proyek_id',proyekId())->get();
         // $transferUnit = transferUnit::where('proyek_id',proyekId())->get();
-    
+
         /* pelanggan */
-        if(auth()->user()->role=='pelanggan'){
-            $idUser=auth()->user()->pelanggan->id;
-            $id=pelanggan::find($idUser);
-            $dataKavling=kavling::where('pelanggan_id',$idUser)->first();
-            $dataPembelian=pembelian::where('pelanggan_id',$idUser)->first();
+        if (auth()->user()->role == 'pelanggan') {
+            $idUser = auth()->user()->pelanggan->id;
+            $id = pelanggan::find($idUser);
+            $dataKavling = kavling::where('pelanggan_id', $idUser)->first();
+            $dataPembelian = pembelian::where('pelanggan_id', $idUser)->first();
             // dd($dataPembelian);
-            $persenDiskon = ($dataPembelian->diskon/$dataPembelian->harga)*100;
-            $dpPelanggan=dp::where('pembelian_id',$dataPembelian->id)->get()->sortByDesc('urut');
-            $cicilanPelanggan=cicilan::where('pembelian_id',$dataPembelian->id)->get()->sortByDesc('urut');
-        }else{
-            $dataKavling=[];
-            $dataPembelian=[];
-            $id=[];
-            $idUser=[];
-            $dpPelanggan=[];
-            $persenDiskon=0;
-            $cicilanPelanggan=[];
+            $persenDiskon = ($dataPembelian->diskon / $dataPembelian->harga) * 100;
+            $dpPelanggan = dp::where('pembelian_id', $dataPembelian->id)->get()->sortByDesc('urut');
+            $cicilanPelanggan = cicilan::where('pembelian_id', $dataPembelian->id)->get()->sortByDesc('urut');
+        } else {
+            $dataKavling = [];
+            $dataPembelian = [];
+            $id = [];
+            $idUser = [];
+            $dpPelanggan = [];
+            $persenDiskon = 0;
+            $cicilanPelanggan = [];
         }
 
         /* Detail Proyek */
-        $semuaPembelian = pembelian::where('proyek_id',proyekId())->where('statusCicilan','Credit')->get();
+        $semuaPembelian = pembelian::where('proyek_id', proyekId())->where('statusCicilan', 'Credit')->get();
         $totalDp = 0;
         $totalDpTerbayar = 0;
         $totalDpRumah = 0;
@@ -90,122 +92,161 @@ class HomeController extends Controller
         $totalCicilanRumahTerbayar = 0;
         $totalCicilanKiosTerbayar = 0;
         /* kavling */
-        foreach($semuaPembelian->where('rumah_id',null)->where('kios_id',null) as $a){
-            if($a->pelanggan !=null && $a->pelanggan->kavling !=null){
-            $totalDp += $a->dp;
-            $totalDpTerbayar += $a->dp()->sum('jumlah');
-            $totalCicilan += $a->sisaKewajiban;
-            $totalCicilanTerbayar += $a->cicilan()->sum('jumlah');
+        foreach ($semuaPembelian->where('rumah_id', null)->where('kios_id', null) as $a) {
+            if ($a->pelanggan != null && $a->pelanggan->kavling != null) {
+                $totalDp += $a->dp;
+                $totalDpTerbayar += $a->dp()->sum('jumlah');
+                $totalCicilan += $a->sisaKewajiban;
+                $totalCicilanTerbayar += $a->cicilan()->sum('jumlah');
             }
         }
-        $sisaDp = $totalDp-$totalDpTerbayar;
-        $sisaCicilan = $totalCicilan-$totalCicilanTerbayar;
+        $sisaDp = $totalDp - $totalDpTerbayar;
+        $sisaCicilan = $totalCicilan - $totalCicilanTerbayar;
         /* rumah */
-        foreach($semuaPembelian->whereNotNull('rumah_id') as $a){
-            if($a->pelanggan !=null && $a->pelanggan->kavling !=null){
+        foreach ($semuaPembelian->whereNotNull('rumah_id') as $a) {
+            if ($a->pelanggan != null && $a->pelanggan->kavling != null) {
                 $totalDpRumah += $a->dp;
                 $totalDpRumahTerbayar += $a->dp()->sum('jumlah');
                 $totalCicilanRumah += $a->sisaKewajiban;
                 $totalCicilanRumahTerbayar += $a->cicilan()->sum('jumlah');
             }
         }
-        $sisaDpRumah = $totalDpRumah-$totalDpRumahTerbayar;
-        $sisaCicilanRumah = $totalCicilanRumah-$totalCicilanRumahTerbayar;
+        $sisaDpRumah = $totalDpRumah - $totalDpRumahTerbayar;
+        $sisaCicilanRumah = $totalCicilanRumah - $totalCicilanRumahTerbayar;
         /* kios */
-        foreach($semuaPembelian->whereNotNull('kios_id') as $a){
-            if($a->pelanggan !=null && $a->pelanggan->kavling !=null){
+        foreach ($semuaPembelian->whereNotNull('kios_id') as $a) {
+            if ($a->pelanggan != null && $a->pelanggan->kavling != null) {
                 $totalDpKios += $a->dp;
                 $totalDpKiosTerbayar += $a->dp()->sum('jumlah');
                 $totalCicilanKios += $a->sisaKewajiban;
                 $totalCicilanKiosTerbayar += $a->cicilan()->sum('jumlah');
             }
         }
-        $kelebihanTanah=transaksi::where('kategori','Kelebihan Tanah')->where('proyek_id',proyekId())->get()->sum('kredit');
+        $kelebihanTanah = transaksi::where('kategori', 'Kelebihan Tanah')->where('proyek_id', proyekId())->get()->sum('kredit');
         // dd($kelebihanTanah);
-        $sisaDpKios = $totalDpKios-$totalDpKiosTerbayar;
-        $sisaCicilanKios = $totalCicilanKios-$totalCicilanKiosTerbayar;
+        $sisaDpKios = $totalDpKios - $totalDpKiosTerbayar;
+        $sisaCicilanKios = $totalCicilanKios - $totalCicilanKiosTerbayar;
         /* Pendapatan */
-        $pendapatanRumah = $totalDpRumah+$totalCicilanRumah;
-        $pendapatanKavling = $totalDp+$totalDpKios+$totalCicilan+$totalCicilanKios;
-        $totalPendapatan = $pendapatanRumah+$pendapatanKavling+$kelebihanTanah;
+        $pendapatanRumah = $totalDpRumah + $totalCicilanRumah;
+        $pendapatanKavling = $totalDp + $totalDpKios + $totalCicilan + $totalCicilanKios;
+        $totalPendapatan = $pendapatanRumah + $pendapatanKavling + $kelebihanTanah;
         /* chart */
         $chartPendapatan = new chartAdmin;
-        $chartPendapatan->labels(['Kalving','Rumah','Kelebihan Tanah']);
-        $chartPendapatan->dataset('Total Pendapatan','pie',[$pendapatanKavling,$pendapatanRumah,$kelebihanTanah])->options([
-            'backgroundColor'=>['#169948','#ffa426','#fc544b']
+        $chartPendapatan->labels(['Kalving', 'Rumah', 'Kelebihan Tanah']);
+        $chartPendapatan->dataset('Total Pendapatan', 'pie', [$pendapatanKavling, $pendapatanRumah, $kelebihanTanah])->options([
+            'backgroundColor' => ['#169948', '#ffa426', '#fc544b']
         ]);
         $chartPendapatan->title("Total Pendapatan");
 
         $chartDPKavling = new chartAdmin;
-        $chartDPKavling->labels(['Total Terbayar','Sisa DP']);
-        $chartDPKavling->dataset('Total Terbayar Kavling','doughnut',[$totalDpTerbayar,$sisaDp])->options([
-            'backgroundColor'=>['#169948','#ffa426']
+        $chartDPKavling->labels(['Total Terbayar', 'Sisa DP']);
+        $chartDPKavling->dataset('Total Terbayar Kavling', 'doughnut', [$totalDpTerbayar, $sisaDp])->options([
+            'backgroundColor' => ['#169948', '#ffa426']
         ]);
         $chartDPKavling->title("DP Kavling");
         $chartDPRumah = new chartAdmin;
-        $chartDPRumah->labels(['Total Terbayar','Sisa DP']);
-        $chartDPRumah->dataset('Total Terbayar Rumah','doughnut',[$totalDpRumahTerbayar,$sisaDpRumah])->options([
-            'backgroundColor'=>['#169948','#ffa426']
+        $chartDPRumah->labels(['Total Terbayar', 'Sisa DP']);
+        $chartDPRumah->dataset('Total Terbayar Rumah', 'doughnut', [$totalDpRumahTerbayar, $sisaDpRumah])->options([
+            'backgroundColor' => ['#169948', '#ffa426']
         ]);
         $chartDPRumah->title("DP Rumah");
         $chartDPKios = new chartAdmin;
-        $chartDPKios->labels(['Total Terbayar','Sisa DP']);
-        $chartDPKios->dataset('Total Terbayar Kios','doughnut',[$totalDpKiosTerbayar,$sisaDpKios])->options([
-            'backgroundColor'=>['#169948','#ffa426']
+        $chartDPKios->labels(['Total Terbayar', 'Sisa DP']);
+        $chartDPKios->dataset('Total Terbayar Kios', 'doughnut', [$totalDpKiosTerbayar, $sisaDpKios])->options([
+            'backgroundColor' => ['#169948', '#ffa426']
         ]);
         $chartDPKios->title("DP Kios");
 
         $chartCicilanKavling = new chartAdmin;
-        $chartCicilanKavling->labels(['Total Terbayar','Sisa Cicilan']);
-        $chartCicilanKavling->dataset('Total Terbayar Kavling','doughnut',[$totalCicilanTerbayar,$sisaCicilan])->options([
-            'backgroundColor'=>['#169948','#ffa426']
+        $chartCicilanKavling->labels(['Total Terbayar', 'Sisa Cicilan']);
+        $chartCicilanKavling->dataset('Total Terbayar Kavling', 'doughnut', [$totalCicilanTerbayar, $sisaCicilan])->options([
+            'backgroundColor' => ['#169948', '#ffa426']
         ]);
         $chartCicilanKavling->title("Cicilan Kavling");
         $chartCicilanRumah = new chartAdmin;
-        $chartCicilanRumah->labels(['Total Terbayar','Sisa Cicilan']);
-        $chartCicilanRumah->dataset('Total Terbayar Rumah','doughnut',[$totalCicilanRumahTerbayar,$sisaCicilanRumah])->options([
-            'backgroundColor'=>['#169948','#ffa426']
+        $chartCicilanRumah->labels(['Total Terbayar', 'Sisa Cicilan']);
+        $chartCicilanRumah->dataset('Total Terbayar Rumah', 'doughnut', [$totalCicilanRumahTerbayar, $sisaCicilanRumah])->options([
+            'backgroundColor' => ['#169948', '#ffa426']
         ]);
         $chartCicilanRumah->title("Cicilan Rumah");
         $chartCicilanKios = new chartAdmin;
-        $chartCicilanKios->labels(['Total Terbayar','Sisa Cicilan']);
-        $chartCicilanKios->dataset('Total Terbayar Kios','doughnut',[$totalCicilanKiosTerbayar,$sisaCicilanKios])->options([
-            'backgroundColor'=>['#169948','#ffa426']
+        $chartCicilanKios->labels(['Total Terbayar', 'Sisa Cicilan']);
+        $chartCicilanKios->dataset('Total Terbayar Kios', 'doughnut', [$totalCicilanKiosTerbayar, $sisaCicilanKios])->options([
+            'backgroundColor' => ['#169948', '#ffa426']
         ]);
         $chartCicilanKios->title("Cicilan Kios");
-        return view('home',compact(
-            'totalDpTerbayar','sisaDp','dpPelanggan','cicilanPelanggan','chartKasBesar','kavling','pelanggan','dataKavling','dataPembelian','persenDiskon','id',
-            'totalCicilanTerbayar','sisaCicilan','sisaDpRumah','sisaCicilanRumah','totalDpRumahTerbayar','totalCicilanRumahTerbayar',
-            'totalDpKiosTerbayar','sisaDpKios','totalCicilanKiosTerbayar','sisaCicilanKios',
-            'pendapatanRumah','pendapatanKavling','totalPendapatan','kelebihanTanah',
-            'chartPendapatan','chartDPKavling','chartDPRumah','chartDPKios','chartCicilanKavling','chartCicilanRumah','chartCicilanKios'
+        return view('home', compact(
+            'totalDpTerbayar',
+            'sisaDp',
+            'dpPelanggan',
+            'cicilanPelanggan',
+            'chartKasBesar',
+            'kavling',
+            'pelanggan',
+            'dataKavling',
+            'dataPembelian',
+            'persenDiskon',
+            'id',
+            'totalCicilanTerbayar',
+            'sisaCicilan',
+            'sisaDpRumah',
+            'sisaCicilanRumah',
+            'totalDpRumahTerbayar',
+            'totalCicilanRumahTerbayar',
+            'totalDpKiosTerbayar',
+            'sisaDpKios',
+            'totalCicilanKiosTerbayar',
+            'sisaCicilanKios',
+            'pendapatanRumah',
+            'pendapatanKavling',
+            'totalPendapatan',
+            'kelebihanTanah',
+            'chartPendapatan',
+            'chartDPKavling',
+            'chartDPRumah',
+            'chartDPKios',
+            'chartCicilanKavling',
+            'chartCicilanRumah',
+            'chartCicilanKios'
         ));
     }
-
-    public function cariPelangganHome(Request $request){
-        $id=pelanggan::find($request->id);        
+    public function ubahProyek(Request $request)
+    {
+        $proyek_id = $request->proyek_id;
+        $user = auth()->user();
+        $user->proyek_id = $proyek_id;
+        $user->save();
+        // dd($user);
+        return redirect()->back()->with('status', 'Proyek Diganti');
+    }
+    public function cariPelangganHome(Request $request)
+    {
+        $id = pelanggan::find($request->id);
         return redirect()->route('pelangganDetail', ['id' => $id->id]);
     }
-    public function cariPelangganDaftar(Request $request){
+    public function cariPelangganDaftar(Request $request)
+    {
         if ($request->has('q')) {
-    	    $cari = $request->q;
-    		$data = pelanggan::select('id', 'nama')->where('nama', 'LIKE', '%'.$cari.'%')
-                                                ->where('proyek_id',proyekId())->get();
-    		$pelangganAktif = $data->filter(function ($value, $key) {
+            $cari = $request->q;
+            $data = pelanggan::select('id', 'nama')->where('nama', 'LIKE', '%' . $cari . '%')
+                ->where('proyek_id', proyekId())->get();
+            $pelangganAktif = $data->filter(function ($value, $key) {
                 return $value->kavling != null;
             });
             // dd($pelangganAktif);
             return response()->json($pelangganAktif);
-    	}
+        }
     }
-    public function pengaturan(){
+    public function pengaturan()
+    {
         $user = auth()->user();
-        $detail = detailUser::where('user_id',$user->id)->first();
-        return view('user/pengaturan',compact('user','detail'));
+        $detail = detailUser::where('user_id', $user->id)->first();
+        return view('user/pengaturan', compact('user', 'detail'));
     }
-    public function gantiFoto(detailUser $id, Request $request){
+    public function gantiFoto(detailUser $id, Request $request)
+    {
         // dd($id);
-        $requestData=$request->all();
+        $requestData = $request->all();
         if ($request->hasFile('foto')) {
             $file_nama            = $request->file('foto')->store('public/user/foto');
             $requestData['poto'] = $file_nama;
@@ -214,21 +255,22 @@ class HomeController extends Controller
         }
         // dd($requestData);
         $id->update($requestData);
-        return redirect()->back()->with('status','Foto berhasil diganti');
+        return redirect()->back()->with('status', 'Foto berhasil diganti');
     }
-    public function rubahPassword(User $id, Request $request){
-        $rules=[
-            'username'=>'required|min:3|max:50',
-            'password'=>'required|confirmed|min:6',
+    public function rubahPassword(User $id, Request $request)
+    {
+        $rules = [
+            'username' => 'required|min:3|max:50',
+            'password' => 'required|confirmed|min:6',
         ];
         $costumMessages = [
-            'required'=>':attribute tidak boleh kosong',
-            'confirmed'=>'Password tidak cocok'
+            'required' => ':attribute tidak boleh kosong',
+            'confirmed' => 'Password tidak cocok'
         ];
         $requestData = $request->all();
-        $this->validate($request,$rules,$costumMessages);
-        $requestData['password']= Hash::make($request->password);
+        $this->validate($request, $rules, $costumMessages);
+        $requestData['password'] = Hash::make($request->password);
         $id->update($requestData);
-        return redirect()->back()->with('status','Informasi login berhasil dirubah');
+        return redirect()->back()->with('status', 'Informasi login berhasil dirubah');
     }
 }
