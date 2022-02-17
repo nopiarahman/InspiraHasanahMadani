@@ -86,9 +86,8 @@
                             <select name="proyek_id" id="" class="form-control selectric" tabindex="-1"
                                 onchange="this.form.submit()">
                                 @foreach (listProyek() as $proyek)
-                                    <option @if (auth()->user()->proyek_id === $proyek->id)
-                                        selected
-                                        @endif value="{{ $proyek->id }}">{{ $proyek->nama }}</option>
+                                    <option @if (auth()->user()->proyek_id === $proyek->id) selected @endif
+                                        value="{{ $proyek->id }}">{{ $proyek->nama }}</option>
                                 @endforeach
                             </select>
                         </form>
@@ -96,12 +95,11 @@
                     <li class="dropdown">
                         <a href="#" data-toggle="dropdown" class="nav-link dropdown-toggle nav-link-lg nav-link-user"
                             aria-expanded="false">
-                            <img alt="image" @if (detailUser(auth()->user()->id)->poto != null)
-                            src="{{ Storage::url(detailUser(auth()->user()->id)->poto) }}"
+                            <img alt="image"
+                                @if (detailUser(auth()->user()->id)->poto != null) src="{{ Storage::url(detailUser(auth()->user()->id)->poto) }}"
                         @else
-                            src="{{ asset('assets/img/avatar/avatar-1.png') }}"
-                            @endif
-                            class="rounded-circle mr-1">
+                            src="{{ asset('assets/img/avatar/avatar-1.png') }}" @endif
+                                class="rounded-circle mr-1">
                             <div class="d-sm-none d-lg-inline-block">Assalamualaikum, {{ cekNamaUser() }}</div>
                         </a>
                         <div class="dropdown-menu dropdown-menu-right">
@@ -514,6 +512,15 @@
                         @endif
 
                         @if (auth()->user()->role == 'kasir')
+                            <li class="menu-header">Menu Proyek</li>
+                            <li class="nav-item dropdown @yield('menuDataProyek')">
+                                <a href="" class="nav-link has-dropdown" data-toggle="dropdown"><i
+                                        class="fas fa-home"></i> <span>Data Proyek</span></a>
+                                <ul class="dropdown-menu">
+                                    <li class="@yield('menuKavling')"><a class="nav-link"
+                                            href="{{ route('kavling') }}">Unit</a></li>
+                                </ul>
+                            </li>
                             <li class="menu-header">Menu Pelanggan</li>
                             <li class="nav-item dropdown @yield('menuPelanggan')">
                                 <a href="" class="nav-link has-dropdown"><i class="fas fa-clipboard-check"></i>

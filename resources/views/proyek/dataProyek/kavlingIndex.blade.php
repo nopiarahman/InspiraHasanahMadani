@@ -40,7 +40,7 @@
             @endif
         </div>
     </div>
-    @if (auth()->user()->role == 'admin')
+    @if (auth()->user()->role == 'admin' || auth()->user()->role == 'projectmanager' || auth()->user()->role == 'kasir')
         <div class="row">
             <div class="col-12">
                 <div class="card">
@@ -168,7 +168,8 @@
                                         <span class="text-primary">{{ cekStatusKavling($kavling->id) }}</span>
                                     @elseif(cekStatusKavling($kavling->id) == 'Booking')
                                         <a href="#" data-toggle="modal" data-target="#modalGantiStatus"
-                                            data-id="{{ $kavling->id }}" data-pelanggan="{{ $kavling->pelanggan->id }}">
+                                            data-id="{{ $kavling->id }}"
+                                            data-pelanggan="{{ $kavling->pelanggan->id }}">
                                             <span class="text-info">{{ cekStatusKavling($kavling->id) }} /
                                                 {{ carbon\carbon::parse($kavling->pembelian->tanggalBooking)->isoFormat('D MMMM Y') }}</span>
                                         </a>

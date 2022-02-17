@@ -41,6 +41,7 @@ Auth::routes();
 Route::group(['middleware' => ['auth', 'role:admin,projectmanager,adminGudang,marketing,gudang,kasir']], function () {
     Route::get('/proyek', 'ProyekController@index')->name('proyek');
     Route::get('/proyekTambah', 'ProyekController@create')->name('proyekTambah');
+    Route::delete('/hapusProyek/{id}', 'ProyekController@destroy')->name('hapusProyek');
     Route::post('/proyekSimpan', 'ProyekController@store')->name('proyekSimpan');
     Route::get('/proyek/edit/{id}', 'ProyekController@edit')->name('proyekEdit');
     Route::patch('/proyek/update/{id}', 'ProyekController@update')->name('proyekUpdate');

@@ -12,7 +12,7 @@ class pelanggan extends Model
     /* soft delete */
     use SoftDeletes;
     protected $table = 'pelanggan';
-    protected $guarded = ['id','created_at','updated_at']; /* melindungi field yang tidak boleh diisi manual, lihat mass assignment */
+    protected $guarded = ['id', 'created_at', 'updated_at']; /* melindungi field yang tidak boleh diisi manual, lihat mass assignment */
 
     /**
      * Get all of the pembelian for the pelanggan
@@ -87,5 +87,8 @@ class pelanggan extends Model
     {
         return $this->hasMany(cicilan::class);
     }
-
+    public function proyek()
+    {
+        return $this->belongsTo(proyek::class);
+    }
 }

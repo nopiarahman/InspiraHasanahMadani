@@ -533,19 +533,19 @@
 					<div class="container">
 						<div class="glax_tm_about_team_wrap">
 							<ul>
-								<li>
+								{{-- <>
 									<div class="inner">
 										<div class="image_wrap">
 											<img src="{{asset('frontPage/img/about/1.png')}}" alt="" />
 											{{-- <div class="image"></div> --}}
-										</div>
+										{{-- </div>
 										<div class="main_definitions">
 											<h3>DR,dr. Mustarim , Spa
 											</h3>
 											<span>Komisaris Utama</span>
 										</div>
-									</div>
-								</li>
+									</div> --}}
+								
 								<li>
 									<div class="inner">
 										<div class="image_wrap">

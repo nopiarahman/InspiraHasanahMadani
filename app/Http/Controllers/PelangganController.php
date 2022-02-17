@@ -17,6 +17,7 @@ use App\cicilan;
 use App\dp;
 use App\rabUnit;
 use App\pembelian;
+use App\proyek;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -42,6 +43,7 @@ class PelangganController extends Controller
         $pelangganAktif = $semuaPelanggan->filter(function ($value, $key) {
             return $value->kavling != null;
         });
+        // dd($pelangganAktif);
         // dd($aktif->paginate());
         return view('pelanggan/index', compact('pelangganAktif'));
     }
@@ -115,7 +117,8 @@ class PelangganController extends Controller
             $kavlingPelanggan = kavling::where('id', $request->kavling_id)->first();
             // dd($kavlingPelanggan->blok);
             // $parts = explode("@",$request->email);
-            $username = strtolower("kta" . $kavlingPelanggan->blok);
+            $proyekIni = proyek::find(proyekId());
+            $username = strtolower($proyekIni->prefix . $kavlingPelanggan->blok);
             // dd($username);
             $sandi = Carbon::parse($request->tanggalLahir)->isoFormat('DDMMYY');
             $requestUser['proyek_id'] = proyekId();
@@ -457,7 +460,8 @@ class PelangganController extends Controller
             $updateKavling = kavling::find($kavlingBaru)->update(['pelanggan_id' => $id->id]);
             $kavlingUser = kavling::find($kavlingBaru);
             // dd($kavlingUser);
-            $username = strtolower("kta" . $kavlingUser->blok);
+            $proyekIni = proyek::find(proyekId());
+            $username = strtolower($proyekIni->prefix . $kavlingUser->blok);
             $updateUser = $id->user->update(['username' => $username]);
             DB::commit();
             return redirect()->back()->with('status', 'Data Unit Pelanggan berhasil diedit');
