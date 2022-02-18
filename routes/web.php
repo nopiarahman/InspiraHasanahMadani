@@ -64,6 +64,8 @@ Route::group(['middleware' => ['auth', 'role:admin,projectmanager,adminGudang,ma
     Route::post('/rabUnitSimpan', 'ProyekController@rabUnitSimpan')->name('rabUnitSimpan');
     Route::get('/cariHeader', 'ProyekController@cariHeader')->name('cariHeader');
     Route::get('/cariJudul', 'ProyekController@cariJudul')->name('cariJudul');
+    Route::get('/cariHeaderUnit', 'ProyekController@cariHeaderUnit')->name('cariHeaderUnit');
+    Route::get('/cariJudulUnit', 'ProyekController@cariJudulUnit')->name('cariJudulUnit');
     Route::post('/biayaRABSimpan', 'ProyekController@biayaRABSimpan')->name('biayaRABSimpan');
     Route::get('/PengembalianBatalAkad', 'ProyekController@PengembalianBatalAkad')->name('PengembalianBatalAkad');
 

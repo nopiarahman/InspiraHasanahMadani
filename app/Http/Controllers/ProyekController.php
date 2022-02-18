@@ -198,11 +198,20 @@ class ProyekController extends Controller
             return response()->json($data);
         }
     }
-    public function cariJudul(Request $request)
+    public function cariHeaderUnit(Request $request)
     {
         if ($request->has('q')) {
             $cari = $request->q;
-            $data = rab::select('judul')->where('judul', 'LIKE', '%' . $cari . '%')
+            $data = rabUnit::select('header')->where('header', 'LIKE', '%' . $cari . '%')
+                ->where('proyek_id', proyekId())->distinct()->get();
+            return response()->json($data);
+        }
+    }
+    public function cariJudulUnit(Request $request)
+    {
+        if ($request->has('q')) {
+            $cari = $request->q;
+            $data = rabUnit::select('judul')->where('judul', 'LIKE', '%' . $cari . '%')
                 ->where('proyek_id', proyekId())->distinct()->get();
             return response()->json($data);
         }
@@ -282,11 +291,12 @@ class ProyekController extends Controller
             'judul' => $judul,
             'kodeRAB' => $request->kodeRAB,
             'isi' => $request->isi,
+            'volume' => $request->volume,
             'jenisUnit' => $request->jenisUnit,
             'hargaSatuan' => str_replace(',', '', $request->hargaSatuan)
         ]);
         $rabUnit->save();
-        return redirect()->route('biayaUnit')->with('status', 'Biaya Unit Berhasil Disimpan');
+        return redirect()->route('RAB')->with('status', 'Biaya Unit Berhasil Disimpan');
     }
     public function transaksiRABUnit(RabUnit $id, Request $request)
     {
