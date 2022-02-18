@@ -257,6 +257,7 @@ class ProyekController extends Controller
     }
     public function rabUnitSimpan(Request $request)
     {
+        // dd($request);
         if ($request->headerLama != null) {
             $header = $request->headerLama;
         } else {
@@ -279,6 +280,7 @@ class ProyekController extends Controller
             'proyek_id' => proyekId(),
             'header' => $header,
             'judul' => $judul,
+            'kodeRAB' => $request->kodeRAB,
             'isi' => $request->isi,
             'jenisUnit' => $request->jenisUnit,
             'hargaSatuan' => str_replace(',', '', $request->hargaSatuan)
