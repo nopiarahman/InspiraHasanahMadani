@@ -16,6 +16,7 @@ use App\detailUser;
 use App\pettyCash;
 use App\kasPendaftaran;
 use App\kasKecilLapangan;
+use App\rabUnit;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
@@ -1231,6 +1232,16 @@ function transaksiRAB($judul)
     $total = 0;
     foreach ($rab as $r) {
         $transaksi = transaksi::where('rab_id', $r->id)->get();
+        $total += $transaksi->sum('debet');
+    }
+    return $total;
+}
+function transaksiRABUnit($judul)
+{
+    $rab = rabUnit::where('judul', $judul)->get();
+    $total = 0;
+    foreach ($rab as $r) {
+        $transaksi = transaksi::where('rabunit_id', $r->id)->get();
         $total += $transaksi->sum('debet');
     }
     return $total;

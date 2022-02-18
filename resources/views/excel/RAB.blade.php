@@ -129,13 +129,31 @@
                         <td style="height:20pt">{{ $loop->iteration }}</td>
                         <td style="height:20pt">{{ $rab->isi }}</td>
                         <td style="height:20pt">{{ $rab->jenisUnit }}</td>
-                        <td style="height:20pt">{{ $rab->volume }}</td>
+                        @if ($rab->header == 'BIAYA PRODUKSI RUMAH')
+                            <td style="height:20pt">
+                                {{ hitungUnit($rab->isi, $rab->judul, $rab->jenisUnit) }}</td>
+                        @else
+                            <td style=" height:20pt">{{ $rab->volume }}</td>
+                        @endif
                         <td style="height:20pt">{{ satuanUnit($rab->judul) }}</td>
                         <td style="height:20pt">{{ (int) $rab->hargaSatuan }}</td>
-                        <th style="font-weight: bold; height:20pt">{{ $rab->volume * (int) $rab->hargaSatuan }}</th>
-                        @php
-                            $totalIsi[$judul] = hitungUnit($rab->isi, $rab->judul, $rab->jenisUnit) * (int) $rab->hargaSatuan + $totalIsi[$judul];
-                        @endphp
+                        @if ($rab->header == 'BIAYA PRODUKSI RUMAH')
+                            <td style="height:20pt">Rp.
+                                {{ number_format(hitungUnit($rab->isi, $rab->judul, $rab->jenisUnit) * (int) $rab->hargaSatuan) }}
+                            </td>
+                        @else
+                            <th style=" height:20pt">{{ $rab->volume * (int) $rab->hargaSatuan }}
+                            </th>
+                        @endif
+                        @if ($rab->header == 'BIAYA PRODUKSI RUMAH')
+                            @php
+                                $totalIsi[$judul] = hitungUnit($rab->isi, $rab->judul, $rab->jenisUnit) * (int) $rab->hargaSatuan + $totalIsi[$judul];
+                            @endphp
+                        @else
+                            @php
+                                $totalIsi[$judul] = $rab->volume * (int) $rab->hargaSatuan + $totalIsi[$judul];
+                            @endphp
+                        @endif
                         <th style="font-weight: bold; height:20pt"> {{ hitungTransaksiRABUnit($rab->id) }}</th>
                         <th style="font-weight: bold; height:20pt">
                             @if ((int) $rab->hargaSatuan != 0 && $rab->volume != 0)

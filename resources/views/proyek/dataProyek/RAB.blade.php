@@ -739,14 +739,30 @@
                                     <td>{{ $rab->kodeRAB }}</td>
                                     <td>{{ $rab->isi }}</td>
                                     <td>{{ $rab->jenisUnit }}</td>
-                                    <td>{{ $rab->volume }}</td>
+                                    @if ($rab->header == 'BIAYA PRODUKSI RUMAH')
+                                        <td>{{ hitungUnit($rab->isi, $rab->judul, $rab->jenisUnit) }}</td>
+                                    @else
+                                        <td>{{ $rab->volume }}</td>
+                                    @endif
                                     <td>{{ satuanUnit($rab->judul) }}</td>
                                     <td>Rp.{{ number_format((int) $rab->hargaSatuan) }}</td>
-                                    <th>Rp.{{ number_format($rab->volume * (int) $rab->hargaSatuan) }}
+                                    @if ($rab->header == 'BIAYA PRODUKSI RUMAH')
+                                        <td>Rp.
+                                            {{ number_format(hitungUnit($rab->isi, $rab->judul, $rab->jenisUnit) * (int) $rab->hargaSatuan) }}
+                                        </td>
+                                    @else
+                                        <th>Rp.{{ number_format($rab->volume * (int) $rab->hargaSatuan) }}
+                                    @endif
                                     </th>
-                                    @php
-                                        $totalIsi[$judul] = hitungUnit($rab->isi, $rab->judul, $rab->jenisUnit) * (int) $rab->hargaSatuan + $totalIsi[$judul];
-                                    @endphp
+                                    @if ($rab->header == 'BIAYA PRODUKSI RUMAH')
+                                        @php
+                                            $totalIsi[$judul] = hitungUnit($rab->isi, $rab->judul, $rab->jenisUnit) * (int) $rab->hargaSatuan + $totalIsi[$judul];
+                                        @endphp
+                                    @else
+                                        @php
+                                            $totalIsi[$judul] = $rab->volume * (int) $rab->hargaSatuan + $totalIsi[$judul];
+                                        @endphp
+                                    @endif
                                     <th> <a class="text-warning font-weight-bold"
                                             href="{{ route('transaksiRABUnit', ['id' => $rab->id]) }}">
                                             Rp.{{ number_format(hitungTransaksiRABUnit($rab->id)) }}</a></th>
@@ -793,7 +809,8 @@
                             <tr class="border-top border-success">
                                 <th colspan="7" class="text-right ">Sub Total {{ $judul }}</th>
                                 <th colspan="" class="">Rp. {{ number_format($c[$judul]) }}</th>
-                                <th>{{ $judul }}</th>
+                                <th>Rp. {{ number_format(transaksiRABUnit($judul)) }}</th>
+
                             </tr>
                         @endforeach
                         @php
