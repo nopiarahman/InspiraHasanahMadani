@@ -53,7 +53,7 @@ class LaporanController extends Controller
             $tahuniniStart = Carbon::parse($request->start)->firstOfYear()->isoFormat('YYYY-MM-DD');
             $tahuniniEnd = Carbon::parse($request->end)->endOfYear()->isoFormat('YYYY-MM-DD');
             $pendapatan = transaksi::whereIn('kategori', ['Penerimaan', 'Pendapatan Lain', 'Kelebihan Tanah'])->where('proyek_id', proyekId())->whereBetween('tanggal', [$start, $end])->get();
-            $modal = transaksi::where('kategori', 'Modal')->whereBetween('tanggal', [$start, $end])->get();
+            $modal = transaksi::where('kategori', 'Modal')->whereBetween('tanggal', [$start, $end])->where('proyek_id', proyekId())->get();
             $modalTahunSebelum = transaksi::where('kategori', 'Modal')->where('proyek_id', proyekId())->where('tanggal', '<=', $tahunSebelumEnd)->get();
 
             if ($modalTahunSebelum) {
@@ -61,14 +61,14 @@ class LaporanController extends Controller
             } else {
                 $mts = 0;
             }
-            $bulan = transaksi::where('kategori', 'Modal')->where('tanggal', '<=', $end)->whereBetween('tanggal', [$tahuniniStart, $tahuniniEnd])->get()->groupBy(function ($val) {
+            $bulan = transaksi::where('kategori', 'Modal')->where('proyek_id', proyekId())->where('tanggal', '<=', $end)->whereBetween('tanggal', [$tahuniniStart, $tahuniniEnd])->get()->groupBy(function ($val) {
                 return Carbon::parse($val->tanggal)->isoFormat('MMMM');
             });
             if ($aset) {
-                $transaksiAset = transaksi::where('rab_id', $aset->id)->where('tanggal', '<=', $end)->whereBetween('tanggal', [$tahuniniStart, $tahuniniEnd])->get()->groupBy(function ($val) {
+                $transaksiAset = transaksi::where('rab_id', $aset->id)->where('proyek_id', proyekId())->where('tanggal', '<=', $end)->whereBetween('tanggal', [$tahuniniStart, $tahuniniEnd])->get()->groupBy(function ($val) {
                     return Carbon::parse($val->tanggal)->isoFormat('MMMM');
                 });
-                $AsetTahunSebelum = transaksi::where('rab_id', $aset->id)->where('tanggal', '<=', $tahunSebelumEnd)->get();
+                $AsetTahunSebelum = transaksi::where('rab_id', $aset->id)->where('proyek_id', proyekId())->where('tanggal', '<=', $tahunSebelumEnd)->get();
                 if ($AsetTahunSebelum) {
                     $ats = $AsetTahunSebelum->sum('debet');
                 } else {
@@ -80,14 +80,14 @@ class LaporanController extends Controller
             }
         } else {
             $pendapatan = transaksi::whereIn('kategori', ['Penerimaan', 'Pendapatan Lain', 'Kelebihan Tanah'])->where('proyek_id', proyekId())->whereBetween('tanggal', [$start, $end])->get();
-            $modal = transaksi::where('kategori', 'Modal')->whereBetween('tanggal', [$start, $end])->get();
+            $modal = transaksi::where('kategori', 'Modal')->whereBetween('tanggal', [$start, $end])->where('proyek_id', proyekId())->get();
             $modalTahunSebelum = transaksi::where('kategori', 'Modal')->where('proyek_id', proyekId())->where('tanggal', '<=', $tahunSebelumEnd)->get();
             if ($modalTahunSebelum) {
                 $mts = $modalTahunSebelum->sum('kredit');
             } else {
                 $mts = 0;
             }
-            $bulan = transaksi::where('kategori', 'Modal')->where('tanggal', '<=', $end)->whereBetween('tanggal', [$tahuniniStart, $tahuniniEnd])->get()->groupBy(function ($val) {
+            $bulan = transaksi::where('kategori', 'Modal')->where('tanggal', '<=', $end)->where('proyek_id', proyekId())->whereBetween('tanggal', [$tahuniniStart, $tahuniniEnd])->get()->groupBy(function ($val) {
                 return Carbon::parse($val->tanggal)->isoFormat('MMMM');
             });
             // if($aset){
@@ -96,10 +96,10 @@ class LaporanController extends Controller
             //     });
             // }
             if ($aset) {
-                $transaksiAset = transaksi::where('rab_id', $aset->id)->where('tanggal', '<=', $end)->whereBetween('tanggal', [$tahuniniStart, $tahuniniEnd])->get()->groupBy(function ($val) {
+                $transaksiAset = transaksi::where('rab_id', $aset->id)->where('tanggal', '<=', $end)->where('proyek_id', proyekId())->whereBetween('tanggal', [$tahuniniStart, $tahuniniEnd])->get()->groupBy(function ($val) {
                     return Carbon::parse($val->tanggal)->isoFormat('MMMM');
                 });
-                $AsetTahunSebelum = transaksi::where('rab_id', $aset->id)->where('tanggal', '<=', $tahunSebelumEnd)->get();
+                $AsetTahunSebelum = transaksi::where('rab_id', $aset->id)->where('proyek_id', proyekId())->where('tanggal', '<=', $tahunSebelumEnd)->get();
                 if ($AsetTahunSebelum) {
                     $ats = $AsetTahunSebelum->sum('debet');
                 } else {
@@ -156,14 +156,14 @@ class LaporanController extends Controller
             } else {
                 $mts = 0;
             }
-            $bulan = transaksi::where('kategori', 'Modal')->where('tanggal', '<=', $end)->whereBetween('tanggal', [$tahuniniStart, $tahuniniEnd])->get()->groupBy(function ($val) {
+            $bulan = transaksi::where('kategori', 'Modal')->where('tanggal', '<=', $end)->where('proyek_id', proyekId())->whereBetween('tanggal', [$tahuniniStart, $tahuniniEnd])->get()->groupBy(function ($val) {
                 return Carbon::parse($val->tanggal)->isoFormat('MMMM');
             });
             if ($aset) {
-                $transaksiAset = transaksi::where('rab_id', $aset->id)->where('tanggal', '<=', $end)->whereBetween('tanggal', [$tahuniniStart, $tahuniniEnd])->get()->groupBy(function ($val) {
+                $transaksiAset = transaksi::where('rab_id', $aset->id)->where('tanggal', '<=', $end)->where('proyek_id', proyekId())->whereBetween('tanggal', [$tahuniniStart, $tahuniniEnd])->get()->groupBy(function ($val) {
                     return Carbon::parse($val->tanggal)->isoFormat('MMMM');
                 });
-                $AsetTahunSebelum = transaksi::where('rab_id', $aset->id)->where('tanggal', '<=', $tahunSebelumEnd)->get();
+                $AsetTahunSebelum = transaksi::where('rab_id', $aset->id)->where('tanggal', '<=', $tahunSebelumEnd)->where('proyek_id', proyekId())->get();
                 if ($AsetTahunSebelum) {
                     $ats = $AsetTahunSebelum->sum('debet');
                 } else {
@@ -182,7 +182,7 @@ class LaporanController extends Controller
             } else {
                 $mts = 0;
             }
-            $bulan = transaksi::where('kategori', 'Modal')->where('tanggal', '<=', $end)->whereBetween('tanggal', [$tahuniniStart, $tahuniniEnd])->get()->groupBy(function ($val) {
+            $bulan = transaksi::where('kategori', 'Modal')->where('tanggal', '<=', $end)->where('proyek_id', proyekId())->whereBetween('tanggal', [$tahuniniStart, $tahuniniEnd])->get()->groupBy(function ($val) {
                 return Carbon::parse($val->tanggal)->isoFormat('MMMM');
             });
             // if($aset){
@@ -191,10 +191,10 @@ class LaporanController extends Controller
             //     });
             // }
             if ($aset) {
-                $transaksiAset = transaksi::where('rab_id', $aset->id)->where('tanggal', '<=', $end)->whereBetween('tanggal', [$tahuniniStart, $tahuniniEnd])->get()->groupBy(function ($val) {
+                $transaksiAset = transaksi::where('rab_id', $aset->id)->where('proyek_id', proyekId())->where('tanggal', '<=', $end)->whereBetween('tanggal', [$tahuniniStart, $tahuniniEnd])->get()->groupBy(function ($val) {
                     return Carbon::parse($val->tanggal)->isoFormat('MMMM');
                 });
-                $AsetTahunSebelum = transaksi::where('rab_id', $aset->id)->where('tanggal', '<=', $tahunSebelumEnd)->get();
+                $AsetTahunSebelum = transaksi::where('rab_id', $aset->id)->where('proyek_id', proyekId())->where('tanggal', '<=', $tahunSebelumEnd)->get();
                 if ($AsetTahunSebelum) {
                     $ats = $AsetTahunSebelum->sum('debet');
                 } else {
@@ -356,14 +356,14 @@ class LaporanController extends Controller
             } else {
                 $mts = 0;
             }
-            $bulan = transaksi::where('kategori', 'Modal')->where('tanggal', '<=', $end)->whereBetween('tanggal', [$tahuniniStart, $tahuniniEnd])->get()->groupBy(function ($val) {
+            $bulan = transaksi::where('kategori', 'Modal')->where('tanggal', '<=', $end)->where('proyek_id', proyekId())->whereBetween('tanggal', [$tahuniniStart, $tahuniniEnd])->get()->groupBy(function ($val) {
                 return Carbon::parse($val->tanggal)->isoFormat('MMMM');
             });
             if ($aset) {
-                $transaksiAset = transaksi::where('rab_id', $aset->id)->where('tanggal', '<=', $end)->whereBetween('tanggal', [$tahuniniStart, $tahuniniEnd])->get()->groupBy(function ($val) {
+                $transaksiAset = transaksi::where('rab_id', $aset->id)->where('proyek_id', proyekId())->where('tanggal', '<=', $end)->whereBetween('tanggal', [$tahuniniStart, $tahuniniEnd])->get()->groupBy(function ($val) {
                     return Carbon::parse($val->tanggal)->isoFormat('MMMM');
                 });
-                $AsetTahunSebelum = transaksi::where('rab_id', $aset->id)->where('tanggal', '<=', $tahunSebelumEnd)->get();
+                $AsetTahunSebelum = transaksi::where('rab_id', $aset->id)->where('proyek_id', proyekId())->where('tanggal', '<=', $tahunSebelumEnd)->get();
                 if ($AsetTahunSebelum) {
                     $ats = $AsetTahunSebelum->sum('debet');
                 } else {
@@ -382,7 +382,7 @@ class LaporanController extends Controller
             } else {
                 $mts = 0;
             }
-            $bulan = transaksi::where('kategori', 'Modal')->where('tanggal', '<=', $end)->whereBetween('tanggal', [$tahuniniStart, $tahuniniEnd])->get()->groupBy(function ($val) {
+            $bulan = transaksi::where('kategori', 'Modal')->where('tanggal', '<=', $end)->where('proyek_id', proyekId())->whereBetween('tanggal', [$tahuniniStart, $tahuniniEnd])->get()->groupBy(function ($val) {
                 return Carbon::parse($val->tanggal)->isoFormat('MMMM');
             });
             // if($aset){
@@ -391,10 +391,10 @@ class LaporanController extends Controller
             //     });
             // }
             if ($aset) {
-                $transaksiAset = transaksi::where('rab_id', $aset->id)->where('tanggal', '<=', $end)->whereBetween('tanggal', [$tahuniniStart, $tahuniniEnd])->get()->groupBy(function ($val) {
+                $transaksiAset = transaksi::where('rab_id', $aset->id)->where('proyek_id', proyekId())->where('tanggal', '<=', $end)->whereBetween('tanggal', [$tahuniniStart, $tahuniniEnd])->get()->groupBy(function ($val) {
                     return Carbon::parse($val->tanggal)->isoFormat('MMMM');
                 });
-                $AsetTahunSebelum = transaksi::where('rab_id', $aset->id)->where('tanggal', '<=', $tahunSebelumEnd)->get();
+                $AsetTahunSebelum = transaksi::where('rab_id', $aset->id)->where('proyek_id', proyekId())->where('tanggal', '<=', $tahunSebelumEnd)->get();
                 if ($AsetTahunSebelum) {
                     $ats = $AsetTahunSebelum->sum('debet');
                 } else {
@@ -451,14 +451,14 @@ class LaporanController extends Controller
             } else {
                 $mts = 0;
             }
-            $bulan = transaksi::where('kategori', 'Modal')->where('tanggal', '<=', $end)->whereBetween('tanggal', [$tahuniniStart, $tahuniniEnd])->get()->groupBy(function ($val) {
+            $bulan = transaksi::where('kategori', 'Modal')->where('tanggal', '<=', $end)->where('proyek_id', proyekId())->whereBetween('tanggal', [$tahuniniStart, $tahuniniEnd])->get()->groupBy(function ($val) {
                 return Carbon::parse($val->tanggal)->isoFormat('MMMM');
             });
             if ($aset) {
-                $transaksiAset = transaksi::where('rab_id', $aset->id)->where('tanggal', '<=', $end)->whereBetween('tanggal', [$tahuniniStart, $tahuniniEnd])->get()->groupBy(function ($val) {
+                $transaksiAset = transaksi::where('rab_id', $aset->id)->where('tanggal', '<=', $end)->where('proyek_id', proyekId())->whereBetween('tanggal', [$tahuniniStart, $tahuniniEnd])->get()->groupBy(function ($val) {
                     return Carbon::parse($val->tanggal)->isoFormat('MMMM');
                 });
-                $AsetTahunSebelum = transaksi::where('rab_id', $aset->id)->where('tanggal', '<=', $tahunSebelumEnd)->get();
+                $AsetTahunSebelum = transaksi::where('rab_id', $aset->id)->where('proyek_id', proyekId())->where('tanggal', '<=', $tahunSebelumEnd)->get();
                 if ($AsetTahunSebelum) {
                     $ats = $AsetTahunSebelum->sum('debet');
                 } else {
@@ -477,14 +477,14 @@ class LaporanController extends Controller
             } else {
                 $mts = 0;
             }
-            $bulan = transaksi::where('kategori', 'Modal')->where('tanggal', '<=', $end)->whereBetween('tanggal', [$tahuniniStart, $tahuniniEnd])->get()->groupBy(function ($val) {
+            $bulan = transaksi::where('kategori', 'Modal')->where('tanggal', '<=', $end)->where('proyek_id', proyekId())->whereBetween('tanggal', [$tahuniniStart, $tahuniniEnd])->get()->groupBy(function ($val) {
                 return Carbon::parse($val->tanggal)->isoFormat('MMMM');
             });
             if ($aset) {
-                $transaksiAset = transaksi::where('rab_id', $aset->id)->where('tanggal', '<=', $end)->whereBetween('tanggal', [$tahuniniStart, $tahuniniEnd])->get()->groupBy(function ($val) {
+                $transaksiAset = transaksi::where('rab_id', $aset->id)->where('proyek_id', proyekId())->where('tanggal', '<=', $end)->whereBetween('tanggal', [$tahuniniStart, $tahuniniEnd])->get()->groupBy(function ($val) {
                     return Carbon::parse($val->tanggal)->isoFormat('MMMM');
                 });
-                $AsetTahunSebelum = transaksi::where('rab_id', $aset->id)->where('tanggal', '<=', $tahunSebelumEnd)->get();
+                $AsetTahunSebelum = transaksi::where('rab_id', $aset->id)->where('proyek_id', proyekId())->where('tanggal', '<=', $tahunSebelumEnd)->get();
                 if ($AsetTahunSebelum) {
                     $ats = $AsetTahunSebelum->sum('debet');
                 } else {
