@@ -133,10 +133,10 @@ class HomeController extends Controller
         /* chart */
         $chartPendapatan = new chartAdmin;
         $chartPendapatan->labels(['Kalving', 'Rumah', 'Kelebihan Tanah']);
-        $chartPendapatan->dataset('Total Pendapatan', 'pie', [$pendapatanKavling, $pendapatanRumah, $kelebihanTanah])->options([
+        $chartPendapatan->dataset('Total Omset', 'pie', [$pendapatanKavling, $pendapatanRumah, $kelebihanTanah])->options([
             'backgroundColor' => ['#169948', '#ffa426', '#fc544b']
         ]);
-        $chartPendapatan->title("Total Pendapatan");
+        $chartPendapatan->title("Total Omset");
 
         $chartDPKavling = new chartAdmin;
         $chartDPKavling->labels(['Total Terbayar', 'Sisa DP']);
