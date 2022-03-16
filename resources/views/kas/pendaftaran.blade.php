@@ -97,7 +97,8 @@
                         <h4>Tambah Transaksi Masuk Kas Pendaftaran</h4>
                     </div>
                     <div class="card-body">
-                        <form action="{{ route('kasPendaftaranMasukSimpan') }}" method="POST" enctype="multipart/form-data">
+                        <form action="{{ route('kasPendaftaranMasukSimpan') }}" method="POST"
+                            enctype="multipart/form-data">
                             @csrf
                             <div class="form-group row mb-4">
                                 <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Tanggal</label>
@@ -214,7 +215,12 @@
                 </div>
             </div>
 
-
+            <table class="table table-sm my-3 bg-light ">
+                <tr>
+                    <th class="text-primary text-right pr-5">Sisa Saldo Sebelumnya: Rp.{{ number_format($saldoSebelum) }}
+                    </th>
+                </tr>
+            </table>
             <table class="table table-sm table-hover table-striped mt-3">
                 <thead>
                     <tr>
@@ -231,11 +237,9 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td colspan="2"></td>
-                        <th class="text-primary " colspan="3">Sisa Saldo Sebelumnya</th>
-                        <th class="text-primary">Rp.{{ number_format(saldoPendaftaranBulanSebelumnya($start)) }}</th>
-                    </tr>
+                    @php
+                        $saldo = $saldoSebelum;
+                    @endphp
                     @foreach ($kasPendaftaran as $kas)
                         <tr>
                             <td>{{ $loop->iteration }}</td>
@@ -252,9 +256,12 @@
                                     Rp.{{ number_format($kas->debet) }}
                                 @endif
                             </td>
-                            <td>Rp. {{ number_format($kas->saldo) }}</td>
+                            <td>Rp.{{ number_format($saldo + $kas->kredit - $kas->debet) }}</td>
+                            @php
+                                $saldo = $saldo + $kas->kredit - $kas->debet;
+                            @endphp
                             <td>{{ $kas->sumber }}</td>
-                            @if (auth()->user()->role == 'admin')
+                            @if (auth()->user()->role == 'admin' || auth()->user()->role == 'kasir')
                                 <td>
                                     <button type="button" class="btn btn-sm btn-white text-danger border-danger"
                                         data-toggle="modal" data-target="#hapusTransaksi" data-id="{{ $kas->id }}"
@@ -270,7 +277,7 @@
                         <th colspan="3" class="text-right text-primary">Total</th>
                         <th class="text-primary">Rp. {{ number_format($kasPendaftaran->sum('kredit')) }}</th>
                         <th class="text-primary">Rp. {{ number_format($kasPendaftaran->sum('debet')) }}</th>
-                        <th colspan="2" class="text-primary">Rp. {{ number_format(totalKasPendaftaran($start, $end)) }}
+                        <th colspan="2" class="text-primary">Rp. {{ number_format($saldo) }}
                         </th>
                         <td></td>
                     </tr>

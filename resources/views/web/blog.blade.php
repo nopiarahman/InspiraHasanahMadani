@@ -83,8 +83,8 @@
                     <div class="right_part_wrap">
                         <ul>
                             <li data-style="home">
-                                <a href="#"><img class="svg" src="{{ asset('frontPage/img/svg/home.svg') }}"
-                                        alt="" /></a>
+                                <a href="#"><img class="svg"
+                                        src="{{ asset('frontPage/img/svg/home.svg') }}" alt="" /></a>
                             </li>
                             {{-- <li data-style="message">
 							<a href="#"><img class="svg" src="{{asset('frontPage/img/svg/message2.svg')}}" alt="" /></a>
@@ -163,7 +163,8 @@
                                                 src="{{ asset('frontPage/img/svg/home.svg') }}" alt="" /></a></li>
                                     {{-- <li data-type="message"><a href="#"><img class="svg" src="{{asset('frontPage/img/svg/message2.svg')}}" alt="" /></a></li> --}}
                                     <li data-type="phone"><a href="#"><img class="svg"
-                                                src="{{ asset('frontPage/img/svg/old-phone.svg') }}" alt="" /></a></li>
+                                                src="{{ asset('frontPage/img/svg/old-phone.svg') }}" alt="" /></a>
+                                    </li>
                                     <li data-type="clock"><a href="#"><img class="svg"
                                                 src="{{ asset('frontPage/img/svg/clock.svg') }}" alt="" /></a></li>
                                 </ul>
@@ -307,8 +308,8 @@
                     <div class="widget_icons_wrap">
                         <ul>
                             <li class="home" data-style="home">
-                                <a href="#"><img class="svg" src="{{ asset('frontPage/img/svg/home.svg') }}"
-                                        alt="" /></a>
+                                <a href="#"><img class="svg"
+                                        src="{{ asset('frontPage/img/svg/home.svg') }}" alt="" /></a>
                             </li>
                             {{-- <li class="message" data-style="message">
 							<a href="#"><img class="svg" src="{{asset('frontPage/img/svg/message2.svg')}}" alt="" /></a>

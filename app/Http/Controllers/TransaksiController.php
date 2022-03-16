@@ -294,8 +294,6 @@ class TransaksiController extends Controller
     }
     public function cashFlow(Request $request)
     {
-        // $semuaAkun = akun::where('proyek_id',proyekId())->where('kategori','Pendapatan')->orWhere('kategori','Modal')->get();
-        // dd($request);
         if ($request->get('filter')) {
             $start = Carbon::parse($request->start)->isoFormat('YYYY-MM-DD');
             $end = Carbon::parse($request->end)->isoFormat('YYYY-MM-DD');

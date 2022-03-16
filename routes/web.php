@@ -36,6 +36,7 @@ Route::get('/daftarProyek', 'WebController@daftarProyek')->name('daftarProyek');
 Route::get('/kontak', 'WebController@kontak')->name('kontak');
 Route::get('/galeri', 'WebController@galeri')->name('galeri');
 Route::get('/tentang', 'WebController@tentang')->name('tentang');
+Route::get('/cv1', 'WebController@cv1')->name('cv1');
 
 Auth::routes();
 Route::group(['middleware' => ['auth', 'role:admin,projectmanager,adminGudang,marketing,gudang,kasir']], function () {

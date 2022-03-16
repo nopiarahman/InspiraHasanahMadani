@@ -26,9 +26,21 @@ class WebController extends Controller
         return view('web/blog',compact('blog','banner','listBerita'));
         
     }
-    public function kabar_berita(kabarBerita $id){
+    public function kabar_berita(kabarBerita $id,Request $request){
         // dd($id);
-        return view('web/kabar_berita',compact('id'));
+        $listBerita = kabarBerita::selectRaw("tanggal, date_format(tanggal, '%M') bulan, date_format(tanggal, '%Y') tahun")
+        ->get()
+        ->sortBy('bulan');
+        if($request->filter){
+            $start = Carbon::parse($request->filter)->firstOfMonth()->isoFormat('YYYY-MM-DD');
+            $end = Carbon::parse($request->filter)->endOfMonth()->isoFormat('YYYY-MM-DD');
+
+            $blog= kabarBerita::whereBetween('tanggal',[$start,$end])->paginate(5);
+        }else{
+            $blog = kabarBerita::latest()->paginate(5);
+        }
+        $banner = galeri::where('kategori','banner')->first();
+        return view('web/kabar_berita',compact('id','blog','banner','listBerita'));
     }
     
     public function proyekdetail(proyekweb $id){
@@ -51,5 +63,9 @@ class WebController extends Controller
     }
     public function tentang(){
         return view('web/tentang');
+    }
+    public function cv1(){
+        $banner = galeri::where('kategori','banner')->first();
+        return view('web/cv1',compact('banner'));
     }
 }
