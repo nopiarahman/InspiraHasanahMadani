@@ -35,8 +35,6 @@
     </div>
     @if (auth()->user()->role == 'admin' || auth()->user()->role == 'projectmanager')
         <div class="section-header">
-            {{-- <a href="{{route('RAB')}}"  class="btn btn-primary disabled ">RAB</a>
-    <a href="{{route('biayaUnit')}}" class="btn btn-primary ml-2">Biaya Unit</a> --}}
             <button class="btn btn-primary" onclick="tampilFormRAB()">RAB</button>
             <button class="btn btn-primary ml-2" onclick="tampilFormUnit()">Biaya Unit</button>
             <script>
@@ -770,7 +768,6 @@
                                         @if ((int) $rab->hargaSatuan != 0)
                                             {{-- pengeluaran/total*100 --}}
                                             {{-- {{number_format((float)(hitungTransaksiRABUnit($rab->id)/(hitungUnit($rab->isi,$rab->judul,$rab->jenisUnit)*(int)$rab->hargaSatuan)*100),2)}}% --}}
-
                                         @else
                                             -
                                         @endif

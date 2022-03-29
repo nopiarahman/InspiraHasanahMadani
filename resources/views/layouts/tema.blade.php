@@ -481,6 +481,16 @@
                         @endif
 
                         @if (auth()->user()->role == 'gudang')
+                            <li class="menu-header">Menu Proyek</li>
+                            <li class="nav-item dropdown @yield('menuDataProyek')">
+                                <a href="" class="nav-link has-dropdown" data-toggle="dropdown"><i
+                                        class="fas fa-home"></i> <span>Data Proyek</span></a>
+                                <ul class="dropdown-menu">
+                                    <li class="@yield('menuRAB')"><a class="nav-link"
+                                            href="{{ route('RAB') }}">RAB</a></li>
+                                </ul>
+                            </li>
+                            <li class="menu-header">Menu Gudang</li>
                             <li class="nav-item dropdown @yield('menuGudang')">
                                 <a href="" class="nav-link has-dropdown"> <i class="fas fa-warehouse    "></i>
                                     <span>Gudang</span></a>
