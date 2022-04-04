@@ -234,7 +234,7 @@
                             <td>{{ $alokasi->uraian }}</td>
                             <td>{{ $alokasi->jumlah }} {{ $alokasi->satuan }}</td>
                             <td>Rp. {{ number_format($alokasi->debet) }}</td>
-                            @if (auth()->user()->role == 'admin' || auth()->user()->role == 'gudang')
+                            @if (auth()->user()->role == 'admin' || auth()->user()->role == 'gudang' || auth()->user()->role == 'projectmanager')
                                 <td>
                                     <button type="button" class="btn btn-sm btn-white text-danger border-danger"
                                         data-toggle="modal" data-target="#hapusTransaksi" data-id="{{ $alokasi->id }}"

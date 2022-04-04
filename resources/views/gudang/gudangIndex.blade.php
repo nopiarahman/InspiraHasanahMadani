@@ -158,7 +158,8 @@
                                                 aria-hidden="true"></i> Habis </a>
                                     @endif
                                 </td>
-                                <td>Rp.{{ number_format($gudang->sisa * $gudang->harga) }}</td>
+                                <td data-order="{{ $gudang->sisa * $gudang->harga }}">
+                                    Rp.{{ number_format($gudang->sisa * $gudang->harga) }}</td>
                                 <td>
                                     <a href="{{ route('alokasiGudang', ['id' => $gudang->id]) }}"
                                         class="btn btn-sm btn-white border-success text-primary"> <i
