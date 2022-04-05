@@ -148,9 +148,10 @@
                                     {{ formatTanggal($gudang->tanggalPembelian) }}</td>
                                 <td>{{ $gudang->alokasiAwal }}</td>
                                 <td>{{ $gudang->jenisBarang }}</td>
-                                <td>{{ $gudang->banyaknya }}{{ $gudang->satuan }}</td>
-                                <td>Rp.{{ number_format($gudang->total) }}</td>
-                                <td>
+                                <td data-order="{{ $gudang->banyaknya }}">
+                                    {{ $gudang->banyaknya }}{{ $gudang->satuan }}</td>
+                                <td data-order="{{ $gudang->total }}">Rp.{{ number_format($gudang->total) }}</td>
+                                <td data-order="{{ $gudang->sisa }}">
                                     @if ($gudang->sisa > 0)
                                         {{ $gudang->sisa }}{{ $gudang->satuan }}
                                     @else
