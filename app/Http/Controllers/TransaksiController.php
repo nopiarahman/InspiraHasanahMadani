@@ -410,6 +410,7 @@ class TransaksiController extends Controller
     }
     public function exportKasBesar(Request $request)
     {
+        dd($request);
         if ($request->get('filter')) {
             $start = Carbon::parse($request->start)->isoFormat('YYYY-MM-DD');
             $end = Carbon::parse($request->end)->isoFormat('YYYY-MM-DD');
