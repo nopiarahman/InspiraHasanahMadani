@@ -563,6 +563,19 @@
                                             href="{{ route('kasPendaftaranMasuk') }}">Pendaftaran</a></li>
                                 </ul>
                             </li>
+                            <li class="nav-item dropdown @yield('menuEstimasi')">
+                                <a href="" class="nav-link has-dropdown"><i class="fas fa-box-open    "></i>
+                                    <span>Estimasi Pemasukan</span></a>
+                                <ul class="dropdown-menu">
+                                    <li class=" @yield('menuEstimasiDp')"><a
+                                            href="{{ route('estimasiDp') }}">DP</a>
+                                    </li>
+                                    <li class=" @yield('menuEstimasiCicilan')"><a
+                                            href="{{ route('estimasiCicilan') }}">Cicilan</a></li>
+                                    <li class=" @yield('menuEstimasiTunggakan')"><a
+                                            href="{{ route('estimasiTunggakan') }}">Tunggakan</a></li>
+                                </ul>
+                            </li>
                     </ul>
                     @endif
 

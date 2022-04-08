@@ -111,6 +111,8 @@ class LaporanController extends Controller
             }
         }
         /* RAB */
+        // $a = transaksi::whereBetween('tanggal', [$start, $end])->where('kredit',null)->where('proyek_id', proyekId())->get();
+        // dd($a->count());
         $semuaRAB = rab::all()->where('proyek_id', proyekId())->groupBy(['header', function ($item) {
             return $item['judul'];
         }], $preserveKeys = true);
