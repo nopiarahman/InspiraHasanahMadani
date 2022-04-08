@@ -108,13 +108,15 @@ class EstimasiController extends Controller
             $x[]= $p->pembelian;
         }
         if($x){
+            $dpNunggak=[];
+            $cicilanNunggak=[];
             foreach($x as $p){
                 if(cekDPNunggakBulanIni($p,$start)!=null){
                     $dpNunggak[]=$p;
-                };
+                }
                 if(cekCicilanNunggakBulanIni($p,$start)!=null){
                     $cicilanNunggak[]=$p;
-                };
+                }
             }
 
             $DPtertunggak=collect($dpNunggak)->where('sisaDp','>',0);
@@ -187,13 +189,15 @@ class EstimasiController extends Controller
             $x[]= $p->pembelian;
         }
         if($x){
+            $dpNunggak=[];
+            $cicilanNunggak=[];
             foreach($x as $p){
                 if(cekDPNunggakBulanIni($p,$start)!=null){
                     $dpNunggak[]=$p;
-                };
+                }
                 if(cekCicilanNunggakBulanIni($p,$start)!=null){
                     $cicilanNunggak[]=$p;
-                };
+                }
             }
                 $DPtertunggak=collect($dpNunggak)->where('sisaDp','>',0);
                 $cicilanTertunggak=collect($cicilanNunggak)->where('sisaCicilan','>',0);
