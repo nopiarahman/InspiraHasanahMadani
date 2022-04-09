@@ -181,7 +181,8 @@
                             @forelse ($transaksiAset as $single=>$b)
                                 <tr>
                                     <td>{{ $loop->iteration }}</td>
-                                    <th>Aset Bulan {{ Carbon\Carbon::parse($b->first()->tanggal)->isoFormat('MMMM') }}</th>
+                                    <th>Aset Bulan {{ Carbon\Carbon::parse($b->first()->tanggal)->isoFormat('MMMM') }}
+                                    </th>
                                     <th>
                                         Rp. {{ number_format($b->sum('debet')) }}
                                         @php
@@ -208,7 +209,7 @@
         <table class="table table-sm table-hover table-striped"> --}}
                             <thead>
                                 <tr>
-                                    <th scope="col" colspan="3" class="bg-primary text-white">Pendapatan</th>
+                                    <th scope="col" colspan="3" class="bg-primary text-white">Penerimaan</th>
                                 </tr>
                             </thead>
                         <tbody>
@@ -223,7 +224,7 @@
                         </tbody>
 
                         <tr class="border-top border-success">
-                            <th colspan="2" class="text-right ">Pendapatan Bulan
+                            <th colspan="2" class="text-right ">Penerimaan Bulan
                                 {{ \Carbon\carbon::parse($start)->isoFormat('MMMM') }}</th>
                             @if ($pendapatan != null)
                                 <th class="">Rp.{{ number_format($pendapatan->sum('kredit')) }}</th>
@@ -237,10 +238,11 @@
                             <th class="">Rp.{{ number_format(saldoBulanSebelumnya($start)) }}</th>
                         </tr>
                         <tr>
-                            <th colspan="2" class="text-right bg-secondary">Total Pendapatan</th>
+                            <th colspan="2" class="text-right bg-secondary">Total Penerimaan</th>
                             @if ($pendapatan != null)
                                 <th class="bg-secondary">
-                                    Rp.{{ number_format(saldoBulanSebelumnya($start) + $pendapatan->sum('kredit')) }}</th>
+                                    Rp.{{ number_format(saldoBulanSebelumnya($start) + $pendapatan->sum('kredit')) }}
+                                </th>
                             @else
                                 <th class="bg-secondary">Rp.0</th>
                             @endif
@@ -356,7 +358,8 @@
                                         $totalIsi[$judul] = 0;
                                     @endphp
                                     <tr>
-                                        <th colspan="3" class="">{{ $loop->iteration }}. {{ $judul }}
+                                        <th colspan="3" class="">{{ $loop->iteration }}.
+                                            {{ $judul }}
                                         </th>
                                     </tr>
                                     @php
@@ -400,7 +403,8 @@
                         <tfoot>
                             <tr>
                                 <th colspan="2" class="text-white bg-warning text-right">TOTAL PENGELUARAN</th>
-                                <th class="bg-warning text-white">Rp. {{ number_format(array_sum($b) + array_sum($bRAB)) }}
+                                <th class="bg-warning text-white">Rp.
+                                    {{ number_format(array_sum($b) + array_sum($bRAB)) }}
                                 </th>
                             </tr>
                             <tr>
