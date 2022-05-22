@@ -7,7 +7,8 @@
             <th style="width: 20pt;text-align:center;font-style:italic" colspan="7">{{ namaProyek() }}</th>
         </tr>
         <tr>
-            <th style="width: 20pt;" colspan="7">Periode : {{ Carbon\Carbon::parse($start)->isoFormat('DD MMMM Y') }} -
+            <th style="width: 20pt;" colspan="7">Periode : {{ Carbon\Carbon::parse($start)->isoFormat('DD MMMM Y') }}
+                -
                 {{ Carbon\Carbon::parse($end)->isoFormat('DD MMMM Y') }}</th>
         </tr>
         <tr></tr>
@@ -45,7 +46,8 @@
                         {{ $transaksi->kategori }}
                     @endif
                 </td>
-                <td style="width: 20px">{{ $transaksi->uraian }} {{ $transaksi->jumlah }} {{ $transaksi->satuan }}</td>
+                <td style="width: 20px">{{ $transaksi->uraian }} {{ $transaksi->jumlah }}
+                    {{ $transaksi->satuan }}</td>
                 <td style="width: 20px">
                     @if ($transaksi->kredit != null)
                         {{ $transaksi->kredit }}
