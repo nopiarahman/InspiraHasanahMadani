@@ -22,7 +22,7 @@ Route::get('/', function () {
     $kabarBerita = kabarBerita::latest()->take(3)->get();
     $proyek = proyekweb::where('status', 'publik')->latest()->take(4)->get();
     $popup = popup::first();
-    $slider = slider::latest()->take(3)->get();
+    $slider = slider::where('status', 'publik')->latest()->take(3)->get();
     return view('welcome', compact('kabarBerita', 'proyek', 'popup', 'slider'));
 });
 /* WEB */

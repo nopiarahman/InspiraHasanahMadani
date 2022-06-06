@@ -16,17 +16,19 @@ class KasPendaftaranExport implements FromView , WithTitle ,ShouldAutoSize
     protected $start;
     protected $end;
 
-    function __construct($kasPendaftaran, $start, $end) {
+    function __construct($kasPendaftaran, $start, $end,$saldoSebelum) {
         $this->kasPendaftaran = $kasPendaftaran;
         $this->start = $start;
         $this->end = $end;
+        $this->saldoSebelum = $saldoSebelum;
     }
     public function view(): View
     {
         return view ('excel/kasPendaftaranExcel',[
             'kasPendaftaran'=> $this->kasPendaftaran,
             'start'=> $this->start,
-            'end'=> $this->end
+            'end'=> $this->end,
+            'saldoSebelum'=> $this->saldoSebelum
         ]);
     }
     public function title(): string

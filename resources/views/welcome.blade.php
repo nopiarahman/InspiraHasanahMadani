@@ -388,10 +388,12 @@
                                         <p>
                                             {!! $s->text !!}
                                         </p>
-                                        <a href="{{ url($s->link) }}" type="button"
-                                            class="btn btn-block btn-cta mt-5 text-white" data-dismiss="modal"
-                                            aria-label="Close" target="_blank"
-                                            style="background-color: #1f664b !important">Selengkapnya</a>
+                                        @if ($s->link)
+                                            <a href="{{ url($s->link) }}" type="button"
+                                                class="btn btn-block btn-cta mt-5 text-white" data-dismiss="modal"
+                                                aria-label="Close" target="_blank"
+                                                style="background-color: #1f664b !important">Selengkapnya</a>
+                                        @endif
                                     </div>
                                 </li>
                             @endforeach

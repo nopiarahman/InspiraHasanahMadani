@@ -166,7 +166,7 @@
                                         data-toggle="modal" data-target="#exampleModalCenter" data-id="{{ $isi->id }}"
                                         data-nama="{{ $isi->namaBarang }}">
                                         <i class="fa fa-trash" aria-hidden="true"></i> Hapus</button>
-                                @elseif(auth()->user()->role == 'projectmanager')
+                                @elseif(auth()->user()->role == 'projectmanager' || auth()->user()->role == 'admin')
                                     <a href="{{ route('terimaPengadaan', ['id' => $isi->id]) }}"
                                         class="btn btn-sm text-primary border-success"> <i class="fa fa-check"
                                             aria-hidden="true"></i> Terima</a>
@@ -174,7 +174,7 @@
                                         class="btn btn-sm text-danger border-danger"> <i class="fas fa-times    "></i>
                                         Tolak</a>
                                 @endif
-                                @if (auth()->user()->role == 'admin' || auth()->user()->role == 'adminGudang' || auth()->user()->role == 'marketing')
+                                @if (auth()->user()->role == 'admin' || auth()->user()->role == 'adminGudang' || auth()->user()->role == 'marketing' || auth()->user()->role == 'gudang')
                                     @if ($isi->status == 1 && $isi->statusTransfer == 0)
                                         <a href="{{ route('buatTransaksi', ['id' => $isi->id]) }}"
                                             class="btn btn-sm text-primary border-success"> <i

@@ -20,8 +20,6 @@ class KasPendaftaranController extends Controller
     {
         $start = Carbon::now()->firstOfMonth()->isoFormat('YYYY-MM-DD');
         $end = Carbon::now()->endOFMonth()->isoFormat('YYYY-MM-DD');
-        // dd($end);
-        // $end = moment();
         if ($request->get('filter')) {
             $start = Carbon::parse($request->start)->isoFormat('YYYY-MM-DD');
             $end = Carbon::parse($request->end)->isoFormat('YYYY-MM-DD');
@@ -221,10 +219,14 @@ class KasPendaftaranController extends Controller
         if ($request->get('filter')) {
             $start = Carbon::parse($request->start)->isoFormat('YYYY-MM-DD');
             $end = Carbon::parse($request->end)->isoFormat('YYYY-MM-DD');
-            $kasPendaftaran = kasPendaftaran::whereBetween('tanggal', [$start, $end])->where('proyek_id', proyekId())->orderBy('no')->get();
+            $kasPendaftaran = kasPendaftaran::whereBetween('tanggal', [$start, $end])->where('proyek_id', proyekId())->orderBy('tanggal')->get();
+            $awal = $kasPendaftaran->first();
         } else {
-            $kasPendaftaran = kasPendaftaran::whereBetween('tanggal', [$start, $end])->where('proyek_id', proyekId())->orderBy('no')->get();
+            $kasPendaftaran = kasPendaftaran::whereBetween('tanggal', [$start, $end])->where('proyek_id', proyekId())->orderBy('tanggal')->get();
+            $awal = $kasPendaftaran->first();
         }
-        return Excel::download(new KasPendaftaranExport($kasPendaftaran, $start, $end), 'Kas Pendaftaran.xlsx');
+        $transaksi = kasPendaftaran::where('tanggal', '<', $start)->where('proyek_id', proyekId())->get();
+        $saldoSebelum = $transaksi->sum('kredit') - $transaksi->sum('debet');
+        return Excel::download(new KasPendaftaranExport($kasPendaftaran, $start, $end,$saldoSebelum), 'Kas Pendaftaran.xlsx');
     }
 }
