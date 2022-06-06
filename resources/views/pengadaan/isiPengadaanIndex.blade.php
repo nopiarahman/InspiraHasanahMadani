@@ -166,7 +166,8 @@
                                         data-toggle="modal" data-target="#exampleModalCenter" data-id="{{ $isi->id }}"
                                         data-nama="{{ $isi->namaBarang }}">
                                         <i class="fa fa-trash" aria-hidden="true"></i> Hapus</button>
-                                @elseif(auth()->user()->role == 'projectmanager' || auth()->user()->role == 'admin')
+                                @endif
+                                @if (auth()->user()->role == 'projectmanager' || auth()->user()->role == 'admin')
                                     <a href="{{ route('terimaPengadaan', ['id' => $isi->id]) }}"
                                         class="btn btn-sm text-primary border-success"> <i class="fa fa-check"
                                             aria-hidden="true"></i> Terima</a>
