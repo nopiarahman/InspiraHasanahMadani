@@ -161,7 +161,7 @@
                                 @endif
                             </td>
                             <td>
-                                @if (auth()->user()->role == 'admin')
+                                @if (auth()->user()->role == 'admin' || auth()->user()->role == 'gudang')
                                     <button type="button" class="btn btn-sm btn-white text-danger border-danger"
                                         data-toggle="modal" data-target="#exampleModalCenter" data-id="{{ $isi->id }}"
                                         data-nama="{{ $isi->namaBarang }}">

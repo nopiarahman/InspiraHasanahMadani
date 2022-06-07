@@ -243,7 +243,6 @@
                     @foreach ($kasPendaftaran as $kas)
                         <tr>
                             <td>{{ $loop->iteration }}</td>
-                            {{-- <td>{{$kas->no}}</td> --}}
                             <td>{{ $kas->tanggal }}</td>
                             <td>{{ $kas->uraian }}</td>
                             <td>
