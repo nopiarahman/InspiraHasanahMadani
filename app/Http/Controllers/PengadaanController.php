@@ -14,7 +14,7 @@ use Illuminate\Http\Request;
 class PengadaanController extends Controller
 {
     public function pengadaanIndex(Request $request){
-        $semuaPengadaan=pengadaan::where('proyek_id',proyekId())->take(10)->get();
+        $semuaPengadaan=pengadaan::where('proyek_id',proyekId())->get();
         return view('pengadaan/pengadaanIndex',compact('semuaPengadaan'));
     }
 
