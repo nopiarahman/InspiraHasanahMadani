@@ -562,11 +562,8 @@ class PelangganController extends Controller
     }
     public function detail(Pelanggan $id)
     {
-        // dd($id->user);
         $dataKavling = kavling::where('pelanggan_id', $id->id)->first();
-        // dd($dataKavling);
         $dataPembelian = pembelian::where('pelanggan_id', $id->id)->first();
-        // dd($dataPembelian);
         $persenDiskon = ($dataPembelian->diskon / $dataPembelian->harga) * 100;
         /* tambahan model untuk cetak pelanggan */
         $dataDp = dp::where('pembelian_id', $dataPembelian->id)->orderBy('tanggal')->get();

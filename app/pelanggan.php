@@ -91,4 +91,13 @@ class pelanggan extends Model
     {
         return $this->belongsTo(proyek::class);
     }
+    /**
+     * Get all of the tambahan for the pelanggan
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function tambahan()
+    {
+        return $this->hasMany(tambahan::class);
+    }
 }

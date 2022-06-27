@@ -206,6 +206,12 @@ Route::group(['middleware' => ['auth', 'role:admin,projectmanager,adminGudang,ma
     Route::get('/exportPengembalian/{id}', 'PengembalianController@exportPengembalian')->name('exportPengembalian');
     Route::get('/exportPengembalianPDF/{id}', 'PengembalianController@exportPengembalianPDF')->name('exportPengembalianPDF');
     Route::delete('/hapusPengembalian/{id}', 'PengembalianController@destroy')->name('hapusPengembalian');
+    
+    // Tambahan
+    Route::post('/tambahanSimpan/{id}', 'TambahanController@store')->name('simpanTambahan');
+    Route::delete('/tambahanHapus/{id}', 'TambahanController@destroy')->name('hapusTambahan');
+    Route::get('/tambahan/{id}', 'TambahanController@detail')->name('detailTambahan');
+
 });
 Route::group(['middleware' => ['auth', 'role:projectmanager']], function () {
 

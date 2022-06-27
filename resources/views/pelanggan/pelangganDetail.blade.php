@@ -75,6 +75,13 @@
                                     class="btn btn-primary m-2"> <i class="fas fa-print fa-L"></i> Cetak Pelanggan</button>
                             @endif
                         </div>
+                        @if (auth()->user()->role != 'komisaris')
+                            <div class="profile-widget-item">
+                                <button class="btn btn-warning m-2 " data-toggle="modal" data-target="#modalTambahan">
+                                    <i class="fa fa-plus" aria-hidden="true"></i> Tambahan Baru
+                                </button>
+                            </div>
+                        @endif
                     </div>
                 </div>
                 <div class="profile-widget-description">
@@ -104,9 +111,9 @@
                                     @endif
                                     <td>
                                         @if ($dataPembelian->statusPembelian == 'Booking')
-                                            <a href="#" type="button" class="btn btn-white border-success text-success"
-                                                data-toggle="modal" data-target="#modalGantiStatus"
-                                                data-id="{{ $dataKavling->id }}"
+                                            <a href="#" type="button"
+                                                class="btn btn-white border-success text-success" data-toggle="modal"
+                                                data-target="#modalGantiStatus" data-id="{{ $dataKavling->id }}"
                                                 data-pelanggan="{{ $dataKavling->pelanggan->id }}">
                                                 Ganti Status
                                             </a>
@@ -124,8 +131,8 @@
                                             {{ $dataPembelian->nomorAkad }}
                                     </td>
                                     <td>
-                                        <a href="#" class="btn btn-white text-warning border-warning" data-toggle="modal"
-                                            data-target="#nomorAkad">
+                                        <a href="#" class="btn btn-white text-warning border-warning"
+                                            data-toggle="modal" data-target="#nomorAkad">
                                             Ubah
                                         </a>
                                     </td>
@@ -133,8 +140,8 @@
                                     Belum ada
                                     </td>
                                     <td>
-                                        <a href="#" class="btn btn-white text-primary border-success" data-toggle="modal"
-                                            data-target="#nomorAkad">
+                                        <a href="#" class="btn btn-white text-primary border-success"
+                                            data-toggle="modal" data-target="#nomorAkad">
                                             Input
                                         </a>
                                     </td>
@@ -211,6 +218,23 @@
                                         class="btn btn-white text-primary border-success">Lihat Pembayaran</a>
                                 </td>
                             </tr>
+                            @if ($id->tambahan->first() != null && auth()->user()->role != 'komisaris')
+                                @foreach ($id->tambahan as $t)
+                                    <tr>
+                                        <th class="text-primary">Tambahan {{ $t->keterangan }}</th>
+                                        <td>Rp.{{ number_format($t->total) }}</td>
+                                        <td>
+                                            <a href="{{ route('detailTambahan', ['id' => $t->id]) }}"
+                                                class="btn btn-white text-primary border-success">Lihat Pembayaran</a>
+                                            <button class="btn btn-white border-danger text-danger" data-toggle="modal"
+                                                data-target="#hapusTambahan" data-id="{{ $t->id }}"
+                                                data-keterangan="{{ $t->keterangan }}">
+                                                <i class="fa fa-eraser" aria-hidden="true"></i> Hapus
+                                            </button>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            @endif
                         </tbody>
                     </table>
                     {{-- Ujang maman is a superhero name in <b>Indonesia</b>, especially in my family. He is not a fictional character but an original hero in my family, a hero for his children and for his wife. So, I use the name as a user in this template. Not a tribute, I'm just bored with <b>'John Doe'</b>. --}}
@@ -233,8 +257,8 @@
                             <div class="form-group row mb-4">
                                 <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">NIK</label>
                                 <div class="col-sm-12 col-md-7">
-                                    <input type="text" class="form-control @error('nik') is-invalid @enderror" name="nik"
-                                        value="{{ $dataPembelian->pelanggan->nik }}">
+                                    <input type="text" class="form-control @error('nik') is-invalid @enderror"
+                                        name="nik" value="{{ $dataPembelian->pelanggan->nik }}">
                                     @error('nik')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
@@ -243,8 +267,8 @@
                             <div class="form-group row mb-4">
                                 <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Nama Lengkap</label>
                                 <div class="col-sm-12 col-md-7">
-                                    <input type="text" class="form-control @error('nama') is-invalid @enderror" name="nama"
-                                        value="{{ $dataPembelian->pelanggan->nama }}">
+                                    <input type="text" class="form-control @error('nama') is-invalid @enderror"
+                                        name="nama" value="{{ $dataPembelian->pelanggan->nama }}">
                                     @error('nama')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
@@ -292,13 +316,13 @@
                                 <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Jenis Kelamin</label>
                                 <div class="col-sm-12 col-md-7">
                                     <label class="selectgroup-item">
-                                        <input type="radio" name="jenisKelamin" value="Laki-laki" class="selectgroup-input"
-                                            @if ($dataPembelian->pelanggan->jenisKelamin == 'Laki-laki') checked @endif>
+                                        <input type="radio" name="jenisKelamin" value="Laki-laki"
+                                            class="selectgroup-input" @if ($dataPembelian->pelanggan->jenisKelamin == 'Laki-laki') checked @endif>
                                         <span class="selectgroup-button">Laki-laki</span>
                                     </label>
                                     <label class="selectgroup-item">
-                                        <input type="radio" name="jenisKelamin" value="Perempuan" class="selectgroup-input"
-                                            @if ($dataPembelian->pelanggan->jenisKelamin == 'Perempuan') checked @endif>
+                                        <input type="radio" name="jenisKelamin" value="Perempuan"
+                                            class="selectgroup-input" @if ($dataPembelian->pelanggan->jenisKelamin == 'Perempuan') checked @endif>
                                         <span class="selectgroup-button">Perempuan</span>
                                     </label>
                                     @error('jenisKelamin')
@@ -310,8 +334,10 @@
                                 <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Status
                                     Pernikahan</label>
                                 <div class="col-sm-12 col-md-7">
-                                    <input type="text" class="form-control @error('statusPernikahan') is-invalid @enderror"
-                                        name="statusPernikahan" value="{{ $dataPembelian->pelanggan->statusPernikahan }}">
+                                    <input type="text"
+                                        class="form-control @error('statusPernikahan') is-invalid @enderror"
+                                        name="statusPernikahan"
+                                        value="{{ $dataPembelian->pelanggan->statusPernikahan }}">
                                     @error('statusPernikahan')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
@@ -367,8 +393,8 @@
                                 {{-- <a href="{{route('batalAkad',['id'=>$id->id])}}" class="btn btn-danger ml-3"> Batal Akad</a> --}}
                             </div>
                             <!-- Modal Hapus-->
-                            <div class="modal fade exampleModalCenter" id="exampleModalCenter" tabindex="-1" role="dialog"
-                                aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                            <div class="modal fade exampleModalCenter" id="exampleModalCenter" tabindex="-1"
+                                role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                                 <div class="modal-dialog modal-dialog-centered" role="document">
                                     <div class="modal-content">
                                         <div class="modal-header">
@@ -408,8 +434,8 @@
         });
     </script>
     <div class="card-body" id="kedua">
-        <form action="{{ route('unitPelangganUpdate', ['id' => $id->id]) }}" method="POST" enctype="multipart/form-data"
-            onchange="hitung()">
+        <form action="{{ route('unitPelangganUpdate', ['id' => $id->id]) }}" method="POST"
+            enctype="multipart/form-data" onchange="hitung()">
             @method('patch')
             @csrf
             <div class="form-group row mb-4">
@@ -460,13 +486,13 @@
                         <span class="selectgroup-button">Tidak Ada</span>
                     </label>
                     <label class="selectgroup-item">
-                        <input type="radio" name="includePembelian" value="Rumah" class="selectgroup-input" id="rumah"
-                            @if ($dataPembelian->rumah_id != null) checked @endif>
+                        <input type="radio" name="includePembelian" value="Rumah" class="selectgroup-input"
+                            id="rumah" @if ($dataPembelian->rumah_id != null) checked @endif>
                         <span class="selectgroup-button">Rumah</span>
                     </label>
                     <label class="selectgroup-item">
-                        <input type="radio" name="includePembelian" value="Kios" class="selectgroup-input" id="kios"
-                            @if ($dataPembelian->kios_id != null) checked @endif>
+                        <input type="radio" name="includePembelian" value="Kios" class="selectgroup-input"
+                            id="kios" @if ($dataPembelian->kios_id != null) checked @endif>
                         <span class="selectgroup-button">Kios</span>
                     </label>
                     @error('includePembelian')
@@ -502,8 +528,8 @@
             <div class="form-group row mb-4">
                 <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Tanggal Akad</label>
                 <div class="col-sm-12 col-md-7">
-                    <input type="date" class="form-control @error('tanggalAkad') is-invalid @enderror" name="tanggalAkad"
-                        value="{{ $dataPembelian->tanggalAkad }}">
+                    <input type="date" class="form-control @error('tanggalAkad') is-invalid @enderror"
+                        name="tanggalAkad" value="{{ $dataPembelian->tanggalAkad }}">
                     <div class="feedback mt-2">*kosongkan jika data belum ada</div>
                     @error('tanggalAkad')
                         <div class="invalid-feedback">{{ $message }}</div>
@@ -547,8 +573,8 @@
                     </div>
                     <input type="text" readonly
                         class="totalDiskon form-control @error('totalDiskon') is-invalid @enderror" name="totalDiskon"
-                        value="{{ $dataPembelian->diskon }}" min="0" max="100" placeholder="diisi tanpa tanda %"
-                        id="totalDiskon">
+                        value="{{ $dataPembelian->diskon }}" min="0" max="100"
+                        placeholder="diisi tanpa tanda %" id="totalDiskon">
                     @error('totalDiskon')
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
@@ -562,8 +588,8 @@
                             Rp
                         </div>
                     </div>
-                    <input type="text" class="dp form-control @error('dp') is-invalid @enderror" name="dp" id="dp"
-                        value="{{ $dataPembelian->dp }}">
+                    <input type="text" class="dp form-control @error('dp') is-invalid @enderror" name="dp"
+                        id="dp" value="{{ $dataPembelian->dp }}">
                     @error('dp')
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
@@ -571,8 +597,8 @@
                     <div class="input-group-prepend">
                         <div class="input-group-text " style="border: none">
                             <label class="selectgroup-item ">
-                                <input type="radio" name="statusDp" value="Credit" class="selectgroup-input" checked=""
-                                    onclick="addTenorDP()">
+                                <input type="radio" name="statusDp" value="Credit" class="selectgroup-input"
+                                    checked="" onclick="addTenorDP()">
                                 <span class="selectgroup-button">Credit</span>
                             </label>
                             <label class="selectgroup-item ">
@@ -594,8 +620,8 @@
                 <div class="form-group row mb-4">
                     <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Tenor DP</label>
                     <div class="input-group col-sm-12 col-md-7">
-                        <input type="number" class=" form-control @error('tenorDP') is-invalid @enderror" name="tenorDP"
-                            id="tenorDPInput" value="{{ $dataPembelian->tenorDP }}">
+                        <input type="number" class=" form-control @error('tenorDP') is-invalid @enderror"
+                            name="tenorDP" id="tenorDPInput" value="{{ $dataPembelian->tenorDP }}">
                         @error('tenorDP')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
@@ -628,8 +654,8 @@
                             Rp
                         </div>
                     </div>
-                    <input type="text" class="form-control potonganDp" id="potonganDp" name="potonganDp" value="0"
-                        placeholder="masukkan potongan dp baru">
+                    <input type="text" class="form-control potonganDp" id="potonganDp" name="potonganDp"
+                        value="0" placeholder="masukkan potongan dp baru">
                 </div>
             </div>
             <div class="form-group row mb-4">
@@ -763,7 +789,8 @@
                     <tbody>
                         <tr>
                             <th scope="row" style="width: 40%">Objek</th>
-                            <td>{{ jenisKepemilikan($id->id) }} (@if ($dataKavling == null)Akad Dibatalkan @else{{ $dataKavling->blok }}
+                            <td>{{ jenisKepemilikan($id->id) }} (@if ($dataKavling == null)Akad Dibatalkan
+                                    @else{{ $dataKavling->blok }}
                                 @endif)</td>
 
                         </tr>
@@ -906,7 +933,8 @@
                     <tbody>
                         @foreach ($dataCicilan as $cicilanUnit)
                             <tr>
-                                <th scope="row">{{ cicilanKe($cicilanUnit->pembelian->id, $cicilanUnit->tanggal) }}</th>
+                                <th scope="row">{{ cicilanKe($cicilanUnit->pembelian->id, $cicilanUnit->tanggal) }}
+                                </th>
                                 <td>{{ formatTanggal($cicilanUnit->tanggal) }}</td>
                                 <td>Rp.{{ number_format($cicilanUnit->jumlah) }}</td>
                                 <td>Rp.{{ number_format($cicilanUnit->sisaKewajiban) }}</td>
@@ -969,6 +997,52 @@
                                 <input type="text" class="form-control  @error('nomorAkad') is-invalid @enderror"
                                     id="nomorAkad" name="nomorAkad" value="{{ $dataPembelian->nomorAkad }}">
                                 @error('nomorAkad')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                        </div>
+                </div>
+                <div class="modal-footer bg-whitesmoke br">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                    <input type="submit" class="btn btn-primary" value="Simpan">
+                </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- Modal Tambahan-->
+    <div class="modal fade" tabindex="-1" role="dialog" id="modalTambahan" data-backdrop="false">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Input Tambahan Pendapatan Baru</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form method="POST" action="{{ route('simpanTambahan', ['id' => $dataPembelian->id]) }}"
+                        class="" enctype="multipart/form-data">
+                        @csrf
+                        <div class="form-group row mb-4">
+                            <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Nilai Tambahan</label>
+                            <div class="input-group col-sm-12 col-md-7">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text">
+                                        Rp
+                                    </div>
+                                </div>
+                                <input type="text" class="form-control totalNilaiTambahan" id="total"
+                                    name="total" required>
+                            </div>
+                        </div>
+                        <div class="form-group row mb-4">
+                            <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Keterangan</label>
+                            <div class="col-sm-12 col-md-7">
+                                <input type="text" class="form-control @error('keterangan') is-invalid @enderror"
+                                    name="keterangan" required>
+
+                                @error('keterangan')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
@@ -1095,6 +1169,10 @@
             numeral: true,
             numeralThousandsGroupStyle: 'thousand'
         });
+        var cleave = new Cleave('.totalNilaiTambahan', {
+            numeral: true,
+            numeralThousandsGroupStyle: 'thousand'
+        });
     </script>
     {{-- modal ganti status --}}
     <div class="modal fade modalGantiStatus  ml-5" id="modalGantiStatus" tabindex="-1" role="dialog"
@@ -1135,6 +1213,45 @@
                 $('#pelangganId').val(pelanggan);
                 modal.find('.modal-text').text('Ganti Status Pembelian Menjadi Terjual / Sold ?')
                 document.getElementById('formGantiStatus').action = '/gantiStatus/' + id;
+            })
+        });
+    </script>
+    <!-- Modal Hapus-->
+    <div class="modal fade hapusTambahan" id="hapusTambahan" tabindex="-1" role="dialog"
+        aria-labelledby="hapusTambahanTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Hapus Pendapatan Tambahan</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form action="" method="post" id="formHapusTambahan">
+                        @method('delete')
+                        @csrf
+                        <p class="modal-text"></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-danger">Hapus!</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Tidak</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('#hapusTambahan').on('show.bs.modal', function(event) {
+                var button = $(event.relatedTarget) // Button that triggered the modal
+                var id = button.data('id') // Extract info from data-* attributes
+                var keterangan = button.data('keterangan')
+                var modal = $(this)
+                modal.find('.modal-text').text(
+                    'Apakah anda yakin ingin menghapus tambahan ' +
+                    keterangan + ' ?, ')
+                document.getElementById('formHapusTambahan').action = '/tambahanHapus/' + id;
             })
         });
     </script>

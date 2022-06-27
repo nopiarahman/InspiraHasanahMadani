@@ -15,6 +15,7 @@ use App\Charts\chartAdmin;
 use App\detailUser;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Carbon\Carbon;
 
 class HomeController extends Controller
 {
@@ -36,14 +37,26 @@ class HomeController extends Controller
     public function index()
     {
         /* package laravel chart check di https://v6.charts.erik.cat/installation.html#composer */
-        $kasBesar = transaksi::where('proyek_id', proyekId())->orderBy('no', 'desc')->take(15)->get();
+        $start = Carbon::now();
+        $transaksiSebelum = transaksi::select('kredit','debet','tanggal','uraian')->where('tanggal','<',$start)->where('proyek_id',proyekId())->orderBy('tanggal')->get();
+        $transaksiSebelumChart = $transaksiSebelum->slice(0,-15);
+        $saldoSebelum = $transaksiSebelumChart->sum('kredit')-$transaksiSebelumChart->sum('debet');
+        // dd($saldoSebelum);
+        $kasBesar = $transaksiSebelum->reverse()->take(15)->reverse();
+        // dd($kasBesar); 
         $saldo = $kasBesar->map(function ($item) {
-            return $item->saldo;
-        });
-        // dd($kasBesar);
+            return $item->kredit-$item->debet;
+        })->values();
+        // dd($saldo);
+        $saldoChart = [];
+        for ($i=0; $i < count($saldo); $i++) { 
+            $saldoChart[$i] = $saldoSebelum+$saldo[$i];
+            $saldoSebelum = $saldoSebelum+$saldo[$i];
+        }
+        // dd($saldoChart);
         $chartKasBesar = new chartAdmin;
-        $chartKasBesar->labels($saldo->reverse()->keys());
-        $chartKasBesar->dataset('Kas Besar', 'line', $saldo->reverse()->values())
+        $chartKasBesar->labels(collect($saldoChart)->keys());
+        $chartKasBesar->dataset('Kas Besar', 'line', collect($saldoChart)->values())
             ->options([
                 'borderColor' => '#4CAF50',
                 'fill' => false,
