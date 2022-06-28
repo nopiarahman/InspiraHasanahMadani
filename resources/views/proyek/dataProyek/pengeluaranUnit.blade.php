@@ -255,7 +255,7 @@
                                         @if (request()->route()->getName() == 'transaksiRABUnit' ||
                                             request()->route()->getName() == 'transaksiRAB')
                                             <button type="button"
-                                                class="btn btn-sm btn-white text-warning border-warning"
+                                                class="btn btn-sm btn-white text-primary border-primary"
                                                 data-toggle="modal" data-target="#transferTambahan"
                                                 data-id="{{ $transaksi->id }}"
                                                 data-uraian="{{ $transaksi->uraian }}">
