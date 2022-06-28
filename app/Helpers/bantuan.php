@@ -109,7 +109,7 @@ function noPettyCashTerakhir()
 }
 function totalKasBesar($start, $end)
 {
-    $total = transaksi::whereBetween('tanggal', [$start, $end])->where('proyek_id', proyekId())->orderBy('no')->get();
+    $total = transaksi::whereBetween('tanggal', [$start, $end])->where('tambahan',0)->where('proyek_id', proyekId())->orderBy('no')->get();
     if ($total != null) {
         $terakhir = $total->last();
         if ($terakhir != null) {
@@ -212,7 +212,7 @@ function kasBesarMasuk($dataArray)
 }
 function saldoSebelumnya($tanggalSekarang)
 {
-    $transaksi = transaksi::where('tanggal', '<=', $tanggalSekarang)->where('proyek_id', proyekId())->orderBy('tanggal')->get();
+    $transaksi = transaksi::where('tanggal', '<=', $tanggalSekarang)->where('tambahan',0)->where('proyek_id', proyekId())->orderBy('tanggal')->get();
     if ($transaksi != null) {
         $terakhir = $transaksi->last();
         return $terakhir->saldo;
@@ -454,7 +454,7 @@ function pendapatanLainTahunan($id, $start, $end)
 
 function saldoBulanSebelumnya($start)
 {
-    $transaksi = transaksi::where('tanggal', '<', $start)->where('proyek_id', proyekId())->get();
+    $transaksi = transaksi::where('tanggal', '<', $start)->where('tambahan',0)->where('proyek_id', proyekId())->get();
     $saldoSebelum = $transaksi->sum('kredit') - $transaksi->sum('debet');
     return $saldoSebelum;
 }
@@ -510,7 +510,7 @@ function biayaPembangunanRumahTahunan($start, $end)
     if ($akun != null) {
         $transaksiAkun = 0;
         foreach ($akun as $a) {
-            $transaksi = transaksi::where('akun_id', $a->id)->where('proyek_id', proyekId())->whereBetween('tanggal', [$start, $end])->get();
+            $transaksi = transaksi::where('akun_id', $a->id)->where('tambahan',0)->where('proyek_id', proyekId())->whereBetween('tanggal', [$start, $end])->get();
             $transaksiAkun += $transaksi->sum('debet');
         }
         return $transaksiAkun;
@@ -525,7 +525,7 @@ function biayaPembebananTahunan($start, $end)
     if ($akun != null) {
         $transaksiAkun = 0;
         foreach ($akun as $a) {
-            $transaksi = transaksi::where('akun_id', $a->id)->where('proyek_id', proyekId())->whereBetween('tanggal', [$start, $end])->get();
+            $transaksi = transaksi::where('akun_id', $a->id)->where('tambahan',0)->where('proyek_id', proyekId())->whereBetween('tanggal', [$start, $end])->get();
             $transaksiAkun += $transaksi->sum('debet');
         }
         return $transaksiAkun;
@@ -545,7 +545,7 @@ function penjualanTahunan($start, $end)
     $akun->save();
     // $akun =akun::where('namaAkun','Pendapatan')->where('proyek_id',proyekId())->first();
     if ($akun != null) {
-        $transaksi = transaksi::where('akun_id', $akun->id)->whereBetween('tanggal', [$start, $end])->get();
+        $transaksi = transaksi::where('akun_id', $akun->id)->where('tambahan',0)->whereBetween('tanggal', [$start, $end])->get();
         if ($transaksi != null) {
             return $transaksi->sum('kredit');
         } else {
