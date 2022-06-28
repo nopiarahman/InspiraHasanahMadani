@@ -20,4 +20,13 @@ class tambahan extends Model
     {       
         return $this->belongsTo(pelanggan::class);
     }
+    /**
+     * Get the tambahanDetail associated with the tambahan
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function tambahanDetail()
+    {
+        return $this->hasOne(tambahanDetail::class);
+    }
 }

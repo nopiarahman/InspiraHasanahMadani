@@ -42,12 +42,12 @@ class TransaksiController extends Controller
             $start = Carbon::parse($request->start)->isoFormat('YYYY-MM-DD');
             $end = Carbon::parse($request->end)->isoFormat('YYYY-MM-DD');
             $transaksiMasuk = transaksi::whereBetween('tanggal', [$start, $end])
-                ->whereNotNull('kredit')->where('proyek_id', proyekId())->get();
+                ->whereNotNull('kredit')->where('tambahan',0)->where('proyek_id', proyekId())->get();
         } else {
             $start = Carbon::now()->firstOfMonth()->isoFormat('YYYY-MM-DD');
             $end = Carbon::now()->endOfMonth()->isoFormat('YYYY-MM-DD');
             $transaksiMasuk = transaksi::whereBetween('tanggal', [$start, $end])
-                ->whereNotNull('kredit')->where('proyek_id', proyekId())->get();
+                ->whereNotNull('kredit')->where('tambahan',0)->where('proyek_id', proyekId())->get();
         }
         return view('transaksi/masukIndex', compact('transaksiMasuk', 'start', 'end'));
     }
@@ -73,12 +73,12 @@ class TransaksiController extends Controller
             $start = Carbon::parse($request->start)->isoFormat('YYYY-MM-DD');
             $end = Carbon::parse($request->end)->isoFormat('YYYY-MM-DD');
             $transaksiKeluar = transaksi::whereBetween('tanggal', [$start, $end])
-                ->whereNotNull('debet')->where('proyek_id', proyekId())->orderBy('tanggal')->get();
+                ->whereNotNull('debet')->where('tambahan',0)->where('proyek_id', proyekId())->orderBy('tanggal')->get();
         } else {
             $start = Carbon::now()->firstOfMonth()->isoFormat('YYYY-MM-DD');
             $end = Carbon::now()->endOfMonth()->isoFormat('YYYY-MM-DD');
             $transaksiKeluar = transaksi::whereBetween('tanggal', [$start, $end])
-                ->whereNotNull('debet')->where('proyek_id', proyekId())->orderBy('tanggal')->get();
+                ->whereNotNull('debet')->where('tambahan',0)->where('proyek_id', proyekId())->orderBy('tanggal')->get();
         }
         return view('transaksi/keluarIndex', compact('transaksiKeluar', 'perHeader', 'semuaRAB', 'perJudul', 'perHeaderUnit', 'semuaRABUnit', 'perJudulUnit', 'start', 'end'));
     }
@@ -123,7 +123,7 @@ class TransaksiController extends Controller
             //     $requestData['hargaSatuan']=null;
             // }
             /* cek apakah ada transaksi sebelumnya */
-            $cekTransaksiSebelum = transaksi::where('tanggal', '<=', $request->tanggal)->orderBy('no')->where('proyek_id', proyekId())->get();
+            $cekTransaksiSebelum = transaksi::where('tanggal', '<=', $request->tanggal)->orderBy('no')->where('tambahan',0)->where('proyek_id', proyekId())->get();
             /* jika transaksi sebelumnya ada value */
             if ($cekTransaksiSebelum->first() != null) {
                 $sebelum = $cekTransaksiSebelum->last();
@@ -138,7 +138,7 @@ class TransaksiController extends Controller
             /* parameter kasBesarKeluar=['tanggal','rab_id(nullable)','rabUnit_id(nullable)','akun_id','uraian','sumber','jumlah','no','saldo'] */
             if ($request->sumberKas == 'kasBesar') {
                 /* cek transaksi sesudah input */
-                $cekTransaksi = transaksi::where('tanggal', '>', $request->tanggal)->orderBy('no')->where('proyek_id', proyekId())->get();
+                $cekTransaksi = transaksi::where('tanggal', '>', $request->tanggal)->orderBy('no')->where('tambahan',0)->where('proyek_id', proyekId())->get();
                 if ($cekTransaksi->first() != null) {
                     /* jika ada, update transaksi sesudah sesuai perubahan input*/
                     foreach ($cekTransaksi as $updateTransaksi) {
@@ -157,7 +157,7 @@ class TransaksiController extends Controller
                 }
             } elseif ($request->sumberKas == 'kasKecilLapangan') {
                 /* cek transaksi sesudah input */
-                $cekTransaksi = transaksi::where('tanggal', '>', $request->tanggal)->orderBy('no')->where('proyek_id', proyekId())->get();
+                $cekTransaksi = transaksi::where('tanggal', '>', $request->tanggal)->orderBy('no')->where('tambahan',0)->where('proyek_id', proyekId())->get();
                 if ($cekTransaksi->first() != null) {
                     /* jika ada, update transaksi sesudah sesuai perubahan input*/
                     foreach ($cekTransaksi as $updateTransaksi) {
@@ -208,7 +208,7 @@ class TransaksiController extends Controller
                 // dd($requestData);
             } else {
                 /* cek transaksi sesudah input */
-                $cekTransaksi = transaksi::where('tanggal', '>', $request->tanggal)->orderBy('no')->where('proyek_id', proyekId())->get();
+                $cekTransaksi = transaksi::where('tanggal', '>', $request->tanggal)->orderBy('no')->where('tambahan',0)->where('proyek_id', proyekId())->get();
                 if ($cekTransaksi->first() != null) {
                     /* jika ada, update transaksi sesudah sesuai perubahan input*/
                     foreach ($cekTransaksi as $updateTransaksi) {
@@ -279,7 +279,7 @@ class TransaksiController extends Controller
                     $terakhir = $pengembalian->last();
                     $requestPengembalian['sisaPengembalian'] = $terakhir->sisaPengembalian - $jumlah;
                 }
-                $cekTransaksi = transaksi::where('tanggal', $request->tanggal)->where('uraian', $request->uraian)->where('debet', $jumlah)->first();
+                $cekTransaksi = transaksi::where('tanggal', $request->tanggal)->where('tambahan',0)->where('uraian', $request->uraian)->where('debet', $jumlah)->first();
                 $requestPengembalian['transaksi_id'] = $cekTransaksi->id;
 
                 pengembalian::create($requestPengembalian);
@@ -297,19 +297,38 @@ class TransaksiController extends Controller
         if ($request->get('filter')) {
             $start = Carbon::parse($request->start)->isoFormat('YYYY-MM-DD');
             $end = Carbon::parse($request->end)->isoFormat('YYYY-MM-DD');
-            $cashFlow = transaksi::whereBetween('tanggal', [$start, $end])->where('proyek_id', proyekId())->orderBy('tanggal')->get();
+            $cashFlow = transaksi::whereBetween('tanggal', [$start, $end])->where('proyek_id', proyekId())->orderBy('tanggal')->where('tambahan',0)->get();
             $awal = $cashFlow->first();
             // dd($awal);
         } else {
             $start = Carbon::now()->firstOfMonth()->isoFormat('YYYY-MM-DD');
             $end = Carbon::now()->endOfMonth()->isoFormat('YYYY-MM-DD');
-            $cashFlow = transaksi::whereBetween('tanggal', [$start, $end])->where('proyek_id', proyekId())->orderBy('tanggal')->get();
+            $cashFlow = transaksi::whereBetween('tanggal', [$start, $end])->where('proyek_id', proyekId())->orderBy('tanggal')->where('tambahan',0)->get();
             $awal = $cashFlow->first();
         }
-        $transaksi = transaksi::where('tanggal', '<', $start)->where('proyek_id', proyekId())->get();
+        $transaksi = transaksi::where('tanggal', '<', $start)->where('proyek_id', proyekId())->where('tambahan',0)->get();
         $saldoSebelum = $transaksi->sum('kredit') - $transaksi->sum('debet');
         // dd($saldoSebelum);
         return view('transaksi/cashFlowIndex', compact('saldoSebelum', 'cashFlow', 'awal', 'start', 'end'));
+    }
+    public function kasTambahan(Request $request)
+    {
+        if ($request->get('filter')) {
+            $start = Carbon::parse($request->start)->isoFormat('YYYY-MM-DD');
+            $end = Carbon::parse($request->end)->isoFormat('YYYY-MM-DD');
+            $cashFlow = transaksi::whereBetween('tanggal', [$start, $end])->where('proyek_id', proyekId())->orderBy('tanggal')->where('tambahan',1)->get();
+            $awal = $cashFlow->first();
+            // dd($awal);
+        } else {
+            $start = Carbon::now()->firstOfMonth()->isoFormat('YYYY-MM-DD');
+            $end = Carbon::now()->endOfMonth()->isoFormat('YYYY-MM-DD');
+            $cashFlow = transaksi::whereBetween('tanggal', [$start, $end])->where('proyek_id', proyekId())->orderBy('tanggal')->where('tambahan',1)->get();
+            $awal = $cashFlow->first();
+        }
+        $transaksi = transaksi::where('tanggal', '<', $start)->where('proyek_id', proyekId())->where('tambahan',1)->get();
+        $saldoSebelum = $transaksi->sum('kredit') - $transaksi->sum('debet');
+        // dd($saldoSebelum);
+        return view('transaksi/kasTambahan', compact('saldoSebelum', 'cashFlow', 'awal', 'start', 'end'));
     }
     public function hapusKeluar(Transaksi $id)
     {
@@ -351,7 +370,7 @@ class TransaksiController extends Controller
             }
             /* cek transaksi sesudah input */
             // $hapusKasBesar=transaksi::find($id->id);
-            $cekKasBesar = transaksi::where('tanggal', '>=', $id->tanggal)->where('no', '>', $id->no)->orderBy('no')->get();
+            $cekKasBesar = transaksi::where('tanggal', '>=', $id->tanggal)->where('tambahan',0)->where('no', '>', $id->no)->orderBy('no')->get();
             // dd($cekKasBesar);
             if ($cekKasBesar->first() != null) {
                 /* jika ada, update transaksi sesudah sesuai perubahan input*/
@@ -414,16 +433,16 @@ class TransaksiController extends Controller
         if ($request->get('filter')) {
             $start = Carbon::parse($request->start)->isoFormat('YYYY-MM-DD');
             $end = Carbon::parse($request->end)->isoFormat('YYYY-MM-DD');
-            $cashFlow = transaksi::whereBetween('tanggal', [$start, $end])->where('proyek_id', proyekId())->orderBy('tanggal')->get();
+            $cashFlow = transaksi::whereBetween('tanggal', [$start, $end])->where('tambahan',0)->where('proyek_id', proyekId())->orderBy('tanggal')->get();
             $awal = $cashFlow->first();
             // dd($awal);
         } else {
             $start = Carbon::now()->firstOfMonth()->isoFormat('YYYY-MM-DD');
             $end = Carbon::now()->endOfMonth()->isoFormat('YYYY-MM-DD');
-            $cashFlow = transaksi::whereBetween('tanggal', [$start, $end])->where('proyek_id', proyekId())->orderBy('tanggal')->get();
+            $cashFlow = transaksi::whereBetween('tanggal', [$start, $end])->where('tambahan',0)->where('proyek_id', proyekId())->orderBy('tanggal')->get();
             $awal = $cashFlow->first();
         }
-        $transaksi = transaksi::where('tanggal', '<', $start)->where('proyek_id', proyekId())->get();
+        $transaksi = transaksi::where('tanggal', '<', $start)->where('tambahan',0)->where('proyek_id', proyekId())->get();
         $saldoSebelum = $transaksi->sum('kredit') - $transaksi->sum('debet');
         return Excel::download(new KasBesarExport($saldoSebelum, $cashFlow, $start, $end), 'Kas Besar.xlsx');
     }

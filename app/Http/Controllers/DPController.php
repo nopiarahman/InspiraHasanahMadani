@@ -117,7 +117,7 @@ class DPController extends Controller
             $requestData['kredit']=str_replace(',', '', $request->jumlah);
             $requestData['proyek_id']=proyekId();
             /* cek apakah ada transaksi sebelumnya */
-            $cekTransaksiSebelum=transaksi::where('tanggal','<=',$request->tanggal)->orderBy('no')->where('proyek_id',proyekId())->get();
+            $cekTransaksiSebelum=transaksi::where('tanggal','<=',$request->tanggal)->where('tambahan',0)->orderBy('no')->where('proyek_id',proyekId())->get();
             /* jika transaksi sebelumnya ada value */
             // dd($cekTransaksiSebelum->first());
             if($cekTransaksiSebelum->first() != null){
@@ -130,7 +130,7 @@ class DPController extends Controller
                 $requestData['saldo']=$jumlah;
             }
             /* cek transaksi sesudah input */
-            $cekTransaksi=transaksi::where('tanggal','>',$request->tanggal)->orderBy('no')->where('proyek_id',proyekId())->get();
+            $cekTransaksi=transaksi::where('tanggal','>',$request->tanggal)->where('tambahan',0)->orderBy('no')->where('proyek_id',proyekId())->get();
             // dd($requestData);
             if($cekTransaksi != null){
                 /* jika ada, update transaksi sesudah sesuai perubahan input*/
@@ -165,10 +165,10 @@ class DPController extends Controller
             $dari = Carbon::parse($id->created_at);
             $sampai = Carbon::parse($id->created_at)->addSeconds(240);
             $hapusKasBesar = transaksi::whereBetween('created_at',[$dari,$sampai])
-                                        ->where('kredit',$id->jumlah)->where('uraian',$uraian)->first();
+                                        ->where('kredit',$id->jumlah)->where('tambahan',0)->where('uraian',$uraian)->first();
             // dd($hapusKasBesar);
             /* cek transaksi sesudah input */
-            $cekTransaksi=transaksi::where('tanggal','>=',$id->tanggal)->where('no','>',$hapusKasBesar->no)->orderBy('no')->get();
+            $cekTransaksi=transaksi::where('tanggal','>=',$id->tanggal)->where('tambahan',0)->where('no','>',$hapusKasBesar->no)->orderBy('no')->get();
             // dd($cekTransaksi);
             $terbayar=dp::where('pembelian_id',$id->pembelian_id)->get();
             $totalTerbayar=$terbayar->sum('jumlah');

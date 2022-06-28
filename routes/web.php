@@ -132,6 +132,7 @@ Route::group(['middleware' => ['auth', 'role:admin,projectmanager,adminGudang,ma
     Route::post('/transaksiKeluarSimpan', 'TransaksiController@keluarSimpan')->name('transaksiKeluarSimpan');
     Route::delete('/hapusTransaksiKeluar/{id}', 'TransaksiController@hapusKeluar')->name('hapusTransaksiKeluar');
     Route::get('/cashFlow', 'TransaksiController@cashFlow')->name('cashFlow');
+    Route::get('/kasTambahan', 'TransaksiController@kasTambahan')->name('kasTambahan');
     Route::delete('/hapusKasBesar/{id}', 'TransaksiController@hapusKasBesar')->name('hapusTransaksiKeluar');
 
     Route::get('/kasKecilLapangan', 'KasController@kasKecilLapangan')->name('kasKecilLapangan');
@@ -211,6 +212,10 @@ Route::group(['middleware' => ['auth', 'role:admin,projectmanager,adminGudang,ma
     Route::post('/tambahanSimpan/{id}', 'TambahanController@store')->name('simpanTambahan');
     Route::delete('/tambahanHapus/{id}', 'TambahanController@destroy')->name('hapusTambahan');
     Route::get('/tambahan/{id}', 'TambahanController@detail')->name('detailTambahan');
+    
+    // Pembayaran Tambahan
+    Route::post('/tambahanDetailSimpan/{id}', 'TambahanDetailController@store')->name('tambahanDetailSimpan');
+    Route::delete('/hapusTambahanDetail/{id}', 'TambahanDetailController@destroy')->name('hapusTambahanDetail');
 
 });
 Route::group(['middleware' => ['auth', 'role:projectmanager']], function () {

@@ -222,7 +222,9 @@
                                 @foreach ($id->tambahan as $t)
                                     <tr>
                                         <th class="text-primary">Tambahan {{ $t->keterangan }}</th>
-                                        <td>Rp.{{ number_format($t->total) }}</td>
+                                        <td> <span class="text-warning">
+                                                Rp {{ number_format(hitungDetailTambahan($t->id)) }}</span> /
+                                            Rp.{{ number_format($t->total) }}</td>
                                         <td>
                                             <a href="{{ route('detailTambahan', ['id' => $t->id]) }}"
                                                 class="btn btn-white text-primary border-success">Lihat Pembayaran</a>

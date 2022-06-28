@@ -49,7 +49,7 @@ class PengembalianController extends Controller
         try {
             $transaksi=transaksi::where('id',$id->transaksi_id)->first();
             // dd($transaksi);
-            $cekTransaksi=transaksi::where('tanggal','>=',$transaksi->tanggal)->where('no','>',$transaksi->no)->orderBy('no')->get();
+            $cekTransaksi=transaksi::where('tanggal','>=',$transaksi->tanggal)->where('tambahan',0)->where('no','>',$transaksi->no)->orderBy('no')->get();
             if($cekTransaksi->first() != null){
                 /* jika ada, update transaksi sesudah sesuai perubahan input*/
                 foreach($cekTransaksi as $updateTransaksi){

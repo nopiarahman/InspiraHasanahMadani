@@ -11,4 +11,13 @@ class tambahanDetail extends Model
     protected $table = 'tambahandetail';
     protected $guarded = ['id','created_at','updated_at']; /* melindungi field yang tidak boleh diisi manual, lihat mass assignment */
 
+    /**
+     * Get the tambahan that owns the tambahanDetail
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function tambahan()
+    {
+        return $this->belongsTo(tambahan::class);
+    }
 }

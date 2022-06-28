@@ -156,12 +156,12 @@ class PengadaanController extends Controller
         if($request->get('filter')){
             $start = Carbon::parse($request->start)->isoFormat('YYYY-MM-DD');
             $end = Carbon::parse($request->end)->isoFormat('YYYY-MM-DD');
-            $transaksiKeluar=transaksi::whereBetween('tanggal',[$start,$end])
+            $transaksiKeluar=transaksi::whereBetween('tanggal',[$start,$end])->where('tambahan',0)
                             ->whereNotNull('debet')->where('proyek_id',proyekId())->orderBy('no')->get();
         }else{
             $start = Carbon::now()->firstOfMonth()->isoFormat('YYYY-MM-DD');
             $end = Carbon::now()->endOfMonth()->isoFormat('YYYY-MM-DD');
-            $transaksiKeluar=transaksi::whereBetween('tanggal',[$start,$end])
+            $transaksiKeluar=transaksi::whereBetween('tanggal',[$start,$end])->where('tambahan',0)
                             ->whereNotNull('debet')->where('proyek_id',proyekId())->orderBy('no')->get();
         }
         return view ('pengadaan/buatTransaksi',compact('id','semuaAkun','perKategori','kategoriAkun','transaksiKeluar','perHeader','semuaRAB','perJudul','perHeaderUnit','semuaRABUnit','perJudulUnit','start','end'));

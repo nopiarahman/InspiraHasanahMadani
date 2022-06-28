@@ -16,14 +16,21 @@ class TambahanController extends Controller
     public function detail(tambahan $id)
     {
         $rekening = rekening::where('proyek_id', proyekId())->get();
-        return view('tambahan/tambah', compact('id','rekening'));
+        if($id->tambahanDetail != null){
+            $tambahanDetail = $id->tambahanDetail->get();
+        }else{
+            $tambahanDetail = [];
+        }
+
+        return view('tambahan/tambah', compact('id','rekening','tambahanDetail'));
     }
     public function store(Request $request, Pembelian $id)
     {
         DB::beginTransaction();
         try {
+            $jumlah = str_replace(',', '', $request->total);
             $rules = [
-                'total' => 'required|numeric',
+                'total' => 'required',
                 'keterangan' => 'required',
             ];
             $costumMessages = [
@@ -32,18 +39,24 @@ class TambahanController extends Controller
             $this->validate($request, $rules, $costumMessages);
             $requestData = $request->all();
             $requestData['pelanggan_id'] = $id->pelanggan->id;
+            $requestData['total'] = $jumlah;
             tambahan::create($requestData);
             DB::commit();
             return redirect()->back()->with('status', 'Pendapatan Tambahan telah dibuat!');
         } catch (\Exception $ex) {
             DB::rollback();
+            dd($ex);
             return redirect()->back()->with('error', 'Gagal. Pesan Error: ' . $ex->getMessage());
         }
         
     }
     public function destroy(tambahan $id)
     {
-        // Cek transaksi
-        dd($id);
+        if($id->tambahanDetail!=null){
+            return redirect()->back()->with('error', 'Gagal. Tambahan memiliki transaksi!');
+        }else
+        $id->delete();
+        return redirect()->back()->with('status', 'Tambahan Berhasil dihapus');
+
     }
 }

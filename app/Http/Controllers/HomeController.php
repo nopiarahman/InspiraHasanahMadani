@@ -135,7 +135,7 @@ class HomeController extends Controller
                 $totalCicilanKiosTerbayar += $a->cicilan()->sum('jumlah');
             }
         }
-        $kelebihanTanah = transaksi::where('kategori', 'Kelebihan Tanah')->where('proyek_id', proyekId())->get()->sum('kredit');
+        $kelebihanTanah = transaksi::where('kategori', 'Kelebihan Tanah')->where('tambahan',0)->where('proyek_id', proyekId())->get()->sum('kredit');
         // dd($kelebihanTanah);
         $sisaDpKios = $totalDpKios - $totalDpKiosTerbayar;
         $sisaCicilanKios = $totalCicilanKios - $totalCicilanKiosTerbayar;

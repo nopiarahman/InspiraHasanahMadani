@@ -93,8 +93,8 @@
                         </form>
                     @endif
                     <li class="dropdown">
-                        <a href="#" data-toggle="dropdown" class="nav-link dropdown-toggle nav-link-lg nav-link-user"
-                            aria-expanded="false">
+                        <a href="#" data-toggle="dropdown"
+                            class="nav-link dropdown-toggle nav-link-lg nav-link-user" aria-expanded="false">
                             <img alt="image"
                                 @if (detailUser(auth()->user()->id)->poto != null) src="{{ Storage::url(detailUser(auth()->user()->id)->poto) }}"
                         @else
@@ -116,12 +116,12 @@
                                 <i class="fas fa-cog"></i> Pengaturan
                             </a>
                             <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();
+                            <a class="dropdown-item" href="{{ route('logout') }}"
+                                onclick="event.preventDefault();
                                       document.getElementById('logout-form2').submit();">
                                 {{ __('Logout') }}
                             </a>
-                            <form id="logout-form2" action="{{ route('logout') }}" method="POST"
-                                class="d-none">
+                            <form id="logout-form2" action="{{ route('logout') }}" method="POST" class="d-none">
                                 @csrf
                             </form>
                             {{-- <i class="fas fa-sign-out-alt"></i> Logout --}}
@@ -149,8 +149,8 @@
 
                         @if (auth()->user()->role == 'projectmanager')
                             <li class="menu-header">Menu Proyek</li>
-                            <li class="@yield('menuProyek')"><a class="nav-link"
-                                    href="{{ route('proyek') }}"><i class="fas fa-archway"></i>
+                            <li class="@yield('menuProyek')"><a class="nav-link" href="{{ route('proyek') }}"><i
+                                        class="fas fa-archway"></i>
                                     <span>Proyek</span></a></li>
                             <li class="nav-item dropdown @yield('menuDataProyek')">
                                 <a href="" class="nav-link has-dropdown" data-toggle="dropdown"><i
@@ -163,11 +163,11 @@
                                 </ul>
                             </li>
                             <li class="menu-header">Menu Project Manager</li>
-                            <li class=" @yield('menuUser')"> <a class="nav-link"
-                                    href="{{ route('kelolaUser') }}"> <i class="fas fa-user-friends    "></i> <span>
+                            <li class=" @yield('menuUser')"> <a class="nav-link" href="{{ route('kelolaUser') }}">
+                                    <i class="fas fa-user-friends    "></i> <span>
                                         Kelola User</span></a></li>
-                            <li class=" @yield('menuDaftarPengadaan')"><a class="nav-link"
-                                    href="{{ route('pengadaan') }}"><i class="fas fa-box-open    "></i> <span>
+                            <li class=" @yield('menuDaftarPengadaan')"><a class="nav-link" href="{{ route('pengadaan') }}"><i
+                                        class="fas fa-box-open    "></i> <span>
                                         Pengadaan Barang</span></a></li>
                         @endif
 
@@ -187,7 +187,8 @@
                         @if (auth()->user()->role == 'projectmanager' || auth()->user()->role == 'admin')
                             <li class="menu-header">Menu Pelanggan</li>
                             <li class="nav-item dropdown @yield('menuPelanggan')">
-                                <a href="" class="nav-link has-dropdown"><i class="fas fa-clipboard-check"></i>
+                                <a href="" class="nav-link has-dropdown"><i
+                                        class="fas fa-clipboard-check"></i>
                                     <span>Pelanggan</span></a>
                                 <ul class="dropdown-menu">
                                     <li class=" @yield('menupelangganIndex')"><a class="nav-link"
@@ -198,8 +199,8 @@
                                             href="{{ route('pelangganTerhapus') }}">Terhapus</a></li>
                                 </ul>
                             </li>
-                            <li class=" @yield('menuCicilanDP')"><a class="nav-link"
-                                    href="{{ route('DPKavling') }}"><i class="fas fa-coins"></i> <span> Cicilan
+                            <li class=" @yield('menuCicilanDP')"><a class="nav-link" href="{{ route('DPKavling') }}"><i
+                                        class="fas fa-coins"></i> <span> Cicilan
                                         DP</span></a></li>
                             <li class=" @yield('menuCicilanUnit')"><a class="nav-link"
                                     href="{{ route('cicilanKavling') }}"><i class="fas fa-money-bill-wave"></i>
@@ -220,8 +221,8 @@
                                 <a href="" class="nav-link has-dropdown"><i class="fas fa-box-open    "></i>
                                     <span>Pengadaan</span></a>
                                 <ul class="dropdown-menu">
-                                    <li class=" @yield('menuDaftarPengadaan')"><a
-                                            href="{{ route('pengadaan') }}">Daftar Pengadaan</a></li>
+                                    <li class=" @yield('menuDaftarPengadaan')"><a href="{{ route('pengadaan') }}">Daftar
+                                            Pengadaan</a></li>
                                     <li class=" @yield('menuDaftarBarang')"><a href="{{ route('barang') }}">Daftar
                                             Barang</a></li>
                                 </ul>
@@ -244,6 +245,8 @@
                                 <ul class="dropdown-menu">
                                     <li class=" @yield('menuKasBesar')"><a href="{{ route('cashFlow') }}">Kas
                                             Besar</a></li>
+                                    <li class=" @yield('menuKasBesar')"><a href="{{ route('kasTambahan') }}">Kas
+                                            Tambahan</a></li>
                                     <li class=" @yield('menuKasPendaftaran')"><a class="nav-link"
                                             href="{{ route('kasPendaftaranMasuk') }}">Pendaftaran</a></li>
                                     <li class=" @yield('menuKasKecil')"><a class="nav-link"
@@ -262,11 +265,12 @@
                                             Habis</a></li>
                                 </ul>
                             </li>
-                            <li class=" @yield('menuRekening')"><a class="nav-link"
-                                    href="{{ route('rekening') }}"> <i class="fas fa-dollar-sign    "></i> <span>
+                            <li class=" @yield('menuRekening')"><a class="nav-link" href="{{ route('rekening') }}"> <i
+                                        class="fas fa-dollar-sign    "></i> <span>
                                         Rekening</span></a></li>
                             <li class="nav-item dropdown @yield('menuLaporan')">
-                                <a href="" class="nav-link has-dropdown"><i class="fas fa-clipboard-check"></i>
+                                <a href="" class="nav-link has-dropdown"><i
+                                        class="fas fa-clipboard-check"></i>
                                     <span>Laporan</span></a>
                                 <ul class="dropdown-menu">
                                     <li class=" @yield('menuLaporanBulanan')"><a class="nav-link"
@@ -291,7 +295,8 @@
                             </li>
                             <li class="menu-header">Menu Pelanggan</li>
                             <li class="nav-item dropdown @yield('menuPelanggan')">
-                                <a href="" class="nav-link has-dropdown"><i class="fas fa-clipboard-check"></i>
+                                <a href="" class="nav-link has-dropdown"><i
+                                        class="fas fa-clipboard-check"></i>
                                     <span>Pelanggan</span></a>
                                 <ul class="dropdown-menu">
                                     <li class=" @yield('menupelangganIndex')"><a class="nav-link"
@@ -302,8 +307,8 @@
                                             href="{{ route('pelangganTerhapus') }}">Terhapus</a></li>
                                 </ul>
                             </li>
-                            <li class=" @yield('menuCicilanDP')"><a class="nav-link"
-                                    href="{{ route('DPKavling') }}"><i class="fas fa-coins"></i> <span> Cicilan
+                            <li class=" @yield('menuCicilanDP')"><a class="nav-link" href="{{ route('DPKavling') }}"><i
+                                        class="fas fa-coins"></i> <span> Cicilan
                                         DP</span></a></li>
                             <li class=" @yield('menuCicilanUnit')"><a class="nav-link"
                                     href="{{ route('cicilanKavling') }}"><i class="fas fa-money-bill-wave"></i>
@@ -322,8 +327,8 @@
                                 <a href="" class="nav-link has-dropdown"><i class="fas fa-box-open    "></i>
                                     <span>Pengadaan</span></a>
                                 <ul class="dropdown-menu">
-                                    <li class=" @yield('menuDaftarPengadaan')"><a
-                                            href="{{ route('pengadaan') }}">Daftar Pengadaan</a></li>
+                                    <li class=" @yield('menuDaftarPengadaan')"><a href="{{ route('pengadaan') }}">Daftar
+                                            Pengadaan</a></li>
                                     <li class=" @yield('menuDaftarBarang')"><a href="{{ route('barang') }}">Daftar
                                             Barang</a></li>
                                 </ul>
@@ -350,11 +355,12 @@
                                             Habis</a></li>
                                 </ul>
                             </li>
-                            <li class=" @yield('menuRekening')"><a class="nav-link"
-                                    href="{{ route('rekening') }}"> <i class="fas fa-dollar-sign    "></i> <span>
+                            <li class=" @yield('menuRekening')"><a class="nav-link" href="{{ route('rekening') }}"> <i
+                                        class="fas fa-dollar-sign    "></i> <span>
                                         Rekening</span></a></li>
                             <li class="nav-item dropdown @yield('menuLaporan')">
-                                <a href="" class="nav-link has-dropdown"><i class="fas fa-clipboard-check"></i>
+                                <a href="" class="nav-link has-dropdown"><i
+                                        class="fas fa-clipboard-check"></i>
                                     <span>Laporan</span></a>
                                 <ul class="dropdown-menu">
                                     <li class=" @yield('menuLaporanBulanan')"><a class="nav-link"
@@ -380,7 +386,8 @@
                             </li>
                             <li class="menu-header">Menu Pelanggan</li>
                             <li class="nav-item dropdown @yield('menuPelanggan')">
-                                <a href="" class="nav-link has-dropdown"><i class="fas fa-clipboard-check"></i>
+                                <a href="" class="nav-link has-dropdown"><i
+                                        class="fas fa-clipboard-check"></i>
                                     <span>Pelanggan</span></a>
                                 <ul class="dropdown-menu">
                                     <li class=" @yield('menupelangganIndex')"><a class="nav-link"
@@ -391,8 +398,8 @@
                                             href="{{ route('pelangganTerhapus') }}">Terhapus</a></li>
                                 </ul>
                             </li>
-                            <li class=" @yield('menuCicilanDP')"><a class="nav-link"
-                                    href="{{ route('DPKavling') }}"><i class="fas fa-coins"></i> <span> Cicilan
+                            <li class=" @yield('menuCicilanDP')"><a class="nav-link" href="{{ route('DPKavling') }}"><i
+                                        class="fas fa-coins"></i> <span> Cicilan
                                         DP</span></a></li>
                             <li class=" @yield('menuCicilanUnit')"><a class="nav-link"
                                     href="{{ route('cicilanKavling') }}"><i class="fas fa-money-bill-wave"></i>
@@ -411,8 +418,8 @@
                                 <a href="" class="nav-link has-dropdown"><i class="fas fa-box-open    "></i>
                                     <span>Pengadaan</span></a>
                                 <ul class="dropdown-menu">
-                                    <li class=" @yield('menuDaftarPengadaan')"><a
-                                            href="{{ route('pengadaan') }}">Daftar Pengadaan</a></li>
+                                    <li class=" @yield('menuDaftarPengadaan')"><a href="{{ route('pengadaan') }}">Daftar
+                                            Pengadaan</a></li>
                                     <li class=" @yield('menuDaftarBarang')"><a href="{{ route('barang') }}">Daftar
                                             Barang</a></li>
                                 </ul>
@@ -430,11 +437,12 @@
                                             href="{{ route('estimasiTunggakan') }}">Tunggakan</a></li>
                                 </ul>
                             </li>
-                            <li class=" @yield('menuRekening')"><a class="nav-link"
-                                    href="{{ route('rekening') }}"> <i class="fas fa-dollar-sign    "></i> <span>
+                            <li class=" @yield('menuRekening')"><a class="nav-link" href="{{ route('rekening') }}"> <i
+                                        class="fas fa-dollar-sign    "></i> <span>
                                         Rekening</span></a></li>
                             <li class="nav-item dropdown @yield('menuLaporan')">
-                                <a href="" class="nav-link has-dropdown"><i class="fas fa-clipboard-check"></i>
+                                <a href="" class="nav-link has-dropdown"><i
+                                        class="fas fa-clipboard-check"></i>
                                     <span>Laporan</span></a>
                                 <ul class="dropdown-menu">
                                     <li class=" @yield('menuLaporanBulanan')"><a class="nav-link"
@@ -447,8 +455,8 @@
 
                         @if (auth()->user()->role == 'pelanggan')
                             <li class="menu-header">Menu Pelanggan</li>
-                            <li class=" @yield('menuDataDiri')"><a class="nav-link"
-                                    href="{{ route('dataDiri') }}"><i class="fas fa-book-open"></i> <span> Data
+                            <li class=" @yield('menuDataDiri')"><a class="nav-link" href="{{ route('dataDiri') }}"><i
+                                        class="fas fa-book-open"></i> <span> Data
                                         Diri</span></a></li>
                             <li class=" @yield('menuPembelianPelanggan')"><a class="nav-link"
                                     href="{{ route('pembelianPelanggan') }}"><i
@@ -458,7 +466,8 @@
                                         Cicilan
                                         DP</span></a></li>
                             <li class=" @yield('menuUnitPelanggan')"><a class="nav-link"
-                                    href="{{ route('unitPelanggan') }}"><i class="fas fa-money-bill    "></i> <span>
+                                    href="{{ route('unitPelanggan') }}"><i class="fas fa-money-bill    "></i>
+                                    <span>
                                         Cicilan Unit</span></a></li>
                         @endif
 
@@ -466,14 +475,12 @@
                             <li class="menu-header">Menu Website</li>
                             <li class=" @yield('menuPopUp')"><a class="nav-link" href="{{ route('popup') }}">
                                     <i class="fas fa-file-image    "></i> <span> Pop Up</span></a></li>
-                            <li class=" @yield('menuBanner')"><a class="nav-link"
-                                    href="{{ route('banner') }}">
+                            <li class=" @yield('menuBanner')"><a class="nav-link" href="{{ route('banner') }}">
                                     <i class="fas fa-file-image    "></i> <span> Banner </span></a></li>
-                            <li class=" @yield('menuSlider')"><a class="nav-link"
-                                    href="{{ route('slider') }}">
+                            <li class=" @yield('menuSlider')"><a class="nav-link" href="{{ route('slider') }}">
                                     <i class="fas fa-image    "></i><span>Slider</span></a></li>
-                            <li class=" @yield('menuProyekWeb')"><a class="nav-link"
-                                    href="{{ route('proyekWeb') }}"><i class="fas fa-archway"></i> <span>
+                            <li class=" @yield('menuProyekWeb')"><a class="nav-link" href="{{ route('proyekWeb') }}"><i
+                                        class="fas fa-archway"></i> <span>
                                         Proyek</span></a></li>
                             <li class=" @yield('menuKabarBerita')"><a class="nav-link"
                                     href="{{ route('kabarBerita') }}"><i class="fas fa-book-open"></i> <span> Kabar
@@ -513,8 +520,8 @@
                                 <a href="" class="nav-link has-dropdown"><i class="fas fa-box-open    "></i>
                                     <span>Pengadaan</span></a>
                                 <ul class="dropdown-menu">
-                                    <li class=" @yield('menuDaftarPengadaan')"><a
-                                            href="{{ route('pengadaan') }}">Daftar Pengadaan</a></li>
+                                    <li class=" @yield('menuDaftarPengadaan')"><a href="{{ route('pengadaan') }}">Daftar
+                                            Pengadaan</a></li>
                                     <li class=" @yield('menuDaftarBarang')"><a href="{{ route('barang') }}">Daftar
                                             Barang</a></li>
                                 </ul>
@@ -533,7 +540,8 @@
                             </li>
                             <li class="menu-header">Menu Pelanggan</li>
                             <li class="nav-item dropdown @yield('menuPelanggan')">
-                                <a href="" class="nav-link has-dropdown"><i class="fas fa-clipboard-check"></i>
+                                <a href="" class="nav-link has-dropdown"><i
+                                        class="fas fa-clipboard-check"></i>
                                     <span>Pelanggan</span></a>
                                 <ul class="dropdown-menu">
                                     <li class=" @yield('menupelangganIndex')"><a class="nav-link"
@@ -567,8 +575,7 @@
                                 <a href="" class="nav-link has-dropdown"><i class="fas fa-box-open    "></i>
                                     <span>Estimasi Pemasukan</span></a>
                                 <ul class="dropdown-menu">
-                                    <li class=" @yield('menuEstimasiDp')"><a
-                                            href="{{ route('estimasiDp') }}">DP</a>
+                                    <li class=" @yield('menuEstimasiDp')"><a href="{{ route('estimasiDp') }}">DP</a>
                                     </li>
                                     <li class=" @yield('menuEstimasiCicilan')"><a
                                             href="{{ route('estimasiCicilan') }}">Cicilan</a></li>

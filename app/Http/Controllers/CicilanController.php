@@ -156,7 +156,7 @@ class CicilanController extends Controller
             $requestData['kredit']=str_replace(',', '', $request->jumlah);
             $requestData['proyek_id']=proyekId();
             /* cek apakah ada transaksi sebelumnya */
-            $cekTransaksiSebelum=transaksi::where('tanggal','<=',$request->tanggal)->orderBy('no')->where('proyek_id',proyekId())->get();
+            $cekTransaksiSebelum=transaksi::where('tanggal','<=',$request->tanggal)->orderBy('no')->where('tambahan',0)->where('proyek_id',proyekId())->get();
             /* jika transaksi sebelumnya ada value */
             if($cekTransaksiSebelum->first() != null){
                 $sebelum = $cekTransaksiSebelum->last();
@@ -168,7 +168,7 @@ class CicilanController extends Controller
                 $requestData['saldo']=$jumlah;
             }
             /* cek transaksi sesudah input */
-            $cekTransaksi=transaksi::where('tanggal','>',$request->tanggal)->orderBy('no')->where('proyek_id',proyekId())->get();
+            $cekTransaksi=transaksi::where('tanggal','>',$request->tanggal)->orderBy('no')->where('tambahan',0)->where('proyek_id',proyekId())->get();
             // dd($requestData);
             if($cekTransaksi->first() != null){
                 /* jika ada, update transaksi sesudah sesuai perubahan input*/
@@ -212,13 +212,13 @@ class CicilanController extends Controller
             $uraian = 'Penerimaan Cicilan Unit '.jenisKepemilikan($cekCicilan->pelanggan_id).' '.$cekCicilan->kavling->blok.' a/n '.$cekCicilan->pelanggan->nama;
             $dari = Carbon::parse($id->created_at);
             $sampai = Carbon::parse($id->created_at)->addSeconds(240);
-            $hapusKasBesar = transaksi::whereBetween('created_at',[$dari,$sampai])
+            $hapusKasBesar = transaksi::whereBetween('created_at',[$dari,$sampai])->where('tambahan',0)
                                         ->where('kredit',$id->jumlah)->where('uraian',$uraian)->first();
             // dd($hapusKasBesar);
             $terbayar=cicilan::where('pembelian_id',$id->pembelian_id)->get();
             $totalTerbayar = $terbayar->sum('jumlah');
             /* cek transaksi sesudah input */
-            $cekTransaksi=transaksi::where('tanggal','>=',$id->tanggal)->where('no','>',$hapusKasBesar->no)->orderBy('no')->get();
+            $cekTransaksi=transaksi::where('tanggal','>=',$id->tanggal)->where('tambahan',0)->where('no','>',$hapusKasBesar->no)->orderBy('no')->get();
             if($cekTransaksi->first() != null){
                 /* jika ada, update transaksi sesudah sesuai perubahan input*/
                 foreach($cekTransaksi as $updateTransaksi){

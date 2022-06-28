@@ -1,23 +1,24 @@
 <?php
 
-use App\kavling;
 use App\dp;
-use App\akun;
 use App\rab;
+use App\akun;
 use App\kios;
-use App\gudang;
-use App\pembelian;
 use App\rumah;
+use App\gudang;
 use App\proyek;
 use App\cicilan;
+use App\kavling;
+use App\rabUnit;
+use App\tambahan;
 use App\pelanggan;
-use App\transaksi;
-use App\detailUser;
+use App\pembelian;
 use App\pettyCash;
+use App\transaksi;
+use Carbon\Carbon;
+use App\detailUser;
 use App\kasPendaftaran;
 use App\kasKecilLapangan;
-use App\rabUnit;
-use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
 function cekNamaUser()
@@ -1244,6 +1245,18 @@ function transaksiRABUnit($judul)
     foreach ($rab as $r) {
         $transaksi = transaksi::where('rabunit_id', $r->id)->get();
         $total += $transaksi->sum('debet');
+    }
+    return $total;
+}
+function hitungDetailTambahan($id)
+{
+    $tambahan = tambahan::findOrFail($id);
+    if($tambahan->tambahanDetail != null){
+        $tambahanDetail = $tambahan->tambahanDetail->get();
+        $total = $tambahanDetail->sum('jumlah');
+    }else{
+        $tambahanDetail = [];
+        $total =0;
     }
     return $total;
 }

@@ -11,6 +11,18 @@
                     <h1>Tambahan</h1>
                 </div>
             </div>
+            @if (auth()->user()->role == 'admin' || auth()->user()->role == 'projectmanager')
+                <div class="row">
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb  bg-white mb-n2">
+                            <li class="breadcrumb-item"> <a
+                                    href="{{ route('pelangganDetail', ['id' => $id->pelanggan_id]) }}">
+                                    Pelanggan </a></li>
+                            <li class="breadcrumb-item" aria-current="page"> Tambahan </li>
+                        </ol>
+                    </nav>
+                </div>
+            @endif
         </div>
     </div>
     {{-- Alert --}}
@@ -42,7 +54,8 @@
                         <h4>Pembayaran Pendapatan Tambahan</h4>
                     </div>
                     <div class="card-body">
-                        <form action="{{ route('cicilanKavlingSimpan') }}" method="POST" enctype="multipart/form-data">
+                        <form action="{{ route('tambahanDetailSimpan', ['id' => $id->id]) }}" method="POST"
+                            enctype="multipart/form-data">
                             @csrf
                             <div class="form-group row mb-4">
                                 <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Tanggal
@@ -107,7 +120,8 @@
                                         </div>
                                     </div>
                                     <input type="text" readonly class=" form-control"
-                                        value="{{ number_format($id->sisaCicilan) }} " id="totalDiskon">
+                                        value="{{ number_format($id->total - hitungDetailTambahan($id->id)) }} "
+                                        id="totalDiskon">
                                 </div>
                             </div>
                             <div class="form-group row mb-4">
@@ -187,78 +201,61 @@
     @endif
     <div class="card">
         <div class="card-header">
-            <h4>History Pembayaran Cicilan Unit {{ jenisKepemilikan($id->pelanggan_id) }} {{ $id->pelanggan->nama }}
+            <h4>History Pembayaran Tambahan {{ $id->keterangan }}
             </h4>
         </div>
         <div class="card-body">
             <table class="table table-hover" id="table">
                 <thead>
                     <tr>
-                        <th scope="col">Cicilan Ke</th>
+                        <th scope="col">Ke</th>
                         <th scope="col">Tanggal</th>
                         <th scope="col">Jumlah</th>
-                        <th scope="col">Sisa Hutang</th>
+                        {{-- <th scope="col">Sisa Hutang</th> --}}
                         <th scope="col">Nomor Faktur</th>
                         <th scope="col">Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {{-- @php
-                        $terbayar = 0;
-                    @endphp
-                    @foreach ($daftarCicilanUnit as $cicilanUnit)
-                        <tr>
-                            <th scope="row">{{ cicilanKe($cicilanUnit->pembelian->id, $cicilanUnit->tanggal) }}</th>
-                            <td data-order="{{ $cicilanUnit->tanggal }}">{{ formatTanggal($cicilanUnit->tanggal) }}
-                            </td>
-                            <td>Rp.{{ number_format($cicilanUnit->jumlah) }}</td>
+                    @if ($tambahanDetail != null)
+                        @foreach ($tambahanDetail as $detail)
+                            <tr>
+                                <th scope="row">{{ $detail->ke }}</th>
+                                <td data-order="{{ $detail->tanggal }}">{{ formatTanggal($detail->tanggal) }}
+                                </td>
+                                <td>Rp.{{ number_format($detail->jumlah) }}</td>
+                                <td>
+                                    @if (jenisKepemilikan($id->pelanggan_id) == 'Kavling')
+                                        CK
+                                    @else
+                                        CB
+                                    @endif
+                                    {{ romawi(Carbon\Carbon::parse($detail->tanggal)->isoFormat('MM')) }}/{{ $detail->ke }}
+                                </td>
+                                <td>
+                                    @if (auth()->user()->role == 'admin' || auth()->user()->role == 'projectmanager' || auth()->user()->role == 'marketing' || auth()->user()->role == 'kasir')
+                                        <a href="{{ route('cetakKwitansi', ['id' => $detail->id]) }}"
+                                            class=" btn-sm border-success btn btn-white text-primary"> <i
+                                                class="fas fa-file-invoice    "></i> Kwitansi</a>
+                                    @endif
+                                    @if (auth()->user()->role == 'admin' || auth()->user()->role == 'projectmanager' || auth()->user()->role == 'kasir')
+                                        <button type="button" class=" border-danger btn btn-sm btn-white text-danger"
+                                            data-toggle="modal" data-target="#exampleModalCenter"
+                                            data-id="{{ $detail->id }}">
+                                            <i class="fa fa-trash" aria-hidden="true"></i> Hapus </button>
+                                    @endif
 
-                            <td>Rp.{{ number_format($cicilanUnit->pembelian->sisaKewajiban - cicilanTerbayar($cicilanUnit->pembelian->id, $cicilanUnit->tanggal)) }}
-                            </td>
-                            <td>
-                                @if (jenisKepemilikan($id->pelanggan_id) == 'Kavling')
-                                    CK
-                                @else
-                                    CB
-                                @endif
-                                {{ romawi(Carbon\Carbon::parse($cicilanUnit->tanggal)->isoFormat('MM')) }}/{{ $cicilanUnit->ke }}
-                            </td>
-                            <td>
-                                @if (auth()->user()->role == 'admin' || auth()->user()->role == 'projectmanager' || auth()->user()->role == 'marketing' || auth()->user()->role == 'kasir')
-                                    <a href="{{ route('cetakKwitansi', ['id' => $cicilanUnit->id]) }}"
-                                        class=" btn-sm border-success btn btn-white text-primary"> <i
-                                            class="fas fa-file-invoice    "></i> Kwitansi</a>
-                                @endif
-                                @if (auth()->user()->role == 'admin' || auth()->user()->role == 'projectmanager' || auth()->user()->role == 'kasir')
-                                    <button type="button" class=" border-danger btn btn-sm btn-white text-danger"
-                                        data-toggle="modal" data-target="#exampleModalCenter"
-                                        data-id="{{ $cicilanUnit->id }}">
-                                        <i class="fa fa-trash" aria-hidden="true"></i> Hapus </button>
-                                    <button type="button" class="btn btn-sm btn-white text-info border-info"
-                                        data-toggle="modal" data-target="#modalDetail"
-                                        data-ke="{{ cicilanKe($cicilanUnit->pembelian->id, $cicilanUnit->tanggal) }}"
-                                        data-jumlah="{{ $cicilanUnit->jumlah }}"
-                                        @if ($cicilanPerBulan * bulanCicilanBerjalan($cicilanUnit) - cicilanTerbayar($cicilanUnit->pembelian->id, $cicilanUnit->tanggal) > $cicilanUnit->pembelian->sisaKewajiban - cicilanTerbayar($cicilanUnit->pembelian->id, $cicilanUnit->tanggal)) data-sisa="{{ $cicilanUnit->pembelian->sisaKewajiban - cicilanTerbayar($cicilanUnit->pembelian->id, $cicilanUnit->tanggal) }}"
-                                        @else
-                                        data-sisa="{{ $cicilanPerBulan * bulanCicilanBerjalan($cicilanUnit) - cicilanTerbayar($cicilanUnit->pembelian->id, $cicilanUnit->tanggal) }}" @endif
-                                        data-tempo="{{ $cicilanUnit->tempo }}"
-                                        data-terbayar="{{ cicilanTerbayar($cicilanUnit->pembelian->id, $cicilanUnit->tanggal) }}"
-                                        data-berjalan="{{ bulanCicilanBerjalan($cicilanUnit) }}"
-                                        data-seharusnya="{{ $cicilanPerBulan * bulanCicilanBerjalan($cicilanUnit) }}"
-                                        data-kurang="{{ $cicilanPerBulan * bulanCicilanBerjalan($cicilanUnit) - cicilanTerbayar($cicilanUnit->pembelian->id, $cicilanUnit->tanggal) }}">
-                                        <i class="fas fa-info-circle    "></i></i> Detail </button>
-                                @endif
-
-                            </td>
-                        </tr>
-                    @endforeach --}}
+                                </td>
+                            </tr>
+                        @endforeach
+                    @endif
                 </tbody>
                 <tfoot class="bg-light">
                     <tr>
                         <th style="text-align: right" colspan="2">Total Terbayar</th>
-                        <th></th>
+                        <th>Rp. {{ number_format(hitungDetailTambahan($id->id)) }}</th>
                         <td></td>
-                        <td></td>
+                        {{-- <td></td> --}}
                         <td></td>
                     </tr>
 
@@ -300,7 +297,7 @@
                 var id = button.data('id')
                 var modal = $(this)
                 modal.find('.modal-text').text('Yakin ingin menghapus transaksi ini ?')
-                document.getElementById('formHapus').action = '/hapusCicilan/' + id;
+                document.getElementById('formHapus').action = '/hapusTambahanDetail/' + id;
             })
         });
     </script>

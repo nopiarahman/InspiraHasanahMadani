@@ -159,7 +159,7 @@ class KasController extends Controller
             $this->validate($request, $rules, $costumMessages);
             $requestData = $request->all();
             // dd($requestData);
-            $cekTransaksiSebelum = transaksi::where('tanggal', '<=', $request->tanggal)->orderBy('no')->get();
+            $cekTransaksiSebelum = transaksi::where('tanggal', '<=', $request->tanggal)->where('tambahan',0)->orderBy('no')->get();
             /* jika transaksi sebelumnya ada value */
             // dd($cekTransaksiSebelum);
             if ($cekTransaksiSebelum->first() != null) {
@@ -180,7 +180,7 @@ class KasController extends Controller
                 $requestData['jumlah'] = null;
             }
             /* cek transaksi sesudah input */
-            $cekTransaksi = transaksi::where('tanggal', '>', $request->tanggal)->orderBy('no')->get();
+            $cekTransaksi = transaksi::where('tanggal', '>', $request->tanggal)->where('tambahan',0)->orderBy('no')->get();
             // dd($cekTransaksi);
             if ($cekTransaksi->first() != null) {
                 /* jika ada, update transaksi sesudah sesuai perubahan input*/
@@ -207,11 +207,11 @@ class KasController extends Controller
             if ($id->debet != null) {
                 $dari = Carbon::parse($id->created_at);
                 $sampai = Carbon::parse($id->created_at)->addSeconds(240);
-                $KasBesar = transaksi::where('uraian', $id->uraian)->whereBetween('created_at', [$dari, $sampai])->first();
+                $KasBesar = transaksi::where('uraian', $id->uraian)->where('tambahan',0)->whereBetween('created_at', [$dari, $sampai])->first();
                 // dd($KasBesar);
                 /* cek transaksi sesudah input */
                 // $hapusKasBesar=transaksi::find($id->id);
-                $cekKasBesar = transaksi::where('tanggal', '>=', $KasBesar->tanggal)->where('no', '>', $KasBesar->no)->orderBy('no')->get();
+                $cekKasBesar = transaksi::where('tanggal', '>=', $KasBesar->tanggal)->where('tambahan',0)->where('no', '>', $KasBesar->no)->orderBy('no')->get();
                 // dd($cekKasBesar);
                 if ($cekKasBesar->first() != null) {
                     /* jika ada, update transaksi sesudah sesuai perubahan input*/
@@ -364,12 +364,12 @@ class KasController extends Controller
             if ($id->debet != null) {
                 $dari = Carbon::parse($id->created_at);
                 $sampai = Carbon::parse($id->created_at)->addSeconds(240);
-                $KasBesar = transaksi::where('uraian', $id->uraian)->whereBetween('created_at', [$dari, $sampai])->first();
+                $KasBesar = transaksi::where('uraian', $id->uraian)->where('tambahan',0)->whereBetween('created_at', [$dari, $sampai])->first();
                 // dd($KasBesar);
                 /* cek transaksi sesudah input */
                 // $hapusKasBesar=transaksi::find($id->id);
                 if ($KasBesar) {
-                    $cekKasBesar = transaksi::where('tanggal', '>=', $KasBesar->tanggal)->where('no', '>', $KasBesar->no)->orderBy('no')->get();
+                    $cekKasBesar = transaksi::where('tanggal', '>=', $KasBesar->tanggal)->where('tambahan',0)->where('no', '>', $KasBesar->no)->orderBy('no')->get();
                     // dd($cekKasBesar);
                     if ($cekKasBesar->first() != null) {
                         /* jika ada, update transaksi sesudah sesuai perubahan input*/
