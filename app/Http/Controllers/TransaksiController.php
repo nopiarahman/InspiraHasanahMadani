@@ -123,7 +123,7 @@ class TransaksiController extends Controller
             //     $requestData['hargaSatuan']=null;
             // }
             /* cek apakah ada transaksi sebelumnya */
-            $cekTransaksiSebelum = transaksi::where('tanggal', '<=', $request->tanggal)->orderBy('no')->where('tambahan',0)->where('proyek_id', proyekId())->get();
+            $cekTransaksiSebelum = transaksi::where('tanggal', '<=', $request->tanggal)->orderBy('no')->where('proyek_id', proyekId())->get();
             /* jika transaksi sebelumnya ada value */
             if ($cekTransaksiSebelum->first() != null) {
                 $sebelum = $cekTransaksiSebelum->last();
@@ -138,7 +138,7 @@ class TransaksiController extends Controller
             /* parameter kasBesarKeluar=['tanggal','rab_id(nullable)','rabUnit_id(nullable)','akun_id','uraian','sumber','jumlah','no','saldo'] */
             if ($request->sumberKas == 'kasBesar') {
                 /* cek transaksi sesudah input */
-                $cekTransaksi = transaksi::where('tanggal', '>', $request->tanggal)->orderBy('no')->where('tambahan',0)->where('proyek_id', proyekId())->get();
+                $cekTransaksi = transaksi::where('tanggal', '>', $request->tanggal)->orderBy('no')->where('proyek_id', proyekId())->get();
                 if ($cekTransaksi->first() != null) {
                     /* jika ada, update transaksi sesudah sesuai perubahan input*/
                     foreach ($cekTransaksi as $updateTransaksi) {
@@ -464,5 +464,13 @@ class TransaksiController extends Controller
         $transaksi = transaksi::where('tanggal', '<', $start)->where('tambahan',1)->where('proyek_id', proyekId())->get();
         $saldoSebelum = $transaksi->sum('kredit') - $transaksi->sum('debet');
         return Excel::download(new KasBesarExport($saldoSebelum, $cashFlow, $start, $end), 'Kas Tambahan.xlsx');
+    }
+    public function transferTambahan(transaksi $id, Request $request)     
+    {
+        // dd($id);
+        $id->tambahan = 1;
+        $id->save();
+        // dd($id);
+        return redirect()->back()->with('status', 'Transaksi Berhasil Di Transfer!');
     }
 }

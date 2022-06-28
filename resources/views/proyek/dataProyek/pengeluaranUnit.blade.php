@@ -2,7 +2,12 @@
 @section('head')
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.css">
 @endsection
-@section('menuRAB', 'active')
+@if (request()->route()->getName() == 'transaksiRABUnit')
+    @section('menuRAB', 'active')
+@endif
+@if (request()->route()->getName() == 'transaksiRABUnitTambahan')
+    @section('menuRABTambahan', 'active')
+@endif
 @section('menuDataProyek', 'active')
 @section('content')
     <div class="section-header sticky-top">
@@ -39,7 +44,12 @@
                 <div class="row">
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb  bg-white mb-n2">
-                            <li class="breadcrumb-item"> <a href="{{ route('RAB') }}"> RAB </a></li>
+                            @if (request()->route()->getName() == 'transaksiRABUnit')
+                                <li class="breadcrumb-item"> <a href="{{ route('RAB') }}"> RAB </a></li>
+                            @endif
+                            @if (request()->route()->getName() == 'transaksiRABUnitTambahan')
+                                <li class="breadcrumb-item"> <a href="{{ route('RABTambahan') }}"> RAB </a></li>
+                            @endif
                             {{-- <li class="breadcrumb-item"> <a href="{{route('biayaUnit')}}"> Biaya Unit </a></li> --}}
                             <li class="breadcrumb-item" aria-current="page"> Pengeluaran </li>
                         </ol>
@@ -222,7 +232,8 @@
                                                 class=" disabled btn btn-sm btn-white text-primary border-success">
                                                 <i class="fas fa-warehouse "></i> Stok Gudang Habis </a>
                                         @else
-                                            <button type="button" class="btn btn-sm btn-white text-primary border-success"
+                                            <button type="button"
+                                                class="btn btn-sm btn-white text-primary border-success"
                                                 data-toggle="modal" data-target="#keGudang"
                                                 data-id="{{ $transaksi->id }}"
                                                 data-tanggal="{{ $transaksi->tanggal }}"
@@ -241,6 +252,17 @@
                                             data-toggle="modal" data-target="#hapusTransaksi"
                                             data-id="{{ $transaksi->id }}" data-uraian="{{ $transaksi->uraian }}">
                                             <i class="fa fa-trash" aria-hidden="true"></i> Hapus</button>
+                                        @if (request()->route()->getName() == 'transaksiRABUnit' ||
+                                            request()->route()->getName() == 'transaksiRAB')
+                                            <button type="button"
+                                                class="btn btn-sm btn-white text-warning border-warning"
+                                                data-toggle="modal" data-target="#transferTambahan"
+                                                data-id="{{ $transaksi->id }}"
+                                                data-uraian="{{ $transaksi->uraian }}">
+                                                <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
+                                                Tambahan</button>
+                                        @endif
+
                                         {{-- </td> --}}
                                     @endif
                                 </td>
@@ -271,7 +293,8 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form action="" method="POST" enctype="multipart/form-data" id="formTransfer" onchange="hitung()">
+                    <form action="" method="POST" enctype="multipart/form-data" id="formTransfer"
+                        onchange="hitung()">
                         @csrf
                         <input type="hidden" class="form-control" name="transaksi_id" value="" id="id">
                         <input type="hidden" class="form-control " name="akun_id" value="" id="akun">
@@ -298,8 +321,8 @@
                         <div class="form-group row mb-4">
                             <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Uraian</label>
                             <div class="col-sm-12 col-md-7">
-                                <input type="text" class="form-control @error('uraian') is-invalid @enderror" name="uraian"
-                                    value="" id="uraian">
+                                <input type="text" class="form-control @error('uraian') is-invalid @enderror"
+                                    name="uraian" value="" id="uraian">
                                 @error('uraian')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
@@ -308,8 +331,9 @@
                         <div class="form-group row mb-4">
                             <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Jumlah Awal</label>
                             <div class="col-sm-12 col-md-7">
-                                <input type="text" readonly class="form-control @error('banyaknya') is-invalid @enderror"
-                                    name="banyaknya" value="" id="banyaknya">
+                                <input type="text" readonly
+                                    class="form-control @error('banyaknya') is-invalid @enderror" name="banyaknya"
+                                    value="" id="banyaknya">
                                 @error('banyaknya')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
@@ -360,8 +384,8 @@
                         <div class="form-group row mb-4">
                             <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Jumlah Terpakai</label>
                             <div class="col-sm-12 col-md-7">
-                                <input type="text" class="form-control @error('terpakai') is-invalid @enderror" max=""
-                                    name="terpakai" value="" id="terpakai">
+                                <input type="text" class="form-control @error('terpakai') is-invalid @enderror"
+                                    max="" name="terpakai" value="" id="terpakai">
                                 @error('terpakai')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
@@ -443,6 +467,43 @@
                 var modal = $(this)
                 modal.find('.modal-text').text('Yakin ingin menghapus transaksi ' + uraian + ' ?')
                 document.getElementById('formHapus').action = '/hapusTransaksiKeluar/' + id;
+            })
+        });
+    </script>
+    {{-- Modal Transfer Ke Tambahan --}}
+    <div class="modal fade transferTambahan" id="transferTambahan" tabindex="-1" role="dialog"
+        aria-labelledby="transferTambahanTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Transfer Transaksi</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form action="" method="post" id="formTransferTambahan">
+                        @method('patch')
+                        @csrf
+                        <p class="modal-text"></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Transfer!</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('#transferTambahan').on('show.bs.modal', function(event) {
+                var button = $(event.relatedTarget) // Button that triggered the modal
+                var id = button.data('id') // Extract info from data-* attributes
+                var uraian = button.data('uraian')
+                var modal = $(this)
+                modal.find('.modal-text').text('Yakin ingin transfer transaksi ' + uraian + ' ?')
+                document.getElementById('formTransferTambahan').action = '/transferTransaksiTambahan/' + id;
             })
         });
     </script>

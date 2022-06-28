@@ -47,7 +47,9 @@ Route::group(['middleware' => ['auth', 'role:admin,projectmanager,adminGudang,ma
     Route::get('/proyek/edit/{id}', 'ProyekController@edit')->name('proyekEdit');
     Route::patch('/proyek/update/{id}', 'ProyekController@update')->name('proyekUpdate');
     Route::get('/proyek/pengeluaran/{id}', 'ProyekController@transaksiRABUnit')->name('transaksiRABUnit');
+    Route::get('/proyek/pengeluaranTambahan/{id}', 'ProyekController@transaksiRABUnitTambahan')->name('transaksiRABUnitTambahan');
     Route::get('/proyek/pengeluaran/RAB/{id}', 'ProyekController@transaksiRAB')->name('transaksiRAB');
+    Route::get('/proyek/pengeluaran/RABTambahan/{id}', 'ProyekController@transaksiRABTambahan')->name('transaksiRABTambahan');
     Route::get('/kavling', 'KavlingController@index')->name('kavling');
     Route::patch('/editKavling/{id}', 'KavlingController@update')->name('editKavling');
     Route::post('/kavlingSimpan', 'KavlingController@kavlingSimpan')->name('kavlingSimpan');
@@ -135,6 +137,7 @@ Route::group(['middleware' => ['auth', 'role:admin,projectmanager,adminGudang,ma
     Route::get('/cashFlow', 'TransaksiController@cashFlow')->name('cashFlow');
     Route::get('/kasTambahan', 'TransaksiController@kasTambahan')->name('kasTambahan');
     Route::delete('/hapusKasBesar/{id}', 'TransaksiController@hapusKasBesar')->name('hapusTransaksiKeluar');
+    Route::patch('/transferTransaksiTambahan/{id}', 'TransaksiController@transferTambahan')->name('transferTransaksiTambahan');
 
     Route::get('/kasKecilLapangan', 'KasController@kasKecilLapangan')->name('kasKecilLapangan');
     Route::get('/kasKecilLapanganKeluar', 'KasController@kasKecilLapanganKeluar')->name('kasKecilLapanganKeluar');

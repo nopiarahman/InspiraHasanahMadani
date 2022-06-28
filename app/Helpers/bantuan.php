@@ -82,7 +82,7 @@ function saldoTerakhir()
 }
 function noTransaksiTerakhir()
 {
-    $no = transaksi::orderBy('no', 'desc')->where('proyek_id', proyekId())->first();
+    $no = transaksi::orderBy('no', 'desc')->where('proyek_id', proyekId())->where('tambahan',0)->first();
     $noTerakhir = 0;
     if ($no != null) {
         $noTerakhir = $no->no;
@@ -239,6 +239,7 @@ function kasBesarKeluar($dataArray)
     $dataTransaksi['no'] = $data->get('no');
     $dataTransaksi['saldo'] = $data->get('saldo');
     $dataTransaksi['proyek_id'] = proyekId();
+    $dataTransaksi['tambahan'] =$data->get('tambahan');
     // dd($dataTransaksi);
     transaksi::create($dataTransaksi);
 }
@@ -371,7 +372,7 @@ function hargaSatuanRumah()
 
 function hitungTransaksiRAB($idRAB)
 {
-    $total = transaksi::where('rab_id', $idRAB)->where('proyek_id', proyekId())->get();
+    $total = transaksi::where('rab_id', $idRAB)->where('tambahan',0)->where('proyek_id', proyekId())->get();
     if ($total != null) {
         $totalRAB = $total->sum('debet');
         // dd($total);
@@ -393,7 +394,7 @@ function hitungTransaksiRABTambahan($idRAB)
 }
 function hitungTransaksiRABRange($idRAB, $start, $end)
 {
-    $total = transaksi::where('rab_id', $idRAB)->where('proyek_id', proyekId())->whereBetween('tanggal', [$start, $end])->get();
+    $total = transaksi::where('rab_id', $idRAB)->where('tambahan',0)->where('proyek_id', proyekId())->whereBetween('tanggal', [$start, $end])->get();
     if ($total != null) {
         $totalRAB = $total->sum('debet');
         // dd($total);
@@ -408,14 +409,14 @@ function hitungJudulRAB($judul, $start, $end)
     $total = 0;
     if ($rab->first()) {
         foreach ($rab as $r) {
-            $total += transaksi::where('rab_id', $r->id)->whereBetween('tanggal', [$start, $end])->get()->sum('debet');
+            $total += transaksi::where('rab_id', $r->id)->where('tambahan',0)->whereBetween('tanggal', [$start, $end])->get()->sum('debet');
         }
     }
     return $total;
 }
 function hitungTransaksiRABUnit($idRAB)
 {
-    $total = transaksi::where('rabunit_id', $idRAB)->where('proyek_id', proyekId())->get();
+    $total = transaksi::where('rabunit_id', $idRAB)->where('tambahan',0)->where('proyek_id', proyekId())->get();
     if ($total != null) {
         $totalRAB = $total->sum('debet');
         // dd($total);
@@ -437,7 +438,7 @@ function hitungTransaksiRABTambahanUnit($idRAB)
 }
 function hitungTransaksiRABUnitRange($idRAB, $start, $end)
 {
-    $total = transaksi::where('rabunit_id', $idRAB)->where('proyek_id', proyekId())->whereBetween('tanggal', [$start, $end])->get();
+    $total = transaksi::where('rabunit_id', $idRAB)->where('tambahan',0)->where('proyek_id', proyekId())->whereBetween('tanggal', [$start, $end])->get();
     if ($total != null) {
         $totalRAB = $total->sum('debet');
         // dd($total);
@@ -448,7 +449,7 @@ function hitungTransaksiRABUnitRange($idRAB, $start, $end)
 }
 function transaksiAkun($id, $start, $end)
 {
-    $transaksi = transaksi::where('akun_id', $id)->where('proyek_id', proyekId())->whereBetween('tanggal', [$start, $end])->get();
+    $transaksi = transaksi::where('akun_id', $id)->where('tambahan',0)->where('proyek_id', proyekId())->whereBetween('tanggal', [$start, $end])->get();
     if ($transaksi != null) {
         return $transaksi->sum('debet');
     } else {
@@ -457,7 +458,7 @@ function transaksiAkun($id, $start, $end)
 }
 function transaksiAkunTahunan($id, $start, $end)
 {
-    $transaksi = transaksi::where('akun_id', $id)->where('proyek_id', proyekId())->whereBetween('tanggal', [$start, $end])->get();
+    $transaksi = transaksi::where('akun_id', $id)->where('tambahan',0)->where('proyek_id', proyekId())->whereBetween('tanggal', [$start, $end])->get();
     if ($transaksi != null) {
         return $transaksi->sum('debet');
     } else {
@@ -466,7 +467,7 @@ function transaksiAkunTahunan($id, $start, $end)
 }
 function pendapatanLainTahunan($id, $start, $end)
 {
-    $transaksi = transaksi::where('akun_id', $id)->where('proyek_id', proyekId())->whereBetween('tanggal', [$start, $end])->get();
+    $transaksi = transaksi::where('akun_id', $id)->where('tambahan',0)->where('proyek_id', proyekId())->whereBetween('tanggal', [$start, $end])->get();
     if ($transaksi != null) {
         return $transaksi->sum('kredit');
     } else {
@@ -1014,14 +1015,14 @@ function bulanDpBerjalan(dp $id)
 }
 function saldoTransaksiSebelum2($no)
 {
-    $sebelum = transaksi::where('no', $no - 1)->first();
-    $sekarang = transaksi::where('no', $no)->first();
+    $sebelum = transaksi::where('no', $no - 1)->where('tambahan',0)->first();
+    $sekarang = transaksi::where('no', $no)->where('tambahan',0)->first();
     return $sebelum->kredit - $sebelum->debet;
 }
 function saldoTransaksiSebelum3($no)
 {
-    $sebelum = transaksi::where('no', $no - 1)->first();
-    $sekarang = transaksi::where('no', $no)->first();
+    $sebelum = transaksi::where('no', $no - 1)->where('tambahan',0)->first();
+    $sekarang = transaksi::where('no', $no)->where('tambahan',0)->first();
     return $sebelum->kredit - $sebelum->debet;
 }
 function bulanCicilanTunggakanBerjalan(Cicilan $id, $tanggal)
@@ -1255,7 +1256,7 @@ function transaksiRAB($judul)
     $rab = rab::where('judul', $judul)->get();
     $total = 0;
     foreach ($rab as $r) {
-        $transaksi = transaksi::where('rab_id', $r->id)->get();
+        $transaksi = transaksi::where('rab_id', $r->id)->where('tambahan',0)->get();
         $total += $transaksi->sum('debet');
     }
     return $total;
@@ -1275,7 +1276,7 @@ function transaksiRABUnit($judul)
     $rab = rabUnit::where('judul', $judul)->get();
     $total = 0;
     foreach ($rab as $r) {
-        $transaksi = transaksi::where('rabunit_id', $r->id)->get();
+        $transaksi = transaksi::where('rabunit_id', $r->id)->where('tambahan',0)->get();
         $total += $transaksi->sum('debet');
     }
     return $total;
