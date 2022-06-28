@@ -17,11 +17,11 @@ class TambahanController extends Controller
     {
         $rekening = rekening::where('proyek_id', proyekId())->get();
         if($id->tambahanDetail != null){
-            $tambahanDetail = $id->tambahanDetail->get();
+            $tambahanDetail = $id->tambahanDetail()->get();
         }else{
             $tambahanDetail = [];
         }
-
+        // dd($id->tambahandetail()->get());
         return view('tambahan/tambah', compact('id','rekening','tambahanDetail'));
     }
     public function store(Request $request, Pembelian $id)

@@ -160,6 +160,8 @@
                                             href="{{ route('kavling') }}">Unit</a></li>
                                     <li class="@yield('menuRAB')"><a class="nav-link"
                                             href="{{ route('RAB') }}">RAB</a></li>
+                                    <li class="@yield('menuRABTambahan')"><a class="nav-link"
+                                            href="{{ route('RABTambahan') }}">RAB Tambahan</a></li>
                                 </ul>
                             </li>
                             <li class="menu-header">Menu Project Manager</li>
@@ -181,6 +183,8 @@
                                             href="{{ route('kavling') }}">Unit</a></li>
                                     <li class="@yield('menuRAB')"><a class="nav-link"
                                             href="{{ route('RAB') }}">RAB</a></li>
+                                    <li class="@yield('menuRABTambahan')"><a class="nav-link"
+                                            href="{{ route('RABTambahan') }}">RAB Tambahan</a></li>
                                 </ul>
                             </li>
                         @endif
@@ -245,7 +249,7 @@
                                 <ul class="dropdown-menu">
                                     <li class=" @yield('menuKasBesar')"><a href="{{ route('cashFlow') }}">Kas
                                             Besar</a></li>
-                                    <li class=" @yield('menuKasBesar')"><a href="{{ route('kasTambahan') }}">Kas
+                                    <li class=" @yield('menuKasTambahan')"><a href="{{ route('kasTambahan') }}">Kas
                                             Tambahan</a></li>
                                     <li class=" @yield('menuKasPendaftaran')"><a class="nav-link"
                                             href="{{ route('kasPendaftaranMasuk') }}">Pendaftaran</a></li>

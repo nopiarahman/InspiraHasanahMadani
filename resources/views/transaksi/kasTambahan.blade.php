@@ -2,7 +2,7 @@
 @section('head')
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.css">
 @endsection
-@section('menuKasBesar', 'active')
+@section('menuKasTambahan', 'active')
 @section('menuKas', 'active')
 @section('content')
     <div class="section-header sticky-top">
@@ -13,7 +13,7 @@
                 </div>
                 <div class="col-9">
                     {{-- filter --}}
-                    <form action="{{ route('cashFlow') }}" method="get" enctype="multipart/form-data">
+                    <form action="{{ route('kasTambahan') }}" method="get" enctype="multipart/form-data">
                         <div class="form-group row mb-4">
                             <label class="col-form-label text-md-right col-12 col-md-6 col-lg-6 mt-1 mr-n3"> <span
                                     style="font-size:small">Pilih Tanggal: </span> </label>
@@ -86,7 +86,7 @@
             @endif
         </div>
     </div>
-    @if (auth()->user()->role == 'admin' || auth()->user()->role == 'projectmanager' || auth()->user()->role == 'kasir')
+    {{-- @if (auth()->user()->role == 'admin' || auth()->user()->role == 'projectmanager' || auth()->user()->role == 'kasir')
         <div class="row">
             <div class="col-12">
                 <div class="card">
@@ -166,7 +166,7 @@
                 </div>
             </div>
         </div>
-    @endif
+    @endif --}}
     @if (auth()->user()->role == 'admin' || auth()->user()->role == 'projectmanager' || auth()->user()->role == 'marketing' || auth()->user()->role == 'adminGudang')
 
         <div class="card">
@@ -180,7 +180,7 @@
                     </div>
                     <div class="col-6">
                         {{-- filter --}}
-                        <form action="{{ route('exportKasBesar') }}" method="get" enctype="multipart/form-data">
+                        <form action="{{ route('exportKasTambahan') }}" method="get" enctype="multipart/form-data">
                             <div class="form-group row mb-4">
                                 {{-- <label class="col-form-label text-md-right col-12 col-md-6 col-lg-6 mt-1 mr-n3" > <span style="font-size:small">Pilih Tanggal: </span> </label> --}}
                                 <div class="input-group col-sm-12 col-md-12">

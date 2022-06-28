@@ -55,6 +55,7 @@ Route::group(['middleware' => ['auth', 'role:admin,projectmanager,adminGudang,ma
     Route::patch('/gantiStatus/{id}', 'KavlingController@gantiStatus')->name('gantiStatus');
 
     Route::get('/RAB', 'ProyekController@RAB')->name('RAB');
+    Route::get('/RABTambahan', 'ProyekController@RABTambahan')->name('RABTambahan');
     Route::get('/RABGudang', 'ProyekController@RABGudang')->name('RABGudang');
     Route::patch('/editRAB/{id}', 'ProyekController@editRAB');
     Route::patch('/editRABUnit/{id}', 'ProyekController@editRABUnit');
@@ -179,6 +180,7 @@ Route::group(['middleware' => ['auth', 'role:admin,projectmanager,adminGudang,ma
     Route::get('/cetakPengeluaranUnit/{id}', 'ProyekController@cetakPengeluaranUnit')->name('cetakPengeluaranUnit');
     Route::get('/cetakRABUnit', 'ProyekController@cetakRABUnit')->name('cetakRABUnit');
     Route::get('/exportKasBesar', 'TransaksiController@exportKasBesar')->name('exportKasBesar');
+    Route::get('/exportKasTambahan', 'TransaksiController@exportKasTambahan')->name('exportKasTambahan');
     Route::get('/exportKasPendaftaran', 'KasPendaftaranController@exportKasPendaftaran')->name('exportKasPendaftaran');
     Route::get('/exportKasLapangan', 'KasController@exportKasLapangan')->name('exportKasLapangan');
     Route::get('/exportPettyCash', 'KasController@exportPettyCash')->name('exportPettyCash');

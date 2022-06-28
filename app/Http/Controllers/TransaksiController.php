@@ -446,4 +446,23 @@ class TransaksiController extends Controller
         $saldoSebelum = $transaksi->sum('kredit') - $transaksi->sum('debet');
         return Excel::download(new KasBesarExport($saldoSebelum, $cashFlow, $start, $end), 'Kas Besar.xlsx');
     }
+    public function exportKasTambahan(Request $request)
+    {
+        // dd($request);
+        if ($request->get('filter')) {
+            $start = Carbon::parse($request->start)->isoFormat('YYYY-MM-DD');
+            $end = Carbon::parse($request->end)->isoFormat('YYYY-MM-DD');
+            $cashFlow = transaksi::whereBetween('tanggal', [$start, $end])->where('tambahan',1)->where('proyek_id', proyekId())->orderBy('tanggal')->get();
+            $awal = $cashFlow->first();
+            // dd($awal);
+        } else {
+            $start = Carbon::now()->firstOfMonth()->isoFormat('YYYY-MM-DD');
+            $end = Carbon::now()->endOfMonth()->isoFormat('YYYY-MM-DD');
+            $cashFlow = transaksi::whereBetween('tanggal', [$start, $end])->where('tambahan',1)->where('proyek_id', proyekId())->orderBy('tanggal')->get();
+            $awal = $cashFlow->first();
+        }
+        $transaksi = transaksi::where('tanggal', '<', $start)->where('tambahan',1)->where('proyek_id', proyekId())->get();
+        $saldoSebelum = $transaksi->sum('kredit') - $transaksi->sum('debet');
+        return Excel::download(new KasBesarExport($saldoSebelum, $cashFlow, $start, $end), 'Kas Tambahan.xlsx');
+    }
 }

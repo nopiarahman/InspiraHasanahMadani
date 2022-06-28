@@ -189,6 +189,21 @@ class ProyekController extends Controller
 
         return view('proyek/dataProyek/RAB', compact('perHeader', 'semuaRAB', 'semuaUnit', 'perJudul', 'perHeaderUnit', 'perJudulUnit'));
     }
+    public function RABTambahan()
+    {
+        $semuaRAB = rab::all()->where('proyek_id', proyekId())->groupBy(['header', function ($item) {
+            return $item['judul'];
+        }], $preserveKeys = true);
+        $semuaUnit = rabUnit::where('proyek_id', proyekId())->get()->groupBy(['header', function ($item) {
+            return $item['judul'];
+        }], $preserveKeys = true);
+        $perHeader = $semuaRAB->sortBy('kodeRAB');
+        $perJudul = $semuaRAB->sortBy('kodeRAB');
+        $perHeaderUnit = $semuaUnit->sortBy('kodeRAB');
+        $perJudulUnit = $semuaUnit->sortBy('kodeRAB');
+
+        return view('tambahan/RAB', compact('perHeader', 'semuaRAB', 'semuaUnit', 'perJudul', 'perHeaderUnit', 'perJudulUnit'));
+    }
     public function cariHeader(Request $request)
     {
         if ($request->has('q')) {

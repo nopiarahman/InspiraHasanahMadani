@@ -4,11 +4,13 @@ namespace App\Http\Controllers;
 
 use App\rekening;
 use App\tambahan;
+use App\transaksi;
+use Carbon\Carbon;
 use App\tambahanDetail;
+use Illuminate\Support\Arr;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Carbon\Carbon;
-use Illuminate\Support\Arr;
+
 class TambahanDetailController extends Controller
 {
     public function store(tambahan $id, Request $request)
@@ -67,6 +69,13 @@ class TambahanDetailController extends Controller
     {
         DB::beginTransaction();
         try {
+            $uraian = "Penerimaan Tambahan ".$id->tambahan->keterangan." ".$id->tambahan->pelanggan->pembelian->kavling->blok." a/n ". $id->tambahan->pelanggan->nama;
+            $dari = Carbon::parse($id->created_at);
+            $sampai = Carbon::parse($id->created_at)->addSeconds(240);
+            $hapusKasBesar = transaksi::whereBetween('created_at',[$dari,$sampai])->where('tambahan',1)
+                                        ->where('kredit',$id->jumlah)->where('uraian',$uraian)->first();
+            
+            $hapusKasBesar->delete();
             $id->delete();
             DB::commit();
             return redirect()->back()->with('status', 'Transaksi Berhasil dihapus');

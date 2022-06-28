@@ -380,6 +380,17 @@ function hitungTransaksiRAB($idRAB)
         return 0;
     }
 }
+function hitungTransaksiRABTambahan($idRAB)
+{
+    $total = transaksi::where('rab_id', $idRAB)->where('tambahan',1)->where('proyek_id', proyekId())->get();
+    if ($total != null) {
+        $totalRAB = $total->sum('debet');
+        // dd($total);
+        return $totalRAB;
+    } else {
+        return 0;
+    }
+}
 function hitungTransaksiRABRange($idRAB, $start, $end)
 {
     $total = transaksi::where('rab_id', $idRAB)->where('proyek_id', proyekId())->whereBetween('tanggal', [$start, $end])->get();
@@ -405,6 +416,17 @@ function hitungJudulRAB($judul, $start, $end)
 function hitungTransaksiRABUnit($idRAB)
 {
     $total = transaksi::where('rabunit_id', $idRAB)->where('proyek_id', proyekId())->get();
+    if ($total != null) {
+        $totalRAB = $total->sum('debet');
+        // dd($total);
+        return $totalRAB;
+    } else {
+        return 0;
+    }
+}
+function hitungTransaksiRABTambahanUnit($idRAB)
+{
+    $total = transaksi::where('rabunit_id', $idRAB)->where('tambahan',1)->where('proyek_id', proyekId())->get();
     if ($total != null) {
         $totalRAB = $total->sum('debet');
         // dd($total);
@@ -1238,6 +1260,16 @@ function transaksiRAB($judul)
     }
     return $total;
 }
+function transaksiRABTambahan($judul)
+{
+    $rab = rab::where('judul', $judul)->get();
+    $total = 0;
+    foreach ($rab as $r) {
+        $transaksi = transaksi::where('rab_id', $r->id)->where('tambahan',1)->get();
+        $total += $transaksi->sum('debet');
+    }
+    return $total;
+}
 function transaksiRABUnit($judul)
 {
     $rab = rabUnit::where('judul', $judul)->get();
@@ -1248,11 +1280,21 @@ function transaksiRABUnit($judul)
     }
     return $total;
 }
+function transaksiRABUnitTambahan($judul)
+{
+    $rab = rabUnit::where('judul', $judul)->get();
+    $total = 0;
+    foreach ($rab as $r) {
+        $transaksi = transaksi::where('rabunit_id', $r->id)->where('tambahan',1)->get();
+        $total += $transaksi->sum('debet');
+    }
+    return $total;
+}
 function hitungDetailTambahan($id)
 {
     $tambahan = tambahan::findOrFail($id);
     if($tambahan->tambahanDetail != null){
-        $tambahanDetail = $tambahan->tambahanDetail->get();
+        $tambahanDetail = $tambahan->tambahanDetail()->get();
         $total = $tambahanDetail->sum('jumlah');
     }else{
         $tambahanDetail = [];
