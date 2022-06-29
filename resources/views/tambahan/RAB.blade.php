@@ -6,7 +6,7 @@
         <div class="container">
             <div class="row">
                 <div class="col">
-                    <h1>RAB</h1>
+                    <h1>RAB Tambahan</h1>
                 </div>
                 <div class="kanan">
                     @if (request()->route()->getName() == 'RAB')
@@ -22,7 +22,7 @@
             <div class="row">
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb  bg-white mb-n2">
-                        <li class="breadcrumb-item" aria-current="page"> RAB </li>
+                        <li class="breadcrumb-item" aria-current="page"> RAB Tambahan</li>
                     </ol>
                 </nav>
             </div>
@@ -583,7 +583,7 @@
     @endif --}}
     <div class="card">
         <div class="card-header">
-            <h4>RAB</h4>
+            <h4>RAB Tambahan</h4>
         </div>
         <div class="card-body">
             <table class="table table-sm table-hover table-responsive-sm">

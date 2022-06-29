@@ -263,7 +263,8 @@
                         @foreach ($cashFlow as $transaksi)
                             <tr>
                                 {{-- <td>{{$transaksi->no}}</td> --}}
-                                <td data-order="{{ $transaksi->tanggal }}">{{ formatTanggal($transaksi->tanggal) }}</td>
+                                <td data-order="{{ $transaksi->tanggal }}">{{ formatTanggal($transaksi->tanggal) }}
+                                </td>
                                 <td>
                                     @if ($transaksi->rab)
                                         {{ $transaksi->rab->kodeRAB }}
@@ -277,12 +278,12 @@
                                     @endif
                                 </td>
                                 <td>{{ $transaksi->uraian }} {{ $transaksi->jumlah }} {{ $transaksi->satuan }}</td>
-                                <td>
+                                <td data-order="{{ $transaksi->kredit }}">
                                     @if ($transaksi->kredit != null)
                                         Rp.{{ number_format($transaksi->kredit) }}
                                     @endif
                                 </td>
-                                <td>
+                                <td data-order="{{ $transaksi->debet }}">
                                     @if ($transaksi->debet != null)
                                         Rp.{{ number_format($transaksi->debet) }}
                                     @endif
@@ -297,7 +298,8 @@
                                         @if ($transaksi->kategori === 'Modal' || $transaksi->kategori === 'Aset' || $transaksi->kategori === 'Pendapatan Lain' || $transaksi->kategori === 'Kelebihan Tanah')
                                             <button type="button" class="btn btn-sm btn-white text-danger border-danger"
                                                 data-toggle="modal" data-target="#hapusTransaksi"
-                                                data-id="{{ $transaksi->id }}" data-uraian="{{ $transaksi->uraian }}">
+                                                data-id="{{ $transaksi->id }}"
+                                                data-uraian="{{ $transaksi->uraian }}">
                                                 <i class="fa fa-trash" aria-hidden="true"></i> Hapus</button>
                                         @endif
                                     </td>

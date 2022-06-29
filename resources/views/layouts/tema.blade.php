@@ -80,7 +80,7 @@
                     </form>
                 @endif
                 <ul class="navbar-nav navbar-right kanan">
-                    @if (auth()->user()->role == 'projectmanager')
+                    @if (auth()->user()->role == 'projectmanager' || auth()->user()->role == 'kasir' || auth()->user()->role == 'marketing' || auth()->user()->username == 'irfanidham' || auth()->user()->username == 'vreddy.arman' || auth()->user()->username == 'test3')
                         <form action="{{ route('ubahProyek') }}" method="post" enctype="multipart/form-data">
                             @csrf
                             <select name="proyek_id" id="" class="form-control selectric" tabindex="-1"
