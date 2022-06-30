@@ -185,7 +185,7 @@
             </div>
         </div>
     @endif
-    @if (auth()->user()->role == 'admin' || auth()->user()->role == 'projectmanager' || auth()->user()->role == 'marketing' || auth()->user()->role == 'adminGudang')
+    @if (auth()->user()->role == 'admin' || auth()->user()->role == 'projectmanager' || auth()->user()->role == 'marketing' || auth()->user()->role == 'adminGudang' || auth()->user()->role == 'komisaris')
 
         <div class="card">
             <div class="card-header">
@@ -330,7 +330,11 @@
                             <th colspan="3" class="text-right text-primary">Total</th>
                             <th class="text-primary">Rp. {{ number_format($cashFlow->sum('kredit')) }}</th>
                             <th class="text-primary">Rp. {{ number_format($cashFlow->sum('debet')) }}</th>
-                            <th colspan="3" class="text-primary">Rp. {{ number_format($saldo) }}</th>
+                            @if (auth()->user()->role == 'admin' || auth()->user()->role == 'projectmanager')
+                                <th colspan="3" class="text-primary">Rp. {{ number_format($saldo) }}</th>
+                            @else
+                                <th colspan="2" class="text-primary">Rp. {{ number_format($saldo) }}</th>
+                            @endif
                         </tr>
                     </tfoot>
                 </table>

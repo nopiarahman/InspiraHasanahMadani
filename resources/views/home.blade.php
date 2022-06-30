@@ -630,7 +630,7 @@
             </div>
         </div>
     @endif
-    @if (auth()->user()->role == 'admin' || auth()->user()->role == 'projectmanager' || auth()->user()->role == 'adminGudang' || auth()->user()->role == 'marketing')
+    @if (auth()->user()->role == 'admin' || auth()->user()->role == 'projectmanager' || auth()->user()->role == 'adminGudang' || auth()->user()->role == 'marketing' || auth()->user()->role == 'komisaris')
         <div class="row">
             <div class="col-lg-4 col-md-4 col-sm-12">
                 <a href="{{ route('cashFlow') }}">
@@ -769,7 +769,7 @@
                 </div>
             </div>
         @endif
-        @if (auth()->user()->role == 'admin' || auth()->user()->role == 'projectmanager')
+        @if (auth()->user()->role == 'admin' || auth()->user()->role == 'projectmanager' || auth()->user()->role == 'komisaris')
             <div class="card">
                 <div class="card-header">
                     <h4>Status Proyek</h4>
@@ -784,7 +784,7 @@
         @endif
     </div>
     </div>
-    @if (auth()->user()->role == 'admin' || auth()->user()->role == 'projectmanager')
+    @if (auth()->user()->role == 'admin' || auth()->user()->role == 'projectmanager' || auth()->user()->role == 'komisaris')
         <div class="row">
             <div class="col-lg-12 col-md-12 col-sm-12">
                 <div class="card">

@@ -34,7 +34,7 @@
                                 class="fas fa-bars mt-3"></i></a></li>
                     {{-- <li><a href="#" data-toggle="search" class="nav-link nav-link-lg d-sm-none"><i class="fas fa-search"></i></a></li> --}}
                 </ul>
-                @if (auth()->user()->role == 'pelanggan')
+                @if (auth()->user()->role == 'pelanggan' || auth()->user()->role == 'komisaris')
                     <h3 class="text-white align-center mt-2">{{ auth()->user()->proyek->nama }}</h3>
                 @endif
                 @if (auth()->user()->role == 'admin' || auth()->user()->role == 'projectmanager' || auth()->user()->role == 'marketing' || auth()->user()->role == 'adminGudang' || auth()->user()->role == 'kasir')
@@ -80,7 +80,7 @@
                     </form>
                 @endif
                 <ul class="navbar-nav navbar-right kanan">
-                    @if (auth()->user()->role == 'projectmanager' || auth()->user()->role == 'kasir' || auth()->user()->role == 'marketing' || auth()->user()->username == 'irfanidham' || auth()->user()->username == 'vreddy.arman' || auth()->user()->username == 'test3')
+                    @if (auth()->user()->role == 'projectmanager' || auth()->user()->role == 'kasir' || auth()->user()->role == 'marketing' || auth()->user()->username == 'irfanidham' || auth()->user()->username == 'vreddy.arman' || auth()->user()->username == 'test3' || auth()->user()->role == 'komisaris')
                         <form action="{{ route('ubahProyek') }}" method="post" enctype="multipart/form-data">
                             @csrf
                             <select name="proyek_id" id="" class="form-control selectric" tabindex="-1"
@@ -173,7 +173,7 @@
                                         Pengadaan Barang</span></a></li>
                         @endif
 
-                        @if (auth()->user()->role == 'admin')
+                        @if (auth()->user()->role == 'admin' || auth()->user()->role == 'komisaris')
                             <li class="menu-header">Menu Proyek</li>
                             <li class="nav-item dropdown @yield('menuDataProyek')">
                                 <a href="" class="nav-link has-dropdown" data-toggle="dropdown"><i
@@ -183,12 +183,14 @@
                                             href="{{ route('kavling') }}">Unit</a></li>
                                     <li class="@yield('menuRAB')"><a class="nav-link"
                                             href="{{ route('RAB') }}">RAB</a></li>
-                                    <li class="@yield('menuRABTambahan')"><a class="nav-link"
-                                            href="{{ route('RABTambahan') }}">RAB Tambahan</a></li>
+                                    @if (auth()->user()->role != 'komisaris')
+                                        <li class="@yield('menuRABTambahan')"><a class="nav-link"
+                                                href="{{ route('RABTambahan') }}">RAB Tambahan</a></li>
+                                    @endif
                                 </ul>
                             </li>
                         @endif
-                        @if (auth()->user()->role == 'projectmanager' || auth()->user()->role == 'admin')
+                        @if (auth()->user()->role == 'projectmanager' || auth()->user()->role == 'admin' || auth()->user()->role == 'komisaris')
                             <li class="menu-header">Menu Pelanggan</li>
                             <li class="nav-item dropdown @yield('menuPelanggan')">
                                 <a href="" class="nav-link has-dropdown"><i
@@ -221,16 +223,19 @@
                                             href="{{ route('transaksiKeluar') }}">Keluar</a></li>
                                 </ul>
                             </li>
-                            <li class="nav-item dropdown @yield('menuPengadaan')">
-                                <a href="" class="nav-link has-dropdown"><i class="fas fa-box-open    "></i>
-                                    <span>Pengadaan</span></a>
-                                <ul class="dropdown-menu">
-                                    <li class=" @yield('menuDaftarPengadaan')"><a href="{{ route('pengadaan') }}">Daftar
-                                            Pengadaan</a></li>
-                                    <li class=" @yield('menuDaftarBarang')"><a href="{{ route('barang') }}">Daftar
-                                            Barang</a></li>
-                                </ul>
-                            </li>
+                            @if (auth()->user()->role != 'komisaris')
+                                <li class="nav-item dropdown @yield('menuPengadaan')">
+                                    <a href="" class="nav-link has-dropdown"><i
+                                            class="fas fa-box-open    "></i>
+                                        <span>Pengadaan</span></a>
+                                    <ul class="dropdown-menu">
+                                        <li class=" @yield('menuDaftarPengadaan')"><a href="{{ route('pengadaan') }}">Daftar
+                                                Pengadaan</a></li>
+                                        <li class=" @yield('menuDaftarBarang')"><a href="{{ route('barang') }}">Daftar
+                                                Barang</a></li>
+                                    </ul>
+                                </li>
+                            @endif
                             <li class="nav-item dropdown @yield('menuEstimasi')">
                                 <a href="" class="nav-link has-dropdown"><i class="fas fa-box-open    "></i>
                                     <span>Estimasi Pemasukan</span></a>
@@ -249,8 +254,10 @@
                                 <ul class="dropdown-menu">
                                     <li class=" @yield('menuKasBesar')"><a href="{{ route('cashFlow') }}">Kas
                                             Besar</a></li>
-                                    <li class=" @yield('menuKasTambahan')"><a href="{{ route('kasTambahan') }}">Kas
-                                            Tambahan</a></li>
+                                    @if (auth()->user()->role != 'komisaris')
+                                        <li class=" @yield('menuKasTambahan')"><a href="{{ route('kasTambahan') }}">Kas
+                                                Tambahan</a></li>
+                                    @endif
                                     <li class=" @yield('menuKasPendaftaran')"><a class="nav-link"
                                             href="{{ route('kasPendaftaranMasuk') }}">Pendaftaran</a></li>
                                     <li class=" @yield('menuKasKecil')"><a class="nav-link"
