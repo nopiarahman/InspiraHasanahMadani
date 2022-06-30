@@ -8,17 +8,69 @@
     <div class="section-header sticky-top">
         <div class="container">
             <div class="row">
-                <div class="col">
+                <div class="col-3">
                     <h1>Daftar Pengadaan</h1>
                 </div>
+                <div class="col-9">
+                    {{-- filter --}}
+                    <form action="{{ route('pengadaan') }}" method="get" enctype="multipart/form-data">
+
+                        <div class="form-group row">
+                            <label class="col-form-label text-md-right col-12 col-md-6 col-lg-6 mt-1 mr-n3"> <span
+                                    style="font-size:small">Pilih Tanggal: </span> </label>
+                            <div class="input-group col-sm-12 col-md-6">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text">
+                                        <i class="fa fa-calendar" aria-hidden="true"></i>
+                                    </div>
+                                </div>
+                                <input type="text" id="reportrange"
+                                    class="form-control filter @error('filter') is-invalid @enderror" name="filter"
+                                    value="{{ request('filter') }}" id="filter">
+                                <input type="hidden" name="start" id="mulai" value="{{ $start }}">
+                                <input type="hidden" name="end" id="akhir" value="{{ $end }}">
+                                <button type="submit" class="btn btn-primary btn-icon icon-right">Filter
+                                    <i class="fa fa-filter"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                    <script type="text/javascript">
+                        $(function() {
+                            moment.locale('id');
+                            var start = moment($('#mulai').val());
+                            var end = moment($('#akhir').val());
+
+                            function cb(start, end) {
+                                $('#reportrange span').html(start.format('D M Y') + ' - ' + end.format('DD MMMM YYYY'));
+                                $('#mulai').val(start);
+                                $('#akhir').val(end);
+                            }
+                            $('#reportrange').daterangepicker({
+                                startDate: start,
+                                endDate: end,
+                                ranges: {
+                                    'Hari Ini': [moment(), moment()],
+                                    'Kemarin': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+                                    '7 Hari Terakhir': [moment().subtract(6, 'days'), moment()],
+                                    '30 Hari Terakhir': [moment().subtract(29, 'days'), moment()],
+                                    'Bulan Ini': [moment().startOf('month'), moment().endOf('month')],
+                                    'Bulan Lalu': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1,
+                                        'month').endOf('month')]
+                                }
+                            }, cb);
+                        });
+                    </script>
+                    {{-- end filter --}}
+                </div>
             </div>
-            <div class="row">
+            {{-- <div class="row">
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb  bg-white mb-n2">
                         <li class="breadcrumb-item" aria-current="page"> Daftar Pengadaan </li>
                     </ol>
                 </nav>
-            </div>
+            </div> --}}
         </div>
     </div>
 
@@ -45,14 +97,13 @@
     </div>
 
     <div class="row">
-        <div class="col-12">
+        <div class="col">
 
-            {{-- @if (auth()->user()->role == 'admin' || auth()->user()->role == 'projectmanager' || auth()->user()->role == 'projectmanager') --}}
             <div class="section-header">
                 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#tambahPengadaan"> Tambah
                     Pengadaan Baru</button>
             </div>
-            {{-- @endif --}}
+
         </div>
     </div>
 
@@ -92,8 +143,8 @@
                                         class="btn btn-sm btn-white border-success text-primary"> <i
                                             class="fas fa-pen    "></i> Isi Pengadaan </a>
                                     <button type="button" class="btn btn-sm btn-white text-danger border-danger"
-                                        data-toggle="modal" data-target="#exampleModalCenter" data-id="{{ $pengadaan->id }}"
-                                        data-nama="{{ $pengadaan->deskripsi }}">
+                                        data-toggle="modal" data-target="#exampleModalCenter"
+                                        data-id="{{ $pengadaan->id }}" data-nama="{{ $pengadaan->deskripsi }}">
                                         <i class="fa fa-trash" aria-hidden="true"></i> Hapus</button>
                                 @elseif(auth()->user()->role == 'projectmanager')
                                     <a href="{{ route('isiPengadaan', ['id' => $pengadaan->id]) }}"

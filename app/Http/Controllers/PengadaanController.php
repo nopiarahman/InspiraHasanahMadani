@@ -14,8 +14,14 @@ use Illuminate\Http\Request;
 class PengadaanController extends Controller
 {
     public function pengadaanIndex(Request $request){
-        $semuaPengadaan=pengadaan::where('proyek_id',proyekId())->latest()->get();
-        return view('pengadaan/pengadaanIndex',compact('semuaPengadaan'));
+        $start = Carbon::now()->firstOfMonth()->isoFormat('YYYY-MM-DD');
+        $end = Carbon::now()->endOfMonth()->isoFormat('YYYY-MM-DD');
+        if ($request->get('filter')) {
+            $start = Carbon::parse($request->start)->isoFormat('YYYY-MM-DD');
+            $end = Carbon::parse($request->end)->isoFormat('YYYY-MM-DD');
+        }
+        $semuaPengadaan=pengadaan::whereBetween('tanggal', [$start, $end])->where('proyek_id',proyekId())->latest()->get();
+        return view('pengadaan/pengadaanIndex',compact('semuaPengadaan','start','end'));
     }
 
     public function barangIndex(Request $request){
