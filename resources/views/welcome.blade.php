@@ -41,7 +41,6 @@
         .fullText {
             display: none;
         }
-
     </style>
 </head>
 
@@ -99,8 +98,8 @@
                     <div class="right_part_wrap">
                         <ul>
                             <li data-style="home">
-                                <a href="#"><img class="svg"
-                                        src="{{ asset('frontPage/img/svg/home.svg') }}" alt="" /></a>
+                                <a href="#"><img class="svg" src="{{ asset('frontPage/img/svg/home.svg') }}"
+                                        alt="" /></a>
                             </li>
                             {{-- <li data-style="message">
 							<a href="#"><img class="svg" src="{{asset('frontPage/img/svg/message2.svg')}}" alt="" /></a>
@@ -156,7 +155,7 @@
                             @endif
                         </div>
                         <div class="logo_wrap">
-                            <img src="{{ asset('frontPage/img/desktop-logo.png') }}" alt="" />
+                            <img src="{{ asset('frontPage/img/logo-baru-putih.png') }}" alt="" />
                             <span class="left"></span>
                             <span class="right"></span>
                             <span class="extra_first"></span>
@@ -176,13 +175,16 @@
                             <div class="short_info_wrap">
                                 <ul>
                                     <li data-type="home"><a href="#"><img class="svg"
-                                                src="{{ asset('frontPage/img/svg/home.svg') }}" alt="" /></a></li>
+                                                src="{{ asset('frontPage/img/svg/home.svg') }}"
+                                                alt="" /></a></li>
                                     {{-- <li data-type="message"><a href="#"><img class="svg" src="{{asset('frontPage/img/svg/message2.svg')}}" alt="" /></a></li> --}}
                                     <li data-type="phone"><a href="#"><img class="svg"
-                                                src="{{ asset('frontPage/img/svg/old-phone.svg') }}" alt="" /></a>
+                                                src="{{ asset('frontPage/img/svg/old-phone.svg') }}"
+                                                alt="" /></a>
                                     </li>
                                     <li data-type="clock"><a href="#"><img class="svg"
-                                                src="{{ asset('frontPage/img/svg/clock.svg') }}" alt="" /></a></li>
+                                                src="{{ asset('frontPage/img/svg/clock.svg') }}"
+                                                alt="" /></a></li>
                                 </ul>
                             </div>
                             <div class="mobile_socials_wrap">
@@ -202,7 +204,8 @@
                     <div class="container">
                         <div class="inner_wrap">
                             <div class="logo_wrap " style="align-content: center">
-                                <a href="/"><img src="{{ asset('frontPage/img/mobile-logo.png') }}" alt="" /></a>
+                                <a href="/"><img src="{{ asset('frontPage/img/mobile-logo.png') }}"
+                                        alt="" /></a>
                             </div>
                             <div class="trigger_wrap">
                                 <div class="hamburger hamburger--collapse-r">
@@ -240,7 +243,7 @@
                         <div class="drop_list home">
                             <div class="adress_wrap">
                                 <div class="office_image">
-                                    <img src="{{ asset('assets/img/logo-color.png') }}" alt="" />
+                                    <img src="{{ asset('assets/img/logo-baru.png') }}" alt="" />
                                 </div>
                                 <div class="definitions_wrap">
                                     <h3>Kantor Graha Inspira</h3>
@@ -319,7 +322,7 @@
                         <div class="drop_list home">
                             <div class="adress_wrap">
                                 <div class="office_image">
-                                    <img src="{{ asset('assets/img/logo-color.png') }}" alt="" />
+                                    <img src="{{ asset('assets/img/logo-baru.png') }}" alt="" />
                                 </div>
                                 <div class="definitions_wrap">
                                     <h3>Kantor Graha Inspira</h3>
@@ -469,7 +472,8 @@
                                 <div class="inner_list glax_tm_minibox">
                                     <div class="icon_wrap">
                                         <img class="svg"
-                                            src="{{ asset('frontPage/img/svg/moon-svgrepo-com.svg') }}" alt="" />
+                                            src="{{ asset('frontPage/img/svg/moon-svgrepo-com.svg') }}"
+                                            alt="" />
                                     </div>
                                     <div class="title_holder">
                                         <h3>Lingkungan Islami dan Nyaman</h3>
@@ -487,7 +491,8 @@
                                 <div class="inner_list glax_tm_minibox">
                                     <div class="icon_wrap">
                                         <img class="svg"
-                                            src="{{ asset('frontPage/img/svg/badge-svgrepo-com.svg') }}" alt="" />
+                                            src="{{ asset('frontPage/img/svg/badge-svgrepo-com.svg') }}"
+                                            alt="" />
                                     </div>
                                     <div class="title_holder">
                                         <h3>Dipercaya Oleh Ratusan Pelanggan</h3>
@@ -505,7 +510,8 @@
                                 <div class="inner_list glax_tm_minibox">
                                     <div class="icon_wrap">
                                         <img class="svg"
-                                            src="{{ asset('frontPage/img/svg/money-svgrepo-com.svg') }}" alt="" />
+                                            src="{{ asset('frontPage/img/svg/money-svgrepo-com.svg') }}"
+                                            alt="" />
                                     </div>
                                     <div class="title_holder">
                                         <h3>Tanpa Akad Riba</h3>
@@ -530,7 +536,8 @@
                                 <div class="inner_list glax_tm_minibox">
                                     <div class="icon_wrap">
                                         <img class="svg"
-                                            src="{{ asset('frontPage/img/svg/mosque-svgrepo-com.svg') }}" alt="" />
+                                            src="{{ asset('frontPage/img/svg/mosque-svgrepo-com.svg') }}"
+                                            alt="" />
                                     </div>
                                     <div class="title_holder">
                                         <h3>Fasilitas Lengkap</h3>
@@ -581,15 +588,15 @@
                                             <div class="inner">
                                                 <div class="image_holder">
                                                     @if ($kb->thumbnail)
-                                                        <img src="{{ Storage::url($kb->thumbnail) }}" alt=""
-                                                            height="250px" />
+                                                        <img src="{{ Storage::url($kb->thumbnail) }}"
+                                                            alt="" height="250px" />
                                                         <div class="main_image"
                                                             data-img-url="{{ Storage::url($kb->thumbnail) }}"></div>
                                                     @else
-                                                        <img src="{{ asset('assets/img/logo-color.png') }}" alt=""
-                                                            height="250px" />
+                                                        <img src="{{ asset('assets/img/logo-baru.png') }}"
+                                                            alt="" height="250px" />
                                                         <div class="main_image"
-                                                            data-img-url="{{ asset('assets/img/logo-color.png') }}">
+                                                            data-img-url="{{ asset('assets/img/logo-baru.png') }}">
                                                         </div>
                                                     @endif
                                                     <div class="overlay"></div>
@@ -695,7 +702,7 @@
                                     title="YouTube video player" frameborder="0"
                                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                                     allowfullscreen></iframe>
-                                {{-- <img src="{{asset('assets/img/logo-color.png')}}" alt="" height="45%" style="margin-top:5%"> --}}
+                                {{-- <img src="{{asset('assets/img/logo-baru.png')}}" alt="" height="45%" style="margin-top:5%"> --}}
                             </div>
                         </div>
                     </div>
@@ -892,10 +899,8 @@
                                                                 <div class="glax_tm_view_more_wrap">
                                                                     <a
                                                                         href="{{ route('detailProyek', ['id' => $p->id]) }}">
-                                                                        <span
-                                                                            class="text">Selengkapnya</span>
-                                                                        <span class="arrow"><img
-                                                                                class="svg"
+                                                                        <span class="text">Selengkapnya</span>
+                                                                        <span class="arrow"><img class="svg"
                                                                                 src="img/svg/arrow-right.svg"
                                                                                 alt="" /></span>
                                                                     </a>
@@ -1062,7 +1067,8 @@
                                     @if (strlen($popup->text > 200))
                                         <div class="trimText" id="trimText">
                                             {!! substr($popup->text, 0, 200) !!}....
-                                            <button onclick="readmore()" id="myBtn" style="color: white; border:none"
+                                            <button onclick="readmore()" id="myBtn"
+                                                style="color: white; border:none"
                                                 class="badge badge-white text-dark">Lihat Selengkapnya</button>
                                         </div>
                                         <div class="fullText">{!! $popup->text !!}
