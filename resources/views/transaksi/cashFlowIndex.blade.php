@@ -155,6 +155,24 @@
                                     @enderror
                                 </div>
                             </div>
+                            @if (auth()->user()->role == 'admin' || auth()->user()->role == 'projectmanager')
+                                <div class="form-group row mb-4">
+                                    <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3 text-primary">Jenis
+                                        Transaksi</label>
+                                    <div class="col-sm-12 col-md-7">
+                                        <label class="selectgroup-item">
+                                            <input type="radio" name="tambahan" value="0"
+                                                class="selectgroup-input" checked="">
+                                            <span class="selectgroup-button">Reguler</span>
+                                        </label>
+                                        <label class="selectgroup-item">
+                                            <input type="radio" name="tambahan" value="1"
+                                                class="selectgroup-input">
+                                            <span class="selectgroup-button">Tambahan</span>
+                                        </label>
+                                    </div>
+                                </div>
+                            @endif
                             <div class="form-group row mb-4">
                                 <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3"></label>
                                 <div class="col-sm-12 col-md-7">

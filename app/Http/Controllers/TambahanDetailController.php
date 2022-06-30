@@ -46,6 +46,7 @@ class TambahanDetailController extends Controller
             $requestData['tambahan_id']=$id->id;
             $requestData['proyek_id']=proyekId();
             $requestData['ke']=$cekBulan+1;
+            $requestData['sumber']=$sumber;
             tambahanDetail::create($requestData);
             
             $requestKasBesar = Arr::except($requestData,['jumlah']);

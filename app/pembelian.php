@@ -59,4 +59,13 @@ class pembelian extends Model
     {
         return $this->hasMany(dp::class);
     }
+    /**
+     * Get all of the tambahanDetail for the pembelian
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function tambahanDetail()
+    {
+        return $this->hasMany(tambahanDetail::class);
+    }
 }

@@ -83,7 +83,8 @@
                                     atau
                                     {{-- </div> --}}
                                 </div>
-                                <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#pilihRABUnit">Pilih
+                                <a href="#" class="btn btn-primary" data-toggle="modal"
+                                    data-target="#pilihRABUnit">Pilih
                                     Biaya Unit</a>
                             </div>
                         </div>
@@ -102,8 +103,8 @@
                         <div class="form-group row mb-4">
                             <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Uraian</label>
                             <div class="col-sm-12 col-md-7">
-                                <input type="text" class="form-control @error('uraian') is-invalid @enderror" name="uraian"
-                                    value="{{ old('uraian') }}">
+                                <input type="text" class="form-control @error('uraian') is-invalid @enderror"
+                                    name="uraian" value="{{ old('uraian') }}">
                                 @error('uraian')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
@@ -173,6 +174,23 @@
                                 @enderror
                             </div>
                         </div>
+                        @if (auth()->user()->role == 'admin' || auth()->user()->role == 'projectmanager')
+                            <div class="form-group row mb-4">
+                                <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3 text-primary">Jenis
+                                    Transaksi</label>
+                                <div class="col-sm-12 col-md-7">
+                                    <label class="selectgroup-item">
+                                        <input type="radio" name="tambahan" value="0" class="selectgroup-input"
+                                            checked="">
+                                        <span class="selectgroup-button">Reguler</span>
+                                    </label>
+                                    <label class="selectgroup-item">
+                                        <input type="radio" name="tambahan" value="1" class="selectgroup-input">
+                                        <span class="selectgroup-button">Tambahan</span>
+                                    </label>
+                                </div>
+                            </div>
+                        @endif
                 </div>
                 <div class="card-footer">
                     <div class="form-group row mb-4">

@@ -159,6 +159,8 @@ Route::group(['middleware' => ['auth', 'role:admin,projectmanager,adminGudang,ma
     Route::get('/laporanTahunan', 'LaporanController@laporanTahunan')->name('laporanTahunan');
 
     Route::get('/cetakKwitansi/{id}', 'LaporanController@cetakKwitansi')->name('cetakKwitansi');
+    Route::get('/cetakKwitansiTambahan/{id}', 'LaporanController@cetakKwitansiTambahan')->name('cetakKwitansiTambahan');
+    Route::get('/cetakKwitansiTambahanPDF/{id}', 'LaporanController@cetakKwitansiTambahanPDF')->name('cetakKwitansiTambahanPDF');
     Route::get('/cetakKwitansiDp/{id}', 'LaporanController@cetakKwitansiDp')->name('cetakKwitansiDp');
     Route::get('/cetakDPPDF/{id}', 'LaporanController@cetakDPPDF')->name('cetakDPPDF');
     Route::get('/cetakKwitansiPDF/{id}', 'LaporanController@cetakKwitansiPDF')->name('cetakKwitansiPDF');

@@ -20,4 +20,13 @@ class tambahanDetail extends Model
     {
         return $this->belongsTo(tambahan::class);
     }
+    /**
+     * Get the pembelian that owns the tambahanDetail
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function pembelian()
+    {
+        return $this->belongsTo(pembelian::class);
+    }
 }

@@ -239,7 +239,7 @@ function kasBesarKeluar($dataArray)
     $dataTransaksi['no'] = $data->get('no');
     $dataTransaksi['saldo'] = $data->get('saldo');
     $dataTransaksi['proyek_id'] = proyekId();
-    $dataTransaksi['tambahan'] =$data->get('tambahan');
+    // $dataTransaksi['tambahan'] =$data->get('tambahan');
     // dd($dataTransaksi);
     transaksi::create($dataTransaksi);
 }

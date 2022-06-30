@@ -2,26 +2,27 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Carbon\Carbon;
-use App\transaksi;
-use App\cicilan;
-use App\akun;
-use App\proyek;
+use PDF;
 use App\dp;
 use App\rab;
+use App\akun;
+use App\proyek;
+use App\cicilan;
 use App\rabUnit;
+use SnappyImage;
 use App\rekening;
 use App\pembelian;
-use PDF;
-use SnappyImage;
+use App\transaksi;
+use Carbon\Carbon;
+use App\tambahanDetail;
+use App\Exports\MasukExport;
+use Illuminate\Http\Request;
+use App\Exports\KeluarExport;
+use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\LaporanBulananExport;
 use App\Exports\LaporanTahunanExport;
-use App\Exports\MasukExport;
-use App\Exports\KeluarExport;
-use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\DB;
 
 class LaporanController extends Controller
 {
@@ -673,5 +674,24 @@ class LaporanController extends Controller
                 ->whereNotNull('kredit')->where('proyek_id', proyekId())->get();
         }
         return Excel::download(new MasukExport($transaksiMasuk, $start, $end), 'Transaksi Masuk ' . $start . '.xlsx');
+    }
+    public function cetakKwitansiTambahan(tambahanDetail $id)
+    {
+        // dd($id->tambahan);
+        $pembelian = $id->pembelian;
+        $proyek = proyek::find($id->proyek_id);
+        $rekening = rekening::where('proyek_id', proyekId())->get();
+        return view('cetak/kwitansiTambahan', compact('id','pembelian','proyek','rekening'));
+    }
+    public function cetakKwitansiTambahanPDF(tambahanDetail $id)
+    {
+        // dd($id);
+        $pembelian = $id->pembelian;
+        $proyek = proyek::find($id->proyek_id);
+        $logoPT = Storage::url($proyek->logoPT);
+        $rekening = rekening::where('proyek_id', proyekId())->get();
+        // return view('PDF/kwitansiTambahan', compact('id','pembelian','proyek','rekening','logoPT'));
+        $pdf = PDF::loadview('PDF/kwitansiTambahan', compact('id','pembelian','proyek','rekening', 'logoPT'))->setPaper('A5', 'landscape');
+        return $pdf->download('Kwitansi Pembayaran Tambahan '.$id->tambahan->keterangan.' '. $id->tambahan->pelanggan->nama . '.pdf');
     }
 }

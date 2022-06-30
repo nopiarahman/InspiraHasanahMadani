@@ -234,7 +234,7 @@
                                 </td>
                                 <td>
                                     @if (auth()->user()->role == 'admin' || auth()->user()->role == 'projectmanager' || auth()->user()->role == 'marketing' || auth()->user()->role == 'kasir')
-                                        <a href="{{ route('cetakKwitansi', ['id' => $detail->id]) }}"
+                                        <a href="{{ route('cetakKwitansiTambahan', ['id' => $detail->id]) }}"
                                             class=" btn-sm border-success btn btn-white text-primary"> <i
                                                 class="fas fa-file-invoice    "></i> Kwitansi</a>
                                     @endif

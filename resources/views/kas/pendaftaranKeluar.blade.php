@@ -144,6 +144,7 @@
                                     @enderror
                                 </div>
                             </div>
+
                             <div class="form-group row mb-4">
                                 <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3"></label>
                                 <div class="col-sm-12 col-md-7">
@@ -215,7 +216,8 @@
             </div>
             <table class="table table-sm my-3 bg-light ">
                 <tr>
-                    <th class="text-primary text-right pr-5">Sisa Saldo Sebelumnya: Rp.{{ number_format($saldoSebelum) }}
+                    <th class="text-primary text-right pr-5">Sisa Saldo Sebelumnya:
+                        Rp.{{ number_format($saldoSebelum) }}
                     </th>
                 </tr>
             </table>
