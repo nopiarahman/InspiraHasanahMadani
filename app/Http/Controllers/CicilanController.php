@@ -37,6 +37,9 @@ class CicilanController extends Controller
         return view ('cicilanUnit/kavling',compact('semuaCicilanUnit','transferUnit'));
     }
     public function unitKavlingDetail(Pembelian $id){
+        if(auth()->user()->proyek_id != $id->proyek_id){
+            return redirect()->route('pelangganIndex')->with('status',$id->pelanggan->nama .' adalah pelanggan '.$id->pelanggan->proyek->nama);
+        }
         $daftarCicilanUnit = cicilan::where('pembelian_id',$id->id)->orderBy('tanggal')->get();
         
         $cicilanPerBulan = floor($id->sisaKewajiban/$id->tenor);

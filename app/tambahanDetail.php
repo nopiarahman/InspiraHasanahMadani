@@ -29,4 +29,13 @@ class tambahanDetail extends Model
     {
         return $this->belongsTo(pembelian::class);
     }
+    /**
+     * Get the pelanggan that owns the tambahanDetail
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function pelanggan()
+    {
+        return $this->belongsTo(pelanggan::class);
+    }
 }

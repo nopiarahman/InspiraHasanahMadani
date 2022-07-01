@@ -230,6 +230,9 @@ class LaporanController extends Controller
     }
     public function cetakKwitansi(Cicilan $id)
     {
+        if(auth()->user()->proyek_id != $id->proyek_id){
+            return redirect()->route('pelangganIndex')->with('status',$id->pelanggan->nama .' adalah pelanggan '.$id->pelanggan->proyek->nama);
+        }
         // dd($id);
         $pembayaranPertama = cicilan::where('pembelian_id', $id->pembelian_id)->orderBy('tanggal')->first();
         $pembayaranSebelum = cicilan::where('pembelian_id', $id->pembelian_id)->where('tanggal', '<', $id->tanggal)->orderBy('tanggal', 'desc')->first();
@@ -285,6 +288,9 @@ class LaporanController extends Controller
     }
     public function cetakKwitansiDp(Dp $id)
     {
+        if(auth()->user()->proyek_id != $id->proyek_id){
+            return redirect()->route('pelangganIndex')->with('status',$id->pelanggan->nama .' adalah pelanggan '.$id->pelanggan->proyek->nama);
+        }
         $pembayaranPertama = dp::where('pembelian_id', $id->pembelian_id)->orderBy('tanggal')->first();
         $pembayaranSebelum = dp::where('pembelian_id', $id->pembelian_id)->where('tanggal', '<', $id->tanggal)->orderBy('tanggal', 'desc')->first();
         if ($pembayaranSebelum) {
@@ -677,6 +683,9 @@ class LaporanController extends Controller
     }
     public function cetakKwitansiTambahan(tambahanDetail $id)
     {
+        if(auth()->user()->proyek_id != $id->proyek_id){
+            return redirect()->route('pelangganIndex')->with('status',$id->pelanggan->nama .' adalah pelanggan '.$id->pelanggan->proyek->nama);
+        }
         // dd($id->tambahan);
         $pembelian = $id->pembelian;
         $proyek = proyek::find($id->proyek_id);
@@ -685,6 +694,7 @@ class LaporanController extends Controller
     }
     public function cetakKwitansiTambahanPDF(tambahanDetail $id)
     {
+        
         // dd($id);
         $pembelian = $id->pembelian;
         $proyek = proyek::find($id->proyek_id);

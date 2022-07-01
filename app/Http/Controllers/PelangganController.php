@@ -562,6 +562,9 @@ class PelangganController extends Controller
     }
     public function detail(Pelanggan $id)
     {
+        if(auth()->user()->proyek_id != $id->proyek_id){
+            return redirect()->route('pelangganIndex')->with('status',$id->nama .' adalah pelanggan '.$id->proyek->nama);
+        }
         $dataKavling = kavling::where('pelanggan_id', $id->id)->first();
         $dataPembelian = pembelian::where('pelanggan_id', $id->id)->first();
         $persenDiskon = ($dataPembelian->diskon / $dataPembelian->harga) * 100;

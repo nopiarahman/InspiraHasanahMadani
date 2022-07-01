@@ -23,6 +23,9 @@ class DPController extends Controller
     }
     public function DPKavlingTambah(Pembelian $id){
         // dd($id);
+        if(auth()->user()->proyek_id != $id->proyek_id){
+            return redirect()->route('pelangganIndex')->with('status',$id->pelanggan->nama .' adalah pelanggan '.$id->pelanggan->proyek->nama);
+        }
         $daftarCicilanDp = dp::where('pembelian_id',$id->id)->orderBy('tanggal')->get();
         $rekening = rekening::where('proyek_id',proyekId())->get();
         // dd($rekening);

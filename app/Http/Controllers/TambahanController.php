@@ -15,6 +15,10 @@ class TambahanController extends Controller
 {
     public function detail(tambahan $id)
     {
+        // dd($id);
+        if(auth()->user()->proyek_id != $id->pelanggan->proyek_id){
+            return redirect()->route('pelangganIndex')->with('status',$id->pelanggan->nama .' adalah pelanggan '.$id->pelanggan->proyek->nama);
+        }
         $rekening = rekening::where('proyek_id', proyekId())->get();
         if($id->tambahanDetail != null){
             $tambahanDetail = $id->tambahanDetail()->get();
