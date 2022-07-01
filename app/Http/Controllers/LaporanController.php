@@ -288,6 +288,7 @@ class LaporanController extends Controller
     }
     public function cetakKwitansiDp(Dp $id)
     {
+        // dd($id);
         if(auth()->user()->proyek_id != $id->proyek_id){
             return redirect()->route('pelangganIndex')->with('status',$id->pelanggan->nama .' adalah pelanggan '.$id->pelanggan->proyek->nama);
         }
