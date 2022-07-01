@@ -20,6 +20,7 @@ use App\detailUser;
 use App\kasPendaftaran;
 use App\kasKecilLapangan;
 use Illuminate\Support\Facades\DB;
+use App\history;
 
 function cekNamaUser()
 {
@@ -37,6 +38,10 @@ function proyekId()
 {
 
     return auth()->user()->proyek_id;
+}
+function userId()
+{
+    return auth()->user()->id;
 }
 function listProyek()
 {
@@ -206,6 +211,7 @@ function kasBesarMasuk($dataArray)
     $requestData['kategori'] = 'Pendapatan';
     // $requestData['akun_id']=$akunPendapatan->id;
     $requestData['proyek_id'] = proyekId();
+    $requestData['user_id'] = userId();
     // dd($requestData);
     transaksi::create($requestData);
     // return $this; 
@@ -239,6 +245,7 @@ function kasBesarKeluar($dataArray)
     $dataTransaksi['no'] = $data->get('no');
     $dataTransaksi['saldo'] = $data->get('saldo');
     $dataTransaksi['proyek_id'] = proyekId();
+    $dataTransaksi['user_id'] = userId();
     // $dataTransaksi['tambahan'] =$data->get('tambahan');
     // dd($dataTransaksi);
     transaksi::create($dataTransaksi);
@@ -258,6 +265,8 @@ function kasBesarKeluarTanpaJumlah($dataArray)
     $dataTransaksi['no'] = $data->get('no');
     $dataTransaksi['saldo'] = $data->get('saldo');
     $dataTransaksi['proyek_id'] = proyekId();
+    $dataTransaksi['user_id'] = userId();
+
     // dd($dataTransaksi);
     transaksi::create($dataTransaksi);
 }
@@ -306,6 +315,12 @@ function formatTanggal($date)
 {
     $newDate = \Carbon\Carbon::parse($date);
     return $newDate->isoFormat('DD/MM/YYYY');
+}
+function formatWaktuTanggal($date)
+{
+    $newDate = \Carbon\Carbon::parse($date);
+    // dd($newDate->isoFormat('DD/MM/YYYY mm:ss'));
+    return $newDate->isoFormat('DD/MM/YYYY hh:mm:ss');
 }
 function formatBulanTahun($date)
 {
@@ -1302,4 +1317,16 @@ function hitungDetailTambahan($id)
         $total =0;
     }
     return $total;
+}
+function historyAdd($uraian,$jenis,$jumlah)
+{
+    $history =[];
+    $history['uraian'] = $uraian;
+    $history['jenis']=$jenis;
+    $history['tanggal']=Carbon::now();
+    $history['user_id']=userId();
+    $history['proyek_id']=proyekId();
+    $history['jumlah']=$jumlah;
+    $history['tambahan']=0;
+    history::create($history);
 }

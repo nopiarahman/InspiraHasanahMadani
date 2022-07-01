@@ -42,5 +42,27 @@ class transaksi extends Model
     {
         return $this->belongsTo(rabUnit::class);
     }
-
+    /**
+     * Get the user that owns the transaksi
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+    /**
+     * Get the gudang that owns the transaksi
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    /**
+     * Get all of the gudang for the transaksi
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function gudang()
+    {
+        return $this->hasMany(gudang::class);
+    }
 }

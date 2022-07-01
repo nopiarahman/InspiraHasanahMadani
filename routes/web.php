@@ -39,53 +39,6 @@ Route::get('/tentang', 'WebController@tentang')->name('tentang');
 Route::get('/cv1', 'WebController@cv1')->name('cv1');
 
 Auth::routes();
-// Route::group(['middleware' => ['auth', 'role:komisaris']], function () {
-//     Route::post('/ubahProyek', 'HomeController@ubahProyek')->name('ubahProyek');
-//     Route::get('/RAB', 'ProyekController@RAB')->name('RAB');
-//     Route::get('/kavling', 'KavlingController@index')->name('kavling');
-//     Route::get('/pelanggan', 'PelangganController@index')->name('pelangganIndex');
-//     Route::get('/pelangganNonAktif', 'PelangganController@nonAktif')->name('pelangganNonAktif');
-//     Route::get('/pelangganTerhapus', 'PelangganController@terhapus')->name('pelangganTerhapus');
-//     Route::get('/pelangganDetail/{id}', 'PelangganController@detail')->name('pelangganDetail');
-//     Route::get('/DPKavling', 'DPController@DPKavling')->name('DPKavling');
-//     Route::get('/DPKavlingTambah/{id}', 'DPController@DPKavlingTambah')->name('DPKavlingTambah');
-//     Route::get('/cicilanKavling', 'CicilanController@cicilanKavling')->name('cicilanKavling');
-//     Route::get('/unitKavlingDetail/{id}', 'CicilanController@unitKavlingDetail')->name('unitKavlingDetail');
-//     Route::get('/proyek/pengeluaran/{id}', 'ProyekController@transaksiRABUnit')->name('transaksiRABUnit');
-//     Route::get('/proyek/pengeluaran/RAB/{id}', 'ProyekController@transaksiRAB')->name('transaksiRAB');
-//     Route::get('/cetakRAB', 'ProyekController@cetakRAB')->name('cetakRAB');
-//     Route::get('/transaksiMasuk', 'TransaksiController@masuk')->name('transaksiMasuk');
-//     Route::get('/transaksiKeluar', 'TransaksiController@keluar')->name('transaksiKeluar');
-//     Route::get('/exportKasBesar', 'TransaksiController@exportKasBesar')->name('exportKasBesar');
-//     Route::get('/exportKeluar', 'LaporanController@exportKeluar')->name('exportKeluar');
-//     Route::get('/exportMasuk', 'LaporanController@exportMasuk')->name('exportMasuk');
-
-//     Route::get('/estimasi', 'EstimasiController@estimasi')->name('estimasi');
-//     Route::get('/estimasiDp', 'EstimasiController@estimasiDp')->name('estimasiDp');
-//     Route::get('/estimasiCicilan', 'EstimasiController@estimasiCicilan')->name('estimasiCicilan');
-//     Route::get('/estimasiTunggakan', 'EstimasiController@estimasiTunggakan')->name('estimasiTunggakan');
-//     Route::get('/exportEstimasiCicilan', 'EstimasiController@exportEstimasiCicilan')->name('exportEstimasiCicilan');
-//     Route::get('/exportEstimasiTunggakan', 'EstimasiController@exportEstimasiTunggakan')->name('exportEstimasiTunggakan');
-//     Route::get('/exportKasPendaftaran', 'KasPendaftaranController@exportKasPendaftaran')->name('exportKasPendaftaran');
-//     Route::get('/exportKasLapangan', 'KasController@exportKasLapangan')->name('exportKasLapangan');
-//     Route::get('/exportPettyCash', 'KasController@exportPettyCash')->name('exportPettyCash');
-//     Route::get('/exportBulanan', 'LaporanController@exportBulanan')->name('exportBulanan');
-//     Route::get('/exportTahunan', 'LaporanController@exportTahunan')->name('exportTahunan');
-//     Route::get('/exportEstimasiDp', 'EstimasiController@exportEstimasiDp')->name('exportEstimasiDp');
-
-//     Route::get('/cashFlow', 'TransaksiController@cashFlow')->name('cashFlow');
-//     Route::get('/kasPendaftaranMasuk', 'KasPendaftaranController@index')->name('kasPendaftaranMasuk');
-//     Route::get('/pettyCash', 'KasController@pettyCash')->name('pettyCash');
-//     Route::get('/kasKecilLapangan', 'KasController@kasKecilLapangan')->name('kasKecilLapangan');
-
-//     Route::get('/gudang', 'GudangController@index')->name('gudang');
-//     Route::get('/gudangHabis', 'GudangController@habis')->name('gudangHabis');
-//     Route::get('/rekening', 'ProyekController@rekening')->name('rekening');
-
-//     Route::get('/laporanBulanan', 'LaporanController@laporanBulananRAB')->name('laporanBulanan');
-//     Route::get('/laporanTahunan', 'LaporanController@laporanTahunan')->name('laporanTahunan');
-
-// });
 Route::group(['middleware' => ['auth', 'role:admin,projectmanager,adminGudang,marketing,gudang,kasir,komisaris']], function () {
     Route::get('/proyek', 'ProyekController@index')->name('proyek');
     Route::get('/proyekTambah', 'ProyekController@create')->name('proyekTambah');
@@ -270,9 +223,10 @@ Route::group(['middleware' => ['auth', 'role:admin,projectmanager,adminGudang,ma
     // Pembayaran Tambahan
     Route::post('/tambahanDetailSimpan/{id}', 'TambahanDetailController@store')->name('tambahanDetailSimpan');
     Route::delete('/hapusTambahanDetail/{id}', 'TambahanDetailController@destroy')->name('hapusTambahanDetail');
+    Route::get('/history', 'HistoryController@index')->name('history');
+    Route::get('/historyTambahan', 'HistoryController@tambahan')->name('historyTambahan');
 
 });
-
 Route::group(['middleware' => ['auth', 'role:projectmanager']], function () {
 
     Route::get('/kelolaUser', 'ProjectManagerController@kelolaUser')->name('kelolaUser');
@@ -281,9 +235,6 @@ Route::group(['middleware' => ['auth', 'role:projectmanager']], function () {
     Route::patch('/userEdit/{id}', 'ProjectManagerController@userEdit')->name('userEdit');
     Route::delete('/hapusUser/{id}', 'ProjectManagerController@hapusUser')->name('hapusUser');
 });
-
-
-
 Route::group(['middleware' => ['auth', 'role:adminWeb']], function () {
 
     Route::get('/popup', 'PopUpController@create')->name('popup');

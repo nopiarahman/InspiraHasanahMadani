@@ -64,4 +64,22 @@ class User extends Authenticatable
     {
         return $this->hasOne(pelanggan::class);
     }
+    /**
+     * Get the transaksi associated with the User
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function transaksi()
+    {
+        return $this->hasOne(transaksi::class);
+    }
+    /**
+     * Get the history associated with the User
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function history()
+    {
+        return $this->hasOne(history::class);
+    }
 }

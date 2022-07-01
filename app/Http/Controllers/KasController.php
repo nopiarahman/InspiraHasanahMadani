@@ -192,6 +192,7 @@ class KasController extends Controller
             }
             // dd($requestData);
             transaksi::create($requestData);
+            historyAdd($request->uraian,'penambahan',$jumlah);
             DB::commit();
             return redirect()->route('cashFlow')->with('status', 'Transaksi Berhasil Disimpan');
         } catch (\Exception $ex) {

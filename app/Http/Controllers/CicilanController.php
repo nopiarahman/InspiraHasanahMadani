@@ -3,13 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\cicilan;
-use Carbon\Carbon;
-use App\pembelian;
+use App\history;
 use App\rekening;
-use App\transferUnit;
+use App\pembelian;
 use App\transaksi;
+use Carbon\Carbon;
+use App\transferUnit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+
 class CicilanController extends Controller
 {
     /**
@@ -182,6 +184,10 @@ class CicilanController extends Controller
             $update=pembelian::find($id)->update(['sisaCicilan'=>$cicilan-$totalTerbayar-$terbayarSekarang]);
             $daftarCicilanUnit = cicilan::where('pembelian_id',$id)->get();
             $cicilanPerBulan = $cekCicilan->sisaKewajiban/$cekCicilan->tenor;
+
+            // History
+            historyAdd($requestData['uraian'],'penambahan',$jumlah);
+
             DB::commit();
             return redirect()->route('unitKavlingDetail',['id'=>$id,'daftarCicilanUnit'=>$daftarCicilanUnit,'cicilanPerBulan'=>$cicilanPerBulan])
                     ->with('status','Cicilan Unit Berhasil Ditambahkan');
@@ -231,7 +237,10 @@ class CicilanController extends Controller
             $id->delete();
             /* update data pembelian pelanggan */
             $update=pembelian::find($id->pembelian_id)->update(['sisaCicilan'=>$cicilan-$totalTerbayar+$id->jumlah]);
+            // History
+            historyAdd($uraian,'hapus',$id->jumlah);
             DB::commit();
+
             return redirect()->back()->with('status','Transaksi cicilan berhasil dihapus');
         } catch (\Exception $ex) {
             DB::rollback();

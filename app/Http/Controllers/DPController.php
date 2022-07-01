@@ -3,13 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\dp;
+use App\history;
+use App\rekening;
+use App\pembelian;
 use App\transaksi;
 use Carbon\Carbon;
-use App\pembelian;
-use App\rekening;
 use App\transferDp;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class DPController extends Controller
 {
@@ -142,7 +143,8 @@ class DPController extends Controller
             }
             kasBesarMasuk($requestData);
             $update=pembelian::find($id)->update(['sisaDp'=>$akadDp-$totalTerbayar-$terbayarSekarang]);
-            
+            // History
+            historyAdd($requestData['uraian'],'penambahan',$jumlah);
             DB::commit();
             return redirect()->route('DPKavlingTambah',['id'=>$id])->with('status','Cicilan DP Berhasil ditambahkan');
     
@@ -183,6 +185,8 @@ class DPController extends Controller
             $hapusKasBesar->delete();
             dp::destroy($id->id);
             $update=pembelian::find($id->pembelian_id)->update(['sisaDp'=>$akadDp-$totalTerbayar+$id->jumlah]);
+            // History
+            historyAdd($uraian,'hapus',$id->jumlah);
             DB::commit();
             return redirect()->back()->with('status','Transaksi DP berhasil dihapus');
         } catch (\Exception $ex) {

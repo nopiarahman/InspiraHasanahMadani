@@ -152,8 +152,10 @@ class TransaksiController extends Controller
                 /*  simpan ke kas besar sesuai input requestData*/
                 if ($request->pengembalian != null) {
                     kasBesarKeluarTanpaJumlah($requestData);
+                    historyAdd($request->uraian.' '.$request->jumlah.' '.$request->satuan,'pengeluaran',$jumlah);
                 } else {
                     kasBesarKeluar($requestData);
+                    historyAdd($request->uraian.' '.$request->jumlah.' '.$request->satuan,'pengeluaran',$jumlah);
                 }
             } elseif ($request->sumberKas == 'kasKecilLapangan') {
                 /* cek transaksi sesudah input */
@@ -168,6 +170,7 @@ class TransaksiController extends Controller
                 }
                 /*  simpan ke kas besar sesuai input requestData*/
                 kasBesarKeluar($requestData);
+                historyAdd($request->uraian.' '.$request->jumlah.' '.$request->satuan,'pengeluaran',$jumlah);
                 /* cek apakah ada transaksi sebelumnya */
                 $cekKasLapangan = kasKecilLapangan::where('tanggal', '<=', $request->tanggal)->orderBy('no')->where('proyek_id', proyekId())->get();
                 /* jika transaksi sebelumnya ada value */
@@ -219,6 +222,7 @@ class TransaksiController extends Controller
                 }
                 /*  simpan ke kas besar sesuai input requestData*/
                 kasBesarKeluar($requestData);
+                historyAdd($request->uraian.' '.$request->jumlah.' '.$request->satuan,'pengeluaran',$jumlah);
                 /* cek apakah ada transaksi sebelumnya */
                 $cekPettyCashSebelum = pettycash::where('tanggal', '<=', $request->tanggal)->orderBy('no')->where('proyek_id', proyekId())->get();
                 /* jika transaksi sebelumnya ada value */
@@ -383,6 +387,13 @@ class TransaksiController extends Controller
             $cekAlokasi = alokasiGudang::whereBetween('created_at', [$dari, $sampai])->where('uraian', $id->uraian)->first();
             if ($cekAlokasi) {
                 $cekGudang = gudang::where('id', $cekAlokasi->gudang_id)->first();
+                $transaksi = $cekGudang->transaksi;
+                // dd($transaksi);
+                $transaksi->update([
+                    'jumlah' => $transaksi->jumlah + $id->jumlah,
+                    'debet' => $transaksi->debet + $id->debet,
+                ]);
+                historyAdd($transaksi->uraian.' '.$transaksi->jumlah.' '.$transaksi->satuan,'Update kas',$transaksi['debet']);
                 $cekAlokasi->delete();
                 $updateStok = $cekGudang->sisa + $id->jumlah;
                 $cekGudang->update(['sisa' => $updateStok]);
@@ -396,6 +407,7 @@ class TransaksiController extends Controller
                 $cekGudang->delete();
             }
             $cekPengembalian = pengembalian::where('transaksi_id', $id->id)->delete();
+            historyAdd($id->uraian.' '.$id->jumlah.' '.$id->satuan,'hapus',$id->debet);
             $id->delete();
             DB::commit();
             return redirect()->back()->with('status', 'Transaksi berhasil dihapus');
@@ -419,6 +431,7 @@ class TransaksiController extends Controller
                     $updateKasBesar->save();
                 }
             }
+            historyAdd($id->uraian.' '.$id->jumlah.' '.$id->satuan,'hapus',$id->kredit);
             $id->delete();
             DB::commit();
             return redirect()->back()->with('status', 'Transaksi Berhasil dihapus');

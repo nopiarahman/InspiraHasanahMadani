@@ -145,6 +145,7 @@ class GudangController extends Controller
                 }
             }
             kasBesarKeluar($requestKasBesar);
+            historyAdd($requestKasBesar['uraian'].' '.$request->jumlah.' '.$request->satuan,'Alokasi Gudang',$jumlah);
             /* split transaksi sebelumnya */
             $transaksi = transaksi::find($gudang->transaksi_id);
             // dd($transaksi);
@@ -153,6 +154,7 @@ class GudangController extends Controller
                     'jumlah' => $transaksi->jumlah - $request->jumlah,
                     'debet' => $transaksi->debet - $jumlah,
                 ]);
+                historyAdd($transaksi->uraian.' '.$transaksi->jumlah.' '.$transaksi->satuan,'Update kas',$transaksi['debet']);
                 /* update saldo */
                 $cekTransaksiSaldo = transaksi::where('no', '>=', $transaksi->no)->where('tambahan',0)->orderBy('no')->where('proyek_id', proyekId())->get();
                 if ($cekTransaksiSaldo != null) {
@@ -163,6 +165,7 @@ class GudangController extends Controller
                     }
                 }
             }
+
             DB::commit();
             return redirect()->back()->with('status', 'Alokasi Berhasil Disimpan');
         } catch (\Exception $ex) {
@@ -206,6 +209,7 @@ class GudangController extends Controller
                         $updateTransaksi->save();
                     }
                 }
+                historyAdd($hapusTransaksi->uraian.' '.$hapusTransaksi->jumlah.' '.$hapusTransaksi->satuan,'hapus',$hapusTransaksi->debet);
                 $hapusTransaksi->delete();
             }
             /* cek transaksi sesudah input */
@@ -220,6 +224,7 @@ class GudangController extends Controller
                 ]);
             }
             $id->delete();
+            historyAdd($transaksi->uraian.' '.$transaksi->jumlah.' '.$transaksi->satuan,'Update kas',$transaksi->debet);
             $gudang = gudang::find($id->gudang_id);
             $updateStok = $gudang->sisa + $id->jumlah;
             $gudang->update(['sisa' => $updateStok]);

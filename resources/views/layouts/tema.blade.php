@@ -291,7 +291,22 @@
                                 </ul>
                             </li>
                         @endif
-
+                        @if (auth()->user()->role == 'admin' || auth()->user()->role == 'projectmanager')
+                            {{-- <li class=" @yield('menuHistory')"><a class="nav-link" href="{{ route('history') }}">
+                                    <i class="fa fa-history" aria-hidden="true"></i>
+                                    <span>History</span></a></li> --}}
+                            <li class="nav-item dropdown @yield('menuHistory')">
+                                <a href="" class="nav-link has-dropdown">
+                                    <i class="fa fa-history" aria-hidden="true"></i>
+                                    <span>History</span></a>
+                                <ul class="dropdown-menu">
+                                    <li class=" @yield('menuHistoryReguler')"><a class="nav-link"
+                                            href="{{ route('history') }}">Reguler</a></li>
+                                    <li class=" @yield('menuHistoryTambahan')"><a class="nav-link"
+                                            href="{{ route('historyTambahan') }}">Tambahan</a></li>
+                                </ul>
+                            </li>
+                        @endif
                         @if (auth()->user()->role == 'adminGudang')
                             <li class="menu-header">Menu Proyek</li>
                             <li class="nav-item dropdown @yield('menuDataProyek')">
@@ -494,7 +509,8 @@
                                         class="fas fa-archway"></i> <span>
                                         Proyek</span></a></li>
                             <li class=" @yield('menuKabarBerita')"><a class="nav-link"
-                                    href="{{ route('kabarBerita') }}"><i class="fas fa-book-open"></i> <span> Kabar
+                                    href="{{ route('kabarBerita') }}"><i class="fas fa-book-open"></i> <span>
+                                        Kabar
                                         Berita</span></a></li>
                         @endif
 
