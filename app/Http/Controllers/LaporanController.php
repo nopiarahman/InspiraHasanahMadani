@@ -673,12 +673,12 @@ class LaporanController extends Controller
             $start = Carbon::parse($request->start)->isoFormat('YYYY-MM-DD');
             $end = Carbon::parse($request->end)->isoFormat('YYYY-MM-DD');
             $transaksiMasuk = transaksi::whereBetween('tanggal', [$start, $end])->where('tambahan',0)
-                ->whereNotNull('kredit')->where('proyek_id', proyekId())->get();
+                ->whereNotNull('kredit')->where('proyek_id', proyekId())->orderBy('tanggal')->get();
         } else {
             $start = Carbon::now()->firstOfMonth()->isoFormat('YYYY-MM-DD');
             $end = Carbon::now()->endOfMonth()->isoFormat('YYYY-MM-DD');
             $transaksiMasuk = transaksi::whereBetween('tanggal', [$start, $end])->where('tambahan',0)
-                ->whereNotNull('kredit')->where('proyek_id', proyekId())->get();
+                ->whereNotNull('kredit')->where('proyek_id', proyekId())->orderBy('tanggal')->get();
         }
         return Excel::download(new MasukExport($transaksiMasuk, $start, $end), 'Transaksi Masuk ' . $start . '.xlsx');
     }
