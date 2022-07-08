@@ -179,7 +179,7 @@ class ProyekController extends Controller
         $semuaRAB = rab::all()->where('proyek_id', proyekId())->groupBy(['header', function ($item) {
             return $item['judul'];
         }], $preserveKeys = true);
-        $semuaUnit = rabUnit::where('proyek_id', proyekId())->get()->groupBy(['header', function ($item) {
+        $semuaUnit = rabUnit::where('proyek_id', proyekId())->where('jenisUnit','!=','kios')->get()->groupBy(['header', function ($item) {
             return $item['judul'];
         }], $preserveKeys = true);
         $perHeader = $semuaRAB->sortBy('kodeRAB');

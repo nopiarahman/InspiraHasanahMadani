@@ -38,7 +38,7 @@ class HomeController extends Controller
     {
         /* package laravel chart check di https://v6.charts.erik.cat/installation.html#composer */
         $start = Carbon::now();
-        $transaksiSebelum = transaksi::select('kredit','debet','tanggal','uraian')->where('tanggal','<',$start)->where('proyek_id',proyekId())->orderBy('tanggal')->get();
+        $transaksiSebelum = transaksi::select('kredit','debet','tanggal','uraian')->where('tambahan',0)->where('tanggal','<',$start)->where('proyek_id',proyekId())->orderBy('tanggal')->get();
         $transaksiSebelumChart = $transaksiSebelum->slice(0,-15);
         $saldoSebelum = $transaksiSebelumChart->sum('kredit')-$transaksiSebelumChart->sum('debet');
         // dd($saldoSebelum);
