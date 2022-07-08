@@ -1276,6 +1276,16 @@ function transaksiRAB($judul)
     }
     return $total;
 }
+function transaksiRABHeader($header)
+{
+    $rab = rab::where('header', $header)->get();
+    $total = 0;
+    foreach ($rab as $r) {
+        $transaksi = transaksi::where('rab_id', $r->id)->where('tambahan',0)->get();
+        $total += $transaksi->sum('debet');
+    }
+    return $total;
+}
 function transaksiRABTambahan($judul)
 {
     $rab = rab::where('judul', $judul)->get();

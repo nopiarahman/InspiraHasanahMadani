@@ -34,7 +34,8 @@
             </tr>
             @foreach ($perJudul[$header] as $judul => $semuaRAB)
                 <tr>
-                    <th style="font-weight: bold; height:20pt" colspan="8">{{ $loop->iteration }}. {{ $judul }}
+                    <th style="font-weight: bold; height:20pt" colspan="8">{{ $loop->iteration }}.
+                        {{ $judul }}
                     </th>
                 </tr>
                 @foreach ($semuaRAB as $rab)
@@ -48,7 +49,7 @@
                         <th style="font-weight: bold; height:20pt"> {{ hitungTransaksiRAB($rab->id) }}</th>
                         <th style="font-weight: bold; height:20pt">
                             @if ($rab->total != 0)
-                                {{ (float) ((hitungTransaksiRAB($rab->id) / $rab->total) * 100), 2 }}%
+                                {{ round((hitungTransaksiRAB($rab->id) / $rab->total) * 100, 2) }}%
                             @else
                                 -
                             @endif
@@ -56,19 +57,31 @@
                     </tr>
                 @endforeach
                 <tr>
-                    <th style="font-weight: bold; height:20pt" colspan="5">Sub Total {{ $judul }}</th>
-                    <th style="font-weight: bold; height:20pt" colspan="3"> {{ $semuaRAB->sum('total') }}</th>
+                    <th style="font-weight: bold; height:20pt" colspan="6">Sub Total {{ $judul }}</th>
+                    <th style="font-weight: bold; height:20pt" colspan=""> {{ $semuaRAB->sum('total') }}</th>
+                    <th style="font-weight: bold; height:20pt">{{ transaksiRAB($judul) }}</th>
+                    <th style="font-weight: bold; height:20pt">
+                        @if ($semuaRAB->sum('total') != 0)
+                            {{ round((transaksiRAB($judul) / $semuaRAB->sum('total')) * 100, 2) }}%
+                        @endif
+                    </th>
                 </tr>
                 @php
                     $a[] = $semuaRAB->sum('total'); /* menghitung per total judul */
                 @endphp
             @endforeach
             <tr>
-                <th style="font-weight: bold; height:20pt" colspan="5">TOTAL {{ $header }}</th>
+                <th style="font-weight: bold; height:20pt" colspan="6">TOTAL {{ $header }}</th>
                 @php
                     $bRAB[$header] = array_sum($a) - array_sum($bRAB); /* menghitung total header */
                 @endphp
-                <th style="font-weight: bold; height:20pt" colspan="3"> {{ $bRAB[$header] }}</th>
+                <th style="font-weight: bold; height:20pt" colspan=""> {{ $bRAB[$header] }}</th>
+                <th style="font-weight: bold; height:20pt">{{ transaksiRABHeader($header) }}</th>
+                <th style="font-weight: bold; height:20pt">
+                    @if ($bRAB[$header] != 0)
+                        {{ round((transaksiRABHeader($header) / $bRAB[$header]) * 100, 2) }}%
+                    @endif
+                </th>
             </tr>
         @endforeach
     </tbody>

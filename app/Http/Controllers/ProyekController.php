@@ -194,7 +194,7 @@ class ProyekController extends Controller
         $semuaRAB = rab::all()->where('proyek_id', proyekId())->groupBy(['header', function ($item) {
             return $item['judul'];
         }], $preserveKeys = true);
-        $semuaUnit = rabUnit::where('proyek_id', proyekId())->get()->groupBy(['header', function ($item) {
+        $semuaUnit = rabUnit::where('proyek_id', proyekId())->where('jenisUnit','!=','kios')->get()->groupBy(['header', function ($item) {
             return $item['judul'];
         }], $preserveKeys = true);
         $perHeader = $semuaRAB->sortBy('kodeRAB');
@@ -218,7 +218,7 @@ class ProyekController extends Controller
         if ($request->has('q')) {
             $cari = $request->q;
             $data = rabUnit::select('header')->where('header', 'LIKE', '%' . $cari . '%')
-                ->where('proyek_id', proyekId())->distinct()->get();
+                ->where('proyek_id', proyekId())->where('jenisUnit','!=','kios')->distinct()->get();
             return response()->json($data);
         }
     }
@@ -227,7 +227,7 @@ class ProyekController extends Controller
         if ($request->has('q')) {
             $cari = $request->q;
             $data = rabUnit::select('judul')->where('judul', 'LIKE', '%' . $cari . '%')
-                ->where('proyek_id', proyekId())->distinct()->get();
+                ->where('proyek_id', proyekId())->where('jenisUnit','!=','kios')->distinct()->get();
             return response()->json($data);
         }
     }
@@ -270,7 +270,7 @@ class ProyekController extends Controller
     }
     public function biayaUnit(Request $request)
     {
-        $semuaRAB = rabUnit::where('proyek_id', proyekId())->get()->groupBy(['header', function ($item) {
+        $semuaRAB = rabUnit::where('proyek_id', proyekId())->where('jenisUnit','!=','kios')->get()->groupBy(['header', function ($item) {
             return $item['judul'];
         }], $preserveKeys = true);
         // dd($semuaRAB);
@@ -489,7 +489,7 @@ class ProyekController extends Controller
         $semuaRAB = rab::all()->where('proyek_id', proyekId())->groupBy(['header', function ($item) {
             return $item['judul'];
         }], $preserveKeys = true);
-        $semuaUnit = rabUnit::where('proyek_id', proyekId())->get()->groupBy(['header', function ($item) {
+        $semuaUnit = rabUnit::where('proyek_id', proyekId())->where('jenisUnit','!=','kios')->get()->groupBy(['header', function ($item) {
             return $item['judul'];
         }], $preserveKeys = true);
         // return view ('excel.rab',compact('semuaRAB'));
@@ -500,7 +500,7 @@ class ProyekController extends Controller
         $semuaRAB = rab::all()->where('proyek_id', proyekId())->groupBy(['header', function ($item) {
             return $item['judul'];
         }], $preserveKeys = true)->forget('PIUTANG');
-        $semuaUnit = rabUnit::where('proyek_id', proyekId())->get()->groupBy(['header', function ($item) {
+        $semuaUnit = rabUnit::where('proyek_id', proyekId())->where('jenisUnit','!=','kios')->get()->groupBy(['header', function ($item) {
             return $item['judul'];
         }], $preserveKeys = true);
         // return view ('excel.rab',compact('semuaRAB'));
@@ -509,7 +509,7 @@ class ProyekController extends Controller
     public function cetakRABUnit()
     {
 
-        $semuaRAB = rabUnit::where('proyek_id', proyekId())->get()->groupBy(['header', function ($item) {
+        $semuaRAB = rabUnit::where('proyek_id', proyekId())->where('jenisUnit','!=','kios')->get()->groupBy(['header', function ($item) {
             return $item['judul'];
         }], $preserveKeys = true);
         // return view ('excel.rab',compact('semuaRAB'));
@@ -737,7 +737,7 @@ class ProyekController extends Controller
             return $item['judul'];
         }], $preserveKeys = true)->forget('PIUTANG');
         // dd($semuaRAB->forget('PIUTANG'));
-        $semuaUnit = rabUnit::where('proyek_id', proyekId())->get()->groupBy(['header', function ($item) {
+        $semuaUnit = rabUnit::where('proyek_id', proyekId())->where('jenisUnit','!=','kios')->get()->groupBy(['header', function ($item) {
             return $item['judul'];
         }], $preserveKeys = true);
 

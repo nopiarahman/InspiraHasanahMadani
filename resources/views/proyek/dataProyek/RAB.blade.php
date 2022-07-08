@@ -261,8 +261,8 @@
                             <div class="form-group row mb-4">
                                 <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Isi Biaya</label>
                                 <div class="col-sm-12 col-md-7">
-                                    <input type="text" class="form-control @error('isi') is-invalid @enderror" name="isi"
-                                        value="{{ old('isi') }}">
+                                    <input type="text" class="form-control @error('isi') is-invalid @enderror"
+                                        name="isi" value="{{ old('isi') }}">
                                     @error('isi')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
@@ -502,8 +502,8 @@
                             <div class="form-group row mb-4">
                                 <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Isi Biaya</label>
                                 <div class="col-sm-12 col-md-7">
-                                    <input type="text" class="form-control @error('isi') is-invalid @enderror" name="isi"
-                                        value="{{ old('isi') }}">
+                                    <input type="text" class="form-control @error('isi') is-invalid @enderror"
+                                        name="isi" value="{{ old('isi') }}">
                                     @error('isi')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
@@ -646,12 +646,14 @@
                                     </th>
                                     @if (auth()->user()->role == 'admin')
                                         <th>
-                                            <button type="button" class="btn btn-sm btn-white text-primary border-success"
-                                                data-toggle="modal" data-target="#modalEdit" data-id="{{ $rab->id }}"
-                                                data-header="{{ $rab->header }}" data-judul="{{ $rab->judul }}"
-                                                data-isi="{{ $rab->isi }}" data-volume="{{ $rab->volume }}"
-                                                data-satuan="{{ $rab->satuan }}" data-harga="{{ $rab->hargaSatuan }}"
-                                                data-kode="{{ $rab->kodeRAB }}" data-total="{{ $rab->total }}">
+                                            <button type="button"
+                                                class="btn btn-sm btn-white text-primary border-success"
+                                                data-toggle="modal" data-target="#modalEdit"
+                                                data-id="{{ $rab->id }}" data-header="{{ $rab->header }}"
+                                                data-judul="{{ $rab->judul }}" data-isi="{{ $rab->isi }}"
+                                                data-volume="{{ $rab->volume }}" data-satuan="{{ $rab->satuan }}"
+                                                data-harga="{{ $rab->hargaSatuan }}" data-kode="{{ $rab->kodeRAB }}"
+                                                data-total="{{ $rab->total }}">
                                                 <i class="fa fa-pen" aria-hidden="true"></i> Edit</button>
 
                                             <button type="button" class="btn btn-sm btn-white text-danger border-danger"
@@ -667,6 +669,11 @@
                                 <th colspan="" class="">Rp. {{ number_format($semuaRAB->sum('total')) }}
                                 </th>
                                 <th>Rp. {{ number_format(transaksiRAB($judul)) }}</th>
+                                <th>
+                                    @if ($semuaRAB->sum('total') != 0)
+                                        {{ round((transaksiRAB($judul) / $semuaRAB->sum('total')) * 100, 2) }}%
+                                    @endif
+                                </th>
                             </tr>
                             @php
                                 $a[] = $semuaRAB->sum('total'); /* menghitung per total judul */
@@ -677,7 +684,14 @@
                             @php
                                 $bRAB[$header] = array_sum($a) - array_sum($bRAB); /* menghitung total header */
                             @endphp
-                            <th colspan="6" class="bg-secondary">Rp. {{ number_format($bRAB[$header]) }}</th>
+                            <th colspan="" class="bg-secondary">Rp. {{ number_format($bRAB[$header]) }}</th>
+                            <th class="bg-secondary">Rp. {{ number_format(transaksiRABHeader($header)) }}</th>
+                            <th class="bg-secondary" colspan="2">
+                                @if ($bRAB[$header] != 0)
+                                    {{ round((transaksiRABHeader($header) / $bRAB[$header]) * 100, 2) }}%
+                                @endif
+                            </th>
+
                         </tr>
                     @endforeach
                 </tbody>
@@ -864,14 +878,15 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form action="" method="POST" enctype="multipart/form-data" id="formEdit" onchange="hitung2()">
+                    <form action="" method="POST" enctype="multipart/form-data" id="formEdit"
+                        onchange="hitung2()">
                         @method('patch')
                         @csrf
                         <div class="form-group row mb-4">
                             <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Kode RAB</label>
                             <div class="col-sm-12 col-md-7">
-                                <input type="text" class="form-control @error('isi') is-invalid @enderror" name="kodeRAB"
-                                    value="{{ old('kodeRAB') }}" id="kodeRABEdit">
+                                <input type="text" class="form-control @error('isi') is-invalid @enderror"
+                                    name="kodeRAB" value="{{ old('kodeRAB') }}" id="kodeRABEdit">
                                 @error('kodeRAB')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
@@ -880,8 +895,8 @@
                         <div class="form-group row mb-4">
                             <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Isi Biaya</label>
                             <div class="col-sm-12 col-md-7">
-                                <input type="text" class="form-control @error('isi') is-invalid @enderror" name="isi"
-                                    value="{{ old('isi') }}" id="isiEdit">
+                                <input type="text" class="form-control @error('isi') is-invalid @enderror"
+                                    name="isi" value="{{ old('isi') }}" id="isiEdit">
                                 @error('isi')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
@@ -990,14 +1005,15 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form action="" method="POST" enctype="multipart/form-data" id="formEditUnit" onchange="hitung2()">
+                    <form action="" method="POST" enctype="multipart/form-data" id="formEditUnit"
+                        onchange="hitung2()">
                         @method('patch')
                         @csrf
                         <div class="form-group row mb-4">
                             <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Kode RAB</label>
                             <div class="col-sm-12 col-md-7">
-                                <input type="text" class="form-control @error('isi') is-invalid @enderror" name="kodeRAB"
-                                    value="{{ old('kodeRAB') }}" id="kodeEditUnit">
+                                <input type="text" class="form-control @error('isi') is-invalid @enderror"
+                                    name="kodeRAB" value="{{ old('kodeRAB') }}" id="kodeEditUnit">
                                 @error('kodeRAB')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
@@ -1006,8 +1022,8 @@
                         <div class="form-group row mb-4">
                             <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Isi Biaya</label>
                             <div class="col-sm-12 col-md-7">
-                                <input type="text" class="form-control @error('isi') is-invalid @enderror" name="isi"
-                                    value="{{ old('isi') }}" id="isiEditUnit">
+                                <input type="text" class="form-control @error('isi') is-invalid @enderror"
+                                    name="isi" value="{{ old('isi') }}" id="isiEditUnit">
                                 @error('isi')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
