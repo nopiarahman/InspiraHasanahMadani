@@ -91,7 +91,11 @@ class HomeController extends Controller
         }
 
         /* Detail Proyek */
-        $semuaPembelian = pembelian::where('proyek_id', proyekId())->where('statusCicilan', 'Credit')->get();
+        $semuaPelanggan = pelanggan::where('proyek_id', proyekId())->orderBy('nama')->get();
+        $pelangganAktif = $semuaPelanggan->filter(function ($value, $key) {
+            return $value->kavling != null;
+        });
+        // $semuaPembelian = pembelian::where('proyek_id', proyekId())->where('statusCicilan', 'Credit')->get();
         $totalDp = 0;
         $totalDpTerbayar = 0;
         $totalDpRumah = 0;
@@ -105,40 +109,38 @@ class HomeController extends Controller
         $totalCicilanRumahTerbayar = 0;
         $totalCicilanKiosTerbayar = 0;
         /* kavling */
-        foreach ($semuaPembelian->where('rumah_id', null)->where('kios_id', null) as $a) {
-            if ($a->pelanggan != null && $a->pelanggan->kavling != null) {
-                $totalDp += $a->dp;
-                $totalDpTerbayar += $a->dp()->sum('jumlah');
-                $totalCicilan += $a->sisaKewajiban;
+        $hitung=0;
+        $cekId=[];
+        foreach ($pelangganAktif as $a) {
+            if(jenisKepemilikan($a->id)=='Kavling'){
+                $totalDp += $a->pembelian->dp;
+                $totalDpTerbayar += $a->pembelian->dp()->sum('jumlah');
+                $totalCicilan += $a->pembelian->sisaKewajiban;
                 $totalCicilanTerbayar += $a->cicilan()->sum('jumlah');
+            }elseif(jenisKepemilikan($a->id)=='Kios'){
+                $totalDpKios += $a->pembelian->dp;
+                $totalDpKiosTerbayar += $a->pembelian->dp()->sum('jumlah');
+                $totalCicilanKios += $a->pembelian->sisaKewajiban;
+                $totalCicilanKiosTerbayar += $a->pembelian->cicilan()->sum('jumlah');
+            }elseif(jenisKepemilikan($a->id)=='Rumah'){
+                $totalDpRumah += $a->pembelian->dp;
+                $totalDpRumahTerbayar += $a->pembelian->dp()->sum('jumlah');
+                $totalCicilanRumah += $a->pembelian->sisaKewajiban;
+                $totalCicilanRumahTerbayar += $a->pembelian->cicilan()->sum('jumlah');
             }
         }
+        // dd($pelangganAktif->where('rumah_id', null)->where('kios_id', null)->count());
         $sisaDp = $totalDp - $totalDpTerbayar;
         $sisaCicilan = $totalCicilan - $totalCicilanTerbayar;
-        /* rumah */
-        foreach ($semuaPembelian->whereNotNull('rumah_id') as $a) {
-            if ($a->pelanggan != null && $a->pelanggan->kavling != null) {
-                $totalDpRumah += $a->dp;
-                $totalDpRumahTerbayar += $a->dp()->sum('jumlah');
-                $totalCicilanRumah += $a->sisaKewajiban;
-                $totalCicilanRumahTerbayar += $a->cicilan()->sum('jumlah');
-            }
-        }
+        
         $sisaDpRumah = $totalDpRumah - $totalDpRumahTerbayar;
         $sisaCicilanRumah = $totalCicilanRumah - $totalCicilanRumahTerbayar;
-        /* kios */
-        foreach ($semuaPembelian->whereNotNull('kios_id') as $a) {
-            if ($a->pelanggan != null && $a->pelanggan->kavling != null) {
-                $totalDpKios += $a->dp;
-                $totalDpKiosTerbayar += $a->dp()->sum('jumlah');
-                $totalCicilanKios += $a->sisaKewajiban;
-                $totalCicilanKiosTerbayar += $a->cicilan()->sum('jumlah');
-            }
-        }
-        $kelebihanTanah = transaksi::where('kategori', 'Kelebihan Tanah')->where('tambahan',0)->where('proyek_id', proyekId())->get()->sum('kredit');
-        // dd($kelebihanTanah);
+
         $sisaDpKios = $totalDpKios - $totalDpKiosTerbayar;
         $sisaCicilanKios = $totalCicilanKios - $totalCicilanKiosTerbayar;
+
+        $kelebihanTanah = transaksi::where('kategori', 'Kelebihan Tanah')->where('tambahan',0)->where('proyek_id', proyekId())->get()->sum('kredit');
+
         /* Pendapatan */
         $pendapatanRumah = $totalDpRumah + $totalCicilanRumah;
         $pendapatanKavling = $totalDp + $totalDpKios + $totalCicilan + $totalCicilanKios;

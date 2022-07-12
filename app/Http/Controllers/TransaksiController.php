@@ -267,10 +267,11 @@ class TransaksiController extends Controller
             if ($request->pengembalian != null) {
 
                 $pelanggan = pelanggan::find($request->pengembalian);
+                // dd($pelanggan);
                 $pengembalian = pengembalian::where('pelanggan_id', $pelanggan->id)->get();
                 $totalCicilan = cicilanTerbayarTotal($pelanggan->pembelian->id);
                 $totalDP = cekTotalDp($pelanggan->pembelian->id);
-                // dd($totalDP);
+                // dd($totalCicilan);
                 $sisa =    $totalCicilan + $totalDP - $pelanggan->pembelian->pengembalian - $jumlah;
                 // dd($sisa);
                 $requestPengembalian = $request->all();
@@ -285,7 +286,7 @@ class TransaksiController extends Controller
                 }
                 $cekTransaksi = transaksi::where('tanggal', $request->tanggal)->where('tambahan',0)->where('uraian', $request->uraian)->where('debet', $jumlah)->first();
                 $requestPengembalian['transaksi_id'] = $cekTransaksi->id;
-
+                // dd($terakhir);
                 pengembalian::create($requestPengembalian);
             }
             DB::commit();
