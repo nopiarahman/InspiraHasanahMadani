@@ -80,7 +80,7 @@ function jenisKepemilikan($id)
 }
 function saldoTerakhir()
 {
-    $transaksi = DB::table('transaksi')->select('kredit', 'debet')->where('proyek_id', proyekId())->where('tanggal','<',Carbon::now()->isoFormat('YYYY-MM-DD'));
+    $transaksi = DB::table('transaksi')->where('tambahan',0)->select('kredit', 'debet')->where('proyek_id', proyekId())->where('tanggal','<',Carbon::now()->isoFormat('YYYY-MM-DD'));
     // dd($transaksi->last());
     $saldo = $transaksi->sum('kredit') - $transaksi->sum('debet');
     return $saldo;
