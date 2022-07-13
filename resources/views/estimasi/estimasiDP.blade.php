@@ -3,16 +3,16 @@
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.css">
 @endsection
 @section('menuEstimasi', 'active')
-@section('menuEstimasiDp', 'active')
+@section('menuestimasiKavling', 'active')
 @section('content')
     <div class="section-header sticky-top">
         <div class="container">
             <div class="row">
                 <div class="col-6">
-                    <h1>Estimasi DP </h1>
+                    <h1>Estimasi Kavling </h1>
                 </div>
                 <div class="kanan">
-                    <form action="{{ route('estimasiDp') }}" method="get" enctype="multipart/form-data">
+                    <form action="{{ route('estimasiKavling') }}" method="get" enctype="multipart/form-data">
 
                         <div class="form-group row ">
                             <div class="input-group col-sm-12 col-md-12">
@@ -120,7 +120,7 @@
     {{-- Cicilan DP --}}
     <div class="card">
         <div class="card-header">
-            <h4>Daftar Estimasi Dp</h4>
+            <h4>Daftar Dp</h4>
         </div>
         <div class="card-body">
             <table class="table table-hover table-sm table-responsive-sm" id="dpAktif">
@@ -190,14 +190,86 @@
                         @endforeach
                     @endif
                 </tbody>
-                {{-- <tfoot>
-          <tr>
-            <th colspan="3" class=" text-primary text-right border-success border-top">Total</th>
-            <th class="border-success border-top text-primary">Rp.{{number_format($totalDP)}}</th>
-            <th  class="border-success border-top text-primary">Rp.{{number_format($totalDPTerbayar)}}</th>
-            <td colspan="2" class="border-success border-top text-primary"></td>
-          </tr>
-        </tfoot> --}}
+            </table>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-header">
+            <h4>Daftar Cicilan </h4>
+        </div>
+        <div class="card-body">
+            <table class="table table-hover table-sm table-responsive-sm" id="cicilanAktif">
+                <thead class="text-primary">
+                    <tr>
+                        <th scope="col">No</th>
+                        <th scope="col">Nama</th>
+                        <th scope="col">No Telp</th>
+                        <th scope="col">Nilai Cicilan</th>
+                        <th scope="col">Terbayar</th>
+                        {{-- <th scope="col">Tempo Selanjutnya</th> --}}
+                        <th scope="col">Tanggal Pembayaran</th>
+                        {{-- <th scope="col">Lunas Cicilan</th> --}}
+                    </tr>
+                </thead>
+                <tbody>
+                    @php
+                        $totalCicilan = 0;
+                        $totalTerbayar = 0;
+                        $n = 1;
+                    @endphp
+                    @foreach ($cicilanAktif as $cicilan)
+                        @if (cekDPLunasBulanan($cicilan, $start) === 'lunas')
+                            <tr>
+                                <td>{{ $n, $n++ }}</td>
+                                <td>{{ $cicilan->pelanggan->nama }} | {{ $cicilan->kavling->blok }}</td>
+                                <td>{{ $cicilan->pelanggan->nomorTelepon }}</td>
+                                @if ($cicilan->tenor === 0)
+                                    @php
+                                        $nilai = $cicilan->sisaKewajiban;
+                                    @endphp
+                                @else
+                                    @php
+                                        $nilai = $cicilan->sisaKewajiban / $cicilan->tenor;
+                                    @endphp
+                                @endif
+                                <td data-order="{{ $nilai }}">Rp. {{ number_format($nilai) }}</td>
+                                @php
+                                    $totalCicilan += $nilai;
+                                @endphp
+                                <td><a href="{{ route('unitKavlingDetail', ['id' => $cicilan->id]) }}">
+                                        @if (pembayaranCicilanEstimasi($cicilan, $start) == null)
+                                            {{-- Rp. {{number_format(pembayaranCicilanEstimasi($cicilan,$start))}} --}}
+                                            <span class="text-danger">Belum bayar</span>
+                                        @elseif(is_int(pembayaranCicilanEstimasi($cicilan, $start)))
+                                            Rp. {{ number_format(pembayaranCicilanEstimasi($cicilan, $start)) }}
+                                            @php
+                                                $totalTerbayar += pembayaranCicilanEstimasi($cicilan, $start);
+                                            @endphp
+                                        @else
+                                            s/d {{ formatBulanTahun(pembayaranCicilanEstimasi($cicilan, $start)) }}
+                                        @endif
+                                    </a>
+                                </td>
+                                {{-- <td>
+                        @if (cekCicilanSekaligus($cicilan, $start) != null)
+                        1-10 {{formatBulanTahun(cekCicilanSekaligus($cicilan,$start)->tempo)}}
+                        @else
+                        @endif
+                    </td> --}}
+                                <td>
+                                    @if (cekCicilanBulananTerbayar($cicilan, $start)->last() != null)
+                                        {{ formatTanggal(cekCicilanBulananTerbayar($cicilan, $start)->last()->tanggal) }}
+                                    @endif
+                                </td>
+                                {{-- <td>
+                                    <i class="fa fa-times text-danger" aria-hidden="true"></i>
+                                </td> --}}
+                            </tr>
+                        @endif
+                    @endforeach
+                </tbody>
+                <tfoot>
+                </tfoot>
             </table>
         </div>
     </div>
@@ -208,7 +280,7 @@
                     <div class="card-icon" style="color: rgb(63, 35, 2)">
                         <i class="fas fa-question" aria-hidden="true"></i>
                     </div>
-                    <h4>Rp. {{ number_format($totalDP) }}</h4>
+                    <h4>Rp. {{ number_format($totalDP + $totalCicilan) }}</h4>
                     <div class="card-description">Total Estimasi Pemasukan</div>
                 </div>
             </div>
@@ -219,7 +291,7 @@
                     <div class="card-icon" style="color: rgb(2, 63, 5)">
                         <i class="fas fa-check" aria-hidden="true"></i>
                     </div>
-                    <h4>Rp. {{ number_format($totalDPTerbayar) }}</h4>
+                    <h4>Rp. {{ number_format($totalDPTerbayar + $totalTerbayar) }}</h4>
                     <div class="card-description">Total Realisasi</div>
                 </div>
             </div>
@@ -229,30 +301,6 @@
 @section('script')
     <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.js"></script>
     <script>
-        //fungsi untuk filtering data berdasarkan tanggal 
-        // var start_date;
-        //  var end_date;
-        //  var DateFilterFunction = (function (oSettings, aData, iDataIndex) {
-        //     var dateStart = parseDateValue(start_date);
-        //     var dateEnd = parseDateValue(end_date);
-        //     var evalDate= parseDateValue(aData[8]);
-        //       if ( ( isNaN( dateStart ) && isNaN( dateEnd ) ) ||
-        //            ( isNaN( dateStart ) && evalDate <= dateEnd ) ||
-        //            ( dateStart <= evalDate && isNaN( dateEnd ) ) ||
-        //            ( dateStart <= evalDate && evalDate <= dateEnd ) )
-        //       {
-        //           return true;
-        //       }
-        //       return false;
-        // });
-
-        // // fungsi untuk converting format tanggal dd/mm/yyyy menjadi format tanggal javascript menggunakan zona aktubrowser
-        // function parseDateValue(rawDate) {
-        //     var dateArray= rawDate.split("/");
-        //     var parsedDate= new Date(dateArray[2], parseInt(dateArray[1])-1, dateArray[0]);  // -1 because months are from 0 to 11   
-        //     return parsedDate;
-        // }    
-
         $(document).ready(function() {
             //konfigurasi DataTable pada tabel dengan id example dan menambahkan  div class dateseacrhbox dengan dom untuk meletakkan inputan daterangepicker
             var $dTable = $('#dpAktif').DataTable({
@@ -281,33 +329,36 @@
                     "<'row'<'col-sm-12'tr>>" +
                     "<'row'<'col-sm-5'i><'col-sm-7'p>>"
             });
+        });
 
-            //  //menambahkan daterangepicker di dalam datatables
-            //  $("div.datesearchbox").html('<input type="text" class="form-control mb-3 mt-n2" id="datesearch" placeholder="Filter tanggal pembayaran..">');
-
-            //  document.getElementsByClassName("datesearchbox")[0].style.textAlign = "right";
-
-            //  //konfigurasi daterangepicker pada input dengan id datesearch
-            //  $('#datesearch').daterangepicker({
-            //     autoUpdateInput: false
-            //   });
-
-            //  //menangani proses saat apply date range
-            //   $('#datesearch').on('apply.daterangepicker', function(ev, picker) {
-            //      $(this).val(picker.startDate.format('DD/MM/YYYY') + ' - ' + picker.endDate.format('DD/MM/YYYY'));
-            //      start_date=picker.startDate.format('DD/MM/YYYY');
-            //      end_date=picker.endDate.format('DD/MM/YYYY');
-            //      $.fn.dataTableExt.afnFiltering.push(DateFilterFunction);
-            //      $dTable.draw();
-            //   });
-
-            //   $('#datesearch').on('cancel.daterangepicker', function(ev, picker) {
-            //     $(this).val('');
-            //     start_date='';
-            //     end_date='';
-            //     $.fn.dataTable.ext.search.splice($.fn.dataTable.ext.search.indexOf(DateFilterFunction, 1));
-            //     $dTable.draw();
-            //   });
+        $(document).ready(function() {
+            //konfigurasi DataTable pada tabel dengan id example dan menambahkan  div class dateseacrhbox dengan dom untuk meletakkan inputan daterangepicker
+            var $dTable = $('#cicilanAktif').DataTable({
+                "pageLength": 25,
+                "language": {
+                    "decimal": "",
+                    "emptyTable": "Tidak ada data tersedia",
+                    "info": "Menampilkan _START_ sampai _END_ dari _TOTAL_ data",
+                    "infoEmpty": "Menampilkan 0 sampai 0 dari 0 data",
+                    "infoFiltered": "(difilter dari _MAX_ total data)",
+                    "infoPostFix": "",
+                    "thousands": ",",
+                    "lengthMenu": "Menampilkan _MENU_ data",
+                    "loadingRecords": "Loading...",
+                    "processing": "Processing...",
+                    "search": "Cari:",
+                    "zeroRecords": "Tidak ada data ditemukan",
+                    "paginate": {
+                        "first": "Awal",
+                        "last": "Akhir",
+                        "next": "Selanjutnya",
+                        "previous": "Sebelumnya"
+                    },
+                },
+                "dom": "<'row'<'col-sm-6'l><'col-sm-3' <'datesearchbox2'>><'col-sm-3'f>>" +
+                    "<'row'<'col-sm-12'tr>>" +
+                    "<'row'<'col-sm-5'i><'col-sm-7'p>>"
+            });
         });
     </script>
 

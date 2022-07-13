@@ -94,8 +94,8 @@ Route::group(['middleware' => ['auth', 'role:admin,projectmanager,adminGudang,ma
     Route::patch('/restoreTerhapus/{id}', 'PelangganController@restoreTerhapus')->name('rsetoreTerhapus');
     Route::patch('/simpanNilaiPotongan/{id}', 'PelangganController@simpanNilaiPotongan')->name('simpanNilaiPotongan');
     Route::get('/estimasi', 'EstimasiController@estimasi')->name('estimasi');
-    Route::get('/estimasiDp', 'EstimasiController@estimasiDp')->name('estimasiDp');
-    Route::get('/estimasiCicilan', 'EstimasiController@estimasiCicilan')->name('estimasiCicilan');
+    Route::get('/estimasiKavling', 'EstimasiController@estimasiDp')->name('estimasiKavling');
+    Route::get('/estimasiRumah', 'EstimasiController@estimasiRumah')->name('estimasiRumah');
     Route::get('/estimasiTunggakan', 'EstimasiController@estimasiTunggakan')->name('estimasiTunggakan');
     Route::get('/exportEstimasiCicilan', 'EstimasiController@exportEstimasiCicilan')->name('exportEstimasiCicilan');
     Route::get('/exportEstimasiTunggakan', 'EstimasiController@exportEstimasiTunggakan')->name('exportEstimasiTunggakan');

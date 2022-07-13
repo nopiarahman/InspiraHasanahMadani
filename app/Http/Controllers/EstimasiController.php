@@ -66,19 +66,27 @@ class EstimasiController extends Controller
             return $value->kavling != null;
         });
         $dp=[];
+        $cicilan=[];
         foreach($pelangganAktif as $p){
-            $dp[]= $p->pembelian;
+            if(jenisKepemilikan($p->id)=='Kavling' || jenisKepemilikan($p->id)=='Kios' ){
+                $dp[]= $p->pembelian;
+                $cicilan[]= $p->pembelian;
+            }
         }
         if($dp){
             $dpAktif = collect($dp);
         }else{
             $dpAktif=[];
         }
-        // dd($dpAktif->take(10));
-        return view('estimasi/estimasiDP',compact('start','end','dpAktif'));
+        if($cicilan){
+            $cicilanAktif = collect($cicilan)->where('sisaCicilan','>',0);
+        }else{
+            $cicilanAktif=[];
+        }
+        return view('estimasi/estimasiDP',compact('start','end','dpAktif','cicilanAktif'));
     }
 
-    public function estimasiCicilan(Request $request){
+    public function estimasiRumah(Request $request){
         if($request->get('filter')){
             $start = Carbon::parse($request->start)->isoFormat('YYYY-MM-DD');
             $end = Carbon::parse($request->end)->isoFormat('YYYY-MM-DD');
@@ -90,16 +98,25 @@ class EstimasiController extends Controller
         $pelangganAktif = $semuaPelanggan->filter(function ($value, $key) {
             return $value->kavling != null;
         });
+        $dp=[];
         $cicilan=[];
         foreach($pelangganAktif as $p){
-            $cicilan[]= $p->pembelian;
+            if(jenisKepemilikan($p->id)=='Rumah'){
+                $dp[]= $p->pembelian;
+                $cicilan[]= $p->pembelian;
+            }
+        }
+        if($dp){
+            $dpAktif = collect($dp);
+        }else{
+            $dpAktif=[];
         }
         if($cicilan){
             $cicilanAktif = collect($cicilan)->where('sisaCicilan','>',0);
         }else{
             $cicilanAktif=[];
         }
-        return view('estimasi/estimasiCicilan',compact('start','end','cicilanAktif'));
+        return view('estimasi/estimasiCicilan',compact('start','end','cicilanAktif','dpAktif'));
     }
     public function estimasiTunggakan(Request $request){
         if($request->get('filter')){

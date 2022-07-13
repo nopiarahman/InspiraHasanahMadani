@@ -240,10 +240,11 @@
                                 <a href="" class="nav-link has-dropdown"><i class="fas fa-box-open    "></i>
                                     <span>Estimasi Pemasukan</span></a>
                                 <ul class="dropdown-menu">
-                                    <li class=" @yield('menuEstimasiDp')"><a href="{{ route('estimasiDp') }}">DP</a>
+                                    <li class=" @yield('menuestimasiKavling')"><a
+                                            href="{{ route('estimasiKavling') }}">Kavling</a>
                                     </li>
-                                    <li class=" @yield('menuEstimasiCicilan')"><a
-                                            href="{{ route('estimasiCicilan') }}">Cicilan</a></li>
+                                    <li class=" @yield('menuestimasiRumah')"><a
+                                            href="{{ route('estimasiRumah') }}">Rumah</a></li>
                                     <li class=" @yield('menuEstimasiTunggakan')"><a
                                             href="{{ route('estimasiTunggakan') }}">Tunggakan</a></li>
                                 </ul>
@@ -363,10 +364,11 @@
                                 <a href="" class="nav-link has-dropdown"><i class="fas fa-box-open    "></i>
                                     <span>Estimasi Pemasukan</span></a>
                                 <ul class="dropdown-menu">
-                                    <li class=" @yield('menuEstimasiDp')"><a href="{{ route('estimasiDp') }}">DP</a>
+                                    <li class=" @yield('menuestimasiKavling')"><a
+                                            href="{{ route('estimasiKavling') }}">Kavling</a>
                                     </li>
-                                    <li class=" @yield('menuEstimasiCicilan')"><a
-                                            href="{{ route('estimasiCicilan') }}">Cicilan</a></li>
+                                    <li class=" @yield('menuestimasiRumah')"><a
+                                            href="{{ route('estimasiRumah') }}">Rumah</a></li>
                                     <li class=" @yield('menuEstimasiTunggakan')"><a
                                             href="{{ route('estimasiTunggakan') }}">Tunggakan</a></li>
                                 </ul>
@@ -455,10 +457,11 @@
                                     <span>Estimasi Pemasukan</span></a>
                                 <ul class="dropdown-menu">
                                     {{-- <li class=" @yield('menuAkun')"><a href="{{route('akun')}}">Akun</a></li> --}}
-                                    <li class=" @yield('menuEstimasiDp')"><a href="{{ route('estimasiDp') }}">DP</a>
+                                    <li class=" @yield('menuestimasiKavling')"><a
+                                            href="{{ route('estimasiKavling') }}">Kavling</a>
                                     </li>
-                                    <li class=" @yield('menuEstimasiCicilan')"><a
-                                            href="{{ route('estimasiCicilan') }}">Cicilan</a></li>
+                                    <li class=" @yield('menuestimasiRumah')"><a
+                                            href="{{ route('estimasiRumah') }}">Rumah</a></li>
                                     <li class=" @yield('menuEstimasiTunggakan')"><a
                                             href="{{ route('estimasiTunggakan') }}">Tunggakan</a></li>
                                 </ul>
@@ -602,10 +605,11 @@
                                 <a href="" class="nav-link has-dropdown"><i class="fas fa-box-open    "></i>
                                     <span>Estimasi Pemasukan</span></a>
                                 <ul class="dropdown-menu">
-                                    <li class=" @yield('menuEstimasiDp')"><a href="{{ route('estimasiDp') }}">DP</a>
+                                    <li class=" @yield('menuestimasiKavling')"><a
+                                            href="{{ route('estimasiKavling') }}">Kavling</a>
                                     </li>
-                                    <li class=" @yield('menuEstimasiCicilan')"><a
-                                            href="{{ route('estimasiCicilan') }}">Cicilan</a></li>
+                                    <li class=" @yield('menuestimasiRumah')"><a
+                                            href="{{ route('estimasiRumah') }}">Rumah</a></li>
                                     <li class=" @yield('menuEstimasiTunggakan')"><a
                                             href="{{ route('estimasiTunggakan') }}">Tunggakan</a></li>
                                 </ul>
