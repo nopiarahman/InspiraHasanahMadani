@@ -784,7 +784,7 @@
         @endif
     </div>
     </div>
-    @if (auth()->user()->role == 'admin' || auth()->user()->role == 'projectmanager' || auth()->user()->role == 'komisaris')
+    @if (auth()->user()->role == 'admin' || auth()->user()->role == 'projectmanager' || auth()->user()->role == 'komisaris' || auth()->user()->role == 'marketing')
         <div class="row">
             <div class="col-lg-12 col-md-12 col-sm-12">
                 <div class="card">
