@@ -14,8 +14,10 @@ class EsCicilanExport implements FromView ,ShouldAutoSize
     protected $start;
     protected $end;
     protected $cicilanAktif;
-    function __construct($start,$end,$cicilanAktif) {
+    protected $dpAktif;
+    function __construct($start,$end,$cicilanAktif,$dpAktif) {
         $this->cicilanAktif = $cicilanAktif;
+        $this->dpAktif = $dpAktif;
         $this->start = $start;
         $this->end = $end;
     }
@@ -23,6 +25,7 @@ class EsCicilanExport implements FromView ,ShouldAutoSize
     {
         return view ('excel/EsCicilanExport',[
             'cicilanAktif'=> $this->cicilanAktif,
+            'dpAktif'=> $this->dpAktif,
             'start'=> $this->start,
             'end'=> $this->end,
         ]);

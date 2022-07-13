@@ -167,13 +167,27 @@ class EstimasiController extends Controller
         $pelangganAktif = $semuaPelanggan->filter(function ($value, $key) {
             return $value->kavling != null;
         });
+        $dp=[];
+        $cicilan=[];
         foreach($pelangganAktif as $p){
-            $dp[]= $p->pembelian;
+            if(jenisKepemilikan($p->id)=='Kavling' || jenisKepemilikan($p->id)=='Kios' ){
+                $dp[]= $p->pembelian;
+                $cicilan[]= $p->pembelian;
+            }
         }
-        $dpAktif = collect($dp);
+        if($dp){
+            $dpAktif = collect($dp);
+        }else{
+            $dpAktif=[];
+        }
+        if($cicilan){
+            $cicilanAktif = collect($cicilan)->where('sisaCicilan','>',0);
+        }else{
+            $cicilanAktif=[];
+        }
         $bulan=$start;
         return Excel::download(new EsDpExport(
-            $start,$end,$dpAktif
+            $start,$end,$dpAktif,$cicilanAktif
         ), 'Estimasi DP '.$bulan.'.xlsx');
     }
     public function exportEstimasiCicilan(Request $request){
@@ -188,15 +202,28 @@ class EstimasiController extends Controller
         $pelangganAktif = $semuaPelanggan->filter(function ($value, $key) {
             return $value->kavling != null;
         });
+        $dp=[];
+        $cicilan=[];
         foreach($pelangganAktif as $p){
-            $cicilan[]= $p->pembelian;
-            // $cicilan=collect($cicilanPelanggan)->whereBetween('tempo',[$start,$end]);       
+            if(jenisKepemilikan($p->id)=='Rumah'){
+                $dp[]= $p->pembelian;
+                $cicilan[]= $p->pembelian;
+            }
         }
-
-        $cicilanAktif = collect($cicilan)->where('sisaCicilan','>',0);
+        if($dp){
+            $dpAktif = collect($dp);
+        }else{
+            $dpAktif=[];
+        }
+        if($cicilan){
+            $cicilanAktif = collect($cicilan)->where('sisaCicilan','>',0);
+        }else{
+            $cicilanAktif=[];
+        }
         $bulan=$start;
+        // dd($dpAktif);
         return Excel::download(new EsCicilanExport(
-            $start,$end,$cicilanAktif
+            $start,$end,$cicilanAktif,$dpAktif
         ), 'Estimasi Cicilan '.$bulan.'.xlsx');
     }
     public function exportEstimasiTunggakan(Request $request){

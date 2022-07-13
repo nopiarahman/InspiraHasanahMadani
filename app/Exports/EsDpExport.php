@@ -14,8 +14,10 @@ class EsDpExport implements FromView ,ShouldAutoSize
     protected $start;
     protected $end;
     protected $dpAktif;
-    function __construct($start,$end,$dpAktif) {
+    protected $cicilanAktif;
+    function __construct($start,$end,$dpAktif,$cicilanAktif) {
         $this->dpAktif = $dpAktif;
+        $this->cicilanAktif = $cicilanAktif;
         $this->start = $start;
         $this->end = $end;
     }
@@ -23,6 +25,7 @@ class EsDpExport implements FromView ,ShouldAutoSize
     {
         return view ('excel/EsDpExport',[
             'dpAktif'=> $this->dpAktif,
+            'cicilanAktif'=> $this->cicilanAktif,
             'start'=> $this->start,
             'end'=> $this->end,
         ]);

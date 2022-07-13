@@ -252,20 +252,11 @@
                                         @endif
                                     </a>
                                 </td>
-                                {{-- <td>
-                    @if (cekCicilanSekaligus($cicilan, $start) != null)
-                    1-10 {{formatBulanTahun(cekCicilanSekaligus($cicilan,$start)->tempo)}}
-                    @else
-                    @endif
-                </td> --}}
                                 <td>
                                     @if (cekCicilanBulananTerbayar($cicilan, $start)->last() != null)
                                         {{ formatTanggal(cekCicilanBulananTerbayar($cicilan, $start)->last()->tanggal) }}
                                     @endif
                                 </td>
-                                {{-- <td>
-                                    <i class="fa fa-times text-danger" aria-hidden="true"></i>
-                                </td> --}}
                             </tr>
                         @endif
                     @endforeach
