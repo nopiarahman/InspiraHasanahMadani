@@ -267,6 +267,7 @@
                             <th scope="col">Debit</th>
                             <th scope="col">Saldo</th>
                             <th scope="col">Sumber</th>
+                            <th scope="col">User</th>
                             @if (auth()->user()->role == 'admin' || auth()->user()->role == 'projectmanager')
                                 <th scope="col">Aksi</th>
                             @endif
@@ -311,6 +312,7 @@
                                     $saldo = $saldo + $transaksi->kredit - $transaksi->debet;
                                 @endphp
                                 <td>{{ $transaksi->sumber }}</td>
+                                <td>{{ $transaksi->user->name ?? '' }}</td>
                                 @if (auth()->user()->role == 'admin' || auth()->user()->role == 'projectmanager')
                                     <td>
                                         @if ($transaksi->kategori === 'Modal' || $transaksi->kategori === 'Aset' || $transaksi->kategori === 'Pendapatan Lain' || $transaksi->kategori === 'Kelebihan Tanah')
