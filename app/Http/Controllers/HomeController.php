@@ -43,7 +43,7 @@ class HomeController extends Controller
         $saldoSebelum = $transaksiSebelumChart->sum('kredit')-$transaksiSebelumChart->sum('debet');
         // dd($saldoSebelum);
         $kasBesar = $transaksiSebelum->reverse()->take(15)->reverse();
-        // dd($kasBesar); 
+        // dd($kasBesar->sum('kredit')-$kasBesar->sum('debet')); 
         $saldo = $kasBesar->map(function ($item) {
             return $item->kredit-$item->debet;
         })->values();

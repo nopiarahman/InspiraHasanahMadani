@@ -11,6 +11,11 @@
                 <div class="col">
                     <h1>{{ $id->deskripsi }}</h1>
                 </div>
+                <div class="kanan">
+                    <a href="{{ route('exportIsiPengadaan', ['id' => $id->id]) }}" class="btn btn-primary"> <i
+                            class="fas fa-file-excel"></i>
+                        Export Excel</a>
+                </div>
             </div>
             <div class="row">
                 <nav aria-label="breadcrumb">
@@ -44,7 +49,10 @@
             @endif
         </div>
     </div>
-    @if (auth()->user()->role == 'admin' || auth()->user()->role == 'adminGudang' || auth()->user()->role == 'marketing' || auth()->user()->role == 'gudang')
+    @if (auth()->user()->role == 'admin' ||
+        auth()->user()->role == 'adminGudang' ||
+        auth()->user()->role == 'marketing' ||
+        auth()->user()->role == 'gudang')
         <div class="row">
             <div class="col-12">
                 <div class="card">
@@ -175,14 +183,17 @@
                                         class="btn btn-sm text-danger border-danger"> <i class="fas fa-times    "></i>
                                         Tolak</a>
                                 @endif
-                                @if (auth()->user()->role == 'admin' || auth()->user()->role == 'adminGudang' || auth()->user()->role == 'marketing' || auth()->user()->role == 'gudang')
+                                @if (auth()->user()->role == 'admin' ||
+                                    auth()->user()->role == 'adminGudang' ||
+                                    auth()->user()->role == 'marketing' ||
+                                    auth()->user()->role == 'gudang')
                                     @if ($isi->status == 1 && $isi->statusTransfer == 0)
                                         <a href="{{ route('buatTransaksi', ['id' => $isi->id]) }}"
                                             class="btn btn-sm text-primary border-success"> <i
                                                 class="fas fa-handshake    "></i> Buat Transaksi</a>
                                     @elseif($isi->statusTransfer == 1)
-                                        <a href="#" class="btn btn-sm text-info border-info"> <i class="fas fa-check"
-                                                aria-hidden="true"></i> Transaksi dibuat</a>
+                                        <a href="#" class="btn btn-sm text-info border-info"> <i
+                                                class="fas fa-check" aria-hidden="true"></i> Transaksi dibuat</a>
                                     @endif
                                 @endif
                             </td>

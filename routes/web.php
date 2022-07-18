@@ -194,6 +194,7 @@ Route::group(['middleware' => ['auth', 'role:admin,projectmanager,adminGudang,ma
     Route::get('/exportEstimasiDp', 'EstimasiController@exportEstimasiDp')->name('exportEstimasiDp');
     Route::get('/exportKeluar', 'LaporanController@exportKeluar')->name('exportKeluar');
     Route::get('/exportMasuk', 'LaporanController@exportMasuk')->name('exportMasuk');
+    Route::get('/exportIsiPengadaan/{id}', 'LaporanController@exportIsiPengadaan')->name('exportIsiPengadaan');
 
     Route::get('/pengadaan', 'PengadaanController@pengadaanIndex')->name('pengadaan');
     Route::get('/barang', 'PengadaanController@barangIndex')->name('barang');

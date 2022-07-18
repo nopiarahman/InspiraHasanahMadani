@@ -12,12 +12,15 @@ use App\rabUnit;
 use SnappyImage;
 use App\rekening;
 use App\pembelian;
+use App\pengadaan;
 use App\transaksi;
 use Carbon\Carbon;
+use App\isiPengadaan;
 use App\tambahanDetail;
 use App\Exports\MasukExport;
 use Illuminate\Http\Request;
 use App\Exports\KeluarExport;
+use App\Exports\PengadaanExport;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\LaporanBulananExport;
@@ -705,4 +708,11 @@ class LaporanController extends Controller
         $pdf = PDF::loadview('PDF/kwitansiTambahan', compact('id','pembelian','proyek','rekening', 'logoPT'))->setPaper('A5', 'landscape');
         return $pdf->download('Kwitansi Pembayaran Tambahan '.$id->tambahan->keterangan.' '. $id->tambahan->pelanggan->nama . '.pdf');
     }
+    public function exportIsiPengadaan(Pengadaan $id)
+    {
+        $semuaIsi = isiPengadaan::where('pengadaan_id',$id->id)->get();
+        // dd($semuaIsi);
+        return Excel::download(new PengadaanExport($id,$semuaIsi), 'Isi Pengadaan ' . $id->deskripsi . '.xlsx');
+    }
+
 }
