@@ -21,6 +21,7 @@ use App\transferDp;
 use App\transferUnit;
 use App\Exports\AktifExport;
 use Illuminate\Http\Request;
+use App\Exports\NonAktifExport;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Maatwebsite\Excel\Facades\Excel;
@@ -55,6 +56,14 @@ class PelangganController extends Controller
             return $value->kavling == null;
         });
         return view('pelanggan/nonAktif', compact('pelangganNonAktif'));
+    }
+    public function nonAktifExport()
+    {
+        $semuaPelanggan = pelanggan::where('proyek_id', proyekId())->orderBy('nama')->get();
+        $pelangganNonAktif = $semuaPelanggan->filter(function ($value, $key) {
+            return $value->kavling == null;
+        });
+        return Excel::download(new NonAktifExport($pelangganNonAktif), 'Pelanggan Non-Aktif.xlsx');
     }
     public function terhapus()
     {
