@@ -109,8 +109,8 @@
                                         src="{{ asset('frontPage/img/svg/old_phone.svg') }}" alt="" /></a>
                             </li>
                             <li data-style="clock">
-                                <a href="#"><img class="svg"
-                                        src="{{ asset('frontPage/img/svg/clock.svg') }}" alt="" /></a>
+                                <a href="#"><img class="svg" src="{{ asset('frontPage/img/svg/clock.svg') }}"
+                                        alt="" /></a>
                             </li>
                         </ul>
                     </div>
@@ -175,8 +175,8 @@
                             <div class="short_info_wrap">
                                 <ul>
                                     <li data-type="home"><a href="#"><img class="svg"
-                                                src="{{ asset('frontPage/img/svg/home.svg') }}"
-                                                alt="" /></a></li>
+                                                src="{{ asset('frontPage/img/svg/home.svg') }}" alt="" /></a>
+                                    </li>
                                     {{-- <li data-type="message"><a href="#"><img class="svg" src="{{asset('frontPage/img/svg/message2.svg')}}" alt="" /></a></li> --}}
                                     <li data-type="phone"><a href="#"><img class="svg"
                                                 src="{{ asset('frontPage/img/svg/old-phone.svg') }}"
@@ -426,9 +426,9 @@
                             <div class="inner_wrap">
                                 <div class="main_info_wrap">
                                     <span class="top_title">Perkenalkan</span>
-                                    <h3 class="title">Inspira Kreasindo</h3>
+                                    <h3 class="title">Inspira Group</h3>
                                     <p class="text">
-                                        Inspira Kreasindo menjadi penyelenggara pembangunan perumahan dengan konsep
+                                        Inspira Group menjadi penyelenggara pembangunan perumahan dengan konsep
                                         syariah dan pengembangan di bidang konstruksi Oleh sebab itu, kami senantiasa
                                         melihat jauh kedepan, dimana hal ini memerlukan niat dan tekad yang kuat dalam
                                         hal pelaksanaan di lapangan.
@@ -588,8 +588,8 @@
                                             <div class="inner">
                                                 <div class="image_holder">
                                                     @if ($kb->thumbnail)
-                                                        <img src="{{ Storage::url($kb->thumbnail) }}"
-                                                            alt="" height="250px" />
+                                                        <img src="{{ Storage::url($kb->thumbnail) }}" alt=""
+                                                            height="250px" />
                                                         <div class="main_image"
                                                             data-img-url="{{ Storage::url($kb->thumbnail) }}"></div>
                                                     @else
@@ -664,7 +664,7 @@
                                 </div>
                                 <div class="text">
                                     <p>
-                                        Inspira Kreasindo membangun lingkungan islami dengan proses akad 100% tanpa
+                                        Inspira Group membangun lingkungan islami dengan proses akad 100% tanpa
                                         Riba, dengan pengalaman lebih dari 5 tahun serta telah dipercaya oleh ratusan
                                         pelanggan kami siap untuk mewujudkan property impian untuk anda.
                                     </p>
@@ -962,7 +962,7 @@
                                                 </div>
                                                 <div class="definition">
                                                     <p>
-                                                        Inspira Kreasindo membentuk kompetensi yang dimiliki dan
+                                                        Inspira Group membentuk kompetensi yang dimiliki dan
                                                         mengembangkan landasan usaha yang berkesinambungan untuk
                                                         membantu umat
 
@@ -1034,7 +1034,7 @@
 						</ul>
 					</div> --}}
                         <div class="copyright">
-                            <p>&copy; 2021 <a class="constructify" href="#">Inspira Kreasindo</a>. All rights
+                            <p>&copy; 2021 <a class="constructify" href="#">Inspira Group</a>. All rights
                                 reserved. </p>
                             <a class="glax_tm_totop" href="#">
                                 <span class="shape"></span>

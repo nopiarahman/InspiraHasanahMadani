@@ -78,6 +78,7 @@ Route::group(['middleware' => ['auth', 'role:admin,projectmanager,adminGudang,ma
     Route::get('/cariPelangganDaftar', 'HomeController@cariPelangganDaftar');
 
     Route::get('/pelanggan', 'PelangganController@index')->name('pelangganIndex');
+    Route::get('/pelangganExport', 'PelangganController@aktifExport')->name('pelangganExport');
     Route::get('/pelangganNonAktif', 'PelangganController@nonAktif')->name('pelangganNonAktif');
     Route::get('/pelangganTerhapus', 'PelangganController@terhapus')->name('pelangganTerhapus');
     Route::get('/pelangganTambah', 'PelangganController@create')->name('pelangganTambah');

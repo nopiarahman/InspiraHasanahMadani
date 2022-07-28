@@ -11,6 +11,11 @@
                 <div class="col">
                     <h1>Pelanggan</h1>
                 </div>
+                <div class="kanan">
+                    <a href="{{ route('pelangganExport') }}" class="btn btn-primary"> <i class="fas fa-file-excel"></i> Export
+                        Excel</a>
+
+                </div>
             </div>
             <div class="row">
                 <nav aria-label="breadcrumb">
@@ -43,7 +48,9 @@
             @endif
         </div>
     </div>
-    @if (auth()->user()->role == 'admin' || auth()->user()->role == 'projectmanager' || auth()->user()->role == 'kasir')
+    @if (auth()->user()->role == 'admin' ||
+        auth()->user()->role == 'projectmanager' ||
+        auth()->user()->role == 'kasir')
         <div class="section-header">
             <a href="{{ route('pelangganTambah') }}" class="btn btn-primary">Tambah Pelanggan Baru</a>
         </div>

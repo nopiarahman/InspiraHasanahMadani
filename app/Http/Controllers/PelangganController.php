@@ -2,26 +2,28 @@
 
 namespace App\Http\Controllers;
 
-use App\pelanggan;
-use App\kavling;
-use App\transferUnit;
-use App\transferDp;
-use App\rekening;
-use App\rumah;
-use App\kios;
-use App\akun;
-use App\user;
-use App\detailUser;
-use App\rab;
-use App\cicilan;
 use App\dp;
-use App\rabUnit;
-use App\pembelian;
+use App\rab;
+use App\akun;
+use App\kios;
+use App\user;
+use App\rumah;
 use App\proyek;
+use App\cicilan;
+use App\kavling;
+use App\rabUnit;
+use App\rekening;
+use App\pelanggan;
+use App\pembelian;
 use Carbon\Carbon;
+use App\detailUser;
+use App\transferDp;
+use App\transferUnit;
+use App\Exports\AktifExport;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Maatwebsite\Excel\Facades\Excel;
 
 class PelangganController extends Controller
 {
@@ -32,30 +34,26 @@ class PelangganController extends Controller
      */
     public function index()
     {
-
-        // $users = User::all();
-        // $usersUnique = $users->unique('username');
-        // $usersDupes = $users->diff($usersUnique);
-        // dd($users, $usersUnique, $usersDupes);
-
         $semuaPelanggan = pelanggan::where('proyek_id', proyekId())->orderBy('nama')->get();
-        // $pelanggan=collect($semuaPelanggan);
         $pelangganAktif = $semuaPelanggan->filter(function ($value, $key) {
             return $value->kavling != null;
         });
-        // dd($pelangganAktif);
-        // dd($aktif->paginate());
         return view('pelanggan/index', compact('pelangganAktif'));
+    }
+    public function aktifExport()
+    {
+        $semuaPelanggan = pelanggan::where('proyek_id', proyekId())->orderBy('nama')->get();
+        $pelangganAktif = $semuaPelanggan->filter(function ($value, $key) {
+            return $value->kavling != null;
+        });
+        return Excel::download(new AktifExport($pelangganAktif), 'Pelanggan Aktif.xlsx');
     }
     public function nonAktif()
     {
         $semuaPelanggan = pelanggan::where('proyek_id', proyekId())->orderBy('nama')->get();
-        // $pelanggan=collect($semuaPelanggan);
         $pelangganNonAktif = $semuaPelanggan->filter(function ($value, $key) {
             return $value->kavling == null;
         });
-        // dd($aktif->paginate());
-        // dd($pelangganNonAktif);
         return view('pelanggan/nonAktif', compact('pelangganNonAktif'));
     }
     public function terhapus()
@@ -67,7 +65,6 @@ class PelangganController extends Controller
     public function restoreTerhapus($id, Request $request)
     {
         $terhapus = Pelanggan::onlyTrashed()->where('id', $id)->first();
-        // dd($terhapus);
         try {
             DB::beginTransaction();
             $terhapus->restore();
@@ -78,7 +75,6 @@ class PelangganController extends Controller
             return redirect()->back()->with('error', 'Gagal. Pesan Error: ' . $ex->getMessage());
         }
     }
-
     /**
      * Show the form for creating a new resource.
      *

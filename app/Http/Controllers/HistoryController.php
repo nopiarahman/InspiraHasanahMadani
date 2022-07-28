@@ -16,7 +16,7 @@ class HistoryController extends Controller
             $start = Carbon::parse($request->start)->isoFormat('YYYY-MM-DD');
             $end = Carbon::parse($request->end)->isoFormat('YYYY-MM-DD');
         }
-        $history=history::whereBetween('tanggal',[$start,$end])->where('tambahan',0)->where('proyek_id',proyekId())->orderBy('created_at','desc')->get();
+        $history=history::whereBetween('tanggal',[$start,$end])->where('tambahan',0)->where('proyek_id',proyekId())->orderBy('created_at','desc')->limit(1000)->get();
         return view('history/index',compact('history','start','end'));
     }
     public function tambahan(Request $request)
@@ -27,7 +27,7 @@ class HistoryController extends Controller
             $start = Carbon::parse($request->start)->isoFormat('YYYY-MM-DD');
             $end = Carbon::parse($request->end)->isoFormat('YYYY-MM-DD');
         }
-        $history=history::whereBetween('tanggal',[$start,$end])->where('tambahan',1)->where('proyek_id',proyekId())->orderBy('created_at','desc')->get();
+        $history=history::whereBetween('tanggal',[$start,$end])->where('tambahan',1)->where('proyek_id',proyekId())->orderBy('created_at','desc')->limit(1000)->get();
         return view('history/index',compact('history','start','end'));
     }
 }
